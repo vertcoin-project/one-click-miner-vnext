@@ -9,10 +9,10 @@ Want to donate to the development of this software? Send VTC to [VjEBWk2jJBbesrV
 
 ## Milestone #1: MVP (Minimal Viable Product):
 
-[ ] (Password protected) built-in wallet
-[ ] Allows sweeping your entire balance to another address
-[ ] Uses Vertcoin Insight to retrieve balances
-[ ] Uses P2Proxy as mining pool
-[ ] Supports Linux and Windows
-[ ] Supports AMD and NVidia
-[ ] Supports ccminer, lyclMiner
+- [ ] (Password protected) built-in wallet
+- [ ] Allows sweeping your entire balance to another address
+- [ ] Uses Vertcoin Insight to retrieve balances
+- [ ] Uses P2Proxy as mining pool
+- [ ] Supports Linux and Windows
+- [ ] Supports AMD and NVidia
+- [ ] Supports ccminer, lyclMiner
