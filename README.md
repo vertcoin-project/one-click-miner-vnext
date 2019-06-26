@@ -1,6 +1,6 @@
 # One-Click Miner
 
-This is a redevelopment of Vertcoin's [One Click Miner] that adds:
+This is a redevelopment of Vertcoin's [One Click Miner](https://github.com/vertcoin-project/one-click-miner) that adds:
 * Built-in Wallet
 * Linux Support
 * True One-Click design
