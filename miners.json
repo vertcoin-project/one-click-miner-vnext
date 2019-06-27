@@ -3,18 +3,21 @@
         "platform": "linux",
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-linux.tar.gz",
-        "sha256" : "3f42e2e317cdd0500ba4384db97d2c9a7fcf64d86116c16dbed60c053d68c31e"
+        "sha256" : "3f42e2e317cdd0500ba4384db97d2c9a7fcf64d86116c16dbed60c053d68c31e",
+        "mainExecutableName" : "lyclMiner"
     },
     {
         "platform": "windows",
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-windows.zip",
-        "sha256" : "d54108c868a96ecd8604925626ba4c41609dbee0d1f5cd1e3221badddc2d7b87"
+        "sha256" : "d54108c868a96ecd8604925626ba4c41609dbee0d1f5cd1e3221badddc2d7b87",
+        "mainExecutableName" : "lyclMiner.exe"
     },
     {
         "platform": "windows",
         "gpuplatform": "NVIDIA",
         "url": "https://github.com/vertcoin-project/ccminer-lyra2rev3/releases/download/v1.0.0/ccminer-lyra2rev3-v1.0.0-win64.zip",
-        "sha256" : "32e1e99333c1345f4aa720afe13950e5452c02edf58eedfba0f1332dd2e399bb"
+        "sha256" : "32e1e99333c1345f4aa720afe13950e5452c02edf58eedfba0f1332dd2e399bb",
+        "mainExecutableName" : "ccminer.exe"
     }
 ]
