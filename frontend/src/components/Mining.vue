@@ -30,6 +30,7 @@
 				<p class="spacer">&nbsp;</p>
 				<p class="header">Expected Earnings (24h):</p>
 	    	<p class="earning">~{{avgearn}} ({{hashrate}})</p>
+				<p class="netHash"><small>(Network hashrate: <b>{{netHash}}</b>)</small></p>
     </div>
 	<!--<div class="col-6">
 	    	<p><b><u>Your Graphics Card(s):</u></b></p>
@@ -52,6 +53,7 @@ export default {
     return {
       hashrate: "0 MH/s",
 			avgearn:"0.00 VTC",
+			netHash:"Unknown",
 	  	gpu: "Unknown",
 	  	wallet: "Unknown",
 	  	balance: "0.00000000",
@@ -63,6 +65,9 @@ export default {
 	var self = this;
 	wails.events.on("hashRate",(result) => {
 		self.hashrate = result;
+	});
+	wails.events.on("networkHashRate",(result) => {
+		self.netHash = result;
 	});
 	wails.events.on("avgEarnings",(result) => {
 		self.avgearn = result;
@@ -144,7 +149,7 @@ p.spendableBalance {
 	padding: 0;
 	font-size: 24px;
 }
-p.immatureBalance, p.poolBalance {
+p.immatureBalance, p.poolBalance, p.netHash {
 	margin: 0;
 	padding: 0;
 	font-size: 10pt;

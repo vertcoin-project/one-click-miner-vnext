@@ -33,6 +33,8 @@ func main() {
 		Colour: "#131313",
 	})
 
-	app.Bind(mining.NewMinerCore())
+	core := mining.NewMinerCore()
+	app.Bind(core)
 	app.Run()
+	core.StopMining()
 }

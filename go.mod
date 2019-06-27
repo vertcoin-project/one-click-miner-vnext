@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/btcsuite/btcd v0.0.0-20190614013741-962a206e94e9
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
+	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941
 	github.com/leaanthony/mewn v0.10.7
 	github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0 // indirect
 	github.com/tidwall/buntdb v1.1.0

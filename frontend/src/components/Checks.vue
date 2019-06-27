@@ -1,12 +1,10 @@
 <template>
   <div class="container">
     <p v-if="checkStatus !== 'Failed'">{{checkStatus}}...</p>
-    <p v-if="checkStatus === 'Failed'">
+    <div class="failureReason" v-if="checkStatus === 'Failed'">
       Checks failed:<br/>
-      <pre>
-        {{failureReason}}
-      </pre>
-    </p>
+      {{failureReason}}
+    </div>
     <div class="col-12" style="position: fixed; bottom: 10px" v-if="checkStatus === 'Failed'" >
       <p>
           <a @click="check">Retry</a>
@@ -85,5 +83,14 @@ a {
     font-weight: 400 !important;
     text-align: center;
     border-radius: 5px;
+}
+div.failureReason {
+  height: 200px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  color: red;
+  border: 1px solid red;
+  width: 600px;
+  margin: 0 auto;
 }
 </style>
