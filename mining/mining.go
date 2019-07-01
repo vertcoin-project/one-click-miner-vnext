@@ -234,7 +234,6 @@ func (m *MinerCore) RefreshHashrate() {
 }
 
 func (m *MinerCore) SendSweep(password string) string {
-	logging.Debugf("Decrypting with password [%s]", password)
 	err := m.wal.SignMyInputs(m.pendingSweep, password)
 	if err != nil {
 		return err.Error()
