@@ -77,7 +77,7 @@ func GetAddress() string {
 	return base58.CheckEncode(btcutil.Hash160(pub), 71)
 }
 
-func loadPrivateKey(password string) ([]byte, error) {
+func LoadPrivateKey(password string) ([]byte, error) {
 	filename := keyFile()
 	keyfile, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -109,8 +109,8 @@ func loadPrivateKey(password string) ([]byte, error) {
 	return priv, nil
 }
 
-func testPassword(password string) bool {
-	priv, err := loadPrivateKey(password)
+func TestPassword(password string) bool {
+	priv, err := LoadPrivateKey(password)
 	if err != nil {
 		return false
 	}

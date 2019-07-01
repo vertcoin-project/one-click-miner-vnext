@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
@@ -17,9 +18,11 @@ import (
 type MinerCore struct {
 	runtime            *wails.Runtime
 	wal                *wallet.Wallet
+	pendingSweep       *wire.MsgTx
 	minerBinaries      []*miners.BinaryRunner
 	pool               pools.Pool
 	refreshBalanceChan chan bool
+	refreshHashChan    chan bool
 	stopHash           chan bool
 	stopBalance        chan bool
 }
@@ -27,6 +30,7 @@ type MinerCore struct {
 func NewMinerCore() *MinerCore {
 	return &MinerCore{
 		refreshBalanceChan: make(chan bool),
+		refreshHashChan:    make(chan bool),
 		stopHash:           make(chan bool),
 		stopBalance:        make(chan bool),
 		minerBinaries:      []*miners.BinaryRunner{},
@@ -179,6 +183,7 @@ func (m *MinerCore) StartMining() bool {
 			select {
 			case <-m.stopHash:
 				break
+			case <-m.refreshHashChan:
 			case <-time.After(time.Second):
 			}
 		}
@@ -223,13 +228,61 @@ func (m *MinerCore) RefreshBalance() {
 	m.refreshBalanceChan <- true
 }
 
+func (m *MinerCore) RefreshHashrate() {
+
+	m.refreshHashChan <- true
+}
+
+func (m *MinerCore) SendSweep(password string) string {
+	logging.Debugf("Decrypting with password [%s]", password)
+	err := m.wal.SignMyInputs(m.pendingSweep, password)
+	if err != nil {
+		return err.Error()
+	}
+
+	txHash, err := m.wal.Send(m.pendingSweep)
+	if err != nil {
+		return err.Error()
+	}
+	m.pendingSweep = nil
+
+	logging.Debugf("Transaction sent! TXID: %s\n", txHash)
+
+	return txHash
+
+}
+
+func (m *MinerCore) ShowTx(txid string) {
+	util.OpenBrowser(fmt.Sprintf("https://insight.vertcoin.org/tx/%s", txid))
+}
+
+func (m *MinerCore) PrepareSweep(addr string) string {
+	tx, err := m.wal.PrepareSweep(addr)
+	if err != nil {
+		return err.Error()
+	}
+
+	m.pendingSweep = tx
+
+	val := float64(tx.TxOut[0].Value) / float64(100000000)
+
+	m.runtime.Events.Emit("createTransactionResult", fmt.Sprintf("%0.8f VTC", val))
+	return ""
+}
+
 func (m *MinerCore) StopMining() bool {
 	logging.Infof("Stopping mining process...")
 	for _, br := range m.minerBinaries {
 		br.Stop()
 	}
-	m.stopBalance <- true
-	m.stopHash <- true
+	select {
+	case m.stopBalance <- true:
+	default:
+	}
+	select {
+	case m.stopHash <- true:
+	default:
+	}
 	return true
 }
 

@@ -12,12 +12,14 @@ import (
 	"math/big"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
 	"strings"
 	"time"
 
 	"github.com/btcsuite/fastsha256"
+	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
 const APP_NAME string = "vertcoin-ocm"
@@ -74,6 +76,35 @@ func GetJson(url string, target interface{}) error {
 	defer r.Body.Close()
 
 	return json.NewDecoder(r.Body).Decode(target)
+}
+
+func PostJson(url string, payload interface{}, target interface{}) error {
+	var b bytes.Buffer
+	json.NewEncoder(&b).Encode(payload)
+	r, err := jsonClient.Post(url, "application/json", bytes.NewBuffer(b.Bytes()))
+	if err != nil {
+		return err
+	}
+	defer r.Body.Close()
+	return json.NewDecoder(r.Body).Decode(target)
+}
+
+func OpenBrowser(url string) {
+	var err error
+
+	switch runtime.GOOS {
+	case "linux":
+		err = exec.Command("xdg-open", url).Start()
+	case "windows":
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		err = exec.Command("open", url).Start()
+	default:
+		err = fmt.Errorf("unsupported platform")
+	}
+	if err != nil {
+		logging.Error(err)
+	}
 }
 
 func UnpackZip(archive, unpackPath string) error {

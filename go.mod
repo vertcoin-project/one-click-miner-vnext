@@ -7,6 +7,8 @@ require (
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941
 	github.com/leaanthony/mewn v0.10.7
+	github.com/mit-dci/lit v0.0.0-20190430192525-57c63ed5cc95
+	github.com/narula/btcd v0.0.0-20180217195732-65a975d890c2
 	github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0 // indirect
 	github.com/tidwall/buntdb v1.1.0
 	github.com/tidwall/gjson v1.2.1 // indirect

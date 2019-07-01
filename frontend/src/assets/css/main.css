@@ -1,41 +1,41 @@
 #app {
-  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #eee;
-  margin-top: 30px;
   -moz-user-select: none; 
   -webkit-user-select: none; 
   -ms-user-select:none; 
   user-select:none;
   -o-user-select:none;
+  margin: 0px;
+  padding: 0px;
+  font-size: 14px;
 }
+
 
 /* ubuntu-regular - latin */
 @font-face {
-  font-family: 'Ubuntu';
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 400;
-  src: local('Ubuntu Regular'), local('Ubuntu-Regular'),
-       url('../fonts/ubuntu-v13-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/ubuntu-v13-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* ubuntu-700 - latin */
-@font-face {
-  font-family: 'Ubuntu';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Ubuntu Bold'), local('Ubuntu-Bold'),
-       url('../fonts/ubuntu-v13-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/ubuntu-v13-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: local('Montserrat Regular'), local('Montserrat-Regular'),
+       url('../fonts/Montserrat-Regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Montserrat-Regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 html {
   height: 100%;
   overflow: hidden;
-  background-color: #131313;
+  background-color: #191b1c;
   background-size: 20px 20px;
+  padding: 0px; margin: 0px;
+  
+}
+
+body {
+  padding: 0px; margin: 0px;
 }
 
 .logo {
@@ -47,13 +47,80 @@ html {
 	float: left;
 }
 
-.col-12 {
-	width: 100%;
-	float: left;
+.col-286 {
+  width: 286px;
+  margin-left: 257px;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 div.container {
-  height: 100%;
+  height: 348px;
   width: 100%;
-  
+  display: table;
+  text-align: center;
+}
+
+a.button:hover {
+  opacity: 1.0;
+  transition: 500ms;
+}
+a.button {
+	  opacity: 0.6;
+    line-height: 45px;
+    background: #048652;
+    max-width: 286px;
+    height: 45px;
+    margin: 0 auto;
+    display: block;
+    color: white;
+    z-index: 500;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    font-weight: 400 !important;
+    text-align: center;
+    border-radius: 5px;
+}
+
+a.link {
+    opacity: 0.6;
+    color: #048652;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+input {
+  border: 0px;
+  background-color: #202225;
+  color: white;
+  border-radius: 5px;
+  line-height: 45px;
+  padding: 0px 10px;
+  height: 45px;
+  width: 400px;
+  margin: 0 auto;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+p.error {
+  color: #900000;
+}
+input.error {
+  border: 1px solid #900000;
+}
+input.success {
+  border: 1px solid #048652;
+}
+
+input:-moz-focusring {
+  color:transparent;
+  text-shadow:0 0 0 #000; /* your normal text color here */
+}
+input:-moz-focusring * {
+  color:#000; /* your normal text color here */
+  text-shadow:none;
 }

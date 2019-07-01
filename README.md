@@ -27,9 +27,11 @@ wails build
 ## Milestone #1: MVP (Minimal Viable Product)
 
 * [X] (Password protected) built-in wallet
-* [ ] Allows sweeping your entire balance to another address
+* [X] Allows sweeping your entire balance to another address
 * [X] Uses Vertcoin Insight to retrieve balances
-* [ ] Uses P2Proxy as mining pool
-* [ ] Supports Linux and Windows
-* [ ] Supports AMD and NVidia
-* [ ] Supports ccminer, lyclMiner
+* [X] Uses P2Proxy as mining pool
+* [X] Supports lyclMiner (AMD) on Linux
+* [ ] Supports lyclMiner (AMD) on Windows
+* [ ] Supports ccminer (Nvidia) on Linux
+* [ ] Supports ccminer (Nvidia) on Windows
+
