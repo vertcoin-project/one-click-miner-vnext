@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
@@ -26,11 +26,11 @@ const APP_NAME string = "vertcoin-ocm"
 
 func DataDirectory() string {
 	if runtime.GOOS == "windows" {
-		return path.Join(os.Getenv("APPDATA"), APP_NAME)
+		return filepath.Join(os.Getenv("APPDATA"), APP_NAME)
 	} else if runtime.GOOS == "darwin" {
-		return path.Join(os.Getenv("HOME"), "Library", "Application Support", APP_NAME)
+		return filepath.Join(os.Getenv("HOME"), "Library", "Application Support", APP_NAME)
 	} else if runtime.GOOS == "linux" {
-		return path.Join(os.Getenv("HOME"), fmt.Sprintf(".%s", strings.ToLower(APP_NAME)))
+		return filepath.Join(os.Getenv("HOME"), fmt.Sprintf(".%s", strings.ToLower(APP_NAME)))
 	}
 	return "."
 }
@@ -115,8 +115,8 @@ func UnpackZip(archive, unpackPath string) error {
 	defer r.Close()
 
 	for _, f := range r.File {
-		targetPath := path.Join(unpackPath, f.Name)
-		os.MkdirAll(path.Dir(targetPath), 0700)
+		targetPath := filepath.Join(unpackPath, f.Name)
+		os.MkdirAll(filepath.Dir(targetPath), 0700)
 		outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			return err
@@ -170,8 +170,8 @@ func UnpackTar(archive, unpackPath string) error {
 		case tar.TypeDir:
 			continue
 		case tar.TypeReg:
-			targetPath := path.Join(unpackPath, name)
-			os.MkdirAll(path.Dir(targetPath), 0700)
+			targetPath := filepath.Join(unpackPath, name)
+			os.MkdirAll(filepath.Dir(targetPath), 0700)
 			outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0700)
 			if err != nil {
 				return err

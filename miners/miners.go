@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -152,11 +151,11 @@ func (b *BinaryRunner) Start(args BinaryArguments) error {
 }
 
 func (b *BinaryRunner) unpackDir() string {
-	return path.Join(util.DataDirectory(), "miners", fmt.Sprintf("unpacked-%s", b.MinerBinary.Hash))
+	return filepath.Join(util.DataDirectory(), "miners", fmt.Sprintf("unpacked-%s", b.MinerBinary.Hash))
 }
 
 func (b *BinaryRunner) downloadPath() string {
-	return path.Join(util.DataDirectory(), "miners", b.MinerBinary.Hash)
+	return filepath.Join(util.DataDirectory(), "miners", b.MinerBinary.Hash)
 }
 
 func (b *BinaryRunner) launch(params []string) error {
@@ -167,7 +166,7 @@ func (b *BinaryRunner) launch(params []string) error {
 	logging.Debugf("Launching %s %v\n", exePath, params)
 	b.cmd = exec.Command(exePath, params...)
 	b.cmd.Dir = path.Dir(exePath)
-	b.cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	util.PrepareBackgroundCommand(b.cmd)
 	r, w := io.Pipe()
 	go func(b *BinaryRunner, rd io.Reader) {
 		br := bufio.NewReader(rd)
@@ -235,7 +234,7 @@ func (b *BinaryRunner) findExecutable() string {
 
 func (b *BinaryRunner) ensureAvailable() error {
 	freshDownload := false
-	_ = os.Mkdir(path.Join(util.DataDirectory(), "miners"), 0700)
+	_ = os.Mkdir(filepath.Join(util.DataDirectory(), "miners"), 0700)
 	nodePath := b.downloadPath()
 	_, err := os.Stat(nodePath)
 	if os.IsNotExist(err) {

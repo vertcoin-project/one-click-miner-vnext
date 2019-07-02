@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io/ioutil"
-	"path"
+	"path/filepath"
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcutil"
@@ -52,7 +52,7 @@ func CreateKeyFile(pass string) error {
 }
 
 func keyFile() string {
-	return path.Join(util.DataDirectory(), "keyfile.hex")
+	return filepath.Join(util.DataDirectory(), "keyfile.hex")
 }
 
 func loadPublicKey() []byte {

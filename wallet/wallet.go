@@ -3,7 +3,7 @@ package wallet
 import (
 	"encoding/hex"
 	"fmt"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
@@ -45,7 +45,7 @@ type Tx struct {
 
 func NewWallet(addr string) (*Wallet, error) {
 	logging.Infof("Initializing wallet %s", addr)
-	db, err := buntdb.Open(path.Join(util.DataDirectory(), "wallet.db"))
+	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), "wallet.db"))
 	if err != nil {
 		return nil, err
 	}

@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
-	"syscall"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
@@ -71,7 +70,7 @@ func GetGPUs() []GPU {
 		gpus := []string{}
 		if runtime.GOOS == "windows" {
 			info := exec.Command("cmd", "/C", "wmic path win32_VideoController get name")
-			info.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+			PrepareBackgroundCommand(info)
 			history, _ := info.Output()
 			possibleGpus := strings.Split(string(history), "\n")
 			for _, g := range possibleGpus {

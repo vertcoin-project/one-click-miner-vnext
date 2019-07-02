@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -25,8 +25,8 @@ func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {
 }
 
 func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
-	os.Remove(path.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
-	err := l.binaryRunner.launch([]string{"-g", path.Join(util.DataDirectory(), "lyclMiner_tmpl.conf")})
+	os.Remove(filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
+	err := l.binaryRunner.launch([]string{"-g", filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf")})
 	err2 := l.binaryRunner.wait()
 	if err != nil {
 		return err
@@ -35,15 +35,15 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 		return err2
 	}
 
-	in, err := os.Open(path.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
+	in, err := os.Open(filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
 	if err != nil {
 		logging.Error(err)
 		return err
 	}
 	defer in.Close()
 
-	os.Remove(path.Join(util.DataDirectory(), "lyclMiner.conf"))
-	out, err := os.Create(path.Join(util.DataDirectory(), "lyclMiner.conf"))
+	os.Remove(filepath.Join(util.DataDirectory(), "lyclMiner.conf"))
+	out, err := os.Create(filepath.Join(util.DataDirectory(), "lyclMiner.conf"))
 	defer out.Close()
 
 	scanner := bufio.NewScanner(in)
@@ -88,5 +88,5 @@ func (l *LyclMinerImpl) HashRate() uint64 {
 }
 
 func (l *LyclMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
-	return []string{path.Join(util.DataDirectory(), "lyclMiner.conf")}
+	return []string{filepath.Join(util.DataDirectory(), "lyclMiner.conf")}
 }
