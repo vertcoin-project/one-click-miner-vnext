@@ -25,7 +25,6 @@ func (l *CCMinerImpl) Configure(args BinaryArguments) error {
 
 func (l *CCMinerImpl) ParseOutput(line string) {
 	line = strings.TrimSpace(line)
-	logging.Debugf("[ccminer] %s", line)
 	if strings.Contains(line, "MH/s") {
 		endMHs := strings.LastIndex(line, "MH/s")
 		startMHs := strings.LastIndex(line, ", ")
