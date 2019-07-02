@@ -115,7 +115,20 @@ func UnpackZip(archive, unpackPath string) error {
 	defer r.Close()
 
 	for _, f := range r.File {
+
 		targetPath := filepath.Join(unpackPath, f.Name)
+
+		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
+		if !strings.HasPrefix(targetPath, filepath.Clean(unpackPath)+string(os.PathSeparator)) {
+			return fmt.Errorf("%s: illegal file path", targetPath)
+		}
+
+		if f.FileInfo().IsDir() {
+			// Make Folder
+			os.MkdirAll(targetPath, os.ModePerm)
+			continue
+		}
+
 		logging.Debugf("[Zip] Unpacking [%s] to [%s]\n", f.Name, targetPath)
 		err := os.MkdirAll(filepath.Dir(targetPath), 0755)
 		if err != nil {
