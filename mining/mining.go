@@ -109,13 +109,21 @@ func (m *MinerCore) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 		}
 
 		if match {
+			logging.Debugf("Found compatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
 			br, err := miners.NewBinaryRunner(b)
 			if err != nil {
 				return nil, err
 			}
 			brs = append(brs, br)
+		} else {
+			logging.Debugf("Found incompatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
 		}
 	}
+
+	if len(brs) == 0 {
+		return nil, fmt.Errorf("Could not find compatible miner binaries")
+	}
+
 	return brs, nil
 }
 
@@ -125,6 +133,7 @@ func (m *MinerCore) InstallMinerBinaries() error {
 	if err != nil {
 		return err
 	}
+
 	for _, br := range m.minerBinaries {
 		err := br.Install()
 		if err != nil {

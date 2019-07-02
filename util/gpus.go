@@ -5,14 +5,17 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"syscall"
+
+	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
 type GPUType int
 
 const (
-	GPUTypeAMD    GPUType = 0
-	GPUTypeNVidia GPUType = 1
-	GPUTypeOther  GPUType = 2
+	GPUTypeOther  GPUType = 0
+	GPUTypeAMD    GPUType = 1
+	GPUTypeNVidia GPUType = 2
 )
 
 type GPU struct {
@@ -48,6 +51,7 @@ func GetGPUsFromStrings(names []string) []GPU {
 		found := false
 		for _, k := range knownGPUs {
 			if k.RegExp.Match([]byte(n)) {
+				logging.Debugf("GPU [%s] matched regex [%s]\n", n, k.RegExp)
 				gpus = append(gpus, GPU{n, k.Type})
 				found = true
 				break
@@ -65,6 +69,7 @@ func GetGPUs() []GPU {
 		gpus := []string{}
 		if runtime.GOOS == "windows" {
 			info := exec.Command("cmd", "/C", "wmic path win32_VideoController get name")
+			info.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 			history, _ := info.Output()
 			possibleGpus := strings.Split(string(history), "\n")
 			for _, g := range possibleGpus {

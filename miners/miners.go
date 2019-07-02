@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -21,22 +22,23 @@ import (
 
 type MinerBinary struct {
 	Platform           string `json:"platform"`
-	gpuPlatformString  string `json:"gpuplatform"`
-	GPUType            util.GPUType
+	GpuPlatformString  string `json:"gpuplatform"`
 	Url                string `json:"url"`
 	Hash               string `json:"sha256"`
 	MainExecutableName string `json:"mainExecutableName"`
+	GPUType            util.GPUType
 }
 
 func GetMinerBinaries() []MinerBinary {
 	binaries := []MinerBinary{}
 	util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/miners.json", &binaries)
 	for i := range binaries {
-		if binaries[i].gpuPlatformString == "AMD" {
+		if binaries[i].GpuPlatformString == "AMD" {
 			binaries[i].GPUType = util.GPUTypeAMD
-		}
-		if binaries[i].gpuPlatformString == "NVIDIA" {
+		} else if binaries[i].GpuPlatformString == "NVIDIA" {
 			binaries[i].GPUType = util.GPUTypeNVidia
+		} else {
+			logging.Warnf("Found unrecognized platform [%s] in miners.json\n", binaries[i].GpuPlatformString)
 		}
 	}
 	return binaries
@@ -53,6 +55,8 @@ func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
 	br := &BinaryRunner{MinerBinary: m}
 	if strings.HasPrefix(m.MainExecutableName, "lycl") {
 		br.MinerImpl = NewLyclMinerImpl(br)
+	} else if strings.HasPrefix(m.MainExecutableName, "ccminer") {
+		br.MinerImpl = NewCCMinerImpl(br)
 	} else {
 		return nil, fmt.Errorf("Could not determine implementation for miner binary")
 	}
@@ -160,8 +164,10 @@ func (b *BinaryRunner) launch(params []string) error {
 	if exePath == "" {
 		return fmt.Errorf("Cannot find main miner binary in unpack folder")
 	}
+	logging.Debugf("Launching %s %v\n", exePath, params)
 	b.cmd = exec.Command(exePath, params...)
 	b.cmd.Dir = path.Dir(exePath)
+	b.cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	r, w := io.Pipe()
 	go func(b *BinaryRunner, rd io.Reader) {
 		br := bufio.NewReader(rd)

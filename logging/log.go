@@ -37,8 +37,12 @@ func SetLogLevel(newLevel int) {
 
 func SetLogFile(logFile io.Writer) {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
-	logOutput := io.MultiWriter(os.Stdout, logFile)
-	log.SetOutput(logOutput)
+	_, err := os.Stdout.Write([]byte("\n"))
+	if err == nil {
+		log.SetOutput(io.MultiWriter(os.Stdout, logFile))
+	} else {
+		log.SetOutput(logFile)
+	}
 }
 
 func getPrefix(level string) string {

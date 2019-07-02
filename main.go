@@ -23,7 +23,7 @@ func main() {
 	logFilePath := path.Join(util.DataDirectory(), "debug.log")
 	logFile, _ := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	logging.SetLogFile(logFile)
-
+	defer logFile.Close()
 	app := wails.CreateApp(&wails.AppConfig{
 		Width:  800,
 		Height: 400,

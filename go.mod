@@ -9,6 +9,7 @@ require (
 	github.com/leaanthony/mewn v0.10.7
 	github.com/mit-dci/lit v0.0.0-20190430192525-57c63ed5cc95
 	github.com/narula/btcd v0.0.0-20180217195732-65a975d890c2
+	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0 // indirect
 	github.com/tidwall/buntdb v1.1.0
 	github.com/tidwall/gjson v1.2.1 // indirect
@@ -19,4 +20,5 @@ require (
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
 	github.com/wailsapp/wails v0.16.0
 	golang.org/x/crypto v0.0.0-20190621222207-cc06ce4a13d4
+	golang.org/x/tools v0.0.0-20190701194522-38ae2c8f6412 // indirect
 )
