@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -166,7 +165,7 @@ func (b *BinaryRunner) launch(params []string) error {
 	logging.Debugf("Launching %s %v\n", exePath, params)
 	b.cmd = exec.Command(exePath, params...)
 	util.PrepareBackgroundCommand(b.cmd)
-	b.cmd.Dir = path.Dir(exePath)
+	b.cmd.Dir = filepath.Dir(exePath)
 	r, w := io.Pipe()
 	go func(b *BinaryRunner, rd io.Reader) {
 		br := bufio.NewReader(rd)
