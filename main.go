@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/leaanthony/mewn"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
