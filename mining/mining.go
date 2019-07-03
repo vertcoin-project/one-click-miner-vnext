@@ -10,6 +10,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
+	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
 	"github.com/wailsapp/wails"
@@ -65,6 +66,11 @@ func (m *MinerCore) PerformChecks() string {
 	m.runtime.Events.Emit("checkStatus", "Checking GPU compatibility...")
 	err := m.CheckGPUCompatibility()
 	if err != nil {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "PerformChecks",
+			Action:   "CheckGPUCompatibilityError",
+			Name:     err.Error(),
+		})
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		return err.Error()
 	}
@@ -72,11 +78,35 @@ func (m *MinerCore) PerformChecks() string {
 	m.runtime.Events.Emit("checkStatus", "Installing miners...")
 	err = m.InstallMinerBinaries()
 	if err != nil {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "PerformChecks",
+			Action:   "InstallMinerBinariesError",
+			Name:     err.Error(),
+		})
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		return err.Error()
 	}
 
+	tracking.Track(tracking.TrackingRequest{
+		Category: "PerformChecks",
+		Action:   "Success",
+	})
 	return "ok"
+}
+
+func (m *MinerCore) EnableTracking() {
+	tracking.Enable()
+}
+
+func (m *MinerCore) DisableTracking() {
+	tracking.Disable()
+}
+
+func (m *MinerCore) TrackingEnabled() string {
+	if tracking.IsEnabled() {
+		return "1"
+	}
+	return "0"
 }
 
 func (m *MinerCore) CheckGPUCompatibility() error {
@@ -145,6 +175,11 @@ func (m *MinerCore) InstallMinerBinaries() error {
 
 func (m *MinerCore) StartMining() bool {
 	logging.Infof("Starting mining process...")
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Mining",
+		Action:   "Start",
+	})
 
 	// Default to P2Proxy for now
 	m.pool = pools.NewP2Proxy(m.wal.Address)
@@ -243,6 +278,11 @@ func (m *MinerCore) RefreshHashrate() {
 }
 
 func (m *MinerCore) SendSweep(password string) string {
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Sweep",
+		Action:   "Send",
+	})
+
 	err := m.wal.SignMyInputs(m.pendingSweep, password)
 	if err != nil {
 		return err.Error()
@@ -265,6 +305,11 @@ func (m *MinerCore) ShowTx(txid string) {
 }
 
 func (m *MinerCore) PrepareSweep(addr string) string {
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Sweep",
+		Action:   "Prepare",
+	})
+
 	tx, err := m.wal.PrepareSweep(addr)
 	if err != nil {
 		return err.Error()
@@ -279,6 +324,11 @@ func (m *MinerCore) PrepareSweep(addr string) string {
 }
 
 func (m *MinerCore) StopMining() bool {
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Mining",
+		Action:   "Stop",
+	})
+
 	logging.Infof("Stopping mining process...")
 	for _, br := range m.minerBinaries {
 		br.Stop()
@@ -299,6 +349,11 @@ func (m *MinerCore) Address() string {
 }
 
 func (m *MinerCore) InitWallet(password string) bool {
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Wallet",
+		Action:   "Initialize",
+	})
+
 	err := keyfile.CreateKeyFile(password)
 	if err == nil {
 		m.WalletInitialized()

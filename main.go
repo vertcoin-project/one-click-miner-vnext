@@ -2,11 +2,12 @@ package main
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/leaanthony/mewn"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/mining"
+	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/wailsapp/wails"
 )
@@ -14,6 +15,14 @@ import (
 func main() {
 	js := mewn.String("./frontend/dist/app.js")
 	css := mewn.String("./frontend/dist/app.css")
+
+	tracking.StartTracker()
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Lifecycle",
+		Action:   "Startup",
+	})
+
 	logging.SetLogLevel(int(logging.LogLevelDebug))
 	if _, err := os.Stat(util.DataDirectory()); os.IsNotExist(err) {
 		logging.Infof("Creating data directory")
@@ -37,4 +46,11 @@ func main() {
 	app.Bind(core)
 	app.Run()
 	core.StopMining()
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Lifecycle",
+		Action:   "Shutdown",
+	})
+
+	tracking.Stop()
 }
