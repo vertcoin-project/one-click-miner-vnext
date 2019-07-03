@@ -165,8 +165,8 @@ func (b *BinaryRunner) launch(params []string) error {
 	}
 	logging.Debugf("Launching %s %v\n", exePath, params)
 	b.cmd = exec.Command(exePath, params...)
-	b.cmd.Dir = path.Dir(exePath)
 	util.PrepareBackgroundCommand(b.cmd)
+	b.cmd.Dir = path.Dir(exePath)
 	r, w := io.Pipe()
 	go func(b *BinaryRunner, rd io.Reader) {
 		br := bufio.NewReader(rd)
