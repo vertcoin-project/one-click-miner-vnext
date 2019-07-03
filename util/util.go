@@ -129,19 +129,12 @@ func UnpackZip(archive, unpackPath string) error {
 			continue
 		}
 
-		logging.Debugf("[Zip] Unpacking [%s] to [%s]\n", f.Name, targetPath)
-		err := os.MkdirAll(filepath.Dir(targetPath), 0755)
-		if err != nil {
-			logging.Warnf("[Zip] Failure to create directory [%s]: %s", filepath.Dir(targetPath), err.Error())
-		} else {
-			logging.Debugf("[Zip] Created directory [%s]\n", filepath.Dir(targetPath))
-		}
+		os.MkdirAll(filepath.Dir(targetPath), 0755)
 		outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			return err
 		}
 		defer outFile.Close()
-		logging.Debugf("[Zip] Extracting [%s]\n", targetPath)
 		rc, err := f.Open()
 		if err != nil {
 			return err
@@ -190,19 +183,12 @@ func UnpackTar(archive, unpackPath string) error {
 			continue
 		case tar.TypeReg:
 			targetPath := filepath.Join(unpackPath, name)
-			logging.Debugf("[Tar] Unpacking [%s] to [%s]\n", name, targetPath)
-			err := os.MkdirAll(filepath.Dir(targetPath), 0755)
-			if err != nil {
-				logging.Warnf("[Tar] Failure to create directory [%s]: %s", filepath.Dir(targetPath), err.Error())
-			} else {
-				logging.Debugf("[Tar] Created directory [%s]\n", filepath.Dir(targetPath))
-			}
+			os.MkdirAll(filepath.Dir(targetPath), 0755)
 			outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
 			if err != nil {
 				return err
 			}
 			defer outFile.Close()
-			logging.Debugf("[Tar] Extracting [%s]\n", targetPath)
 			_, err = io.Copy(outFile, tarReader)
 			if err != nil {
 				return err
