@@ -31,7 +31,10 @@ wails build
 * [X] Uses Vertcoin Insight to retrieve balances
 * [X] Uses P2Proxy as mining pool
 * [X] Supports lyclMiner (AMD) on Linux
-* [ ] Supports lyclMiner (AMD) on Windows
+* [X] Supports lyclMiner (AMD) on Windows
+* [X] Supports ccminer (Nvidia) on Windows
+
+Pending (no binary releases available yet):
+
 * [ ] Supports ccminer (Nvidia) on Linux
-* [ ] Supports ccminer (Nvidia) on Windows
 
