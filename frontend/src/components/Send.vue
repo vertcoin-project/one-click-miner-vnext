@@ -63,6 +63,27 @@ export default {
   methods: {
     send: function() {
       var self = this;
+      if(this.error !== '') {
+        this.sent = false;
+        this.txid = '';
+        this.sendError = this.error;
+        return
+      }
+
+      if(this.password === "") {
+        this.sent = false;
+        this.txid = '';
+        this.sendError = "Wallet password is required";
+        return
+      }
+
+      if(this.target === "") {
+        this.sent = false;
+        this.txid = '';
+        this.sendError = "Invalid address";
+        return
+      }
+
       window.backend.MinerCore.SendSweep(this.password).then(result => {
         if(result.length == 64) { // TXID!
           self.txid = result;
