@@ -1,2 +1,4 @@
 vertcoin-ocm
 *.zip
+.vscode/
+vertcoin-ocm.exe
