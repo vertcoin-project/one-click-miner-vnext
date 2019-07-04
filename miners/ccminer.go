@@ -12,11 +12,11 @@ var _ MinerImpl = &CCMinerImpl{}
 
 type CCMinerImpl struct {
 	binaryRunner *BinaryRunner
-	hashRate     uint64
+	hashRates    map[int64]uint64
 }
 
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {
-	return &CCMinerImpl{binaryRunner: br}
+	return &CCMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
 }
 
 func (l *CCMinerImpl) Configure(args BinaryArguments) error {
@@ -25,25 +25,38 @@ func (l *CCMinerImpl) Configure(args BinaryArguments) error {
 
 func (l *CCMinerImpl) ParseOutput(line string) {
 	line = strings.TrimSpace(line)
-	if strings.Contains(line, "MH/s") {
-		endMHs := strings.LastIndex(line, "MH/s")
+	//logging.Debugf("[ccminer] %s\n", line)
+
+	if strings.Contains(line, "GPU #") && strings.HasSuffix(line, "MH/s") {
+		startDeviceIdx := strings.Index(line, "GPU #")
+		endDeviceIdx := strings.Index(line[startDeviceIdx:], ":")
+		deviceIdxString := line[startDeviceIdx+5 : startDeviceIdx+endDeviceIdx]
+		deviceIdx, err := strconv.ParseInt(deviceIdxString, 10, 64)
+		if err != nil {
+			return
+		}
+
 		startMHs := strings.LastIndex(line, ", ")
 		if startMHs > -1 {
-			line = line[startMHs+2 : endMHs-1]
+			line = line[startMHs+2 : len(line)-5]
 			f, err := strconv.ParseFloat(line, 64)
 			if err != nil {
 				logging.Errorf("Error parsing hashrate: %s\n", err.Error())
 			}
 			f = f * 1000 * 1000
-			l.hashRate = uint64(f)
+			l.hashRates[deviceIdx] = uint64(f)
 		}
 	}
 }
 
 func (l *CCMinerImpl) HashRate() uint64 {
-	return l.hashRate
+	totalHash := uint64(0)
+	for _, h := range l.hashRates {
+		totalHash += h
+	}
+	return totalHash
 }
 
 func (l *CCMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
-	return []string{"-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+	return []string{"--max-log-rate","0", "--no-color", "-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
 }
