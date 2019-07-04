@@ -23,8 +23,10 @@
 				<p class="immatureBalance" v-if="balanceImmature != '0.00000000'">(<span style="opacity: 1">{{balanceImmature}} VTC</span> still maturing)</p>
 				<p class="poolBalance" v-if="balancePendingPool != '0.00000000'">(<span style="opacity: 1">{{balancePendingPool}} VTC</span> pending pool payout)</p>
 				<p class="spacer">&nbsp;</p>
-				<p class="header">Expected Earnings (24h):</p>
-	    	<p class="earning">~{{avgearn}} ({{hashrate}})</p>
+				<p v-if="runningMiners === 0">Waiting for miners to start</p>
+				<p v-if="runningMiners > 0" class="header">Expected Earnings (24h):</p>
+	    	<p v-if="runningMiners > 0 && hashrate !== '0.00 MH/s'" class="earning">~{{avgearn}} ({{hashrate}})</p>
+				<p v-if="runningMiners > 0 && hashrate === '0.00 MH/s'" class="earning">estimating{{spinner}}</p>
 				<p>
 					<a class="button" @click="stop">Stop Mining</a>
 			</p>
@@ -36,20 +38,32 @@
 export default {
   data() {
     return {
-      hashrate: "0 MH/s",
+      hashrate: "0.00 MH/s",
 			avgearn:"0.00 VTC",
 			netHash:"Unknown",
 	  	gpu: "Unknown",
 	  	wallet: "Unknown",
 	  	balance: "0.00000000",
 			balanceImmature: "0.00000000",
-			balancePendingPool: "0.00000000"
+			balancePendingPool: "0.00000000",
+			runningMiners: 0,
+			spinner:"..."
     };
   },
   mounted() {
 		var self = this;
+		var timer = window.setInterval(() => {
+			var newSpinner = self.spinner + ".";
+			if (newSpinner.length > 5) {
+				newSpinner = ".";
+			}
+			self.spinner = newSpinner;
+		}, 1000);
 		wails.events.on("hashRate",(result) => {
 			self.hashrate = result;
+		});
+		wails.events.on("runningMiners",(result) => {
+			self.runningMiners = result;
 		});
 		wails.events.on("networkHashRate",(result) => {
 			self.netHash = result;

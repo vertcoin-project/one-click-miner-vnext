@@ -17,24 +17,28 @@ import (
 )
 
 type MinerCore struct {
-	runtime            *wails.Runtime
-	wal                *wallet.Wallet
-	pendingSweep       *wire.MsgTx
-	minerBinaries      []*miners.BinaryRunner
-	pool               pools.Pool
-	refreshBalanceChan chan bool
-	refreshHashChan    chan bool
-	stopHash           chan bool
-	stopBalance        chan bool
+	runtime             *wails.Runtime
+	wal                 *wallet.Wallet
+	pendingSweep        *wire.MsgTx
+	minerBinaries       []*miners.BinaryRunner
+	pool                pools.Pool
+	refreshBalanceChan  chan bool
+	refreshHashChan     chan bool
+	refreshRunningState chan bool
+	stopHash            chan bool
+	stopBalance         chan bool
+	stopRunningState    chan bool
 }
 
 func NewMinerCore() *MinerCore {
 	return &MinerCore{
-		refreshBalanceChan: make(chan bool),
-		refreshHashChan:    make(chan bool),
-		stopHash:           make(chan bool),
-		stopBalance:        make(chan bool),
-		minerBinaries:      []*miners.BinaryRunner{},
+		refreshBalanceChan:  make(chan bool),
+		refreshHashChan:     make(chan bool),
+		refreshRunningState: make(chan bool),
+		stopHash:            make(chan bool),
+		stopBalance:         make(chan bool),
+		stopRunningState:    make(chan bool),
+		minerBinaries:       []*miners.BinaryRunner{},
 	}
 }
 
@@ -265,6 +269,30 @@ func (m *MinerCore) StartMining() bool {
 		}
 	}()
 
+	go func() {
+		for {
+			runningProcesses := 0
+			for _, br := range m.minerBinaries {
+				if br.IsRunning() {
+					runningProcesses++
+				}
+			}
+
+			m.runtime.Events.Emit("runningMiners", runningProcesses)
+
+			timeout := time.Second * 1
+			if runningProcesses > 0 {
+				timeout = time.Second * 10
+			}
+			select {
+			case <-m.stopRunningState:
+				break
+			case <-m.refreshRunningState:
+			case <-time.After(timeout):
+			}
+		}
+	}()
+
 	for _, br := range m.minerBinaries {
 		err := br.MinerImpl.Configure(args)
 		if err != nil {
@@ -289,6 +317,11 @@ func (m *MinerCore) RefreshBalance() {
 func (m *MinerCore) RefreshHashrate() {
 
 	m.refreshHashChan <- true
+}
+
+func (m *MinerCore) RefreshRunningState() {
+
+	m.refreshRunningState <- true
 }
 
 func (m *MinerCore) SendSweep(password string) string {
@@ -357,6 +390,10 @@ func (m *MinerCore) StopMining() bool {
 	}
 	select {
 	case m.stopHash <- true:
+	default:
+	}
+	select {
+	case m.stopRunningState <- true:
 	default:
 	}
 	return true
