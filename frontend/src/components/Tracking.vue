@@ -1,7 +1,8 @@
 <template>
   <div class="tracking">
-    <p v-if="tracking"><span>You are anonymously sharing usage statistics.&nbsp;</span><a @click="disableTracking">Disable</a></p>
-    <p v-if="!tracking"><span>You are not sharing usage statistics.&nbsp;</span><a @click="enableTracking">Enable</a><span>&nbsp;these to help us improve your experience</span></p>
+    <p v-if="tracking"><span>You are anonymously sharing usage statistics.&nbsp;</span><a @click="disableTracking">Disable</a> - <a @click="reportIssue">Report an issue</a></p>
+    <p v-if="!tracking"><span>You are not sharing usage statistics.&nbsp;</span><a @click="enableTracking">Enable</a><span>&nbsp;these to help us improve your experience - <a @click="reportIssue">Report an issue</a></span></p>
+
   </div>
 </template>
 
@@ -21,6 +22,9 @@ export default {
      })
   },
   methods: {
+    reportIssue: function() { 
+      window.backend.MinerCore.ReportIssue()
+    },
     enableTracking: function() { 
       this.tracking = true
       window.backend.MinerCore.EnableTracking()

@@ -304,6 +304,10 @@ func (m *MinerCore) ShowTx(txid string) {
 	util.OpenBrowser(fmt.Sprintf("https://insight.vertcoin.org/tx/%s", txid))
 }
 
+func (m *MinerCore) ReportIssue() {
+	util.OpenBrowser("https://github.com/vertcoin-project/one-click-miner-vnext/issues/new")
+}
+
 func (m *MinerCore) PrepareSweep(addr string) string {
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Sweep",
