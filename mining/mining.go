@@ -45,6 +45,10 @@ func (m *MinerCore) WailsInit(runtime *wails.Runtime) error {
 	return nil
 }
 
+func (m *MinerCore) GetVersion() string {
+	return tracking.GetVersion()
+}
+
 func (m *MinerCore) WalletInitialized() int {
 	logging.Infof("Checking wallet..")
 	checkWallet := 0
@@ -91,6 +95,7 @@ func (m *MinerCore) PerformChecks() string {
 		Category: "PerformChecks",
 		Action:   "Success",
 	})
+
 	return "ok"
 }
 
@@ -112,11 +117,20 @@ func (m *MinerCore) TrackingEnabled() string {
 func (m *MinerCore) CheckGPUCompatibility() error {
 	gpus := util.GetGPUs()
 	compat := 0
+	gpustring := ""
 	for _, g := range gpus {
 		if g.Type != util.GPUTypeOther {
 			compat++
 		}
+		gpustring += g.OSName
 	}
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "EnumerateGPUs",
+		Action:   "Success",
+		Name:     gpustring,
+	})
+
 	if compat == 0 {
 		return fmt.Errorf("No compatible GPUs detected")
 	}

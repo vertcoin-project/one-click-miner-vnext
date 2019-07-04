@@ -1,7 +1,7 @@
 <template>
   <div class="tracking">
-    <p v-if="tracking"><span>You are anonymously sharing usage statistics.&nbsp;</span><a @click="disableTracking">Disable</a> - <a @click="reportIssue">Report an issue</a></p>
-    <p v-if="!tracking"><span>You are not sharing usage statistics.&nbsp;</span><a @click="enableTracking">Enable</a><span>&nbsp;these to help us improve your experience - <a @click="reportIssue">Report an issue</a></span></p>
+    <p v-if="tracking">OCM v{{version}} - <span>You are anonymously sharing usage statistics.&nbsp;</span><a @click="disableTracking">Disable</a> - <a @click="reportIssue">Report an issue</a></p>
+    <p v-if="!tracking">OCM v{{version}} - <span>You are not sharing usage statistics.&nbsp;</span><a @click="enableTracking">Enable</a><span>&nbsp;these to help us improve your experience - <a @click="reportIssue">Report an issue</a></span></p>
 
   </div>
 </template>
@@ -12,13 +12,17 @@
 export default {
   data() {
     return {
-      tracking: false
+      tracking: false,
+      version: "dev"
     };
   },
   mounted() {
     var self = this
      window.backend.MinerCore.TrackingEnabled().then((result) => {
        self.tracking = (result === "1")
+     })
+     window.backend.MinerCore.GetVersion().then((result) => {
+        self.version = result 
      })
   },
   methods: {

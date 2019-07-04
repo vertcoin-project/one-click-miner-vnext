@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -21,6 +22,7 @@ func main() {
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Lifecycle",
 		Action:   "Startup",
+		Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
 	})
 
 	logging.SetLogLevel(int(logging.LogLevelDebug))

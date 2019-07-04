@@ -128,16 +128,11 @@ var ua string
 
 func userAgent() string {
 	if ua == "" {
-		gpus := util.GetGPUs()
-		gpustring := ""
-		for _, g := range gpus {
-			if gpustring != "" {
-				gpustring += " "
-			}
-			gpustring += g.OSName
-		}
-
-		ua = fmt.Sprintf("%s/%s - %s", runtime.GOOS, runtime.GOARCH, gpustring)
+		ua = fmt.Sprintf("OCM/%s %s/%s", GetVersion(), runtime.GOOS, runtime.GOARCH)
 	}
 	return ua
+}
+
+func GetVersion() string {
+	return version
 }
