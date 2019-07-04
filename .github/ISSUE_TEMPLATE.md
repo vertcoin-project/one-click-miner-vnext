@@ -1,0 +1,21 @@
+<!-- Describe the issue -->
+<!--- What behavior did you expect? -->
+
+<!--- What was the actual behavior (provide screenshots if the issue is GUI-related)? -->
+
+<!--- How reliably can you reproduce the issue, what are the steps to do so? -->
+
+<!-- What version of the One Click Miner are you using, where did you get it (website, self-compiled, etc)? -->
+
+<!-- What type of machine are you observing the error on (OS/GPU type)? -->
+
+<!-- For the GUI-related issue on Linux provide names and versions of a distro, a desktop environment and a graphical shell (if relevant). -->
+
+<!-- Any extra information that might be useful in the debugging process. -->
+
+<!--- This is normally the contents of a `debug.log` or `config.log` file. Raw text or a link to a pastebin type site are preferred. You can find the One-Click Miner's debug log in the following place:
+
+%APPDATA%\vertcoin-ocm on Windows
+$HOME/.vertcoin-ocm on Linux
+
+-->
