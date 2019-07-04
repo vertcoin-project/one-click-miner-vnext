@@ -17,11 +17,11 @@ var _ MinerImpl = &LyclMinerImpl{}
 
 type LyclMinerImpl struct {
 	binaryRunner *BinaryRunner
-	hashRate     uint64
+	hashRates    map[int64]uint64
 }
 
 func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {
-	return &LyclMinerImpl{binaryRunner: br}
+	return &LyclMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
 }
 
 func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
@@ -69,7 +69,15 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 
 func (l *LyclMinerImpl) ParseOutput(line string) {
 	line = strings.TrimSpace(line)
-	if strings.HasSuffix(line, "MH/s") {
+	if strings.Contains(line, "Device #") && strings.HasSuffix(line, "MH/s") {
+		startDeviceIdx := strings.Index(line, "Device #")
+		endDeviceIdx := strings.Index(line[startDeviceIdx:], ":")
+		deviceIdxString := line[startDeviceIdx+8 : startDeviceIdx+endDeviceIdx]
+		deviceIdx, err := strconv.ParseInt(deviceIdxString, 10, 64)
+		if err != nil {
+			return
+		}
+
 		startMHs := strings.LastIndex(line, ", ")
 		if startMHs > -1 {
 			line = line[startMHs+2 : len(line)-5]
@@ -78,13 +86,17 @@ func (l *LyclMinerImpl) ParseOutput(line string) {
 				logging.Errorf("Error parsing hashrate: %s\n", err.Error())
 			}
 			f = f * 1000 * 1000
-			l.hashRate = uint64(f)
+			l.hashRates[deviceIdx] = uint64(f)
 		}
 	}
 }
 
 func (l *LyclMinerImpl) HashRate() uint64 {
-	return l.hashRate
+	totalHash := uint64(0)
+	for _, h := range l.hashRates {
+		totalHash += h
+	}
+	return totalHash
 }
 
 func (l *LyclMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
