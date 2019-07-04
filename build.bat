@@ -1,8 +1,8 @@
 @ECHO OFF
 SET ver=%1
-git describe --always --long --dirty > git-version
-SET /p gitver=<git-version
-DEL git-version
+git describe --always --long --dirty > %TEMP%\git-version
+SET /p gitver=<%TEMP%\git-version
+DEL %TEMP%\git-version
 CD tracking
 REN version.go version.go.build
 ECHO package tracking >> version.go
