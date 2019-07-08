@@ -3,10 +3,12 @@ package wallet
 import (
 	"encoding/hex"
 	"fmt"
+	"math"
 	"path/filepath"
 	"strings"
 
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/btcsuite/btcutil"
 
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/mit-dci/lit/bech32"
@@ -102,16 +104,38 @@ func (w *Wallet) PrepareSweep(addr string) (*wire.MsgTx, error) {
 		return nil, fmt.Errorf("Invalid address")
 	}
 
-	// Core sends transactions with less than min relay fee, find out what the correct
-	// formula is for this.
-	size := tx.SerializeSizeStripped()
-	logging.Debugf("Transaction size is %d bytes\n", size)
-	fee := uint64(size * 100)
+	// Weight = (stripped_size * 4) + witness_size formula,
+	// using only serialization with and without witness data. As witness_size
+	// is equal to total_size - stripped_size, this formula is identical to:
+	// weight = (stripped_size * 3) + total_size.
+	logging.Debugf("Transaction raw serialize size is %d\n", tx.SerializeSize())
+	logging.Debugf("Transaction serialize size stripped is %d\n", tx.SerializeSizeStripped())
+
+	for i := range tx.TxIn {
+		tx.TxIn[i].SignatureScript = make([]byte, 107) // add dummy signature to properly calculate size
+	}
+
+	txWeight := (tx.SerializeSizeStripped() * 3) + tx.SerializeSize()
+	logging.Debugf("Transaction weight is %d\n", txWeight)
+	btcTx := btcutil.NewTx(tx)
+
+	sigOpCost, err := w.GetSigOpCost(btcTx, false, true, true)
+	if err != nil {
+		return nil, err
+	}
+	logging.Debugf("Transaction sigop cost is %d\n", sigOpCost)
+
+	vSize := (math.Max(float64(txWeight), float64(sigOpCost*20)) + float64(3)) / float64(4)
+	logging.Debugf("Transaction vSize is %.4f\n", vSize)
+	vSizeInt := uint64(vSize + float64(0.5)) // Round Up
+	logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
+
+	fee := uint64(vSizeInt * 100)
 	logging.Debugf("Setting fee to %d\n", fee)
 
-	if fee < 100000 { // min relay fee
-		fee = 100000
-		logging.Debugf("Setting fee to %d\n", fee)
+	// empty out the dummy sigs
+	for i := range tx.TxIn {
+		tx.TxIn[i].SignatureScript = nil
 	}
 
 	tx.TxOut[0].Value = int64(totalIn - fee)
@@ -119,6 +143,15 @@ func (w *Wallet) PrepareSweep(addr string) (*wire.MsgTx, error) {
 		return nil, fmt.Errorf("Insufficient funds")
 	}
 	return tx, nil
+}
+
+func (w *Wallet) GetUtxo(txid string, pout uint) Utxo {
+	for _, u := range w.Utxos {
+		if u.TxID == txid && u.Vout == pout {
+			return u
+		}
+	}
+	return Utxo{}
 }
 
 func DirectWPKHScriptFromPKH(pkh [20]byte) []byte {
