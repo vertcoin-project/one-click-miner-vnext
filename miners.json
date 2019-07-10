@@ -4,20 +4,39 @@
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-linux.tar.gz",
         "sha256" : "3f42e2e317cdd0500ba4384db97d2c9a7fcf64d86116c16dbed60c053d68c31e",
-        "mainExecutableName" : "lyclMiner"
+        "mainExecutableName" : "lyclMiner",
+        "closedSource" : false
     },
     {
         "platform": "windows",
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-windows.zip",
         "sha256" : "d54108c868a96ecd8604925626ba4c41609dbee0d1f5cd1e3221badddc2d7b87",
-        "mainExecutableName" : "lyclMiner.exe"
+        "mainExecutableName" : "lyclMiner.exe",
+        "closedSource" : false
     },
     {
         "platform": "windows",
         "gpuplatform": "NVIDIA",
         "url": "https://github.com/vertcoin-project/ccminer-lyra2rev3/releases/download/v1.0.0/ccminer-lyra2rev3-v1.0.0-win64.zip",
         "sha256" : "32e1e99333c1345f4aa720afe13950e5452c02edf58eedfba0f1332dd2e399bb",
-        "mainExecutableName" : "ccminer.exe"
+        "mainExecutableName" : "ccminer.exe",
+        "closedSource" : false
+    },
+    {
+        "platform": "windows",
+        "gpuplatform": "AMD",
+        "url": "https://github.com/todxx/teamredminer/releases/download/0.5.5/teamredminer-v0.5.5-win.zip",
+        "sha256" : "f99889ec871cca27c0df00edbfe716913a072ca5761df07e4332adbe3955744f",
+        "mainExecutableName" : "teamredminer.exe",
+        "closedSource" : true
+    },
+    {
+        "platform": "linux",
+        "gpuplatform": "AMD",
+        "url": "https://github.com/todxx/teamredminer/releases/download/0.5.5/teamredminer-v0.5.5-linux.tgz",
+        "sha256" : "feded3f9d877737154d7b5c8b863b953edcd762e91198d9c5a797a5959b4acc4",
+        "mainExecutableName" : "teamredminer",
+        "closedSource" : true
     }
 ]
