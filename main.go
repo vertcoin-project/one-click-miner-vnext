@@ -47,7 +47,11 @@ func main() {
 		Colour: "#131313",
 	})
 
-	core := mining.NewMinerCore()
+	core, err := mining.NewMinerCore()
+	if err != nil {
+		logging.Errorf("Error creating MinerCore: %s", err.Error())
+		panic(err)
+	}
 	core.DebugMiners = *debugMiner
 	app.Bind(core)
 	app.Run()

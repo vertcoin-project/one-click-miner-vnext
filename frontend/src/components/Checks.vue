@@ -1,16 +1,19 @@
 <template>
   <div class="container">
-    <div class="col-286">
-      <p v-if="checkStatus !== 'Failed'">{{checkStatus}}...</p>
+    <div v-if="checkStatus !== 'Failed'" class="col-286">
+      <p >{{checkStatus}}...</p>
+    </div>
+    <div v-if="checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
-        Checks failed:<br/>
-        {{failureReason}}
+          Checks failed:<br/>
+          {{failureReason}}
       </div>
       <p v-if="checkStatus === 'Failed'">
         <a class="button" @click="check">Retry</a>
       </p>
     </div>
   </div>
+  
 </template>
 
 <script>

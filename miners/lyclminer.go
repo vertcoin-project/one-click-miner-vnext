@@ -89,7 +89,7 @@ func (l *LyclMinerImpl) ParseOutput(line string) {
 			if err != nil {
 				logging.Errorf("Error parsing hashrate: %s\n", err.Error())
 			}
-			if hashRateUnit == "k" {
+			if hashRateUnit == "K" {
 				f = f * 1000
 			} else if hashRateUnit == "M" {
 				f = f * 1000 * 1000

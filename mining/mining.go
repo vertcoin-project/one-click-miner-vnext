@@ -2,8 +2,11 @@ package mining
 
 import (
 	"fmt"
+	"path/filepath"
 	"runtime"
 	"time"
+
+	"github.com/tidwall/buntdb"
 
 	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
@@ -19,6 +22,7 @@ import (
 type MinerCore struct {
 	runtime             *wails.Runtime
 	wal                 *wallet.Wallet
+	settings            *buntdb.DB
 	pendingSweep        *wire.MsgTx
 	minerBinaries       []*miners.BinaryRunner
 	pool                pools.Pool
@@ -31,8 +35,13 @@ type MinerCore struct {
 	DebugMiners         bool
 }
 
-func NewMinerCore() *MinerCore {
+func NewMinerCore() (*MinerCore, error) {
+	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), "settings.db"))
+	if err != nil {
+		return nil, err
+	}
 	return &MinerCore{
+		settings:            db,
 		refreshBalanceChan:  make(chan bool),
 		refreshHashChan:     make(chan bool),
 		refreshRunningState: make(chan bool),
@@ -40,14 +49,34 @@ func NewMinerCore() *MinerCore {
 		stopBalance:         make(chan bool),
 		stopRunningState:    make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
-	}
+	}, nil
 }
 
 func (m *MinerCore) WailsInit(runtime *wails.Runtime) error {
 	// Save runtime
 	m.runtime = runtime
-
 	return nil
+}
+
+func (m *MinerCore) GetClosedSource() bool {
+	closedSource := "0"
+	m.settings.View(func(tx *buntdb.Tx) error {
+		v, err := tx.Get("closedsource")
+		closedSource = v
+		return err
+	})
+	return closedSource == "1"
+}
+
+func (m *MinerCore) SetClosedSource(newClosedSource bool) {
+	closedSource := "0"
+	if newClosedSource {
+		closedSource = "1"
+	}
+	m.settings.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set("closedsource", closedSource, nil)
+		return err
+	})
 }
 
 func (m *MinerCore) GetVersion() string {
@@ -145,28 +174,31 @@ func (m *MinerCore) CheckGPUCompatibility() error {
 func (m *MinerCore) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	binaries := miners.GetMinerBinaries()
 	gpus := util.GetGPUs()
+	closedSource := m.GetClosedSource()
 	brs := []*miners.BinaryRunner{}
 	for _, b := range binaries {
 		match := false
 		if b.Platform == runtime.GOOS {
 			for _, g := range gpus {
 				if g.Type == b.GPUType {
-					match = true
-					break
+					if b.ClosedSource == closedSource {
+						match = true
+						break
+					}
 				}
 			}
 		}
 
 		if match {
-			logging.Debugf("Found compatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
+			logging.Debugf("Found compatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
 			br, err := miners.NewBinaryRunner(b)
-			br.Debug = m.DebugMiners
 			if err != nil {
 				return nil, err
 			}
+			br.Debug = m.DebugMiners
 			brs = append(brs, br)
 		} else {
-			logging.Debugf("Found incompatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
+			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
 		}
 	}
 

@@ -3,6 +3,7 @@
     <div class="tabs">
       <div :class="{tab : true, active: $parent.screen === 'mining'}"><a @click="wallet">Wallet</a></div>
       <div :class="{tab : true, active: $parent.screen === 'send'}"><a @click="send">Send Coins</a></div>
+      <div :class="{tab : true, active: $parent.screen === 'settings'}"><a @click="settings">Settings</a></div>
     </div>
   </div>
 </template>
@@ -26,7 +27,11 @@ export default {
     },
     wallet: function() {
       this.$emit('wallet');
+    },
+    settings: function() {
+      this.$emit('settings');
     }
+
   }
 };
 </script>
@@ -44,18 +49,18 @@ div.tabBar {
 } 
 
 div.tabs {
-  width: 300px;
+  width: 500px;
   position: absolute;
   left: 50%;
   top : 50%;
   height: 20px;
-  margin-left: -150px;
+  margin-left: -250px;
   margin-top: -10px;
   padding: 0px;
 }
 
 div.tab {
-  width: 50%;
+  width: 33%;
   margin: 0px;
   padding: 0px;
   float: left;

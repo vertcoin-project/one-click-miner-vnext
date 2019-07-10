@@ -53,12 +53,26 @@ body {
 	float: left;
 }
 
-.col-286 {
-  width: 286px;
-  margin-left: 257px;
+div.col-286 {
+  margin: 0px;
+  padding-left: 200px;
+  padding-right: 200px;
   height: 100%;
+  width: 100%;
   display: table-cell;
   vertical-align: middle;
+  text-align: center;
+}
+
+div.col-wide {
+  margin: 0px;
+  padding-left: 50px;
+  padding-right: 50px;
+  height: 100%;
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 
 div.container {
@@ -98,7 +112,7 @@ a.link {
     text-align: center;
 }
 
-input {
+input[type='text'] input[type='password'] {
   border: 0px;
   background-color: #202225;
   color: white;

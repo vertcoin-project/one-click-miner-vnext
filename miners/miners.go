@@ -24,6 +24,7 @@ type MinerBinary struct {
 	Url                string `json:"url"`
 	Hash               string `json:"sha256"`
 	MainExecutableName string `json:"mainExecutableName"`
+	ClosedSource       bool   `json:"closedSource"`
 	GPUType            util.GPUType
 }
 
@@ -55,6 +56,8 @@ func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
 		br.MinerImpl = NewLyclMinerImpl(br)
 	} else if strings.HasPrefix(m.MainExecutableName, "ccminer") {
 		br.MinerImpl = NewCCMinerImpl(br)
+	} else if strings.HasPrefix(m.MainExecutableName, "teamred") {
+		br.MinerImpl = NewTeamRedMinerImpl(br)
 	} else {
 		return nil, fmt.Errorf("Could not determine implementation for miner binary")
 	}
@@ -210,7 +213,7 @@ func (b *BinaryRunner) unpack() error {
 	archive := b.downloadPath()
 	if strings.HasSuffix(b.MinerBinary.Url, ".zip") {
 		return util.UnpackZip(archive, unpackDir)
-	} else if strings.HasSuffix(b.MinerBinary.Url, ".tar.gz") {
+	} else if strings.HasSuffix(b.MinerBinary.Url, ".tar.gz") || strings.HasSuffix(b.MinerBinary.Url, ".tgz") {
 		return util.UnpackTar(archive, unpackDir)
 	}
 
