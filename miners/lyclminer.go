@@ -72,7 +72,7 @@ func (l *LyclMinerImpl) ParseOutput(line string) {
 		logging.Debugf("[lyclMiner] %s\n", line)
 	}
 	line = strings.TrimSpace(line)
-	if strings.Contains(line, "Device #") && strings.HasSuffix(line, "MH/s") {
+	if strings.Contains(line, "Device #") && strings.HasSuffix(line, "H/s") {
 		startDeviceIdx := strings.Index(line, "Device #")
 		endDeviceIdx := strings.Index(line[startDeviceIdx:], ":")
 		deviceIdxString := line[startDeviceIdx+8 : startDeviceIdx+endDeviceIdx]
@@ -83,12 +83,19 @@ func (l *LyclMinerImpl) ParseOutput(line string) {
 
 		startMHs := strings.LastIndex(line, ", ")
 		if startMHs > -1 {
+			hashRateUnit := strings.ToUpper(line[len(line)-4 : len(line)-3])
 			line = line[startMHs+2 : len(line)-5]
 			f, err := strconv.ParseFloat(line, 64)
 			if err != nil {
 				logging.Errorf("Error parsing hashrate: %s\n", err.Error())
 			}
-			f = f * 1000 * 1000
+			if hashRateUnit == "k" {
+				f = f * 1000
+			} else if hashRateUnit == "M" {
+				f = f * 1000 * 1000
+			} else if hashRateUnit == "G" {
+				f = f * 1000 * 1000 * 1000
+			}
 			l.hashRates[deviceIdx] = uint64(f)
 		}
 	}
