@@ -29,19 +29,21 @@ func (l *CryptoDredgeMinerImpl) ParseOutput(line string) {
 	}
 	line = strings.TrimSpace(line)
 
-	if strings.Contains(line, "GPU #") && strings.HasSuffix(line, "H/s") {
-		startDeviceIdx := strings.Index(line, "GPU #")
-		endDeviceIdx := strings.Index(line[startDeviceIdx:], ":")
-		deviceIdxString := line[startDeviceIdx+5 : startDeviceIdx+endDeviceIdx]
+	if strings.Contains(line, "INFO  - GPU") && strings.Contains(line, "H/s") {
+		startDeviceIdx := strings.Index(line, "INFO  - GPU")
+		endDeviceIdx := strings.Index(line[startDeviceIdx+9:], " ")
+		deviceIdxString := line[startDeviceIdx+11 : startDeviceIdx+9+endDeviceIdx]
 		deviceIdx, err := strconv.ParseInt(deviceIdxString, 10, 64)
 		if err != nil {
 			return
 		}
 
-		startMHs := strings.LastIndex(line, ", ")
-		if startMHs > -1 {
-			hashRateUnit := strings.ToUpper(line[len(line)-4 : len(line)-3])
-			line = line[startMHs+2 : len(line)-5]
+		endMHs := strings.Index(line, "H/s")
+		if endMHs > -1 {
+			hashRateUnit := strings.ToUpper(line[endMHs-1 : endMHs])
+			line = line[:endMHs-1]
+			line = line[strings.LastIndex(line, " ")+1:]
+			line = strings.ReplaceAll(line, ",", ".")
 			f, err := strconv.ParseFloat(line, 64)
 			if err != nil {
 				logging.Errorf("Error parsing hashrate: %s\n", err.Error())

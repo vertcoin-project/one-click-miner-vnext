@@ -67,5 +67,5 @@ func (l *TeamRedMinerImpl) HashRate() uint64 {
 }
 
 func (l *TeamRedMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
-	return []string{"--log_interval=1", "--disable_colors", "-a", "lyra2rev3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+	return []string{"--log_interval=10", "--disable_colors", "-a", "lyra2rev3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
 }
