@@ -38,5 +38,25 @@
         "sha256" : "feded3f9d877737154d7b5c8b863b953edcd762e91198d9c5a797a5959b4acc4",
         "mainExecutableName" : "teamredminer",
         "closedSource" : true
+    },
+    {
+        "platform": "linux",
+        "gpuplatform": "NVIDIA",
+        "cudaversion": "10.1",
+        "url": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.2/CryptoDredge_0.20.2_cuda_10.1_linux.tar.gz",
+        "sha256" : "0d0f4618abb8031c973da3514d3ff537e4667475713c6366bb90a21b50121e32",
+        "mainExecutableName" : "CryptoDredge",
+        "closedSource" : true
+    },
+    {
+        "platform": "windows",
+        "gpuplatform": "NVIDIA",
+        "cudaversion": "10.1",
+        "url": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.2/CryptoDredge_0.20.2_cuda_10.1_windows.zip",
+        "sha256" : "7d1d4c2834b516ec7746efdb64dee9b29c8913cd243bf14786d185e7dd57d405",
+        "mainExecutableName" : "CryptoDredge.exe",
+        "closedSource" : true
     }
+        
+    
 ]
