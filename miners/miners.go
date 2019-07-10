@@ -58,6 +58,8 @@ func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
 		br.MinerImpl = NewCCMinerImpl(br)
 	} else if strings.HasPrefix(m.MainExecutableName, "teamred") {
 		br.MinerImpl = NewTeamRedMinerImpl(br)
+	} else if strings.HasPrefix(m.MainExecutableName, "Cryptodredge") {
+		br.MinerImpl = NewCryptoDredgeMinerImpl(br)
 	} else {
 		return nil, fmt.Errorf("Could not determine implementation for miner binary")
 	}
