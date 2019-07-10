@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -14,6 +15,8 @@ import (
 )
 
 func main() {
+	debugMiner := flag.Bool("debugminers", false, "Print the output of the miner binaries to the debug log")
+	flag.Parse()
 	js := mewn.String("./frontend/dist/app.js")
 	css := mewn.String("./frontend/dist/app.css")
 
@@ -45,6 +48,7 @@ func main() {
 	})
 
 	core := mining.NewMinerCore()
+	core.DebugMiners = *debugMiner
 	app.Bind(core)
 	app.Run()
 	core.StopMining()

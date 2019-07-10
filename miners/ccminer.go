@@ -24,8 +24,10 @@ func (l *CCMinerImpl) Configure(args BinaryArguments) error {
 }
 
 func (l *CCMinerImpl) ParseOutput(line string) {
+	if l.binaryRunner.Debug {
+		logging.Debugf("[ccminer] %s\n", line)
+	}
 	line = strings.TrimSpace(line)
-	//logging.Debugf("[ccminer] %s\n", line)
 
 	if strings.Contains(line, "GPU #") && strings.HasSuffix(line, "MH/s") {
 		startDeviceIdx := strings.Index(line, "GPU #")
@@ -58,5 +60,5 @@ func (l *CCMinerImpl) HashRate() uint64 {
 }
 
 func (l *CCMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
-	return []string{"--max-log-rate","0", "--no-color", "-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+	return []string{"--max-log-rate", "0", "--no-color", "-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
 }

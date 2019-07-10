@@ -71,6 +71,7 @@ type BinaryRunner struct {
 	MinerBinary MinerBinary
 	MinerImpl   MinerImpl
 	cmd         *exec.Cmd
+	Debug       bool
 }
 
 func (b *BinaryRunner) logPrefix() string {

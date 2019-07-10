@@ -68,7 +68,9 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 }
 
 func (l *LyclMinerImpl) ParseOutput(line string) {
-	//logging.Debugf("[lyclMiner] %s\n", line)
+	if l.binaryRunner.Debug {
+		logging.Debugf("[lyclMiner] %s\n", line)
+	}
 	line = strings.TrimSpace(line)
 	if strings.Contains(line, "Device #") && strings.HasSuffix(line, "MH/s") {
 		startDeviceIdx := strings.Index(line, "Device #")

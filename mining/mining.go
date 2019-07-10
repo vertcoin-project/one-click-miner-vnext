@@ -28,6 +28,7 @@ type MinerCore struct {
 	stopHash            chan bool
 	stopBalance         chan bool
 	stopRunningState    chan bool
+	DebugMiners         bool
 }
 
 func NewMinerCore() *MinerCore {
@@ -159,6 +160,7 @@ func (m *MinerCore) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 		if match {
 			logging.Debugf("Found compatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
 			br, err := miners.NewBinaryRunner(b)
+			br.Debug = m.DebugMiners
 			if err != nil {
 				return nil, err
 			}
