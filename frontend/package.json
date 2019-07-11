@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.4",
+    "lodash.defaultsdeep": "^4.6.1",
     "vue": "^2.5.22"
   },
   "devDependencies": {
