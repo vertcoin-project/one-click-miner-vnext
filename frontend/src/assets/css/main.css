@@ -112,7 +112,7 @@ a.link {
     text-align: center;
 }
 
-input[type='text'] input[type='password'] {
+input[type='text'], input[type='password'] {
   border: 0px;
   background-color: #202225;
   color: white;
