@@ -3,7 +3,7 @@
     <div class="col-286" v-if="walletInitialized === 0">
     	<p>Make a password. Don't lose it.</p>
 	    <p><input type="password" v-model="password" placeholder="Password" /></p>
-	    <p><input type="password" v-model="confirmPassword" placeholder="Confirm Password" /></p>
+	    <p><input type="password" v-model="confirmPassword" placeholder="Confirm Password" @keyup.enter="initAndStart" /></p>
       <p><a class="button" @click="initAndStart">Start Mining!</a></p>
     </div>
     <div class="col-286" v-if="walletInitialized === 1">

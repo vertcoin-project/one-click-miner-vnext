@@ -5,7 +5,7 @@
 	    <p v-if="receivedBalance !== '0.00 VTC'">You're sending {{receivedBalance}} to:</p>
 	    <p><input :class="{error: (error !== ''), success: (error === '' && target !== '')}" @blur="recalculate()" type="text" v-model="target" placeholder="Receiver Address" /></p>
       <p v-if="error != ''" class="error">{{error}}</p>
-	    <p><input type="password" v-model="password" placeholder="Wallet Password" /></p>
+	    <p><input type="password" v-model="password" placeholder="Wallet Password" @keyup.enter="send"/></p>
       <p>
           <a class="button" @click="send">Send</a>
       </p>
