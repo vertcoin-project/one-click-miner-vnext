@@ -172,7 +172,7 @@ func (w *Wallet) Update() {
 		return
 	}
 	w.Utxos = utxos
-
+	w.UpdateSpentStatus()
 	w.UpdateCoinbaseStatus()
 
 	status := Status{}
@@ -188,6 +188,29 @@ func (w *Wallet) UpdateCoinbaseStatus() {
 	for i := range w.Utxos {
 		w.Utxos[i].IsCoinbase = w.IsCoinbase(w.Utxos[i].TxID)
 	}
+}
+
+func (w *Wallet) UpdateSpentStatus() {
+	for i := range w.Utxos {
+		w.Utxos[i].Spent = w.IsSpent(w.Utxos[i].TxID, w.Utxos[i].Vout)
+	}
+}
+
+func (w *Wallet) IsSpent(txid string, vout uint) bool {
+	spent := ""
+	w.db.View(func(tx *buntdb.Tx) error {
+		v, err := tx.Get(fmt.Sprintf("spent-%s-%09d", txid, vout))
+		spent = v
+		return err
+	})
+	return spent == "1"
+}
+
+func (w *Wallet) MarkSpent(txid string, vout uint) {
+	w.db.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set(fmt.Sprintf("spent-%s-%09d", txid, vout), "1", nil)
+		return err
+	})
 }
 
 func (w *Wallet) IsCoinbase(txid string) bool {
@@ -229,11 +252,19 @@ func (w *Wallet) IsCoinbase(txid string) bool {
 // to spend
 func (w *Wallet) GetBalance() (bal uint64, balImmature uint64) {
 	for _, u := range w.Utxos {
-		if u.IsCoinbase && u.Height+101 > w.TipHeight {
-			balImmature += u.Amount
-		} else {
-			bal += u.Amount
+		if !u.Spent {
+			if u.IsCoinbase && u.Height+101 > w.TipHeight {
+				balImmature += u.Amount
+			} else {
+				bal += u.Amount
+			}
 		}
 	}
 	return
+}
+
+func (w *Wallet) MarkInputsAsInternallySpent(tx *wire.MsgTx) {
+	for _, txi := range tx.TxIn {
+		w.MarkSpent(txi.PreviousOutPoint.Hash.String(), uint(txi.PreviousOutPoint.Index))
+	}
 }

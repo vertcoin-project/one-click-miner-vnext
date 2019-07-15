@@ -9,7 +9,6 @@ import (
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -85,7 +84,6 @@ type txSendReply struct {
 func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 	var b bytes.Buffer
 	tx.Serialize(&b)
-	logging.Debugf("Serialized transaction: %x\n", b.Bytes())
 	s := txSend{
 		RawTx: hex.EncodeToString(b.Bytes()),
 	}
@@ -93,6 +91,8 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 	r := txSendReply{}
 
 	err := util.PostJson("https://insight.vertcoin.org/insight-vtc-api/tx/send", s, &r)
+
+	w.MarkInputsAsInternallySpent(tx)
 
 	return r.TxId, err
 }
