@@ -125,7 +125,8 @@ func (m *MinerCore) PerformChecks() string {
 	m.runtime.Events.Emit("checkStatus", "Checking for rapid failure occurrences")
 	if len(m.rapidFailures) > 0 {
 		m.runtime.Events.Emit("checkStatus", "Failed")
-		return "One or more of your miner binaries are showing rapid failures (immediately start after stopping). Please enable debugging under the Settings tab and then Save & Restart. Use the debug.log to learn more about what might be going on."
+		m.rapidFailures = make([]*miners.BinaryRunner, 0) // Clear the failures
+		return "One or more of your miner binaries are showing rapid failures (immediately stop after starting). Please enable debugging under the Settings tab and then Save & Restart. Use the debug.log to learn more about what might be going on."
 	}
 
 	m.runtime.Events.Emit("checkStatus", "Checking GPU compatibility...")
