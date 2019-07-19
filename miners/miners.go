@@ -51,7 +51,7 @@ type MinerImpl interface {
 }
 
 func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
-	br := &BinaryRunner{MinerBinary: m}
+	br := &BinaryRunner{MinerBinary: m, lastStarted: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	if strings.HasPrefix(m.MainExecutableName, "lycl") {
 		br.MinerImpl = NewLyclMinerImpl(br)
 	} else if strings.HasPrefix(m.MainExecutableName, "ccminer") {
@@ -77,6 +77,9 @@ type BinaryRunner struct {
 	MinerImpl   MinerImpl
 	cmd         *exec.Cmd
 	Debug       bool
+	lastStarted time.Time
+	rapidFails  int
+	usedArgs    BinaryArguments
 }
 
 func (b *BinaryRunner) logPrefix() string {
@@ -135,8 +138,36 @@ func (b *BinaryRunner) Install() error {
 	return nil
 }
 
+func (b *BinaryRunner) CheckRunning() {
+	if !b.IsRunning() {
+		logging.Infof("Miner [%s] stopped running.", b.MinerBinary.MainExecutableName)
+		restart := false
+		if time.Now().Sub(b.lastStarted).Seconds() > 10 {
+			restart = true
+		} else {
+			// Rapid fail
+			b.rapidFails++
+			if b.rapidFails < 10 {
+				restart = true
+			} else {
+				logging.Infof("Miner [%s] is rapidly failing, not restarting it.", b.MinerBinary.MainExecutableName)
+			}
+		}
+
+		if restart {
+			logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
+			b.restart()
+		}
+	}
+}
+
 func (b *BinaryRunner) HashRate() uint64 {
 	return b.MinerImpl.HashRate()
+}
+
+func (b *BinaryRunner) restart() error {
+	b.lastStarted = time.Now()
+	return b.launch(b.MinerImpl.ConstructCommandlineArgs(b.usedArgs))
 }
 
 func (b *BinaryRunner) Start(args BinaryArguments) error {
@@ -144,6 +175,10 @@ func (b *BinaryRunner) Start(args BinaryArguments) error {
 	if err != nil {
 		return err
 	}
+
+	b.usedArgs = args
+	b.lastStarted = time.Now()
+	b.rapidFails = 0
 
 	// Always do a fresh unpack of the executable to ensure there's been no funny
 	// business. EnsureAvailable already checked the SHA hash.

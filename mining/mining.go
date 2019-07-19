@@ -29,6 +29,7 @@ type MinerCore struct {
 	refreshBalanceChan  chan bool
 	refreshHashChan     chan bool
 	refreshRunningState chan bool
+	stopMonitoring      chan bool
 	stopHash            chan bool
 	stopBalance         chan bool
 	stopRunningState    chan bool
@@ -47,6 +48,7 @@ func NewMinerCore() (*MinerCore, error) {
 		stopHash:            make(chan bool),
 		stopBalance:         make(chan bool),
 		stopRunningState:    make(chan bool),
+		stopMonitoring:      make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
 	}, nil
 }
@@ -258,6 +260,23 @@ func (m *MinerCore) StartMining() bool {
 		StratumPassword: m.pool.GetPassword(),
 	}
 
+	startProcessMonitoring := make(chan bool)
+
+	go func() {
+		<-startProcessMonitoring
+		for {
+			for _, br := range m.minerBinaries {
+				br.CheckRunning()
+			}
+
+			select {
+			case <-m.stopMonitoring:
+				break
+			case <-time.After(time.Second):
+			}
+		}
+	}()
+
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
@@ -357,6 +376,8 @@ func (m *MinerCore) StartMining() bool {
 		}
 	}
 
+	startProcessMonitoring <- true
+
 	return true
 }
 
@@ -430,7 +451,10 @@ func (m *MinerCore) StopMining() bool {
 		Category: "Mining",
 		Action:   "Stop",
 	})
-
+	select {
+	case m.stopMonitoring <- true:
+	default:
+	}
 	logging.Infof("Stopping mining process...")
 	for _, br := range m.minerBinaries {
 		br.Stop()
