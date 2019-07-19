@@ -21,3 +21,13 @@ func TestAMD(t *testing.T) {
 		}
 	}
 }
+
+func TestInvalid(t *testing.T) {
+	gpus := []string{"NVIDIA GeForce GTX 580"}
+	g := GetGPUsFromStrings(gpus)
+	for _, gpu := range g {
+		if gpu.Type != GPUTypeOther {
+			t.Fail()
+		}
+	}
+}
