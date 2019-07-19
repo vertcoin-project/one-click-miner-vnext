@@ -82,6 +82,7 @@ export default {
 		});
 		window.backend.MinerCore.RefreshBalance();
 		window.backend.MinerCore.RefreshHashrate();
+		window.backend.MinerCore.RefreshRunningState();
   },
   methods: {
     stop: function() {
