@@ -32,7 +32,6 @@ type MinerCore struct {
 	stopHash            chan bool
 	stopBalance         chan bool
 	stopRunningState    chan bool
-	DebugMiners         bool
 }
 
 func NewMinerCore() (*MinerCore, error) {
@@ -58,25 +57,43 @@ func (m *MinerCore) WailsInit(runtime *wails.Runtime) error {
 	return nil
 }
 
-func (m *MinerCore) GetClosedSource() bool {
-	closedSource := "0"
+func (m *MinerCore) getSetting(name string) bool {
+	setting := "0"
 	m.settings.View(func(tx *buntdb.Tx) error {
-		v, err := tx.Get("closedsource")
-		closedSource = v
+		v, err := tx.Get(name)
+		setting = v
 		return err
 	})
-	return closedSource == "1"
+	return setting == "1"
+}
+
+func (m *MinerCore) setSetting(name string, value bool) {
+	setting := "0"
+	if value {
+		setting = "1"
+	}
+	m.settings.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set(name, setting, nil)
+		return err
+	})
+}
+
+func (m *MinerCore) GetClosedSource() bool {
+	return m.getSetting("closedsource")
 }
 
 func (m *MinerCore) SetClosedSource(newClosedSource bool) {
-	closedSource := "0"
-	if newClosedSource {
-		closedSource = "1"
-	}
-	m.settings.Update(func(tx *buntdb.Tx) error {
-		_, _, err := tx.Set("closedsource", closedSource, nil)
-		return err
-	})
+	logging.Infof("Setting closed source to [%b]\n", newClosedSource)
+	m.setSetting("closedsource", newClosedSource)
+}
+
+func (m *MinerCore) GetDebugging() bool {
+	return m.getSetting("debugging")
+}
+
+func (m *MinerCore) SetDebugging(newDebugging bool) {
+	logging.Infof("Setting debugging to [%b]\n", newDebugging)
+	m.setSetting("debugging", newDebugging)
 }
 
 func (m *MinerCore) GetVersion() string {
@@ -195,7 +212,7 @@ func (m *MinerCore) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 			if err != nil {
 				return nil, err
 			}
-			br.Debug = m.DebugMiners
+			br.Debug = m.GetDebugging()
 			brs = append(brs, br)
 		} else {
 			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)

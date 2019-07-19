@@ -2,6 +2,10 @@
   <div class="container">
     <div class="col-286">
       <p style="text-align: left">
+        <input type="checkbox" v-model="debugging">Enable debugging<br/>
+        <span class="subtext">Include the miner's console output in the debug log. Can grow your logs quite large</span>
+      </p>
+      <p style="text-align: left">
         <input type="checkbox" v-model="closedSourceMiner">Use closed-source miners<br/>
         <span class="subtext">Better hashrate, but unaudited miners that incurr a developer's fee</span>
       </p>
@@ -27,19 +31,25 @@ export default {
   data() {
     return {
       closedSourceMiner: false,
+      debugging: false,
     };
   },
   created() {
 	  var self = this;
 	  window.backend.MinerCore.GetClosedSource().then(result => {
       self.closedSourceMiner = result
-	  });
+    });
+    window.backend.MinerCore.GetDebugging().then(result => {
+      self.debugging = result
+    });
   },
   methods: {
     save: function() {
       var self = this;
       window.backend.MinerCore.SetClosedSource(this.closedSourceMiner).then(result => {
-        self.$emit('committed');
+        window.backend.MinerCore.SetDebugging(self.debugging).then(result => {
+          self.$emit('committed');
+	      });
 	    });
     }
   }
