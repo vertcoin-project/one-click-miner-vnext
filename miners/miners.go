@@ -146,29 +146,31 @@ func (b *BinaryRunner) Install() error {
 	return nil
 }
 
-func (b *BinaryRunner) CheckRunning() {
+type RunningState int
+
+const (
+	RunningStateRunning    RunningState = 0
+	RunningStateRestarting RunningState = 1
+	RunningStateRapidFail  RunningState = 2
+)
+
+func (b *BinaryRunner) CheckRunning() RunningState {
 	if !b.IsRunning() {
 		logging.Infof("Miner [%s] stopped running.", b.MinerBinary.MainExecutableName)
-		restart := false
-		if time.Now().Sub(b.lastStarted).Seconds() > 10 {
-			restart = true
-		} else {
+		if time.Now().Sub(b.lastStarted).Seconds() < 10 {
 			// Rapid fail
 			b.rapidFails++
-			if b.rapidFails < 10 {
-				restart = true
-			} else {
+			if b.rapidFails > 3 {
 				logging.Infof("Miner [%s] is rapidly failing, not restarting it.", b.MinerBinary.MainExecutableName)
+				return RunningStateRapidFail
 			}
 		}
 
-		if restart {
-			logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
-			//b.restart()
-		}
-	} else {
-
+		logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
+		b.restart()
+		return RunningStateRestarting
 	}
+	return RunningStateRunning
 }
 
 func (b *BinaryRunner) HashRate() uint64 {
