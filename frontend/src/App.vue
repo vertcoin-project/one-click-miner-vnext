@@ -28,8 +28,11 @@ export default {
     };
   },
   mounted() {
+    var self = this;
     wails.events.on("minerRapidFail",(result) => {
-		  this.screen = 'checks';
+		  window.backend.MinerCore.StopMining().then(result => {
+				self.switchToChecks();
+		  });
 	  });
   },
   methods: {
