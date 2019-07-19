@@ -27,7 +27,7 @@ func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {
 func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 	os.Remove(filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
 	err := l.binaryRunner.launch([]string{"-g", filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf")})
-	err2 := l.binaryRunner.wait()
+	err2 := l.binaryRunner.cmd.Wait()
 	if err != nil {
 		return err
 	}

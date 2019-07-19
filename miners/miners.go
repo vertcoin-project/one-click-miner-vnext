@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -78,6 +77,7 @@ type BinaryRunner struct {
 	MinerImpl   MinerImpl
 	cmd         *exec.Cmd
 	Debug       bool
+	running     bool
 	lastStarted time.Time
 	rapidFails  int
 	usedArgs    BinaryArguments
@@ -103,34 +103,31 @@ func (b *BinaryRunner) Stop() error {
 		time.Sleep(15 * time.Second)
 		_ = b.cmd.Process.Signal(os.Kill)
 	}()
-	b.cmd.Process.Signal(os.Interrupt)
+	err := b.cmd.Process.Signal(os.Interrupt)
+	if err != nil {
+		return err
+	}
 
-	return b.wait()
+	b.WaitUntilStopped()
+	return nil
+}
+
+func (b *BinaryRunner) WaitUntilStopped() {
+	stopped := make(chan bool)
+	go func() {
+		for {
+			if !b.running {
+				stopped <- true
+				break
+			}
+			<-time.After(time.Second)
+		}
+	}()
+	<-stopped
 }
 
 func (b *BinaryRunner) IsRunning() bool {
-	if b.cmd == nil {
-		return false
-	} else {
-		if b.cmd.Process == nil {
-			return false
-		} else {
-			if b.cmd.ProcessState != nil {
-				return false
-			}
-		}
-	}
-
-	process, err := os.FindProcess(int(b.cmd.Process.Pid))
-	if err != nil {
-		return false
-	}
-
-	err = process.Signal(syscall.Signal(0))
-	if err != nil {
-		return false
-	}
-	return true
+	return b.running
 }
 
 func (b *BinaryRunner) Install() error {
@@ -167,7 +164,7 @@ func (b *BinaryRunner) CheckRunning() {
 
 		if restart {
 			logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
-			b.restart()
+			//b.restart()
 		}
 	} else {
 
@@ -235,11 +232,16 @@ func (b *BinaryRunner) launch(params []string) error {
 	}(b, r)
 	b.cmd.Stderr = w
 	b.cmd.Stdout = w
-	return b.cmd.Start()
-}
-
-func (b *BinaryRunner) wait() error {
-	return b.cmd.Wait()
+	err := b.cmd.Start()
+	if err != nil {
+		return err
+	}
+	b.running = true
+	go func() {
+		b.cmd.Wait()
+		b.running = false
+	}()
+	return nil
 }
 
 func (b *BinaryRunner) unpack() error {
