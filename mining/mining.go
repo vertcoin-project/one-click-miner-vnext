@@ -264,23 +264,26 @@ func (m *MinerCore) StartMining() bool {
 
 	go func() {
 		<-startProcessMonitoring
-		for {
+		continueLoop := true
+		for continueLoop {
 			for _, br := range m.minerBinaries {
 				br.CheckRunning()
 			}
 
 			select {
 			case <-m.stopMonitoring:
-				break
+				continueLoop = false
 			case <-time.After(time.Second):
 			}
 		}
+		logging.Infof("Stopped monitoring thread")
 	}()
 
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
-		for {
+		continueLoop := true
+		for continueLoop {
 			cycles++
 			if cycles > 150 {
 				// Don't refresh this every time since we refresh it every second
@@ -314,7 +317,7 @@ func (m *MinerCore) StartMining() bool {
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 			select {
 			case <-m.stopHash:
-				break
+				continueLoop = false
 			case <-m.refreshHashChan:
 			case <-time.After(time.Second):
 			}
@@ -322,7 +325,9 @@ func (m *MinerCore) StartMining() bool {
 	}()
 
 	go func() {
-		for {
+		continueLoop := true
+		for continueLoop {
+
 			logging.Infof("Updating balance...")
 			m.wal.Update()
 			b, bi := m.wal.GetBalance()
@@ -332,7 +337,7 @@ func (m *MinerCore) StartMining() bool {
 			m.runtime.Events.Emit("balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
 			select {
 			case <-m.stopBalance:
-				break
+				continueLoop = false
 			case <-m.refreshBalanceChan:
 			case <-time.After(time.Minute * 5):
 			}
@@ -340,7 +345,9 @@ func (m *MinerCore) StartMining() bool {
 	}()
 
 	go func() {
-		for {
+		continueLoop := true
+		for continueLoop {
+
 			runningProcesses := 0
 			for _, br := range m.minerBinaries {
 				if br.IsRunning() {
@@ -356,7 +363,7 @@ func (m *MinerCore) StartMining() bool {
 			}
 			select {
 			case <-m.stopRunningState:
-				break
+				continueLoop = false
 			case <-m.refreshRunningState:
 			case <-time.After(timeout):
 			}
