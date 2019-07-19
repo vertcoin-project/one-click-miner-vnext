@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -119,6 +120,16 @@ func (b *BinaryRunner) IsRunning() bool {
 			}
 		}
 	}
+
+	process, err := os.FindProcess(int(b.cmd.Process.Pid))
+	if err != nil {
+		return false
+	}
+
+	err = process.Signal(syscall.Signal(0))
+	if err != nil {
+		return false
+	}
 	return true
 }
 
@@ -158,6 +169,8 @@ func (b *BinaryRunner) CheckRunning() {
 			logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
 			b.restart()
 		}
+	} else {
+
 	}
 }
 
