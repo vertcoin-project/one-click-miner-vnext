@@ -4,7 +4,7 @@
     <Welcome v-if="screen === 'welcome'" v-on:start-mining="switchToChecks"/>
     <Checks v-if="screen === 'checks'" v-on:mining="switchToMining"/>
     <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining"/>
-    <Mining v-if="screen === 'mining'" v-on:stop-mining="stopMining"  />
+    <Mining v-if="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
     <Tracking />
   </div>
@@ -26,6 +26,11 @@ export default {
       screen : "welcome",
       manualStop: false
     };
+  },
+  mounted() {
+    wails.events.on("minerRapidFail",(result) => {
+		  this.screen = 'checks';
+	  });
   },
   methods: {
     stopMining: function() {
