@@ -103,13 +103,20 @@ a.button {
     border-radius: 5px;
 }
 
-a.link {
+a.link, a.inlineLink {
     opacity: 0.6;
     color: #048652;
     cursor: pointer;
     margin: 0 auto;
-    display: block;
     text-align: center;
+}
+
+a.link { 
+  display: block;
+}
+
+a.inlineLink {
+  display: inline;
 }
 
 input[type='text'], input[type='password'] {

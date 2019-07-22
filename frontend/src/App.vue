@@ -6,7 +6,8 @@
     <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining"/>
     <Mining v-show="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
-    <Tracking />
+    <Update v-if="screen === 'update'" v-on:back="switchToMining" />
+    <Tracking v-on:update="switchToUpdate" />
   </div>
 </template>
 
@@ -18,6 +19,8 @@ import Send from "./components/Send.vue";
 import Settings from "./components/Settings.vue";
 import TabBar from "./components/TabBar.vue";
 import Tracking from "./components/Tracking.vue";
+import Update from "./components/Update.vue";
+
 import "./assets/css/main.css";
 
 export default {
@@ -49,7 +52,7 @@ export default {
       }
     },
     switchToChecks: function() {
-		this.screen = 'checks';
+		  this.screen = 'checks';
     },
     switchToSettings: function() {
 		this.screen = 'settings';
@@ -58,7 +61,11 @@ export default {
         this.screen = 'send';
 	},
 	switchToMining: function() {
+        this.manualStop = false;
         this.screen = 'mining';
+  },
+  switchToUpdate: function() {
+        this.screen = 'update';
 	},
 	switchToWelcome: function() {
 		this.screen = 'welcome';
@@ -78,7 +85,8 @@ export default {
     Send,
     TabBar,
     Tracking,
-    Settings
+    Settings,
+    Update
   }
 };
 </script>

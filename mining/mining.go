@@ -420,6 +420,10 @@ func (m *MinerCore) StartMining() bool {
 	return true
 }
 
+func (m *MinerCore) JSLog(log string) {
+	logging.Infof("[Javascript] %s\n", log)
+}
+
 func (m *MinerCore) RefreshBalance() {
 
 	m.refreshBalanceChan <- true
@@ -464,12 +468,30 @@ func (m *MinerCore) SendSweep(password string) []string {
 
 }
 
+func (m *MinerCore) UpdateAvailable() bool {
+	r, _ := util.GetLatestRelease()
+
+	lastVersion := util.VersionStringToNumeric(r.Tag)
+	myVersion := util.VersionStringToNumeric(tracking.GetVersion())
+
+	return lastVersion > myVersion
+}
+
+func (m *MinerCore) VersionDetails() []string {
+	r, _ := util.GetLatestRelease()
+	return []string{r.Tag, r.Body, r.URL}
+}
+
 func (m *MinerCore) ShowTx(txid string) {
 	util.OpenBrowser(fmt.Sprintf("https://insight.vertcoin.org/tx/%s", txid))
 }
 
 func (m *MinerCore) ReportIssue() {
 	util.OpenBrowser("https://github.com/vertcoin-project/one-click-miner-vnext/issues/new")
+}
+
+func (m *MinerCore) OpenDownloadUrl(url string) {
+	util.OpenBrowser(url)
 }
 
 func (m *MinerCore) PrepareSweep(addr string) string {
