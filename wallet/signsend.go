@@ -91,6 +91,9 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 	r := txSendReply{}
 
 	err := util.PostJson("https://insight.vertcoin.org/insight-vtc-api/tx/send", s, &r)
+	if err != nil {
+		return "", err
+	}
 
 	w.MarkInputsAsInternallySpent(tx)
 
