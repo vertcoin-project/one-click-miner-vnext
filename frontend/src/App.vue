@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     var self = this;
-    wails.events.on("minerRapidFail",(result) => {
+    window.wails.Events.On("minerRapidFail",(result) => {
 		  window.backend.MinerCore.StopMining().then(result => {
 				self.switchToChecks();
 		  });

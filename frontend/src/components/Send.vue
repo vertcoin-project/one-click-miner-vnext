@@ -57,7 +57,7 @@ export default {
   },
   mounted() {
     var self = this;
-    wails.events.on("createTransactionResult",(result) => {
+    wails.Events.On("createTransactionResult",(result) => {
 			self.receivedBalance = result;
 		});
   },

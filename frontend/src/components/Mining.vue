@@ -59,25 +59,25 @@ export default {
 			}
 			self.spinner = newSpinner;
 		}, 1000);
-		wails.events.on("hashRate",(result) => {
+		wails.Events.On("hashRate",(result) => {
 			self.hashrate = result;
 		});
-		wails.events.on("runningMiners",(result) => {
+		wails.Events.On("runningMiners",(result) => {
 			self.runningMiners = result;
 		});
-		wails.events.on("networkHashRate",(result) => {
+		wails.Events.On("networkHashRate",(result) => {
 			self.netHash = result;
 		});
-		wails.events.on("avgEarnings",(result) => {
+		wails.Events.On("avgEarnings",(result) => {
 			self.avgearn = result;
 		});
-		wails.events.on("balance",(result) => {
+		wails.Events.On("balance",(result) => {
 			self.balance = result;
 		});
-		wails.events.on("balanceImmature",(result) => {
+		wails.Events.On("balanceImmature",(result) => {
 			self.balanceImmature = result;
 		});
-		wails.events.on("balancePendingPool",(result) => {
+		wails.Events.On("balancePendingPool",(result) => {
 			self.balancePendingPool = result;
 		});
 		window.backend.MinerCore.RefreshBalance();

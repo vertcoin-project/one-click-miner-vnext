@@ -33,10 +33,10 @@ export default {
   mounted() {
     this.check();
     var self = this;
-    wails.events.on("checkStatus",(result) => {
+    wails.Events.On("checkStatus",(result) => {
 		  self.checkStatus = result;
 	  });
-    wails.events.on("prerequisiteInstall",(result) => {
+    wails.Events.On("prerequisiteInstall",(result) => {
       self.prerequisiteInstall = (result === "1");
     });
   },
