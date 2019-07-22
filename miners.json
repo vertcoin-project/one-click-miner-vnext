@@ -21,6 +21,9 @@
         "url": "https://github.com/vertcoin-project/ccminer-lyra2rev3/releases/download/v1.0.0/ccminer-lyra2rev3-v1.0.0-win64.zip",
         "sha256" : "32e1e99333c1345f4aa720afe13950e5452c02edf58eedfba0f1332dd2e399bb",
         "mainExecutableName" : "ccminer.exe",
+        "prerequisites" : [
+            "msvcrt2013"
+        ],
         "closedSource" : false
     },
     {
