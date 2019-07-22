@@ -66,7 +66,7 @@ func GetNetHash() uint64 {
 	return netHash.Div(netHash, big.NewInt(9830250)).Uint64() // 0xffff * blocktime in seconds
 }
 
-var jsonClient = &http.Client{Timeout: 10 * time.Second}
+var jsonClient = &http.Client{Timeout: 60 * time.Second}
 
 func GetJson(url string, target interface{}) error {
 	r, err := jsonClient.Get(url)
@@ -86,7 +86,12 @@ func PostJson(url string, payload interface{}, target interface{}) error {
 		return err
 	}
 	defer r.Body.Close()
-	return json.NewDecoder(r.Body).Decode(target)
+
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	logging.Infof("POST JSON response: %s", string(bodyBytes))
+
+	buf := bytes.NewBuffer(bodyBytes)
+	return json.NewDecoder(buf).Decode(target)
 }
 
 func OpenBrowser(url string) {

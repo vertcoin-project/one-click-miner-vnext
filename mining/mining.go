@@ -23,7 +23,7 @@ type MinerCore struct {
 	runtime             *wails.Runtime
 	wal                 *wallet.Wallet
 	settings            *buntdb.DB
-	pendingSweep        *wire.MsgTx
+	pendingSweep        []*wire.MsgTx
 	minerBinaries       []*miners.BinaryRunner
 	rapidFailures       []*miners.BinaryRunner
 	pool                pools.Pool
@@ -435,26 +435,32 @@ func (m *MinerCore) RefreshRunningState() {
 	m.refreshRunningState <- true
 }
 
-func (m *MinerCore) SendSweep(password string) string {
+func (m *MinerCore) SendSweep(password string) []string {
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Sweep",
 		Action:   "Send",
 	})
 
-	err := m.wal.SignMyInputs(m.pendingSweep, password)
-	if err != nil {
-		return err.Error()
+	txids := make([]string, 0)
+
+	for _, s := range m.pendingSweep {
+		err := m.wal.SignMyInputs(s, password)
+		if err != nil {
+			return []string{err.Error()}
+		}
+
+		txHash, err := m.wal.Send(s)
+		if err != nil {
+			return []string{err.Error()}
+		}
+		txids = append(txids, txHash)
 	}
 
-	txHash, err := m.wal.Send(m.pendingSweep)
-	if err != nil {
-		return err.Error()
-	}
 	m.pendingSweep = nil
 
-	logging.Debugf("Transaction sent! TXID: %s\n", txHash)
+	logging.Debugf("Transaction(s) sent! TXIDs: %v\n", txids)
 
-	return txHash
+	return txids
 
 }
 
@@ -472,16 +478,17 @@ func (m *MinerCore) PrepareSweep(addr string) string {
 		Action:   "Prepare",
 	})
 
-	tx, err := m.wal.PrepareSweep(addr)
+	txs, err := m.wal.PrepareSweep(addr)
 	if err != nil {
 		return err.Error()
 	}
 
-	m.pendingSweep = tx
-
-	val := float64(tx.TxOut[0].Value) / float64(100000000)
-
-	m.runtime.Events.Emit("createTransactionResult", fmt.Sprintf("%0.8f VTC", val))
+	m.pendingSweep = txs
+	val := float64(0)
+	for _, tx := range txs {
+		val += (float64(tx.TxOut[0].Value) / float64(100000000))
+	}
+	m.runtime.Events.Emit("createTransactionResult", fmt.Sprintf("%0.8f VTC in %d transaction(s)", val, len(txs)))
 	return ""
 }
 

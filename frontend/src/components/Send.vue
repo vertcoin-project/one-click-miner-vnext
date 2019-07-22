@@ -26,8 +26,9 @@
               </g>
           </g>
       </svg>
-      <p>Your coins are sent</p>
-      <p><a class="link" @click="showTx">Show transaction</a></p>
+      <p>Your coins are sent!</p>
+      <p v-if="txids.length > 1">View transactions:<br/><a class="link"  style="display: inline" v-for="(txid, idx) in txids" v-bind:key="txid" @click="showTx(txid)"><span v-if="idx > 0">&nbsp;&nbsp;</span>#{{idx+1}}</a></p>
+      <p v-if="txids.length == 1"><a class="link"  style="display: inline" v-for="txid in txids" v-bind:key="txid" @click="showTx(txid)">View Transaction</a></p>
       <p><a class="link" @click="back">Back to wallet</a></p>
     </div>
     <div v-if="sendError !== ''" class="col-286">
@@ -65,34 +66,34 @@ export default {
       var self = this;
       if(this.error !== '') {
         this.sent = false;
-        this.txid = '';
+        this.txids = [];
         this.sendError = this.error;
         return
       }
 
       if(this.password === "") {
         this.sent = false;
-        this.txid = '';
+        this.txids = [];
         this.sendError = "Wallet password is required";
         return
       }
 
       if(this.target === "") {
         this.sent = false;
-        this.txid = '';
+        this.txids = [];
         this.sendError = "Invalid address";
         return
       }
 
       window.backend.MinerCore.SendSweep(this.password).then(result => {
-        if(result.length == 64) { // TXID!
-          self.txid = result;
+        if(result.length == 1 && result[0].length != 64) { // Error!
+          self.sent = false;
+          self.txids = [];
+          self.sendError = result[0];
+        } else {
+          self.txids = result;
           self.sent = true;
           self.sendError = '';
-        } else {
-          self.sent = false;
-          self.txid = '';
-          self.sendError = result;
         }
       });
     },
@@ -118,11 +119,11 @@ export default {
       this.receivedBalance = "0.00 VTC";
       this.error =  "";
       this.sent = false;
-      this.txid = "";
+      this.txids = [];
       this.sendError = "";
     },
-    showTx() {
-      window.backend.MinerCore.ShowTx(this.txid);
+    showTx(txid) {
+      window.backend.MinerCore.ShowTx(txid);
     }
 
   },

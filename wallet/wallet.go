@@ -37,6 +37,11 @@ type Utxo struct {
 	Spent        bool
 }
 
+// Insight's limit is 100kB HEX (so 50kB raw bytes) - limiting this to 45kB. Once we have
+// better backends (an insight that performs better and allows higher limits, an integrated
+// full node or just using Vertcoin Core) we can scale this up.
+var maxTxSize = 45000
+
 type Status struct {
 	Height uint `json:"height"`
 }
@@ -54,95 +59,132 @@ func NewWallet(addr string) (*Wallet, error) {
 	return &Wallet{Address: addr, db: db}, nil
 }
 
-func (w *Wallet) PrepareSweep(addr string) (*wire.MsgTx, error) {
-	tx := wire.NewMsgTx(2)
-	totalIn := uint64(0)
-	for _, u := range w.Utxos {
-		if !(u.IsCoinbase && u.Height+101 > w.TipHeight) {
-			totalIn += u.Amount
-			pkScript, _ := hex.DecodeString(u.ScriptPubKey)
-			h, _ := chainhash.NewHashFromStr(u.TxID)
-			tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), pkScript, nil))
-		}
-	}
+func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
+	retArr := make([]*wire.MsgTx, 0)
+	for {
+		tx := wire.NewMsgTx(2)
+		totalIn := uint64(0)
+		for _, u := range w.Utxos {
+			alreadyIncluded := false
+			for _, t := range retArr {
+				for _, i := range t.TxIn {
+					if i.PreviousOutPoint.Hash.String() == u.TxID && i.PreviousOutPoint.Index == uint32(u.Vout) {
+						alreadyIncluded = true
+						break
+					}
+				}
+			}
 
-	if strings.HasPrefix(addr, "V") {
-		pubKeyHash, _, err := base58.CheckDecode(addr)
-		if err != nil {
+			if !alreadyIncluded && !(u.IsCoinbase && u.Height+101 > w.TipHeight) {
+				totalIn += u.Amount
+				pkScript, _ := hex.DecodeString(u.ScriptPubKey)
+				h, _ := chainhash.NewHashFromStr(u.TxID)
+				tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), pkScript, nil))
+			}
+		}
+
+		if strings.HasPrefix(addr, "V") {
+			pubKeyHash, _, err := base58.CheckDecode(addr)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid address")
+			}
+			if len(pubKeyHash) != 20 {
+				return nil, fmt.Errorf("Invalid address")
+			}
+			p2pkhScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).
+				AddOp(txscript.OP_HASH160).AddData(pubKeyHash).
+				AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
+			if err != nil {
+				return nil, fmt.Errorf("Script failure")
+			}
+			tx.AddTxOut(wire.NewTxOut(0, p2pkhScript))
+		} else if strings.HasPrefix(addr, "3") {
+			scriptHash, _, err := base58.CheckDecode(addr)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid address")
+			}
+			if len(scriptHash) != 20 {
+				return nil, fmt.Errorf("Invalid address")
+			}
+			p2shScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_HASH160).AddData(scriptHash).AddOp(txscript.OP_EQUAL).Script()
+			if err != nil {
+				return nil, fmt.Errorf("Script failure")
+			}
+			tx.AddTxOut(wire.NewTxOut(0, p2shScript))
+		} else if strings.HasPrefix(addr, "vtc1") {
+			script, err := bech32.SegWitAddressDecode(addr)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid address: %s", err.Error())
+			}
+			tx.AddTxOut(wire.NewTxOut(int64(totalIn), script))
+		} else {
 			return nil, fmt.Errorf("Invalid address")
 		}
-		if len(pubKeyHash) != 20 {
-			return nil, fmt.Errorf("Invalid address")
+
+		for i := range tx.TxIn {
+			tx.TxIn[i].SignatureScript = make([]byte, 107) // add dummy signature to properly calculate size
 		}
-		p2pkhScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).
-			AddOp(txscript.OP_HASH160).AddData(pubKeyHash).
-			AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
+
+		// Weight = (stripped_size * 4) + witness_size formula,
+		// using only serialization with and without witness data. As witness_size
+		// is equal to total_size - stripped_size, this formula is identical to:
+		// weight = (stripped_size * 3) + total_size.
+		logging.Debugf("Transaction raw serialize size is %d\n", tx.SerializeSize())
+		logging.Debugf("Transaction serialize size stripped is %d\n", tx.SerializeSizeStripped())
+
+		chunked := false
+		// Chunk if needed
+		if tx.SerializeSize() > maxTxSize {
+			chunked = true
+			// Remove some extra inputs so we have enough for the next TX to remain valid, we
+			// want to have enough money to create an output with enough value
+			valueRemoved := uint64(0)
+			for tx.SerializeSize() > maxTxSize || valueRemoved < 100000 {
+				for _, u := range w.Utxos {
+					if u.TxID == tx.TxIn[len(tx.TxIn)-1].PreviousOutPoint.Hash.String() &&
+						uint32(u.Vout) == tx.TxIn[len(tx.TxIn)-1].PreviousOutPoint.Index {
+						totalIn -= u.Amount
+						valueRemoved += u.Amount
+					}
+				}
+				tx.TxIn = tx.TxIn[:len(tx.TxIn)-1]
+			}
+		}
+
+		txWeight := (tx.SerializeSizeStripped() * 3) + tx.SerializeSize()
+		logging.Debugf("Transaction weight is %d\n", txWeight)
+		btcTx := btcutil.NewTx(tx)
+
+		sigOpCost, err := w.GetSigOpCost(btcTx, false, true, true)
 		if err != nil {
-			return nil, fmt.Errorf("Script failure")
+			return nil, err
 		}
-		tx.AddTxOut(wire.NewTxOut(0, p2pkhScript))
-	} else if strings.HasPrefix(addr, "3") {
-		scriptHash, _, err := base58.CheckDecode(addr)
-		if err != nil {
-			return nil, fmt.Errorf("Invalid address")
+		logging.Debugf("Transaction sigop cost is %d\n", sigOpCost)
+
+		vSize := (math.Max(float64(txWeight), float64(sigOpCost*20)) + float64(3)) / float64(4)
+		logging.Debugf("Transaction vSize is %.4f\n", vSize)
+		vSizeInt := uint64(vSize + float64(0.5)) // Round Up
+		logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
+
+		fee := uint64(vSizeInt * 100)
+		logging.Debugf("Setting fee to %d\n", fee)
+
+		// empty out the dummy sigs
+		for i := range tx.TxIn {
+			tx.TxIn[i].SignatureScript = nil
 		}
-		if len(scriptHash) != 20 {
-			return nil, fmt.Errorf("Invalid address")
+
+		tx.TxOut[0].Value = int64(totalIn - fee)
+		if tx.TxOut[0].Value < 50000 {
+			return nil, fmt.Errorf("Insufficient funds")
 		}
-		p2shScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_HASH160).AddData(scriptHash).AddOp(txscript.OP_EQUAL).Script()
-		if err != nil {
-			return nil, fmt.Errorf("Script failure")
+		retArr = append(retArr, tx)
+
+		if !chunked {
+			break
 		}
-		tx.AddTxOut(wire.NewTxOut(0, p2shScript))
-	} else if strings.HasPrefix(addr, "vtc1") {
-		script, err := bech32.SegWitAddressDecode(addr)
-		if err != nil {
-			return nil, fmt.Errorf("Invalid address: %s", err.Error())
-		}
-		tx.AddTxOut(wire.NewTxOut(int64(totalIn), script))
-	} else {
-		return nil, fmt.Errorf("Invalid address")
 	}
-
-	// Weight = (stripped_size * 4) + witness_size formula,
-	// using only serialization with and without witness data. As witness_size
-	// is equal to total_size - stripped_size, this formula is identical to:
-	// weight = (stripped_size * 3) + total_size.
-	logging.Debugf("Transaction raw serialize size is %d\n", tx.SerializeSize())
-	logging.Debugf("Transaction serialize size stripped is %d\n", tx.SerializeSizeStripped())
-
-	for i := range tx.TxIn {
-		tx.TxIn[i].SignatureScript = make([]byte, 107) // add dummy signature to properly calculate size
-	}
-
-	txWeight := (tx.SerializeSizeStripped() * 3) + tx.SerializeSize()
-	logging.Debugf("Transaction weight is %d\n", txWeight)
-	btcTx := btcutil.NewTx(tx)
-
-	sigOpCost, err := w.GetSigOpCost(btcTx, false, true, true)
-	if err != nil {
-		return nil, err
-	}
-	logging.Debugf("Transaction sigop cost is %d\n", sigOpCost)
-
-	vSize := (math.Max(float64(txWeight), float64(sigOpCost*20)) + float64(3)) / float64(4)
-	logging.Debugf("Transaction vSize is %.4f\n", vSize)
-	vSizeInt := uint64(vSize + float64(0.5)) // Round Up
-	logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
-
-	fee := uint64(vSizeInt * 100)
-	logging.Debugf("Setting fee to %d\n", fee)
-
-	// empty out the dummy sigs
-	for i := range tx.TxIn {
-		tx.TxIn[i].SignatureScript = nil
-	}
-
-	tx.TxOut[0].Value = int64(totalIn - fee)
-	if tx.TxOut[0].Value < 50000 {
-		return nil, fmt.Errorf("Insufficient funds")
-	}
-	return tx, nil
+	return retArr, nil
 }
 
 func (w *Wallet) GetUtxo(txid string, pout uint) Utxo {
