@@ -1,10 +1,10 @@
 <template>
   <div id="app" unselectable="on" onselectstart="return false;" >
-    <TabBar v-on:send="switchToSend" v-on:wallet="switchToMining" v-on:settings="switchToSettings" v-if="((screen === 'welcome' && manualStop) || screen !== 'welcome') && screen !== 'checks'" />
+    <TabBar v-on:send="switchToSend" v-on:wallet="switchToWallet" v-on:settings="switchToSettings" v-if="((screen === 'welcome' && manualStop) || screen !== 'welcome') && screen !== 'checks'" />
     <Welcome v-if="screen === 'welcome'" v-on:start-mining="switchToChecks"/>
     <Checks v-if="screen === 'checks'" v-on:mining="switchToMining"/>
     <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining"/>
-    <Mining v-if="screen === 'mining'" v-on:stop-mining="stopMining" />
+    <Mining v-show="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
     <Tracking />
   </div>
@@ -39,6 +39,14 @@ export default {
     stopMining: function() {
         this.manualStop = true;
         this.switchToWelcome();
+    },
+    // Target for the wallet tab (meta between welcome (if stopped) and mining (if mining))
+    switchToWallet: function() {
+      if(this.manualStop) {
+        this.switchToWelcome();
+      } else {
+        this.switchToMining();
+      }
     },
     switchToChecks: function() {
 		this.screen = 'checks';
