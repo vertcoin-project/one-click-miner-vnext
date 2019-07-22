@@ -1,7 +1,7 @@
 <template>
   <div class="tabBar">
     <div class="tabs">
-      <div :class="{tab : true, active: $parent.screen === 'mining'}"><a @click="wallet">Wallet</a></div>
+      <div :class="{tab : true, active: $parent.screen === 'mining' || $parent.screen === 'welcome'}"><a @click="wallet">Wallet</a></div>
       <div :class="{tab : true, active: $parent.screen === 'send'}"><a @click="send">Send Coins</a></div>
       <div :class="{tab : true, active: $parent.screen === 'settings'}"><a @click="settings">Settings</a></div>
     </div>
