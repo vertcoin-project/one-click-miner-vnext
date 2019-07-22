@@ -1,14 +1,17 @@
 <template>
   <div class="container">
-    <div v-if="checkStatus !== 'Failed'" class="col-286">
+    <div v-if="prerequisiteInstall" class="col-286">
+      <p>A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)</p>
+    </div>
+    <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
       <p >{{checkStatus}}...</p>
     </div>
-    <div v-if="checkStatus === 'Failed'" class="col-wide">
+    <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
           Checks failed:<br/>
           {{failureReason}}
       </div>
-      <p v-if="checkStatus === 'Failed'">
+      <p v-if="!prerequisiteInstall && checkStatus === 'Failed'">
         <a class="button" @click="check">Retry</a>
       </p>
     </div>
@@ -22,6 +25,7 @@
 export default {
   data() {
     return {
+      prerequisiteInstall: false,
       checkStatus: "Checking mining software",
       failureReason: ""
     };
@@ -32,6 +36,9 @@ export default {
     wails.events.on("checkStatus",(result) => {
 		  self.checkStatus = result;
 	  });
+    wails.events.on("prerequisiteInstall",(result) => {
+      self.prerequisiteInstall = (result === "1");
+    });
   },
   methods: {
     check: function() {

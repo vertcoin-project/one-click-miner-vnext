@@ -15,16 +15,18 @@ import (
 	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/prerequisites"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
 type MinerBinary struct {
-	Platform           string `json:"platform"`
-	GpuPlatformString  string `json:"gpuplatform"`
-	Url                string `json:"url"`
-	Hash               string `json:"sha256"`
-	MainExecutableName string `json:"mainExecutableName"`
-	ClosedSource       bool   `json:"closedSource"`
+	Platform           string   `json:"platform"`
+	GpuPlatformString  string   `json:"gpuplatform"`
+	Url                string   `json:"url"`
+	Prerequisites      []string `json:"prerequisites"`
+	Hash               string   `json:"sha256"`
+	MainExecutableName string   `json:"mainExecutableName"`
+	ClosedSource       bool     `json:"closedSource"`
 	GPUType            util.GPUType
 }
 
@@ -50,8 +52,8 @@ type MinerImpl interface {
 	ConstructCommandlineArgs(args BinaryArguments) []string
 }
 
-func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
-	br := &BinaryRunner{MinerBinary: m, lastStarted: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)}
+func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunner, error) {
+	br := &BinaryRunner{MinerBinary: m, lastStarted: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC), prerequisiteInstall: prerequisiteInstall}
 	if strings.HasPrefix(m.MainExecutableName, "lycl") {
 		br.MinerImpl = NewLyclMinerImpl(br)
 	} else if strings.HasPrefix(m.MainExecutableName, "ccminer") {
@@ -73,14 +75,15 @@ type BinaryArguments struct {
 }
 
 type BinaryRunner struct {
-	MinerBinary MinerBinary
-	MinerImpl   MinerImpl
-	cmd         *exec.Cmd
-	Debug       bool
-	running     bool
-	lastStarted time.Time
-	rapidFails  int
-	usedArgs    BinaryArguments
+	MinerBinary         MinerBinary
+	MinerImpl           MinerImpl
+	cmd                 *exec.Cmd
+	Debug               bool
+	running             bool
+	lastStarted         time.Time
+	rapidFails          int
+	usedArgs            BinaryArguments
+	prerequisiteInstall chan bool
 }
 
 func (b *BinaryRunner) logPrefix() string {
@@ -131,6 +134,14 @@ func (b *BinaryRunner) IsRunning() bool {
 }
 
 func (b *BinaryRunner) Install() error {
+	// Check prerequisites
+	for _, p := range b.MinerBinary.Prerequisites {
+		err := prerequisites.Install(p, b.prerequisiteInstall)
+		if err != nil {
+			return err
+		}
+	}
+
 	// Check if the archive is available and it has the right SHA sum. Download if not
 	err := b.ensureAvailable()
 	if err != nil {

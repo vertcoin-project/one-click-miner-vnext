@@ -34,6 +34,7 @@ type MinerCore struct {
 	stopHash            chan bool
 	stopBalance         chan bool
 	stopRunningState    chan bool
+	prerequisiteInstall chan bool
 }
 
 func NewMinerCore() (*MinerCore, error) {
@@ -41,6 +42,7 @@ func NewMinerCore() (*MinerCore, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &MinerCore{
 		settings:            db,
 		refreshBalanceChan:  make(chan bool),
@@ -50,6 +52,7 @@ func NewMinerCore() (*MinerCore, error) {
 		stopBalance:         make(chan bool),
 		stopRunningState:    make(chan bool),
 		stopMonitoring:      make(chan bool),
+		prerequisiteInstall: make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
 		rapidFailures:       []*miners.BinaryRunner{},
 	}, nil
@@ -58,6 +61,17 @@ func NewMinerCore() (*MinerCore, error) {
 func (m *MinerCore) WailsInit(runtime *wails.Runtime) error {
 	// Save runtime
 	m.runtime = runtime
+
+	go func() {
+		for pi := range m.prerequisiteInstall {
+			send := "0"
+			if pi {
+				send = "1"
+			}
+			m.runtime.Events.Emit("prerequisiteInstall", send)
+		}
+	}()
+
 	return nil
 }
 
@@ -219,7 +233,7 @@ func (m *MinerCore) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 
 		if match {
 			logging.Debugf("Found compatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
-			br, err := miners.NewBinaryRunner(b)
+			br, err := miners.NewBinaryRunner(b, m.prerequisiteInstall)
 			if err != nil {
 				return nil, err
 			}
