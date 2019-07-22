@@ -190,7 +190,7 @@ func (b *BinaryRunner) HashRate() uint64 {
 
 func (b *BinaryRunner) restart() error {
 	b.lastStarted = time.Now()
-	return b.launch(b.MinerImpl.ConstructCommandlineArgs(b.usedArgs))
+	return b.launch(b.MinerImpl.ConstructCommandlineArgs(b.usedArgs), true)
 }
 
 func (b *BinaryRunner) Start(args BinaryArguments) error {
@@ -205,7 +205,7 @@ func (b *BinaryRunner) Start(args BinaryArguments) error {
 
 	// Always do a fresh unpack of the executable to ensure there's been no funny
 	// business. EnsureAvailable already checked the SHA hash.
-	err = b.launch(b.MinerImpl.ConstructCommandlineArgs(args))
+	err = b.launch(b.MinerImpl.ConstructCommandlineArgs(args), true)
 	if err != nil {
 		return err
 	}
@@ -221,7 +221,7 @@ func (b *BinaryRunner) downloadPath() string {
 	return filepath.Join(util.DataDirectory(), "miners", b.MinerBinary.Hash)
 }
 
-func (b *BinaryRunner) launch(params []string) error {
+func (b *BinaryRunner) launch(params []string, wait bool) error {
 	exePath := b.findExecutable()
 	if exePath == "" {
 		return fmt.Errorf("Cannot find main miner binary in unpack folder")
@@ -249,11 +249,13 @@ func (b *BinaryRunner) launch(params []string) error {
 	if err != nil {
 		return err
 	}
-	b.running = true
-	go func() {
-		b.cmd.Wait()
-		b.running = false
-	}()
+	if wait {
+		b.running = true
+		go func() {
+			b.cmd.Wait()
+			b.running = false
+		}()
+	}
 	return nil
 }
 
