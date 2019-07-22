@@ -3,6 +3,7 @@ module github.com/vertcoin-project/one-click-miner-vnext
 go 1.12
 
 require (
+	github.com/ProtonMail/go-autostart v0.0.0-20181114175602-c5272053443a
 	github.com/btcsuite/btcd v0.0.0-20190614013741-962a206e94e9
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941

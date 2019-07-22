@@ -5,6 +5,10 @@
         <input type="checkbox" v-model="debugging">Enable debugging<br/>
         <span class="subtext">Include the miner's console output in the debug log. Can grow your logs quite large</span>
       </p>
+       <p style="text-align: left">
+        <input type="checkbox" v-model="autoStart">Auto start<br/>
+        <span class="subtext">Start the One-Click Miner when you log in your computer</span>
+      </p>
       <p style="text-align: left">
         <input type="checkbox" v-model="closedSourceMiner">Use closed-source miners<br/>
         <span class="subtext">Better hashrate, but unaudited miners that incurr a developer's fee</span>
@@ -32,12 +36,16 @@ export default {
     return {
       closedSourceMiner: false,
       debugging: false,
+      autoStart: false,
     };
   },
   created() {
 	  var self = this;
 	  window.backend.MinerCore.GetClosedSource().then(result => {
       self.closedSourceMiner = result
+    });
+     window.backend.MinerCore.GetAutoStart().then(result => {
+      self.autoStart = result
     });
     window.backend.MinerCore.GetDebugging().then(result => {
       self.debugging = result
@@ -48,7 +56,9 @@ export default {
       var self = this;
       window.backend.MinerCore.SetClosedSource(this.closedSourceMiner).then(result => {
         window.backend.MinerCore.SetDebugging(self.debugging).then(result => {
-          self.$emit('committed');
+          window.backend.MinerCore.SetAutoStart(self.autoStart).then(result => {
+            self.$emit('committed');
+	        });
 	      });
 	    });
     }
@@ -73,7 +83,7 @@ export default {
   }
   span.subtext {
     opacity: 0.6;
-    font-size: 10pt;
+    font-size: 8pt;
   }
 
 </style>

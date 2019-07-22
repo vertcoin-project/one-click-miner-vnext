@@ -114,6 +114,14 @@ func (m *MinerCore) SetDebugging(newDebugging bool) {
 	m.setSetting("debugging", newDebugging)
 }
 
+func (m *MinerCore) GetAutoStart() bool {
+	return util.GetAutoStart()
+}
+
+func (m *MinerCore) SetAutoStart(newAutoStart bool) {
+	util.SetAutoStart(newAutoStart)
+}
+
 func (m *MinerCore) GetVersion() string {
 	return tracking.GetVersion()
 }

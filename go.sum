@@ -1,6 +1,8 @@
 github.com/Masterminds/semver v1.4.2/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/NebulousLabs/go-UpnP v0.0.0-20181203152547-b32978b8ccbf/go.mod h1:T0vQBt4b6iPDbP21SrsJ6e3E3gbPa9LAhWDZB6pFRcg=
 github.com/Netflix/go-expect v0.0.0-20180615182759-c93bf25de8e8/go.mod h1:oX5x61PbNXchhh0oikYAH+4Pcfw5LKv21+Jnpr6r6Pc=
+github.com/ProtonMail/go-autostart v0.0.0-20181114175602-c5272053443a h1:fXK2KsfnkBV9Nh+9SKzHchYjuE9s0vI20JG1mbtEAcc=
+github.com/ProtonMail/go-autostart v0.0.0-20181114175602-c5272053443a/go.mod h1:oTGdE7/DlWIr23G0IKW3OXK9wZ5Hw1GGiaJFccTvZi4=
 github.com/aead/siphash v1.0.1/go.mod h1:Nywa3cDsYNNK3gaciGTWPwHt0wlpNV15vwmswBAUSII=
 github.com/aead/skein v0.0.0-20160722084837-9365ae6e95d2/go.mod h1:4JBZEId5BaLqvA2DGU53phvwkn2WpeLhNSF79/uKBPs=
 github.com/awalterschulze/gographviz v0.0.0-20190221210632-1e9ccb565bca/go.mod h1:GEV5wmg4YquNw7v1kkyoX9etIk8yVmXj+AkDHuuETHs=
