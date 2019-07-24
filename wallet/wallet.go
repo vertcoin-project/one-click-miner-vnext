@@ -86,39 +86,39 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		if strings.HasPrefix(addr, "V") {
 			pubKeyHash, _, err := base58.CheckDecode(addr)
 			if err != nil {
-				return nil, fmt.Errorf("Invalid address")
+				return nil, fmt.Errorf("invalid_address")
 			}
 			if len(pubKeyHash) != 20 {
-				return nil, fmt.Errorf("Invalid address")
+				return nil, fmt.Errorf("invalid_address")
 			}
 			p2pkhScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).
 				AddOp(txscript.OP_HASH160).AddData(pubKeyHash).
 				AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
 			if err != nil {
-				return nil, fmt.Errorf("Script failure")
+				return nil, fmt.Errorf("script_failure")
 			}
 			tx.AddTxOut(wire.NewTxOut(0, p2pkhScript))
 		} else if strings.HasPrefix(addr, "3") {
 			scriptHash, _, err := base58.CheckDecode(addr)
 			if err != nil {
-				return nil, fmt.Errorf("Invalid address")
+				return nil, fmt.Errorf("invalid_address")
 			}
 			if len(scriptHash) != 20 {
-				return nil, fmt.Errorf("Invalid address")
+				return nil, fmt.Errorf("invalid_address")
 			}
 			p2shScript, err := txscript.NewScriptBuilder().AddOp(txscript.OP_HASH160).AddData(scriptHash).AddOp(txscript.OP_EQUAL).Script()
 			if err != nil {
-				return nil, fmt.Errorf("Script failure")
+				return nil, fmt.Errorf("script_failure")
 			}
 			tx.AddTxOut(wire.NewTxOut(0, p2shScript))
 		} else if strings.HasPrefix(addr, "vtc1") {
 			script, err := bech32.SegWitAddressDecode(addr)
 			if err != nil {
-				return nil, fmt.Errorf("Invalid address: %s", err.Error())
+				return nil, fmt.Errorf("invalid_address")
 			}
 			tx.AddTxOut(wire.NewTxOut(int64(totalIn), script))
 		} else {
-			return nil, fmt.Errorf("Invalid address")
+			return nil, fmt.Errorf("invalid_address")
 		}
 
 		for i := range tx.TxIn {
@@ -157,7 +157,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 
 		sigOpCost, err := w.GetSigOpCost(btcTx, false, true, true)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("could_not_calculate_fee")
 		}
 		logging.Debugf("Transaction sigop cost is %d\n", sigOpCost)
 
@@ -176,7 +176,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 
 		tx.TxOut[0].Value = int64(totalIn - fee)
 		if tx.TxOut[0].Value < 50000 {
-			return nil, fmt.Errorf("Insufficient funds")
+			return nil, fmt.Errorf("insufficient_funds")
 		}
 		retArr = append(retArr, tx)
 

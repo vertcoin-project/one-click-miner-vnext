@@ -1,15 +1,16 @@
 <template>
   <div class="container">
     <div class="col-286" v-if="walletInitialized === 0">
-    	<p>Make a password. Don't lose it.</p>
-	    <p><input type="password" v-model="password" placeholder="Password" /></p>
-	    <p><input type="password" v-model="confirmPassword" placeholder="Confirm Password" @keyup.enter="initAndStart" /></p>
-      <p><a class="button" @click="initAndStart">Start Mining!</a></p>
+    	<p>{{ $t("welcome.makeapassword") }}</p>
+      <p class="error" v-if="error !== ''">{{error}}</p>
+	    <p><input type="password" v-model="password" v-bind:placeholder="$t('welcome.password')" /></p>
+	    <p><input type="password" v-model="confirmPassword" v-bind:placeholder="$t('welcome.confirmpassword')" @keyup.enter="initAndStart" /></p>
+      <p><a class="button" @click="initAndStart">{{ $t("welcome.startmining") }}</a></p>
     </div>
     <div class="col-286" v-if="walletInitialized === 1">
-      <p>Click the button below to start mining again.</p>
+      <p>{{ $t("welcome.click_button_to_start") }}</p>
       <p>
-          <a class="button" @click="start">Start Mining!</a>
+          <a class="button" @click="start">{{ $t("welcome.startmining") }}</a>
       </p>
     </div>
   </div>
@@ -18,9 +19,11 @@
 <script>
 
 
+
 export default {
   data() {
     return {
+      error: "",
       password: "",
 	  confirmPassword: "",
       walletInitialized: -1
@@ -28,7 +31,7 @@ export default {
   },
   created() {
 	  var self = this;
-	  window.backend.MinerCore.WalletInitialized().then(result => {
+	  window.backend.Backend.WalletInitialized().then(result => {
       self.walletInitialized = result;
       if(self.walletInitialized === 1 && !(self.$parent.manualStop === true)) {
         self.start();
@@ -36,21 +39,23 @@ export default {
 	  });
   },
   methods: {
+
     initAndStart: function() {
+      this.error = '';
       if(this.password === '') {
-        alert("Password cannot be empty");
+        this.error = this.$t("welcome.password_cannot_be_empty");
         return;
       }
       if(this.password !== this.confirmPassword) {
-        alert("Passwords do not match");
+        this.error = this.$t("welcome.password_mismatch");
         return
       }
       
       var self = this;
 	  
-      window.backend.MinerCore.InitWallet(this.password).then(result => {
+      window.backend.Backend.InitWallet(this.password).then(result => {
         if(result !== true){
-			    alert('Something went initializing the wallet.');
+			    this.error = this.$t("welcome.error_initializing");
         } else {
           self.start()
         }
@@ -65,5 +70,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  p.error {
+    color: red;
+  }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="col-wide">
-    	<p>New version available: {{version}}</p>
+    	<p>{{ $t('update.new_version_available') }}: {{version}}</p>
       <div class="releaseNotes">
         <pre>{{notes}}</pre>
       </div>
-      <p><a class="button" @click="download">Download</a></p>
-      <p><a class="link" @click="back">Back to wallet</a></p>
+      <p><a class="button" @click="download">{{ $t('update.download') }}</a></p>
+      <p><a class="link" @click="back">{{ $t('generic.back_to_wallet') }}</a></p>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
     var self = this;
-	  window.backend.MinerCore.VersionDetails().then((result) => {
+	  window.backend.Backend.VersionDetails().then((result) => {
       self.version = result[0];
       self.notes = result[1];
       self.downloadUrl = result[2];
@@ -36,7 +36,7 @@ export default {
       this.$emit('back');
     },
     download: function() { 
-      window.backend.MinerCore.OpenDownloadUrl(this.downloadUrl);
+      window.backend.Backend.OpenDownloadUrl(this.downloadUrl);
     }
   }
 };

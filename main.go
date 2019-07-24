@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 
 	"github.com/leaanthony/mewn"
+	"github.com/vertcoin-project/one-click-miner-vnext/backend"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/mining"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/wailsapp/wails"
@@ -44,14 +44,14 @@ func main() {
 		Colour: "#131313",
 	})
 
-	core, err := mining.NewMinerCore()
+	backend, err := backend.NewBackend()
 	if err != nil {
-		logging.Errorf("Error creating MinerCore: %s", err.Error())
+		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	app.Bind(core)
+	app.Bind(backend)
 	app.Run()
-	core.StopMining()
+	backend.StopMining()
 
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Lifecycle",

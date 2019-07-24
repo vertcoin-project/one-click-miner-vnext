@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <div v-if="prerequisiteInstall" class="col-286">
-      <p>A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)</p>
+      <p>{{ $t("checks.prerequisite") }}</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
       <p >{{checkStatus}}...</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
-          Checks failed:<br/>
+          {{ $t("checks.checks_failed") }}:<br/>
           {{failureReason}}
       </div>
       <p v-if="!prerequisiteInstall && checkStatus === 'Failed'">
-        <a class="button" @click="check">Retry</a>
+        <a class="button" @click="check">{{ $t('generic.retry') }}</a>
       </p>
     </div>
   </div>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       prerequisiteInstall: false,
-      checkStatus: "Checking mining software",
+      checkStatus: this.$t("checks.checking_mining_software"),
       failureReason: ""
     };
   },
@@ -34,7 +34,11 @@ export default {
     this.check();
     var self = this;
     wails.Events.On("checkStatus",(result) => {
-		  self.checkStatus = result;
+      if (result === "Failed") {
+        self.checkStatus = result;
+      } else {
+        self.checkStatus = this.$t("checks." + result);
+      }
 	  });
     wails.Events.On("prerequisiteInstall",(result) => {
       self.prerequisiteInstall = (result === "1");
@@ -44,7 +48,7 @@ export default {
     check: function() {
   	  var self = this;
 	  
-      window.backend.MinerCore.PerformChecks().then(result => {
+      window.backend.Backend.PerformChecks().then(result => {
           if(result === "ok") {
       			self.startMining()
 		      } else {
@@ -54,7 +58,7 @@ export default {
     },
     startMining: function() {
       var self = this;
-      window.backend.MinerCore.StartMining().then(result => {
+      window.backend.Backend.StartMining().then(result => {
         self.$emit('mining');
       });
     }

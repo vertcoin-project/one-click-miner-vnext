@@ -1,7 +1,7 @@
 <template>
   <div class="tracking">
-    <p v-if="tracking">OCM v{{version}}<span v-if="updateAvailable"> - <a @click="update">Update available</a></span> - <span>You are anonymously sharing usage statistics.&nbsp;</span><a @click="disableTracking">Disable</a> - <a @click="reportIssue">Report an issue</a></p>
-    <p v-if="!tracking">OCM v{{version}}<span v-if="updateAvailable"> - <a @click="update">Update available</a></span> - <span>You are not sharing usage statistics.&nbsp;</span><a @click="enableTracking">Enable</a><span>&nbsp;these to help us improve your experience - <a @click="reportIssue">Report an issue</a></span></p>
+    <p v-if="tracking">OCM v{{version}}<span v-if="updateAvailable"> - <a @click="update">{{ $t('tracking.update_available') }}</a></span> - <span>{{ $t('tracking.tracking_enabled') }}.&nbsp;</span><a @click="disableTracking">{{ $t('tracking.disable_tracking') }}</a> - <a @click="reportIssue">{{ $t('tracking.report_issue') }}</a></p>
+    <p v-if="!tracking">OCM v{{version}}<span v-if="updateAvailable"> - <a @click="update">{{ $t('tracking.update_available') }}</a></span> - <span>{{ $t('tracking.tracking_disabled') }}.&nbsp;</span><a @click="enableTracking">{{ $t('tracking.enable_tracking') }}</a><span>&nbsp;- <a @click="reportIssue">{{ $t('tracking.report_issue') }}</a></span></p>
 
   </div>
 </template>
@@ -19,13 +19,13 @@ export default {
   },
   mounted() {
     var self = this
-     window.backend.MinerCore.TrackingEnabled().then((result) => {
+     window.backend.Backend.TrackingEnabled().then((result) => {
        self.tracking = (result === "1");
      })
-     window.backend.MinerCore.GetVersion().then((result) => {
+     window.backend.Backend.GetVersion().then((result) => {
         self.version = result;
      })
-     window.backend.MinerCore.UpdateAvailable().then((result) => {
+     window.backend.Backend.UpdateAvailable().then((result) => {
        self.updateAvailable = result;
      })
   },
@@ -34,15 +34,15 @@ export default {
       this.$emit('update');
     },
     reportIssue: function() { 
-      window.backend.MinerCore.ReportIssue()
+      window.backend.Backend.ReportIssue()
     },
     enableTracking: function() { 
       this.tracking = true
-      window.backend.MinerCore.EnableTracking()
+      window.backend.Backend.EnableTracking()
     },
     disableTracking: function() { 
       this.tracking = false
-      window.backend.MinerCore.DisableTracking()
+      window.backend.Backend.DisableTracking()
     }
   }
 };

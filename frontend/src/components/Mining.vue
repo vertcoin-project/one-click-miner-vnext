@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="col-286">
-	    	<p class="header">Spendable Balance:</p>
+	    	<p class="header">{{$t('mining.spendable_balance')}}:</p>
 	    	<p class="spendableBalance">
 					<a class="tiny" @click="refreshBalance">
 						<svg width="16" height="16" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -20,15 +20,15 @@
 						</svg>
 					</a>&nbsp;{{balance}} VTC 
 				</p>
-				<p class="immatureBalance" v-if="balanceImmature != '0.00000000'">(<span style="opacity: 1">{{balanceImmature}} VTC</span> still maturing)</p>
-				<p class="poolBalance" v-if="balancePendingPool != '0.00000000'">(<span style="opacity: 1">{{balancePendingPool}} VTC</span> pending pool payout)</p>
+				<p class="immatureBalance" v-if="balanceImmature != '0.00000000'">(<span style="opacity: 1">{{balanceImmature}} VTC</span> {{$t('mining.still_maturing')}})</p>
+				<p class="poolBalance" v-if="balancePendingPool != '0.00000000'">(<span style="opacity: 1">{{balancePendingPool}} VTC</span> {{$t('mining.pending_pool_payout')}})</p>
 				<p class="spacer">&nbsp;</p>
-				<p v-if="runningMiners === 0">Waiting for miners to start</p>
-				<p v-if="runningMiners > 0" class="header">Expected Earnings (24h):</p>
+				<p v-if="runningMiners === 0">{{$t('mining.waiting_for_miners')}}</p>
+				<p v-if="runningMiners > 0" class="header">{{$t('mining.expected_earnings_24h')}}:</p>
 	    	<p v-if="runningMiners > 0 && hashrate !== '0.00 MH/s'" class="earning">~{{avgearn}} ({{hashrate}})</p>
-				<p v-if="runningMiners > 0 && hashrate === '0.00 MH/s'" class="earning">estimating{{spinner}}</p>
+				<p v-if="runningMiners > 0 && hashrate === '0.00 MH/s'" class="earning">{{$t('mining.estimating')}}{{spinner}}</p>
 				<p>
-					<a class="button" @click="stop">Stop Mining</a>
+					<a class="button" @click="stop">{{$t('mining.stop_mining')}}</a>
 			</p>
     </div>
   </div>
@@ -40,9 +40,9 @@ export default {
     return {
       hashrate: "0.00 MH/s",
 			avgearn:"0.00 VTC",
-			netHash:"Unknown",
-	  	gpu: "Unknown",
-	  	wallet: "Unknown",
+			netHash: "",
+	  	gpu: "",
+	  	wallet: "",
 	  	balance: "0.00000000",
 			balanceImmature: "0.00000000",
 			balancePendingPool: "0.00000000",
@@ -80,19 +80,19 @@ export default {
 		wails.Events.On("balancePendingPool",(result) => {
 			self.balancePendingPool = result;
 		});
-		window.backend.MinerCore.RefreshBalance();
-		window.backend.MinerCore.RefreshHashrate();
-		window.backend.MinerCore.RefreshRunningState();
+		window.backend.Backend.RefreshBalance();
+		window.backend.Backend.RefreshHashrate();
+		window.backend.Backend.RefreshRunningState();
   },
   methods: {
     stop: function() {
 			var self = this;
-			window.backend.MinerCore.StopMining().then(result => {
+			window.backend.Backend.StopMining().then(result => {
 				self.$emit('stop-mining');
 			});
 		},
 		refreshBalance: function() { 
-			window.backend.MinerCore.RefreshBalance();
+			window.backend.Backend.RefreshBalance();
 		},
 		sendMoney: function() { 
 			this.$emit('send')

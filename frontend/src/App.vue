@@ -33,10 +33,10 @@ export default {
   mounted() {
     var self = this;
     window.wails.Events.On("minerRapidFail",(result) => {
-		  window.backend.MinerCore.StopMining().then(result => {
+		  window.backend.Backend.StopMining().then(result => {
 				self.switchToChecks();
 		  });
-	  });
+    });
   },
   methods: {
     stopMining: function() {
@@ -72,7 +72,7 @@ export default {
   },
   restartMining: function() {
     var self = this;
-    window.backend.MinerCore.StopMining().then(result => {
+    window.backend.Backend.StopMining().then(result => {
 				self.switchToChecks();
 		});
   }

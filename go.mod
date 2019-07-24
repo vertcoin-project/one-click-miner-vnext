@@ -7,6 +7,7 @@ require (
 	github.com/btcsuite/btcd v0.0.0-20190614013741-962a206e94e9
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941
+	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
 	github.com/leaanthony/mewn v0.10.7
 	github.com/mit-dci/lit v0.0.0-20190430192525-57c63ed5cc95
 	github.com/mitchellh/go-ps v0.0.0-20190716172923-621e5597135b
@@ -22,5 +23,6 @@ require (
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
 	github.com/wailsapp/wails v0.17.0
 	golang.org/x/crypto v0.0.0-20190621222207-cc06ce4a13d4
+	golang.org/x/text v0.3.0
 	golang.org/x/tools v0.0.0-20190701194522-38ae2c8f6412 // indirect
 )

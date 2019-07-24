@@ -2,27 +2,24 @@
   <div class="container">
     <div class="col-286">
       <p style="text-align: left">
-        <input type="checkbox" v-model="debugging">Enable debugging<br/>
-        <span class="subtext">Include the miner's console output in the debug log. Can grow your logs quite large</span>
+        <input type="checkbox" v-model="debugging">{{ $t("settings.enable_debug") }}<br/>
+        <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
       </p>
        <p style="text-align: left">
-        <input type="checkbox" v-model="autoStart">Auto start<br/>
-        <span class="subtext">Start the One-Click Miner when you log in your computer</span>
+        <input type="checkbox" v-model="autoStart">{{ $t("settings.auto_start") }}<br/>
+        <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
       </p>
       <p style="text-align: left">
-        <input type="checkbox" v-model="closedSourceMiner">Use closed-source miners<br/>
-        <span class="subtext">Better hashrate, but unaudited miners that incurr a developer's fee</span>
+        <input type="checkbox" v-model="closedSourceMiner">{{ $t("settings.closed_source") }}<br/>
+        <span class="subtext">{{ $t("settings.closed_source_sub") }}</span>
       </p>
       <div class="warning" v-if="closedSourceMiner">
         <p>
-            You have selected to use closed source miner(s). Vertcoin does 
-            not endorse or support these miners. They cannot be audited on 
-            their contents and could contain functions that harm your computer. 
-            You are also paying a developer's fee when using these miners.
+            {{ $t("settings.closed_source_warning") }}
         </p>
       </div>
       <p>
-          <a class="button" @click="save">Save &amp; Restart</a>
+          <a class="button" @click="save">{{ $t("settings.save_n_restart") }}</a>
       </p>
     </div>
   </div>
@@ -41,22 +38,22 @@ export default {
   },
   created() {
 	  var self = this;
-	  window.backend.MinerCore.GetClosedSource().then(result => {
+	  window.backend.Backend.GetClosedSource().then(result => {
       self.closedSourceMiner = result
     });
-     window.backend.MinerCore.GetAutoStart().then(result => {
+     window.backend.Backend.GetAutoStart().then(result => {
       self.autoStart = result
     });
-    window.backend.MinerCore.GetDebugging().then(result => {
+    window.backend.Backend.GetDebugging().then(result => {
       self.debugging = result
     });
   },
   methods: {
     save: function() {
       var self = this;
-      window.backend.MinerCore.SetClosedSource(this.closedSourceMiner).then(result => {
-        window.backend.MinerCore.SetDebugging(self.debugging).then(result => {
-          window.backend.MinerCore.SetAutoStart(self.autoStart).then(result => {
+      window.backend.Backend.SetClosedSource(this.closedSourceMiner).then(result => {
+        window.backend.Backend.SetDebugging(self.debugging).then(result => {
+          window.backend.Backend.SetAutoStart(self.autoStart).then(result => {
             self.$emit('committed');
 	        });
 	      });

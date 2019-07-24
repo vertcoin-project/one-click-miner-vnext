@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <div v-if="sendError === '' && !sent" class="col-286">
-    	<p v-if="receivedBalance === '0.00 VTC'">Send all your mined coins to:</p>
-	    <p v-if="receivedBalance !== '0.00 VTC'">You're sending {{receivedBalance}} to:</p>
-	    <p><input :class="{error: (error !== ''), success: (error === '' && target !== '')}" @blur="recalculate()" type="text" v-model="target" placeholder="Receiver Address" /></p>
+    	<p v-if="receivedBalance === '0.00 VTC'">{{ $t('sending.send_all_to') }}:</p>
+	    <p v-if="receivedBalance !== '0.00 VTC' && receivedTxCount === 1">{{ $t('sending.youre_sending_x_to', { receivedBalance }) }}:</p>
+	    <p v-if="receivedBalance !== '0.00 VTC' && receivedTxCount > 1">{{ $t('sending.youre_sending_x_in_y_txs_to', { receivedBalance, receivedTxCount }) }}:</p>
+	    <p><input :class="{error: (error !== ''), success: (error === '' && target !== '')}" @blur="recalculate()" type="text" v-model="target" v-bind:placeholder="$t('sending.receiver_address')" /></p>
       <p v-if="error != ''" class="error">{{error}}</p>
-	    <p><input type="password" v-model="password" placeholder="Wallet Password" @keyup.enter="send"/></p>
+	    <p><input type="password" v-model="password" v-bind:placeholder="$t('sending.wallet_password')" @keyup.enter="send"/></p>
       <p>
-          <a class="button" @click="send">Send</a>
+          <a class="button" @click="send">{{ $t('sending.send') }}</a>
       </p>
     </div>
     <div v-if="sent" class="col-286">
@@ -26,15 +27,15 @@
               </g>
           </g>
       </svg>
-      <p>Your coins are sent!</p>
-      <p v-if="txids.length > 1">View transactions:<br/><a class="link"  style="display: inline" v-for="(txid, idx) in txids" v-bind:key="txid" @click="showTx(txid)"><span v-if="idx > 0">&nbsp;&nbsp;</span>#{{idx+1}}</a></p>
-      <p v-if="txids.length == 1"><a class="link"  style="display: inline" v-for="txid in txids" v-bind:key="txid" @click="showTx(txid)">View Transaction</a></p>
-      <p><a class="link" @click="back">Back to wallet</a></p>
+      <p>{{ $t('sending.coins_sent') }}</p>
+      <p v-if="txids.length > 1">{{ $t('sending.view_trans_plural') }}:<br/><a class="link"  style="display: inline" v-for="(txid, idx) in txids" v-bind:key="txid" @click="showTx(txid)"><span v-if="idx > 0">&nbsp;&nbsp;</span>#{{idx+1}}</a></p>
+      <p v-if="txids.length == 1"><a class="link"  style="display: inline" v-for="txid in txids" v-bind:key="txid" @click="showTx(txid)">{{ $t('sending.view_trans_singular') }}</a></p>
+      <p><a class="link" @click="back">{{ $t('generic.back_to_wallet') }}</a></p>
     </div>
     <div v-if="sendError !== ''" class="col-286">
-      <p>Failed to send your coins</p>
+      <p>{{ $t('sending.failed_to_send') }}</p>
       <p>{{sendError}}</p>
-      <p><a class="button" @click="retry">Retry</a></p>
+      <p><a class="button" @click="retry">{{ $t('generic.retry') }}</a></p>
     </div>
   </div>
 </template>
@@ -49,6 +50,7 @@ export default {
       target: "",
       password: "",
       receivedBalance: "0.00 VTC",
+      receivedTxCount: 0,
       error : "",
       sent : false,
       sendError: "",
@@ -58,7 +60,8 @@ export default {
   mounted() {
     var self = this;
     wails.Events.On("createTransactionResult",(result) => {
-			self.receivedBalance = result;
+      self.receivedBalance = result.FormattedAmount;
+      self.receivedTxCount = result.NumberOfTransactions;
 		});
   },
   methods: {
@@ -74,22 +77,22 @@ export default {
       if(this.password === "") {
         this.sent = false;
         this.txids = [];
-        this.sendError = "Wallet password is required";
+        this.sendError = $t('sending.password_required');
         return
       }
 
       if(this.target === "") {
         this.sent = false;
         this.txids = [];
-        this.sendError = "Invalid address";
+        this.sendError = $t('sending.invalid_address');
         return
       }
 
-      window.backend.MinerCore.SendSweep(this.password).then(result => {
+      window.backend.Backend.SendSweep(this.password).then(result => {
         if(result.length == 1 && result[0].length != 64) { // Error!
           self.sent = false;
           self.txids = [];
-          self.sendError = result[0];
+          self.sendError = $t('sending.' + result[0]);
         } else {
           self.txids = result;
           self.sent = true;
@@ -101,10 +104,10 @@ export default {
       var self = this;
       this.receivedBalance = "0.00 VTC";
       this.invalidAddress = false;
-      window.backend.MinerCore.PrepareSweep(this.target).then(result => {
+      window.backend.Backend.PrepareSweep(this.target).then(result => {
         if(result !== "") {
           self.receivedBalance = "0.00 VTC";
-          self.error = result;
+          self.error = $t('sending.' + result);
         } else {
           self.error = "";
         }
@@ -123,7 +126,7 @@ export default {
       this.sendError = "";
     },
     showTx(txid) {
-      window.backend.MinerCore.ShowTx(txid);
+      window.backend.Backend.ShowTx(txid);
     }
 
   },
