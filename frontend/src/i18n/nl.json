@@ -16,7 +16,6 @@
     "checks" : {
         "prerequisite" : "Er wordt software geinstalleerd die nodig is voor de OCM. Je zou een pop-up kunnen krijgen die om toestemming vraagt (zou slechts in de taakbalk kunnen knipperen)",
         "checks_failed" : "Controles mislukt",
-        "retry" : "Probeer opnieuw",
         "checking_mining_software" : "Miner software controleren...",
         "rapidfail" : "Controleren op herhaaldelijke fouten",
         "compatibility" : "Compatibiliteit van grafische kaart controleren...",
@@ -41,7 +40,6 @@
         "coins_sent" : "Je coins zijn verstuurd!",
         "view_trans_plural" : "Bekijk transacties",
         "view_trans_singular" : "Bekijk transactie",
-        "back_to_wallet" : "Terug naar portemonnee",
         "failed_to_send" : "Je coins versturen is mislukt",
         "password_required" : "Wachtwoord van je portomonnee is verplicht",
         "invalid_address" : "Ongeldig adres",
