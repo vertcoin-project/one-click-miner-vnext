@@ -8,17 +8,17 @@ We expect you're familiar with how to create pull requests. If you're not, check
 
 ### Step 1: Create a copy of the english base file
 
-Once in your local fork branch, make a copy of `en.js` in this directory (`frontend/src/i18n`), and rename it to match your desired language (for instance, for German you'd rename it to `de.js`).
+Once in your local fork branch, make a copy of `en.json` in this directory (`frontend/src/i18n`), and rename it to match your desired language (for instance, for German you'd rename it to `de.json`).
 
 ### Step 2: Translate!
 
 Translate all the strings in the javascript file. Only translate the values not the identifiers, so:
 
-```javascript
-export default {
-    generic : {
+```json
+{
+    "generic" : {
         "retry" : "Retry",
-        "back_to_wallet" : "Back to wallet",
+        "back_to_wallet" : "Back to wallet"
     },
     ...
 }
@@ -26,11 +26,11 @@ export default {
 
 Would become
 
-```javascript
-export default {
-    generic : {
+```json
+{
+    "generic" : {
         "retry" : "Opnieuw proberen",
-        "back_to_wallet" : "Terug naar portemonnee",
+        "back_to_wallet" : "Terug naar portemonnee"
     },
     ...
 }
@@ -45,9 +45,9 @@ In the file `frontend/src/main.js` there's a list of the translations imported -
 
 ```javascript
 // Import all locales
-import locale_en from "./i18n/en.js";
-import locale_nl from "./i18n/nl.js";
-import locale_de from "./i18n/de.js"; // <-- this line is added
+import locale_en from "./i18n/en.json";
+import locale_nl from "./i18n/nl.json";
+import locale_de from "./i18n/de.json"; // <-- this line is added
 ```
 
 Further down in the file, also add it to the list of languages injected to the i18n component:

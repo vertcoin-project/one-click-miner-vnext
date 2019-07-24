@@ -7,8 +7,8 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 // Import all locales
-import locale_en from "./i18n/en.js";
-import locale_nl from "./i18n/nl.js";
+import locale_en from "./i18n/en.json";
+import locale_nl from "./i18n/nl.json";
 
 import Bridge from "./wailsbridge";
 

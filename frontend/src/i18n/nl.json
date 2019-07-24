@@ -1,9 +1,9 @@
-export default {
-    generic : {
+{
+    "generic" : {
         "retry" : "Opnieuw proberen",
-        "back_to_wallet" : "Terug naar portemonnee",
+        "back_to_wallet" : "Terug naar portemonnee"
     },
-    welcome : {
+    "welcome" : {
         "click_button_to_start" : "Klik op de knop om te beginnen met minen.",
         "startmining" : "Begin met minen!",
         "makeapassword" : "Kies een wachtwoord. Raak het niet kwijt.",
@@ -11,18 +11,18 @@ export default {
         "confirmpassword" : "Bevestig Wachtwoord",
         "password_cannot_be_empty" : "Wachtwoord mag niet leeg zijn",
         "password_mismatch" : "Wachtwoorden komen niet overeen",
-        "error_initializing" : "Er ging iets mis met het initialiseren van de portemonnee",
+        "error_initializing" : "Er ging iets mis met het initialiseren van de portemonnee"
     },
-    checks : {
+    "checks" : {
         "prerequisite" : "Er wordt software geinstalleerd die nodig is voor de OCM. Je zou een pop-up kunnen krijgen die om toestemming vraagt (zou slechts in de taakbalk kunnen knipperen)",
         "checks_failed" : "Controles mislukt",
         "retry" : "Probeer opnieuw",
         "checking_mining_software" : "Miner software controleren...",
         "rapidfail" : "Controleren op herhaaldelijke fouten",
         "compatibility" : "Compatibiliteit van grafische kaart controleren...",
-        "installing_miners" : "Miner software installeren...",
+        "installing_miners" : "Miner software installeren..."
     },
-    mining : {
+    "mining" : {
         "spendable_balance" : "Besteedbaar saldo",
         "still_maturing" : "aan het rijpen",
         "pending_pool_payout" : "saldo bij mining-pool",
@@ -31,7 +31,7 @@ export default {
         "estimating" : "berekenen",
         "stop_mining" : "Stop minen"
     },
-    sending : {
+    "sending" : {
         "send_all_to" : "Verstuur al je coins naar",
         "youre_sending_x_to" : "Je gaat {receivedBalance} versturen naar",
         "youre_sending_x_in_y_txs_to" : "Je gaat in {receivedTxCount} transacties {receivedBalance} versturen naar",
@@ -48,9 +48,9 @@ export default {
         "script_failure" : "Scriptfout",
         "could_not_calculate_fee" : "Kon transactiekosten niet vaststellen",
         "insufficient_funds" : "Onvoldoende saldo",
-        "send_failed" : "Kon de transactie niet versturen. Controleer debug.log voor meer informatie",
+        "send_failed" : "Kon de transactie niet versturen. Controleer debug.log voor meer informatie"
     },
-    settings : {
+    "settings" : {
         "enable_debug" : "Schakel foutopsporing in",
         "enable_debug_sub" : "Hiermee wordt de uitvoer van de miner software in de debug.log opgenomen. Kan de log bestanden groot maken!",
         "auto_start" : "Automatisch starten",
@@ -58,24 +58,24 @@ export default {
         "closed_source" : "Gebruik miners zonder open broncode",
         "closed_source_sub" : "Betere performance, maar de software is niet gecontroleerd, en je betaalt een percentage aan de ontwikkelaars",
         "closed_source_warning" : "Je hebt ervoor gekozen om miners zonder open broncode te gebruiken. Vertcoin raadt dat niet aan en ondersteunt dit niet. De software kan niet gecontroleerd worden en kan functies bevatten die je computer beschadigen.",
-        "save_n_restart" : "Opslaan & Herstarten",
+        "save_n_restart" : "Opslaan & Herstarten"
     },
-    tabbar : {
+    "tabbar" : {
         "wallet" : "Portemonnee",
         "send_coins" : "Verstuur coins",
         "settings" : "Instellingen"
     },
-    tracking: { 
+    "tracking": { 
         "update_available" : "Update beschikbaar",
         "tracking_enabled" : "Je deelt anonieme gebruiksstatistieken",
         "disable_tracking" : "Schakel uit",
         "tracking_disabled" : "Je deelt geen gebruiksstatistieken",
         "enable_tracking" : "Schakel in om ons te helpen zaken te verbeteren",
-        "report_issue" : "Meld een probleem",
+        "report_issue" : "Meld een probleem"
     },
-    update : {
+    "update" : {
         "new_version_available" : "Nieuwe versie beschikbaar",
-        "download" : "Downloaden",
+        "download" : "Downloaden"
     }
     
 }

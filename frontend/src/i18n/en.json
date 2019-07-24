@@ -1,9 +1,9 @@
-export default {
-    generic : {
+{
+    "generic" : {
         "retry" : "Retry",
-        "back_to_wallet" : "Back to wallet",
+        "back_to_wallet" : "Back to wallet"
     },
-    welcome : {
+    "welcome" : {
         "click_button_to_start" : "Click the button below to start mining again.",
         "startmining" : "Start Mining!",
         "makeapassword" : "Make a password. Don't lose it.",
@@ -11,17 +11,17 @@ export default {
         "confirmpassword" : "Confirm Password",
         "password_cannot_be_empty" : "Password cannot be empty",
         "password_mismatch" : "Passwords do not match",
-        "error_initializing" : "Something went initializing the wallet",
+        "error_initializing" : "Something went initializing the wallet"
     },
-    checks : {
+    "checks" : {
         "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
         "checks_failed" : "Checks failed",
         "checking_mining_software" : "Checking mining software...",
         "rapidfail" : "Checking for rapid failure occurrences",
         "compatibility" : "Checking GPU compatibility...",
-        "installing_miners" : "Installing mining software...",
+        "installing_miners" : "Installing mining software..."
     },
-    mining : {
+    "mining" : {
         "spendable_balance" : "Spendable Balance",
         "still_maturing" : "still maturing",
         "pending_pool_payout" : "pending pool payout",
@@ -30,7 +30,7 @@ export default {
         "estimating" : "estimating",
         "stop_mining" : "Stop Mining"
     },
-    sending : {
+    "sending" : {
         "send_all_to" : "Send all your mined coins to",
         "youre_sending_x_to" : "You're sending {receivedBalance} to",
         "youre_sending_x_in_y_txs_to" : "You're sending {receivedBalance} in {receivedTxCount} transactions to",
@@ -46,9 +46,9 @@ export default {
         "script_failure" : "Script failure",
         "could_not_calculate_fee" : "Could not calculate fee",
         "insufficient_funds" : "Insufficient funds",
-        "send_failed" : "Unable to send transaction. Check debug.log for more information",
+        "send_failed" : "Unable to send transaction. Check debug.log for more information"
     },
-    settings : {
+    "settings" : {
         "enable_debug" : "Enable debugging",
         "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
         "auto_start" : "Auto start",
@@ -56,23 +56,23 @@ export default {
         "closed_source" : "Use closed-source miners",
         "closed_source_sub" : "Better hashrate, but unaudited miners that incurr a developer's fee",
         "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
-        "save_n_restart" : "Save & Restart",
+        "save_n_restart" : "Save & Restart"
     },
-    tabbar : {
+    "tabbar" : {
         "wallet" : "Wallet",
         "send_coins" : "Send coins",
         "settings" : "Settings"
     },
-    tracking: { 
+    "tracking": { 
         "update_available" : "Update available",
         "tracking_enabled" : "You are anonymously sharing usage statistics",
         "disable_tracking" : "Disable",
         "tracking_disabled" : "You are not sharing usage statistics",
         "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue",
+        "report_issue" : "Report an issue"
     },
-    update : {
+    "update" : {
         "new_version_available" : "New version available",
-        "download" : "Download",
+        "download" : "Download"
     }
 }
