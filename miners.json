@@ -8,6 +8,14 @@
         "closedSource" : false
     },
     {
+        "platform": "linux",
+        "gpuplatform" : "NVIDIA",
+        "url" : "https://github.com/gertjaap/ccminer/releases/download/2.3.1-linux/ccminer-linux-2.3.1-alpha1-x64.zip",
+        "sha256" : "108326a2c259230d82c9954e4a672a351fed143c154821e281bc3789a6b8d190",
+        "mainExecutableName" : "ccminer",
+        "closedSource" : false
+    },
+    {
         "platform": "windows",
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-windows.zip",
