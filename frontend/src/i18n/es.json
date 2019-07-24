@@ -1,0 +1,78 @@
+{
+    "generic" : {
+        "retry" : "Inténtalo de nuevo",
+        "back_to_wallet" : "volver a la cartera"
+    },
+    "welcome" : {
+        "click_button_to_start" : "Haga clic en el botón de abajo para empezar a minar de nuevo.",
+        "startmining" : "Empezar a minar!",
+        "makeapassword" : "Crea una contraseña. No lo pierdas.",
+        "password" : "contraseña",
+        "confirmpassword" : "Confirmar contraseña",
+        "password_cannot_be_empty" : "La contraseña no puede estar vacía",
+        "password_mismatch" : "La contraseña no coincide",
+        "error_initializing" : "hubo un error al inicializar la cartera"
+    },
+    "checks" : {
+        "prerequisite" : "Se está instalando un requisito previo. Es posible que vea una ventana emergente que solicite permisos (podría estar parpadeando en la barra de tareas)",
+        "checks_failed" : "La comprobación ha fallado",
+        "checking_mining_software" : "Comprobando software de minería...",
+        "rapidfail" : "Comprobación de ocurrencias de fallos rápidos",
+        "compatibility" : "Comprobación la compatibilidad de la GPU...",
+        "installing_miners" : "Instalando software de minería..."
+    },
+    "mining" : {
+        "spendable_balance" : "Saldo disponible",
+        "still_maturing" : "Todavía preparándose para ser gastado",
+        "pending_pool_payout" : "Pago del Pool pendiente",
+        "waiting_for_miners" : "Esperando que los mineros comiencen",
+        "expected_earnings_24h" : "Rendimiento aproximado (24h)",
+        "estimating" : "Calculande Rendimiento",
+        "stop_mining" : "Dejar de minar"
+    },
+    "sending" : {
+        "send_all_to" : "Manda todas tus monedas minadas a",
+        "youre_sending_x_to" : "Estas mandando {receivedBalance} a",
+        "youre_sending_x_in_y_txs_to" : "Estas mandando {receivedBalance} en {receivedTxCount} transacciones a",
+        "receiver_address" : "Dirección del destinatario",
+        "wallet_password" : "Contraseña de la cartera",
+        "send" : "Send",
+        "coins_sent" : "Tus monedas han sido enviados!",
+        "view_trans_plural" : "Ver transacciones",
+        "view_trans_singular" : "Ver transaccion",
+        "failed_to_send" : "Error al enviar tus monedas",
+        "password_required" : "Se requiere la contraseña de la cartera",
+        "invalid_address" : "Dirección no válida",
+        "script_failure" : "Fallo del script",
+        "could_not_calculate_fee" : "No se puede calcular la tarifa",
+        "insufficient_funds" : "Saldo insuficiente",
+        "send_failed" : "No se puede enviar la transacción. Compruebe debug.log para más información"
+    },
+    "settings" : {
+        "enable_debug" : "Habilitar la depuración",
+        "enable_debug_sub" : "Incluir la información del minero en el registro de depuración.",
+        "auto_start" : "inicio automático",
+        "auto_start_sub" : "Iniciar el programa cuando se conecta el ordenador",
+        "closed_source" : "Utilice mineros de código cerrado",
+        "closed_source_sub" : "Mejor hashrate, pero mineros no auditados que tienen una tarifa de desarrollador",
+        "closed_source_warning" : "Has seleccionado utilizar minero (s) de código cerrado. Vertcoin no respalda ni apoya a estos mineros. No pueden ser auditados en su contenido y pueden contener funciones que dañen tu ordenador",
+        "save_n_restart" : "Guardar y reiniciar."
+    },
+    "tabbar" : {
+        "wallet" : "Cartera",
+        "send_coins" : "Enviar monedas",
+        "settings" : "Ajustes"
+    },
+    "tracking": { 
+        "update_available" : "Actualización disponible",
+        "tracking_enabled" : "Estás compartiendo anónimamente las estadísticas de uso",
+        "disable_tracking" : "Inhabilitar",
+        "tracking_disabled" : "No estás compartiendo estadísticas de uso.",
+        "enable_tracking" : "Habilítalos para ayudarnos a mejorar tu experiencia.",
+        "report_issue" : "Reportar que algo no funciona correctamente"
+    },
+    "update" : {
+        "new_version_available" : "Actualización disponible",
+        "download" : "Descargar"
+    }
+}
