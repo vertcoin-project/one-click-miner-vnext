@@ -11,6 +11,7 @@ var availableLanguages = []string{
 	"nl",
 	"es",
 	"hr",
+	"sv"
 }
 
 var languageMatcher language.Matcher

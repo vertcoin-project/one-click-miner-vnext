@@ -1,0 +1,78 @@
+{
+  "generic": {
+    "retry": "Försök igen",
+    "back_to_wallet": "Tillbaka till plånboken"
+  },
+  "welcome": {
+    "click_button_to_start": "Klicka på knappen nedan för att börja mina igen.",
+    "startmining": "Börja Mina!",
+    "makeapassword": "Skapa ett lösenord. Tappa inte bort det.",
+    "password": "Lösenord",
+    "confirmpassword": "Bekräfta lösenord",
+    "password_cannot_be_empty": "Du måste ange ett lösenord",
+    "password_mismatch": "Lösenorden matchar inte",
+    "error_initializing": "Något gick fel under initialisering av plånboken"
+  },
+  "checks": {
+    "prerequisite": "Mjukvara som krävs av One-Click Miner installeras. Du kanske kommer se en popup som ber om behörigheter (kanske bara blinkar i aktivitetsfältet)",
+    "checks_failed": "Kontrollerna misslyckades",
+    "checking_mining_software": "Kontrollerar mining mjukvaran...",
+    "rapidfail": "Kontrollerar för förekomsten av fel",
+    "compatibility": "Kontrollerar GPU-kompatibilitet...",
+    "installing_miners": "Installera mining mjukvara..."
+  },
+  "mining": {
+    "spendable_balance": "Spenderbart saldo",
+    "still_maturing": "mognar fortfarande",
+    "pending_pool_payout": "väntande poolutbetalning",
+    "waiting_for_miners": "Väntar på att miningen ska börja",
+    "expected_earnings_24h": "Förväntade intäkter (24h)",
+    "estimating": "beräknar",
+    "stop_mining": "Sluta Mina"
+  },
+  "sending": {
+    "send_all_to": "Skicka dina minade mynt till",
+    "youre_sending_x_to": "Du skickar {receivedBalance} till",
+    "youre_sending_x_in_y_txs_to": "Du skickar {receivedBalance} i {receivedTxCount} transaktion till",
+    "receiver_address": "Mottagaradress",
+    "wallet_password": "Plånbokslösenord",
+    "send": "Skicka",
+    "coins_sent": "Dina mynt har skickats!",
+    "view_trans_plural": "Visa transaktioner",
+    "view_trans_singular": "Visa transaktion",
+    "failed_to_send": "Det gick inte att skicka dina mynt",
+    "password_required": "Plånbokslösenord krävs",
+    "invalid_address": "Ogiltig adress",
+    "script_failure": "Script fel",
+    "could_not_calculate_fee": "Kunde inte beräkna avgift",
+    "insufficient_funds": "Otillräckliga saldo",
+    "send_failed": "Det gick inte att skicka transaktion. Kontrollera debug.log filen för mer information"
+  },
+  "settings": {
+    "enable_debug": "Aktivera felsökning",
+    "enable_debug_sub": "Inkludera mining mjukvarans utdata i felsökningsloggen. Kan gör att loggfilen växer snabbt",
+    "auto_start": "Autostart",
+    "auto_start_sub": "Starta One-Click Miner när du loggar in på din dator",
+    "closed_source": "Använd mining mjukvara med stängd källkod (Proprietär programvara)",
+    "closed_source_sub": "Ger bättre hashrate, men källkoden är ej granskad och mjukvaran har en avgift till utvecklaren",
+    "closed_source_warning": "Du har valt att använda mining mjukvara med sluten källkod. Vertcoin stöder inte denna mjukvara. Källkoden kan inte granskas och kan inehålla delar som skadar din dator.",
+    "save_n_restart": "Spara & starta om"
+  },
+  "tabbar": {
+    "wallet": "Plånbok",
+    "send_coins": "Skicka mynt",
+    "settings": "Inställningar"
+  },
+  "tracking": {
+    "update_available": "Uppdatering tillgänglig",
+    "tracking_enabled": "Du delar anonym användningsstatistik",
+    "disable_tracking": "Inaktivera",
+    "tracking_disabled": "Du delar inte användningsstatistik",
+    "enable_tracking": "Aktivera dessa för att hjälpa oss förbättra One-Click Miner",
+    "report_issue": "Rapportera ett problem"
+  },
+  "update": {
+    "new_version_available": "Ny version tillgänglig",
+    "download": "Ladda ner"
+  }
+}
