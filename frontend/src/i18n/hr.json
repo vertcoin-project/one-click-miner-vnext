@@ -1,0 +1,78 @@
+{
+    "generic" : {
+        "retry" : "Pokušajte ponovno",
+        "back_to_wallet" : "Natrag na novčanik"
+    },
+    "welcome" : {
+        "click_button_to_start" : "Pritisnite dugme ispod da ponovno započnete sa rudarenjem.",
+        "startmining" : "Započnite sa rudarenjem!",
+        "makeapassword" : "Kreirajte lozinku. Nemojte ju izgubiti.",
+        "password" : "Lozinka",
+        "confirmpassword" : "Potvrdite lozinku",
+        "password_cannot_be_empty" : "Polje za lozinku ne može biti prazno",
+        "password_mismatch" : "Lozinke se ne podudaraju",
+        "error_initializing" : "Pogreška kod učitavanja novčanika"
+    },
+    "checks" : {
+        "prerequisite" : "Skidanje preduvjetnih datoteka. Mogućnost iskakanja skočnog prozora za dopuštenja (može treperiti u alatnoj traci)",
+        "checks_failed" : "Provjera neuspješna",
+        "checking_mining_software" : "Provjera softvera za rudarenje...",
+        "rapidfail" : "Provjera učestalosti neuspješnih radnji",
+        "compatibility" : "Provjera kompatibilnosti grafičke kartice...",
+        "installing_miners" : "Instalacija softvera za rudarenje..."
+    },
+    "mining" : {
+        "spendable_balance" : "Dostupan iznos",
+        "still_maturing" : "nedozrelo",
+        "pending_pool_payout" : "očekivana pool isplata",
+        "waiting_for_miners" : "Čekanje da softver za rudarenje započne sa radom",
+        "expected_earnings_24h" : "Očekivana zarada(24h)",
+        "estimating" : "Vršim procjenu",
+        "stop_mining" : "Zaustavi rudarenje"
+    },
+    "sending" : {
+        "send_all_to" : "Pošalji sve izrudarene novčiće na",
+        "youre_sending_x_to" : "Šaljete {receivedBalance} na",
+        "youre_sending_x_in_y_txs_to" : "Šaljete {receivedBalance} u {receivedTxCount} transakcija na",
+        "receiver_address" : "Adresa primatelja",
+        "wallet_password" : "Lozinka novčanika",
+        "send" : "Pošalji",
+        "coins_sent" : "Vaši novčići su poslani!",
+        "view_trans_plural" : "Vidi transakciju",
+        "view_trans_singular" : "Vidi transakcije",
+        "failed_to_send" : "Neuspješno slanje vaših novčića",
+        "password_required" : "Potrebna je lozinka novčanika",
+        "invalid_address" : "Nepostojeća adresa",
+        "script_failure" : "Greška skripte",
+        "could_not_calculate_fee" : "Nije moguće izračunati naknadu",
+        "insufficient_funds" : "Nedostatna sredstva",
+        "send_failed" : "Nije moguće poslati transakciju. Provjerite debug.log za više informacija"
+    },
+    "settings" : {
+        "enable_debug" : "Omogući otklanjanje bugova",
+        "enable_debug_sub" : "Omogući izvoz logova konzole softvera za rudarenje u log za otklanjanje bugova. Veličina loga može se znatno povećati",
+        "auto_start" : "Automatski početak",
+        "auto_start_sub" : "Pokreni One-Click Miner kada se logiraš na računalo",
+        "closed_source" : "Koristi softver za rudarenje zatvorenog koda",
+        "closed_source_sub" : "Bolji hashrate, ali neocijenjeni softver za rudarenje može uključivati naknadu za razvojne inženjere",
+        "closed_source_warning" : "Odlučili ste koristiti softver(e) za rudarenje zatvorenog koda. Vertcoin ne odobrava i ne podržava njihovu upotrebu. Ne može se provjeriti njihov sadržaj i potencijalno mogu sadržavati funkcije koje mogu oštetiti vaše računalo.",
+        "save_n_restart" : "Spremi i ponovno pokreni"
+    },
+    "tabbar" : {
+        "wallet" : "Novčanik",
+        "send_coins" : "Pošalji novčiće",
+        "settings" : "Postavke"
+    },
+    "tracking": { 
+        "update_available" : "Nova inačica je dostupna",
+        "tracking_enabled" : "Anonimno dijelite vašu statistiku o korištenju",
+        "disable_tracking" : "Onemogući",
+        "tracking_disabled" : "Ne dijelite statistiku o korištenju",
+        "enable_tracking" : "Omogućite i pomognite nam da unaprijedimo korisničko iskustvo",
+        "report_issue" : "Prijavite problem"
+    },
+    "update" : {
+        "new_version_available" : "Nova verzija je dostupna",
+        "download" : "Skidanje"
+    }
+}
