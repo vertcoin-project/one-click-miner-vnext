@@ -1,33 +1,33 @@
 {
     "generic" : {
         "retry" : "Inténtalo de nuevo",
-        "back_to_wallet" : "volver a la cartera"
+        "back_to_wallet" : "Volver a la cartera"
     },
     "welcome" : {
         "click_button_to_start" : "Haga clic en el botón de abajo para empezar a minar de nuevo.",
-        "startmining" : "Empezar a minar!",
-        "makeapassword" : "Crea una contraseña. No lo pierdas.",
-        "password" : "contraseña",
+        "startmining" : "¡Empezar a minar!",
+        "makeapassword" : "Crea una contraseña. No la pierdas.",
+        "password" : "Contraseña",
         "confirmpassword" : "Confirmar contraseña",
         "password_cannot_be_empty" : "La contraseña no puede estar vacía",
         "password_mismatch" : "La contraseña no coincide",
-        "error_initializing" : "hubo un error al inicializar la cartera"
+        "error_initializing" : "Hubo un error al iniciar la cartera"
     },
     "checks" : {
         "prerequisite" : "Se está instalando un requisito previo. Es posible que vea una ventana emergente que solicite permisos (podría estar parpadeando en la barra de tareas)",
         "checks_failed" : "La comprobación ha fallado",
         "checking_mining_software" : "Comprobando software de minería...",
-        "rapidfail" : "Comprobación de ocurrencias de fallos rápidos",
-        "compatibility" : "Comprobación la compatibilidad de la GPU...",
+        "rapidfail" : "Comprobación de fallos rápidos",
+        "compatibility" : "Comprobando la compatibilidad de la GPU...",
         "installing_miners" : "Instalando software de minería..."
     },
     "mining" : {
         "spendable_balance" : "Saldo disponible",
-        "still_maturing" : "Todavía preparándose para ser gastado",
+        "still_maturing" : "Todavía no puedes gastar tus monedas. Debes esperar un poco mas.",
         "pending_pool_payout" : "Pago del Pool pendiente",
         "waiting_for_miners" : "Esperando que los mineros comiencen",
         "expected_earnings_24h" : "Rendimiento aproximado (24h)",
-        "estimating" : "Calculande Rendimiento",
+        "estimating" : "Calculando Rendimiento",
         "stop_mining" : "Dejar de minar"
     },
     "sending" : {
@@ -37,24 +37,24 @@
         "receiver_address" : "Dirección del destinatario",
         "wallet_password" : "Contraseña de la cartera",
         "send" : "Send",
-        "coins_sent" : "Tus monedas han sido enviados!",
+        "coins_sent" : "¡Tus monedas han sido enviadas!",
         "view_trans_plural" : "Ver transacciones",
         "view_trans_singular" : "Ver transaccion",
         "failed_to_send" : "Error al enviar tus monedas",
         "password_required" : "Se requiere la contraseña de la cartera",
         "invalid_address" : "Dirección no válida",
         "script_failure" : "Fallo del script",
-        "could_not_calculate_fee" : "No se puede calcular la tarifa",
+        "could_not_calculate_fee" : "No se puede calcular la comisión",
         "insufficient_funds" : "Saldo insuficiente",
         "send_failed" : "No se puede enviar la transacción. Compruebe debug.log para más información"
     },
     "settings" : {
         "enable_debug" : "Habilitar la depuración",
         "enable_debug_sub" : "Incluir la información del minero en el registro de depuración.",
-        "auto_start" : "inicio automático",
+        "auto_start" : "Inicio automático",
         "auto_start_sub" : "Iniciar el programa cuando se conecta el ordenador",
         "closed_source" : "Utilice mineros de código cerrado",
-        "closed_source_sub" : "Mejor hashrate, pero mineros no auditados que tienen una tarifa de desarrollador",
+        "closed_source_sub" : "Mejor hashrate, pero mineros no auditados que tienen una comisión de desarrollador",
         "closed_source_warning" : "Has seleccionado utilizar minero (s) de código cerrado. Vertcoin no respalda ni apoya a estos mineros. No pueden ser auditados en su contenido y pueden contener funciones que dañen tu ordenador",
         "save_n_restart" : "Guardar y reiniciar."
     },
