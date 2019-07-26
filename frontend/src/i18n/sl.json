@@ -1,0 +1,78 @@
+{
+    "generic" : {
+        "retry" : "Poskusi znova",
+        "back_to_wallet" : "Nazaj v denarnico"
+    },
+    "welcome" : {
+        "click_button_to_start" : "Za ponoven začetek rudarjenja pritisni spodnji gumb.",
+        "startmining" : "Začni rudariti!",
+        "makeapassword" : "Ustvari geslo. Ne izgubi ga!",
+        "password" : "Geslo",
+        "confirmpassword" : "Potrdi geslo",
+        "password_cannot_be_empty" : "Polje geslo ne sme biti prazno",
+        "password_mismatch" : "Geslo se ne ujema",
+        "error_initializing" : "Napaka pri nalaganju denarnice"
+    },
+    "checks" : {
+        "prerequisite" : "Nameščanje predpogojnih datotek. Morda boste videli pojavno okno, ki zahteva dovoljenja (lahko samo utripa v opravilni vrstici)",
+        "checks_failed" : "Preverjanje neuspešno",
+        "checking_mining_software" : "Preverjanje programske opreme za rudarstvo ...",
+        "rapidfail" : "Preverjanje hitrih okvar",
+        "compatibility" : "Preverjanje združljivosti grafične kartice ...",
+        "installing_miners" : "Nameščanje rudarske programske opreme ..."
+    },
+    "mining" : {
+        "spendable_balance" : "Razpoložljivi znesek",
+        "still_maturing" : "v fazi zorenja",
+        "pending_pool_payout" : "čakajoče pool izplačilo",
+        "waiting_for_miners" : "Čakanje na rudarsko programsko opremo za začetek dela",
+        "expected_earnings_24h" : "Pričakovani zaslužek (24h)",
+        "estimating" : "ocenjevanje",
+        "stop_mining" : "Prekini rudarjenje"
+    },
+    "sending" : {
+        "send_all_to" : "Pošlji vse izrudarjene kovance na",
+        "youre_sending_x_to" : "Pošiljaš {receivedBalance} na",
+        "youre_sending_x_in_y_txs_to" : "Pošiljaš {receivedBalance} v {receivedTxCount} transakcij na",
+        "receiver_address" : "Naslov prejemnika",
+        "wallet_password" : "Geslo denarnice",
+        "send" : "Pošlji",
+        "coins_sent" : "Kovanci so poslani!",
+        "view_trans_plural" : "Ogled transakcij",
+        "view_trans_singular" : "Ogled transakcije",
+        "failed_to_send" : "Kovancev ni bilo mogoče poslati",
+        "password_required" : "Potrebno je geslo za denarnico",
+        "invalid_address" : "Napačen naslov",
+        "script_failure" : "Napaka skripte",
+        "could_not_calculate_fee" : "Ni bilo mogoče izračunati pristojbine",
+        "insufficient_funds" : "Nezadostna sredstva",
+        "send_failed" : "Transakcije ni bilo mogoče poslati. Poglej debug.log za več informacij"
+    },
+    "settings" : {
+        "enable_debug" : "Omogoči iskanje napak",
+        "enable_debug_sub" : "Omogoči izvoz dnevnikov konzol rudarske programske opreme v dnevnik za odstranjevanje hroščev. Velikost dnevnika se lahko znatno poveča",
+        "auto_start" : "Samodejni zagon",
+        "auto_start_sub" : "Zaženi One-Click Miner, ko se prijaviš v računalnik.",
+        "closed_source" : "Uporabi zaprto programsko opremo za rudarstvo",
+        "closed_source_sub" : "Boljši hashrate, vendar neocenjena programska opema, ki lahko vključuje pristojbino za razvojne inženirje",
+        "closed_source_warning" : "Izbrali ste zaprto programsko opremo za rudarstvo. Vertcoin ne odobrava ali podpira njihovo uporabo. Ne more se preveriti njihovo vsebino tako, da lahko potencijalno vsebuje funkcije, ki lahko poškoduje vaš računalnik.",
+        "save_n_restart" : "Shrani & Znova zaženi"
+    },
+    "tabbar" : {
+        "wallet" : "Denarnica",
+        "send_coins" : "Pošlji kovance",
+        "settings" : "Nastavitve"
+    },
+    "tracking": { 
+        "update_available" : "Posodobitev je na voljo",
+        "tracking_enabled" : "Anonimno izmenjujete statistične podatke o uporabi",
+        "disable_tracking" : "Onemogoči",
+        "tracking_disabled" : "Ne delite statistike o uporabi",
+        "enable_tracking" : "Omogočite jih, da bi nam pomagali izboljšati vaše izkušnje",
+        "report_issue" : "Prijavite težavo"
+    },
+    "update" : {
+        "new_version_available" : "Na voljo je nova različica",
+        "download" : "Prenos"
+    }
+}
