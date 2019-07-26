@@ -30,16 +30,11 @@ type Backend struct {
 	stopUpdate          chan bool
 	stopRunningState    chan bool
 	prerequisiteInstall chan bool
+	alreadyRunning      bool
 }
 
-func NewBackend() (*Backend, error) {
-	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), "settings.db"))
-	if err != nil {
-		return nil, err
-	}
-
-	return &Backend{
-		settings:            db,
+func NewBackend(alreadyRunning bool) (*Backend, error) {
+	backend := &Backend{
 		refreshBalanceChan:  make(chan bool),
 		refreshHashChan:     make(chan bool),
 		refreshRunningState: make(chan bool),
@@ -51,7 +46,19 @@ func NewBackend() (*Backend, error) {
 		prerequisiteInstall: make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
 		rapidFailures:       []*miners.BinaryRunner{},
-	}, nil
+	}
+
+	if alreadyRunning {
+		backend.alreadyRunning = true
+		return backend, nil
+	}
+
+	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), "settings.db"))
+	if err != nil {
+		return nil, err
+	}
+	backend.settings = db
+	return backend, nil
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {
@@ -66,4 +73,12 @@ func (m *Backend) WailsInit(runtime *wails.Runtime) error {
 
 func (m *Backend) OpenDownloadUrl(url string) {
 	util.OpenBrowser(url)
+}
+
+func (m *Backend) AlreadyRunning() bool {
+	return m.alreadyRunning
+}
+
+func (m *Backend) Close() {
+	m.runtime.Window.Close()
 }

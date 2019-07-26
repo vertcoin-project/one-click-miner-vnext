@@ -73,6 +73,8 @@ github.com/leaanthony/synx v0.1.0 h1:R0lmg2w6VMb8XcotOwAe5DLyzwjLrskNkwU7LLWsyL8
 github.com/leaanthony/synx v0.1.0/go.mod h1:Iz7eybeeG8bdq640iR+CwYb8p+9EOsgMWghkSRyZcqs=
 github.com/leaanthony/wincursor v0.1.0 h1:Dsyp68QcF5cCs65AMBmxoYNEm0n8K7mMchG6a8fYxf8=
 github.com/leaanthony/wincursor v0.1.0/go.mod h1:7TVwwrzSH/2Y9gLOGH+VhA+bZhoWXBRgbGNTMk+yimE=
+github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0 h1:c1oKPqtIulBHwu1rkz3dXsPt5hgDqJCPMN/RAdT8lvs=
+github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0/go.mod h1:uUA07IN7rYmbr5YlZM5nDVLyoxiqqpprFlXBrjqI24A=
 github.com/masterminds/semver v1.4.2 h1:BgrAYDjlAebjtOwS7C/1QZoh5WgyXx4b59ydc+Ph8xI=
 github.com/masterminds/semver v1.4.2/go.mod h1:s7KNT9fnd7edGzwwP7RBX4H0v/CYd5qdOLfkL1V75yg=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=

@@ -1,9 +1,11 @@
 {
     "generic" : {
         "retry" : "Opnieuw proberen",
-        "back_to_wallet" : "Terug naar portemonnee"
+        "back_to_wallet" : "Terug naar portemonnee",
+        "close" : "Sluiten"
     },
     "welcome" : {
+        "alreadyrunning" : "De One-Click Miner is al actief. Je kunt 'm niet meer dan een keer draaien.",
         "click_button_to_start" : "Klik op de knop om te beginnen met minen.",
         "startmining" : "Begin met minen!",
         "makeapassword" : "Kies een wachtwoord. Raak het niet kwijt.",

@@ -1,9 +1,11 @@
 {
     "generic" : {
         "retry" : "Retry",
-        "back_to_wallet" : "Back to wallet"
+        "back_to_wallet" : "Back to wallet",
+        "close" : "Close"
     },
     "welcome" : {
+        "alreadyrunning" : "The One-Click Miner is already running. You can't run it more than once.",
         "click_button_to_start" : "Click the button below to start mining again.",
         "startmining" : "Start Mining!",
         "makeapassword" : "Make a password. Don't lose it.",

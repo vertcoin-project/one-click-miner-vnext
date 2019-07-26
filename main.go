@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/leaanthony/mewn"
+	"github.com/marcsauter/single"
 	"github.com/vertcoin-project/one-click-miner-vnext/backend"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
@@ -44,7 +45,15 @@ func main() {
 		Colour: "#131313",
 	})
 
-	backend, err := backend.NewBackend()
+	alreadyRunning := false
+	s := single.New("vertcoin-ocm")
+	if err := s.CheckLock(); err != nil && err == single.ErrAlreadyRunning {
+		alreadyRunning = true
+	} else if err == nil {
+		defer s.TryUnlock()
+	}
+
+	backend, err := backend.NewBackend(alreadyRunning)
 	if err != nil {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
