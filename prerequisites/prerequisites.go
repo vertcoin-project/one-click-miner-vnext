@@ -9,6 +9,10 @@ func Install(name string, install chan bool) error {
 	switch name {
 	case "msvcrt2013":
 		return installVCRT2013(install)
+	case "amddriverlinux":
+		return checkAmdgpuDriverInstalled()
+	case "nvidiadriverlinux":
+		return checkNvidiaDriverInstalled()
 	default:
 		logging.Warnf("Unknown prerequisite requested: %s", name)
 	}

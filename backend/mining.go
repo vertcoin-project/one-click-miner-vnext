@@ -11,6 +11,16 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
+func (m *Backend) GetArgs() miners.BinaryArguments {
+	// Default to P2Proxy for now
+	m.pool = pools.NewP2Proxy(m.wal.Address)
+	return miners.BinaryArguments{
+		StratumUrl:      m.pool.GetStratumUrl(),
+		StratumUsername: m.pool.GetUsername(),
+		StratumPassword: m.pool.GetPassword(),
+	}
+}
+
 func (m *Backend) StartMining() bool {
 	logging.Infof("Starting mining process...")
 
@@ -19,13 +29,7 @@ func (m *Backend) StartMining() bool {
 		Action:   "Start",
 	})
 
-	// Default to P2Proxy for now
-	m.pool = pools.NewP2Proxy(m.wal.Address)
-	args := miners.BinaryArguments{
-		StratumUrl:      m.pool.GetStratumUrl(),
-		StratumUsername: m.pool.GetUsername(),
-		StratumPassword: m.pool.GetPassword(),
-	}
+	args := m.GetArgs()
 
 	startProcessMonitoring := make(chan bool)
 
@@ -147,13 +151,9 @@ func (m *Backend) StartMining() bool {
 	}()
 
 	for _, br := range m.minerBinaries {
-		err := br.MinerImpl.Configure(args)
+		err := br.Start(args)
 		if err != nil {
-			logging.Errorf("Failure to configure %s: %s\n", br.MinerBinary.MainExecutableName, err.Error())
-			return false
-		}
-		err = br.Start(args)
-		if err != nil {
+			m.StopMining()
 			logging.Errorf("Failure to start %s: %s\n", br.MinerBinary.MainExecutableName, err.Error())
 			return false
 		}

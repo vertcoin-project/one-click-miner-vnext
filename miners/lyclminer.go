@@ -35,6 +35,10 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 		return err2
 	}
 
+	if !l.binaryRunner.cmd.ProcessState.Success() {
+		return fmt.Errorf("Was unable to configure lyclMiner. Exit code %d", l.binaryRunner.cmd.ProcessState.ExitCode())
+	}
+
 	in, err := os.Open(filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
 	if err != nil {
 		logging.Error(err)

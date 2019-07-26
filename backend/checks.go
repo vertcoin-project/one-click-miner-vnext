@@ -42,6 +42,22 @@ func (m *Backend) PerformChecks() string {
 		return err.Error()
 	}
 
+	args := m.GetArgs()
+
+	for _, br := range m.minerBinaries {
+		err := br.MinerImpl.Configure(args)
+		if err != nil {
+			errorString := fmt.Sprintf("Failure to configure %s: %s", br.MinerBinary.MainExecutableName, err.Error())
+			tracking.Track(tracking.TrackingRequest{
+				Category: "PerformChecks",
+				Action:   "ConfigureError",
+				Name:     errorString,
+			})
+			m.runtime.Events.Emit("checkStatus", "Failed")
+			return errorString
+		}
+	}
+
 	tracking.Track(tracking.TrackingRequest{
 		Category: "PerformChecks",
 		Action:   "Success",
