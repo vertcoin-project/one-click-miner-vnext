@@ -23,7 +23,7 @@ type MinerBinary struct {
 	Platform           string   `json:"platform"`
 	GpuPlatformString  string   `json:"gpuplatform"`
 	Url                string   `json:"url"`
-	Prerequisites      []string `json:"prerequisites"`
+	Prerequisites      []string `json:"minerPreRequisites"`
 	Hash               string   `json:"sha256"`
 	MainExecutableName string   `json:"mainExecutableName"`
 	ClosedSource       bool     `json:"closedSource"`
