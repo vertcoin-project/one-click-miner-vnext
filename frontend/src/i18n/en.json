@@ -13,7 +13,7 @@
         "confirmpassword" : "Confirm Password",
         "password_cannot_be_empty" : "Password cannot be empty",
         "password_mismatch" : "Passwords do not match",
-        "error_initializing" : "Something went initializing the wallet"
+        "error_initializing" : "Something went wrong initializing the wallet"
     },
     "checks" : {
         "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
