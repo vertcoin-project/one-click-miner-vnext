@@ -33,8 +33,5 @@ wails build
 * [X] Supports lyclMiner (AMD) on Linux
 * [X] Supports lyclMiner (AMD) on Windows
 * [X] Supports ccminer (Nvidia) on Windows
-
-Pending (no binary releases available yet):
-
-* [ ] Supports ccminer (Nvidia) on Linux
+* [X] Supports ccminer (Nvidia) on Linux
 
