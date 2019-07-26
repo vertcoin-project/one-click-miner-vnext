@@ -27,6 +27,7 @@ type Backend struct {
 	stopMonitoring      chan bool
 	stopHash            chan bool
 	stopBalance         chan bool
+	stopUpdate          chan bool
 	stopRunningState    chan bool
 	prerequisiteInstall chan bool
 }
@@ -46,6 +47,7 @@ func NewBackend() (*Backend, error) {
 		stopBalance:         make(chan bool),
 		stopRunningState:    make(chan bool),
 		stopMonitoring:      make(chan bool),
+		stopUpdate:          make(chan bool),
 		prerequisiteInstall: make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
 		rapidFailures:       []*miners.BinaryRunner{},
@@ -56,15 +58,8 @@ func (m *Backend) WailsInit(runtime *wails.Runtime) error {
 	// Save runtime
 	m.runtime = runtime
 
-	go func() {
-		for pi := range m.prerequisiteInstall {
-			send := "0"
-			if pi {
-				send = "1"
-			}
-			m.runtime.Events.Emit("prerequisiteInstall", send)
-		}
-	}()
+	go m.PrerequisiteProxyLoop()
+	go m.UpdateLoop()
 
 	return nil
 }

@@ -14,20 +14,23 @@ export default {
     return {
       tracking: false,
       version: "dev",
-      updateAvailable: false
+      updateAvailable: false,
     };
   },
   mounted() {
     var self = this
      window.backend.Backend.TrackingEnabled().then((result) => {
        self.tracking = (result === "1");
-     })
+     });
      window.backend.Backend.GetVersion().then((result) => {
         self.version = result;
-     })
+     });
      window.backend.Backend.UpdateAvailable().then((result) => {
        self.updateAvailable = result;
-     })
+     });
+     wails.Events.On("updateAvailable",(result) => {
+		   self.updateAvailable = result;
+		 });
   },
   methods: {
     update: function() {

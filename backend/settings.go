@@ -57,3 +57,13 @@ func (m *Backend) SetAutoStart(newAutoStart bool) {
 func (m *Backend) GetVersion() string {
 	return tracking.GetVersion()
 }
+
+func (m *Backend) PrerequisiteProxyLoop() {
+	for pi := range m.prerequisiteInstall {
+		send := "0"
+		if pi {
+			send = "1"
+		}
+		m.runtime.Events.Emit("prerequisiteInstall", send)
+	}
+}
