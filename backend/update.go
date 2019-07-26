@@ -33,6 +33,6 @@ func (m *Backend) UpdateLoop() {
 			break
 		}
 
-		m.runtime.Events.Emit("updateAvailable", UpdateAvailable())
+		m.runtime.Events.Emit("updateAvailable", m.UpdateAvailable())
 	}
 }
