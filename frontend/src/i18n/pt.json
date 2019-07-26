@@ -6,27 +6,27 @@
     },
     "welcome" : {
         "alreadyrunning" : "O One-Click Miner já foi executado. Não podem haver duas instâncias deste programa.",
-        "click_button_to_start" : "Carrega no botão abaixo para começar a minar.",
+        "click_button_to_start" : "Carrege no botão abaixo para começar a minar.",
         "startmining" : "Começar a Minar!",
-        "makeapassword" : "Cria uma password. Não a percas!",
+        "makeapassword" : "Crie uma password. Não a perca!",
         "password" : "Password",
-        "confirmpassword" : "Confirma a Password",
-        "password_cannot_be_empty" : "Password cannot be empty",
-        "password_mismatch" : "Passwords do not match",
-        "error_initializing" : "Something went initializing the wallet"
+        "confirmpassword" : "Confirme a Password",
+        "password_cannot_be_empty" : "O parâmetro Password não pode estar vazio",
+        "password_mismatch" : "As Passwords não correspondem",
+        "error_initializing" : "Algo de errado ocorreu ao iniciar a carteira"
     },
     "checks" : {
-        "prerequisite" : "Os pré-requisitos estão a ser instalados. Pode ser que hajam popups a pedir permissões (poderá ser um icon a piscar na barra de trefas)",
+        "prerequisite" : "Os pré-requisitos estão a ser instalados. Podem haver popups a pedir permissões (poderá ser um icon a piscar na barra de trefas)",
         "checks_failed" : "As verificações falharam",
         "checking_mining_software" : "A verificar o sfotware para minar...",
-        "rapidfail" : "A verificar Checking for rapid failure occurrences",
+        "rapidfail" : "A verificar ocorrências de falhas rápidas",
         "compatibility" : "A verificar a compatibilidade com a GPU...",
         "installing_miners" : "A instalar o software para minar..."
     },
     "mining" : {
         "spendable_balance" : "Quantia disponível",
         "still_maturing" : "aguarda confirmações",
-        "pending_pool_payout" : "pendente o pagamento pela pool",
+        "pending_pool_payout" : "pagamento pela pool pendente",
         "waiting_for_miners" : "Esperando a inicialização dos miners",
         "expected_earnings_24h" : "Ganhos Esperados (24h)",
         "estimating" : "a estimar",
@@ -43,12 +43,12 @@
         "view_trans_plural" : "Ver transações",
         "view_trans_singular" : "Ver transação",
         "failed_to_send" : "Ocorreu um erro ao tentar enviar as suas moedas",
-        "password_required" : "Uma Password da carteira é necessária",
+        "password_required" : "A Password da carteira é necessária",
         "invalid_address" : "Endereço inválido",
         "script_failure" : "Erro no Script",
         "could_not_calculate_fee" : "Não foi possível calcular a taxa",
         "insufficient_funds" : "O montante disponível é insuficiente",
-        "send_failed" : "Incapaz de realizar a tranação. Ver debug.log para mais informações."
+        "send_failed" : "Incapaz de realizar a transação. Ver debug.log para mais informações."
     },
     "settings" : {
         "enable_debug" : "Ativar debugging",
@@ -70,7 +70,7 @@
         "tracking_enabled" : "Está a partilhar estatísticas de uso anonimamente",
         "disable_tracking" : "Desativar",
         "tracking_disabled" : "Não está a partilhar estatísticas de uso",
-        "enable_tracking" : "Ative estas para melhorar a sua experiência",
+        "enable_tracking" : "Ative-as para melhorar a sua experiência",
         "report_issue" : "Comunicar um problema"
     },
     "update" : {
