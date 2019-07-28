@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "Ponów",
+        "back_to_wallet" : "Wróæ do portfela",
+        "close" : "Zamknij"
+    },
+    "welcome" : {
+        "alreadyrunning" : "The One-Click Miner jest ju¿ uruchomiony. Nie mo¿esz uruchomiæ kolejnego.",
+        "click_button_to_start" : "Naciœnij przycisk poni¿ej aby rozpocz¹æ kopanie.",
+        "startmining" : "Start kopania!",
+        "makeapassword" : "Utwórz has³o. Nie zapomnij go.",
+        "password" : "Has³o",
+        "confirmpassword" : "PotwierdŸ has³o",
+        "password_cannot_be_empty" : "Has³o nie mo¿e byæ puste",
+        "password_mismatch" : "Has³o nieprawid³owe",
+        "error_initializing" : "Coœ posz³o nie tak"
+    },
+    "checks" : {
+        "prerequisite" : "Instalowanie dodatków. Mo¿e pojawiæ siê proœba o nadanie uprawnieñ (podœwietlona na pasku zadañ)",
+        "checks_failed" : "Sprawdzenie zakoñczy³o siê niepowodzeniem",
+        "checking_mining_software" : "Sprawdzanie oprogramowania do kopania...",
+        "rapidfail" : "Sprawdzanie komunikatów o b³êdach",
+        "compatibility" : "Sprawdzanie kompatybilnoœci karty graficznej...",
+        "installing_miners" : "Instalowanie oprogramowania..."
+    },
+    "mining" : {
+        "spendable_balance" : "Kwota do wydania",
+        "still_maturing" : "nadal dojrzewa",
+        "pending_pool_payout" : "wyp³ata w trakcie",
+        "waiting_for_miners" : "Oczekiwanie na uruchomienie kopania",
+        "expected_earnings_24h" : "Oczekiwany dochód (24h)",
+        "estimating" : "oko³o",
+        "stop_mining" : "Zatrzymaj kopanie"
+    },
+    "sending" : {
+        "send_all_to" : "Wyœlij wszystkie monety do",
+        "youre_sending_x_to" : "Wysy³asz {receivedBalance} do",
+        "youre_sending_x_in_y_txs_to" : "Wysy³asz {receivedBalance} w {receivedTxCount} transakcjach do",
+        "receiver_address" : "Adres odbiorcy",
+        "wallet_password" : "Has³o portfela",
+        "send" : "Wyœlij",
+        "coins_sent" : "Monety wys³ane!",
+        "view_trans_plural" : "Zobacz transakcje",
+        "view_trans_singular" : "Zobacz transakcjê",
+        "failed_to_send" : "Wysy³ka monet nieudana",
+        "password_required" : "Podaj has³o do portfela",
+        "invalid_address" : "B³êdny adres",
+        "script_failure" : "B³¹d skryptu",
+        "could_not_calculate_fee" : "Obliczenie op³aty nie powiod³o siê",
+        "insufficient_funds" : "Za ma³o œrodków",
+        "send_failed" : "Wysy³ka nieudana. Wiêcej informacji w pliku debug.log"
+    },
+    "settings" : {
+        "enable_debug" : "W³¹cz debugging",
+        "enable_debug_sub" : "Do³¹cz komunikaty z kopania do pliku debug.log. Plik mo¿e osi¹gn¹æ du¿y rozmiar",
+        "auto_start" : "Automatyczne uruchamianie",
+        "auto_start_sub" : "Uruchom One-Click Miner kiedy uruchamiasz komputer",
+        "closed_source" : "U¿ywaj górników typu closed-source",
+        "closed_source_sub" : "Wiêksza wydajnoœæ, ale oprogramowanie mo¿e pobieraæ dodatkow¹ op³atê dla jego autora",
+        "closed_source_warning" : "Zaznaczy³eœ u¿ywanie górników typu closed-source. Vertcoin nie popiera i nie wspiera tych górników. Ich kod Ÿród³owy nie jest publicznie dostêpny i nie mo¿na sprawdziæ, czy nie zawieraj¹ szkodliwego oprogramowania.",
+        "save_n_restart" : "Zapisz i Wznów"
+    },
+    "tabbar" : {
+        "wallet" : "Portfel",
+        "send_coins" : "Wyœlij monety",
+        "settings" : "Ustawienia"
+    },
+    "tracking": { 
+        "update_available" : "Dostêpne uaktualnienie",
+        "tracking_enabled" : "Udostêpnianie statystyk w³¹czone",
+        "disable_tracking" : "Wy³¹cz",
+        "tracking_disabled" : "Udostêpnianie statystyk wy³¹czone",
+        "enable_tracking" : "W³¹cz statystyki by pomóc nam w rozwoju programu",
+        "report_issue" : "Zg³oœ problem z programem"
+    },
+    "update" : {
+        "new_version_available" : "Dostêpna nowa wersja",
+        "download" : "Pobierz"
+    }
+}
