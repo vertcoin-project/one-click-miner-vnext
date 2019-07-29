@@ -11,6 +11,7 @@ import locale_en from "./i18n/en.json";
 import locale_es from "./i18n/es.json";
 import locale_hr from "./i18n/hr.json";
 import locale_it from "./i18n/it.json";
+import locale_ja from "./i18n/ja.json";
 import locale_nl from "./i18n/nl.json";
 import locale_pt from "./i18n/pt.json";
 import locale_sl from "./i18n/sl.json";
@@ -28,6 +29,7 @@ Bridge.Start(() => {
         es: locale_es,
         hr: locale_hr,
         it: locale_it,
+        ja: locale_ja,
         nl: locale_nl,
         pt: locale_pt,
         sl: locale_sl,
