@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "Prøv igen",
+        "back_to_wallet" : "Tilbage til wallet",
+        "close" : "Luk"
+    },
+    "welcome" : {
+        "alreadyrunning" : "One-Click Miner kører allerede. Du kan kun gøre en ad gangen.",
+        "click_button_to_start" : "Tryk på knappen herunder for at starte med at mine igen.",
+        "startmining" : "Start med at mine!",
+        "makeapassword" : "Lav et password, glem det ikke!",
+        "password" : "Password",
+        "confirmpassword" : "Bekræft Password",
+        "password_cannot_be_empty" : "Password kan ikke være tomt",
+        "password_mismatch" : "De 2 Passwords er ikke ens",
+        "error_initializing" : "Noget gik galdt under indlæsning af wallet"
+    },
+    "checks" : {
+        "prerequisite" : "Installation af en påkrævet pakke er igang. Du ser måske en popup der anmoder om tilladelser (måske som noget der blinker i din taskbar)",        
+        "checks_failed" : "Checks fejlede",
+        "checking_mining_software" : "Checker mine software...",
+        "rapidfail" : "Checker for hurtigt opstående fejl",
+        "compatibility" : "Checker GPU kompatibilitet...",
+        "installing_miners" : "Installerer mine software..."
+    },
+    "mining" : {
+        "spendable_balance" : "Brugbar Balance",
+        "still_maturing" : "modner stadig",
+        "pending_pool_payout" : "afventende pooludbetaling",
+        "waiting_for_miners" : "Venter på at minerne starter",
+        "expected_earnings_24h" : "Forventet indtjening (24 timer)",
+        "estimating" : "estimerer",
+        "stop_mining" : "Stop med at mine"
+    },
+    "sending" : {
+        "send_all_to" : "Send alle dine minede coins til",
+        "youre_sending_x_to" : "Du sender {receivedBalance} til",
+        "youre_sending_x_in_y_txs_to" : "Du sender {receivedBalance} igennem {receivedTxCount} transaktioner til",
+        "receiver_address" : "Modtager Adresse",
+        "wallet_password" : "Wallet Password",
+        "send" : "Send",
+        "coins_sent" : "Dine coins er blevet sendt!",
+        "view_trans_plural" : "Se transaktioner",
+        "view_trans_singular" : "Se transaktion",
+        "failed_to_send" : "Kunne ikke sende dine coins",        
+        "password_required" : "Wallet password er påkrævet",
+        "invalid_address" : "Ugyldig adresse",
+        "script_failure" : "Script fejl",
+        "could_not_calculate_fee" : "Kunne ikke beregne gebyr",
+        "insufficient_funds" : "Utilstrækkelige midler",
+        "send_failed" : "Kunne ikke sende transaktion. Check debug.log for mere information"
+    },
+    "settings" : {
+        "enable_debug" : "Aktiver debugging",
+        "enable_debug_sub" : "Inkludér minerens consol output i debug log. Kan gøre logfilerne temmeligt store",        
+        "auto_start" : "Auto start",
+        "auto_start_sub" : "Start One-Click Miner når du logger på din computer",
+        "closed_source" : "Brug closed-source minere",
+        "closed_source_sub" : "Bedre hashrate, men uanmeldte minere der pådrager sig udvikler gebyr",
+        "closed_source_warning" : "Du har valgt at benytte closed-source miner(e). Vertcoin støtter og supporterer IKKE disse minere.  De kan ikke undersøges for indhold og kunne derfor benytte sig af funktioner der kan være skadelige for din computer.",        
+        "save_n_restart" : "Gem & Genstart"
+    },
+    "tabbar" : {
+        "wallet" : "Wallet",
+        "send_coins" : "Send coins",
+        "settings" : "Indstillinger"
+    },
+    "tracking": { 
+        "update_available" : "Update tilgængelig",
+        "tracking_enabled" : "Du deler anonymt brugsstatistikker",        
+        "disable_tracking" : "Slå deling af statistik fra",
+        "tracking_disabled" : "Du deler ikke brugsstatistikker",        
+        "enable_tracking" : "Slå deling af statistik til for at hjælpe os med at forbedre din oplevelse",
+        "report_issue" : "Anmeld fejl eller problemer"
+    },
+    "update" : {
+        "new_version_available" : "Ny version er tilgængelig",
+        "download" : "Download"
+    }
+}
