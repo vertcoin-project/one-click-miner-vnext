@@ -8,11 +8,12 @@ import (
 
 var availableLanguages = []string{
 	"en",
-	"nl",
 	"es",
 	"hr",
-	"sv",
+	"it",
+	"nl",
 	"sl",
+	"sv",
 }
 
 var languageMatcher language.Matcher

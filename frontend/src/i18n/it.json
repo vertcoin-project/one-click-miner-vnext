@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "Riprova",
+        "back_to_wallet" : "Torna al portafoglio",
+        "close" : "Chiudi"
+    },
+    "welcome" : {
+        "alreadyrunning" : "One-Click Miner è già in esecuzione. Non puoi eseguirlo più di una volta.",
+        "click_button_to_start" : "Fai clic sul pulsante sottostante per ricominciare a minare.",
+        "startmining" : "Inizia a Minare!",
+        "makeapassword" : "Crea una password. Non perderla.",
+        "password" : "Password",
+        "confirmpassword" : "Conferma Password",
+        "password_cannot_be_empty" : "La password non può essere vuota",
+        "password_mismatch" : "Le password non corrispondono",
+        "error_initializing" : "Si è verificato un errore durante l'inizializzazione del portafoglio"
+    },
+    "checks" : {
+        "prerequisite" : "È in corso l'installazione di un prerequisito. È possibile che venga visualizzato un popup che richiede i permessi (potrebbe lampeggiare nella barra delle applicazioni)",
+        "checks_failed" : "Controlli falliti",
+        "checking_mining_software" : "Controllo del software di mining...",
+        "rapidfail" : "Controllo della presenza di errori",
+        "compatibility" : "Controllo di compatibilità della GPU...",
+        "installing_miners" : "Installazione del software di mining..."
+    },
+    "mining" : {
+        "spendable_balance" : "Saldo Disponibile",
+        "still_maturing" : "non ancora maturato",
+        "pending_pool_payout" : "pagamento del pool in sospeso",
+        "waiting_for_miners" : "In attesa dei miners per iniziare",
+        "expected_earnings_24h" : "Guadagno Atteso (24h)",
+        "estimating" : "calcolo in corso",
+        "stop_mining" : "Smetti di Minare"
+    },
+    "sending" : {
+        "send_all_to" : "Invia tutte le tue monete minate a",
+        "youre_sending_x_to" : "Stai inviando {receivedBalance} a",
+        "youre_sending_x_in_y_txs_to" : "Stai inviando {receivedBalance} in {receivedTxCount} transazioni a",
+        "receiver_address" : "Indirizzo del Destinatario",
+        "wallet_password" : "Password del Portafoglio",
+        "send" : "Invia",
+        "coins_sent" : "Le tue monete sono state inviate!",
+        "view_trans_plural" : "Visualizza le transazioni",
+        "view_trans_singular" : "Visualizza la transazione",
+        "failed_to_send" : "Invio delle monete non riuscito",
+        "password_required" : "È richiesta la password del portafoglio",
+        "invalid_address" : "Indirizzo non valido",
+        "script_failure" : "Errore nello script",
+        "could_not_calculate_fee" : "Impossibile calcolare la commissione",
+        "insufficient_funds" : "Fondi insufficienti",
+        "send_failed" : "Impossibile inviare la transazione. Controlla debug.log per ulteriori informazioni"
+    },
+    "settings" : {
+        "enable_debug" : "Abilita il debug",
+        "enable_debug_sub" : "Includi l'output della console del miner nel log di debug. Può far aumentare di molto la dimensione dei tuoi log",
+        "auto_start" : "Avvio automatico",
+        "auto_start_sub" : "Avvia One-Click Miner quando esegui l'accesso al tuo computer",
+        "closed_source" : "Usa miners closed-source",
+        "closed_source_sub" : "Miglior hashrate, ma miners non certificati che incorrono in una commissione per gli sviluppatori",
+        "closed_source_warning" : "Hai scelto di usare miner(s) closed-source. Vertcoin non approva né supporta questi miners. Non possono essere controllati sul loro contenuto e potrebbero contenere funzioni dannose per il tuo computer.",
+        "save_n_restart" : "Salva e Riavvia"
+    },
+    "tabbar" : {
+        "wallet" : "Portafoglio",
+        "send_coins" : "Invia monete",
+        "settings" : "Impostazioni"
+    },
+    "tracking": { 
+        "update_available" : "Aggiornamento disponibile",
+        "tracking_enabled" : "Stai condividendo in modo anonimo le statistiche sull'utilizzo",
+        "disable_tracking" : "Disabilita",
+        "tracking_disabled" : "Non stai condividendo le statistiche sull'utilizzo",
+        "enable_tracking" : "Condividile per aiutarci a migliorare la tua esperienza",
+        "report_issue" : "Segnala un problema"
+    },
+    "update" : {
+        "new_version_available" : "Nuova versione disponibile",
+        "download" : "Scarica"
+    }
+}

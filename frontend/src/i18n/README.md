@@ -41,37 +41,37 @@ There are a couple of special characters that are not allowed in javascript stri
 
 ### Step 3: Add language to frontend
 
-In the file `frontend/src/main.js` there's a list of the translations imported - add your new language there:
+In the file `frontend/src/main.js` there's a list of the translations imported - add your new language there - ensure the list remains in alphabetical order:
 
 ```javascript
 // Import all locales
+import locale_de from "./i18n/de.json"; // <-- this line is added
 import locale_en from "./i18n/en.json";
 import locale_nl from "./i18n/nl.json";
-import locale_de from "./i18n/de.json"; // <-- this line is added
 ```
 
-Further down in the file, also add it to the list of languages injected to the i18n component:
+Further down in the file, also add it to the list of languages injected to the i18n component - ensure the list remains in alphabetical order:
 
 ```javascript
     const i18n = new VueI18n({
       locale: result, // set locale
       messages : {
+        de: locale_de, // <-- this line is added
         en: locale_en,
         nl: locale_nl,
-        de: locale_de, // <-- this line is added
       },
     });
 ```
 
 ### Step 4: Add language to the backend
 
-The host code running on the machine does the detection of the language and chooses the most appropriate one based on the user's locale. It needs to be made aware of the newly available language. Add this to the file `backend/languages.go` around line 9:
+The host code running on the machine does the detection of the language and chooses the most appropriate one based on the user's locale. It needs to be made aware of the newly available language. Add this to the file `backend/languages.go` around line 9 - ensure the list remains in alphabetical order:
 
 ```golang
 var availableLanguages = []string{
+    "de", // <-- this line is added. Notice the comma on the end - it belongs there!
 	"en",
     "nl",
-    "de", // <-- this line is added. Notice the comma on the end - it belongs there!
 }
 ```
 
