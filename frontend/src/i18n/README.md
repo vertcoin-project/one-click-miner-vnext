@@ -39,6 +39,10 @@ Would become
 
 There are a couple of special characters that are not allowed in javascript string literals, including backslashes and double quotes. You need to escape them. But since they're not used at all in the English base text, it seems unlikely you'll need them. In case of doubt, you can escape them [here](https://www.freeformatter.com/json-escape.html)
 
+**NOTE: Character set**
+
+Please ensure the JSON file is saved using an UTF-8 character set.
+
 ### Step 3: Add language to frontend
 
 In the file `frontend/src/main.js` there's a list of the translations imported - add your new language there - ensure the list remains in alphabetical order:
