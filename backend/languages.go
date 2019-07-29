@@ -13,6 +13,7 @@ var availableLanguages = []string{
 	"it",
 	"ja",
 	"nl",
+	"pl",
 	"pt",
 	"sl",
 	"sv",
