@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "Încearcă din nou",
+        "back_to_wallet" : "Înapoi la portofel",
+        "close" : "Închide"
+    },
+    "welcome" : {
+        "alreadyrunning" : "Minerul One-Click este deja pornit. Poți să îl pornești doar o singură dată.",
+        "click_button_to_start" : "Apasă pe butonul de mai jos pentru a reîncepe să minezi.",
+        "startmining" : "Începe să minezi!",
+        "makeapassword" : "Creează o parolă. Nu o pierde.",
+        "password" : "Parolă",
+        "confirmpassword" : "Confirmă parola",
+        "password_cannot_be_empty" : "Câmpul Parolă nu poate fi gol",
+        "password_mismatch" : "Parolele trebuie să fie identice",
+        "error_initializing" : "A apărut o eroare la inițializarea portofelului."
+    },
+    "checks" : {
+        "prerequisite" : "Se instalează un pachet software necesar. Este posibil să apară o fereastră care cere permisiuni (verifică dacă îți clipește în bara de activități)",
+        "checks_failed" : "Verificări eșuate",
+        "checking_mining_software" : "Se verifică software-ul de minare...",
+        "rapidfail" : "Se verifică dacă există erori rapide (i.e. programul se oprește imediat după ce a pornit)",
+        "compatibility" : "Se verifică compatibilitatea cu placa grafică...",
+        "installing_miners" : "Se instalează software-ul de minare..."
+    },
+    "mining" : {
+        "spendable_balance" : "Balanță disponibilă",
+        "still_maturing" : "în curs de maturizare",
+        "pending_pool_payout" : "plată de la pool în curs de efectuare",
+        "waiting_for_miners" : "Se așteaptă pornirea minerilor",
+        "expected_earnings_24h" : "Câștiguri așteptate (24h)",
+        "estimating" : "se estimează",
+        "stop_mining" : "Oprește minarea"
+    },
+    "sending" : {
+        "send_all_to" : "Trimite toate monedele minate către",
+        "youre_sending_x_to" : "Vei trimite {receivedBalance} către",
+        "youre_sending_x_in_y_txs_to" : "Vei trimite {receivedBalance} în {receivedTxCount} tranzacții către",
+        "receiver_address" : "Adresa destinatarului",
+        "wallet_password" : "Parola portofelului",
+        "send" : "Trimite",
+        "coins_sent" : "Monedele au fost trimise!",
+        "view_trans_plural" : "Vizualizare tranzacții",
+        "view_trans_singular" : "Vizualizare tranzacție",
+        "failed_to_send" : "Monedele nu au putut fi trimise!",
+        "password_required" : "Trebuie să introduci parola portofelului",
+        "invalid_address" : "Adresă invalidă",
+        "script_failure" : "Eroare de script",
+        "could_not_calculate_fee" : "Taxa pe tranzacție nu a putut fi calculată",
+        "insufficient_funds" : "Fonduri insuficiente",
+        "send_failed" : "Nu se poate trimite tranzacția. Verifică fișierul debug.log pentru informații suplimentare"
+    },
+    "settings" : {
+        "enable_debug" : "Activează depanarea",
+        "enable_debug_sub" : "Include textul din consola minerului în logul de depanare. Aceast lucru poate duce la o creștere semnificativă a dimensiunii logurilor",
+        "auto_start" : "Pornire automată",
+        "auto_start_sub" : "Pornește Minerul One-Click când te loghezi pe calculator",
+        "closed_source" : "Folosește mineri closed-source",
+        "closed_source_sub" : "Au hashrate mai bun, dar sunt mineri neauditați care trimit o taxă către dezvoltator",
+        "closed_source_warning" : "Ai ales să folosești mineri closed-source. Vertcoin nu este afiliat cu acești mineri și nu oferă suport pentru ei. Conținutul lor nu poate fi auditat și ar putea include funcționalități dăunătoare pentru calculatorul tău.",
+        "save_n_restart" : "Salvează și repornește"
+    },
+    "tabbar" : {
+        "wallet" : "Portofel",
+        "send_coins" : "Trimite monede",
+        "settings" : "Setări"
+    },
+    "tracking": { 
+        "update_available" : "Actualizare disponibilă",
+        "tracking_enabled" : "Împărtășești statistici de utilizare în mod anonim",
+        "disable_tracking" : "Dezactivează",
+        "tracking_disabled" : "Nu împărtășești statistici de utilizare",
+        "enable_tracking" : "Activează această setare pentru a ne ajuta să îți oferim o experiență mai bună",
+        "report_issue" : "Raportează o problemă"
+    },
+    "update" : {
+        "new_version_available" : "O nouă versiune este disponibilă",
+        "download" : "Descarcă"
+    }
+}
