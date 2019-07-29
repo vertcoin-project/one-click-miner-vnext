@@ -8,12 +8,13 @@ Vue.config.devtools = true;
 
 // Import all locales
 import locale_en from "./i18n/en.json";
-import locale_nl from "./i18n/nl.json";
 import locale_es from "./i18n/es.json";
 import locale_hr from "./i18n/hr.json";
-import locale_sv from "./i18n/sv.json";
-import locale_sl from "./i18n/sl.json";
 import locale_it from "./i18n/it.json";
+import locale_nl from "./i18n/nl.json";
+import locale_pt from "./i18n/pt.json";
+import locale_sl from "./i18n/sl.json";
+import locale_sv from "./i18n/sv.json";
 
 import Bridge from "./wailsbridge";
 
@@ -24,12 +25,13 @@ Bridge.Start(() => {
       locale: result, // set locale
       messages : {
         en: locale_en,
-        nl: locale_nl,
         es: locale_es,
         hr: locale_hr,
-        sv: locale_sv,
-        sl: locale_sl,
         it: locale_it,
+        nl: locale_nl,
+        pt: locale_pt,
+        sl: locale_sl,
+        sv: locale_sv,
       },
     });
 
