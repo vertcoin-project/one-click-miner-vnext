@@ -1,81 +1,80 @@
 {
     "generic" : {
-        "retry" : "リトライ",
+        "retry" : "再試行をする",
         "back_to_wallet" : "ウォレットに戻る",
         "close" : "閉じる"
     },
     "welcome" : {
         "alreadyrunning" : "ワンクリックマイナーはすでに実行中です。複数回実行することはできません。",
         "click_button_to_start" : "下のボタンをクリックして、マイニングを再開してください。",
-        "startmining" : "マイニングを始めましょう！",
+        "startmining" : "マイニングを始める！",
         "makeapassword" : "入力するパスワードを無くさないでください。",
         "password" : "パスワード",
-        "confirmpassword" : "Confirm Password",
         "confirmpassword" : "パスワード（確認用）",
-        "password_cannot_be_empty" : "パスワードは空にできません。",
-        "password_mismatch" : "新パスワードと再入力パスワードが一致しません。",
-        "error_initializing" : "ウォレットの初期化中に問題が発生しました。"
+        "password_cannot_be_empty" : "パスワードは空にできません",
+        "password_mismatch" : "新パスワードと再入力パスワードが一致しません",
+        "error_initializing" : "ウォレットの初期化中に問題が発生しました"
     },
     "checks" : {
-        "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
-        "checks_failed" : "Checks failed",
-        "checking_mining_software" : "Checking mining software...",
-        "rapidfail" : "Checking for rapid failure occurrences",
-        "compatibility" : "Checking GPU compatibility...",
-        "installing_miners" : "Installing mining software..."
+        "prerequisite" : "前提条件がインストールされています。許可を求めてポップアップが表示されるかもしれません (またはタスクバーで点滅している可能性があります)",
+        "checks_failed" : "チェック失敗",
+        "checking_mining_software" : "マイニングソフトウェアの確認中...",
+        "rapidfail" : "迅速な障害発生の確認中",
+        "compatibility" : "GPUの互換性を確認中...",
+        "installing_miners" : "マイニングソフトウェアのインストール中..."
     },
     "mining" : {
-        "spendable_balance" : "Spendable Balance",
-        "still_maturing" : "still maturing",
-        "pending_pool_payout" : "pending pool payout",
-        "waiting_for_miners" : "Waiting for miners to start",
-        "expected_earnings_24h" : "Expected Earnings (24h)",
-        "estimating" : "estimating",
-        "stop_mining" : "Stop Mining"
+        "spendable_balance" : "消費可能残高",
+        "still_maturing" : "まだ成熟している",
+        "pending_pool_payout" : "保留中のプールの支払い",
+        "waiting_for_miners" : "マイナーが始まるのを待っている",
+        "expected_earnings_24h" : "予想収益 (24時間)",
+        "estimating" : "見積もり",
+        "stop_mining" : "マイニングをやめる"
     },
     "sending" : {
-        "send_all_to" : "Send all your mined coins to",
-        "youre_sending_x_to" : "You're sending {receivedBalance} to",
-        "youre_sending_x_in_y_txs_to" : "You're sending {receivedBalance} in {receivedTxCount} transactions to",
-        "receiver_address" : "Receiver Address",
-        "wallet_password" : "Wallet Password",
-        "send" : "Send",
-        "coins_sent" : "Your coins are sent!",
-        "view_trans_plural" : "View transactions",
-        "view_trans_singular" : "View transaction",
-        "failed_to_send" : "Failed to send your coins",
-        "password_required" : "Wallet password is required",
-        "invalid_address" : "Invalid address",
-        "script_failure" : "Script failure",
-        "could_not_calculate_fee" : "Could not calculate fee",
-        "insufficient_funds" : "Insufficient funds",
-        "send_failed" : "Unable to send transaction. Check debug.log for more information"
+        "send_all_to" : "にあなたの採掘したコインをすべて送る",
+        "youre_sending_x_to" : "に{receivedBalance}を送っています",
+        "youre_sending_x_in_y_txs_to" : "{receivedTxCount}トランザクションで{receivedBalance}をに送信しています",
+        "receiver_address" : "受信者アドレス",
+        "wallet_password" : "ウォレットパスワード",
+        "send" : "送る",
+        "coins_sent" : "あなたのコインが送られました!",
+        "view_trans_plural" : "取引を見る",
+        "view_trans_singular" : "取引を見る",
+        "failed_to_send" : "コインを送信できませんでした",
+        "password_required" : "ウォレットパスワードが必要です",
+        "invalid_address" : "無効なアドレス",
+        "script_failure" : "スクリプトの失敗",
+        "could_not_calculate_fee" : "料金を計算できませんでした",
+        "insufficient_funds" : "残高不足",
+        "send_failed" : "取引を送信できません。 詳細についてはdebug.logを確認してください"
     },
     "settings" : {
-        "enable_debug" : "Enable debugging",
-        "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
-        "auto_start" : "Auto start",
-        "auto_start_sub" : "Start the One-Click Miner when you log in your computer",
-        "closed_source" : "Use closed-source miners",
-        "closed_source_sub" : "Better hashrate, but unaudited miners that incurr a developer's fee",
-        "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
-        "save_n_restart" : "Save & Restart"
+        "enable_debug" : "デバッグを有効にする",
+        "enable_debug_sub" : "マイナーのコンソール出力をデバッグログに含めます。ログをかなり大きくすることができます",
+        "auto_start" : "自動スタート",
+        "auto_start_sub" : "コンピュータにログインしたらワンクリックマイナーを起動する",
+        "closed_source" : "クローズドソースマイナーを使用する",
+        "closed_source_sub" : "ハッシュレートは向上していますが、開発者の費用がかかる未監査のマイナー",
+        "closed_source_warning" : "クローズドソースマイナーを使用することを選択しました。ヴァートコインはこれらのマイナーを支持しません。内容を監査することはできず、コンピュータに害を及ぼす機能が含まれている可能性があります。",
+        "save_n_restart" : "保存して再起動"
     },
     "tabbar" : {
-        "wallet" : "Wallet",
-        "send_coins" : "Send coins",
-        "settings" : "Settings"
+        "wallet" : "ウォレット",
+        "send_coins" : "コインを送る",
+        "settings" : "設定"
     },
     "tracking": { 
-        "update_available" : "Update available",
-        "tracking_enabled" : "You are anonymously sharing usage statistics",
-        "disable_tracking" : "Disable",
-        "tracking_disabled" : "You are not sharing usage statistics",
-        "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue"
+        "update_available" : "アップデート利用可能",
+        "tracking_enabled" : "利用統計を匿名で共有しています",
+        "disable_tracking" : "無効にする",
+        "tracking_disabled" : "利用統計を共有していません",
+        "enable_tracking" : "これらを有効にして利用体験の改善を行いさせるのを助けてください",
+        "report_issue" : "問題を報告する"
     },
     "update" : {
-        "new_version_available" : "New version available",
-        "download" : "Download"
+        "new_version_available" : "新バージョン利用可能",
+        "download" : "ダウンロード"
     }
 }
