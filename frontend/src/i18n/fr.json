@@ -17,11 +17,11 @@
     },
     "checks" : {
         "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
-        "checks_failed" : "Checks failed",
-        "checking_mining_software" : "Checking mining software...",
-        "rapidfail" : "Checking for rapid failure occurrences",
-        "compatibility" : "Checking GPU compatibility...",
-        "installing_miners" : "Installing mining software..."
+        "checks_failed" : "Les vérifications ont echoué",
+        "checking_mining_software" : "Vérification du logiciel de minage...",
+        "rapidfail" : "Vérification d'occurrence d'échec rapide",
+        "compatibility" : "Vérification de la compatibilité GPU...",
+        "installing_miners" : "Installation du logiciel de minage..."
     },
     "mining" : {
         "spendable_balance" : "Spendable Balance",
