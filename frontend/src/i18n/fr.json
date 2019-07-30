@@ -48,7 +48,7 @@
         "script_failure" : "Script défectueux",
         "could_not_calculate_fee" : "Calcul des frais impossible",
         "insufficient_funds" : "Fonds insuffisants",
-        "send_failed" : "Transaction impossibleUnable. Vérifier debug.log pour plus d'informations"
+        "send_failed" : "Transaction impossible. Vérifier debug.log pour plus d'informations"
     },
     "settings" : {
         "enable_debug" : "Activer le débogage",
