@@ -18,6 +18,7 @@ import locale_pt from "./i18n/pt.json";
 import locale_ro from "./i18n/ro.json";
 import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
+import locale_da from "./i18n/da.json";
 
 import Bridge from "./wailsbridge";
 
@@ -38,6 +39,7 @@ Bridge.Start(() => {
         ro: locale_ro,
         sl: locale_sl,
         sv: locale_sv,
+        da: locale_da,
       },
     });
 

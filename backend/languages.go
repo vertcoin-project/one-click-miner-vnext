@@ -18,6 +18,7 @@ var availableLanguages = []string{
 	"ro",
 	"sl",
 	"sv",
+	"da",
 }
 
 var languageMatcher language.Matcher
