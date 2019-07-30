@@ -9,7 +9,8 @@ import (
 var availableLanguages = []string{
 	"en",
 	"es",
-	"hr",
+	"fr",
+        "hr",
 	"it",
 	"ja",
 	"nl",
