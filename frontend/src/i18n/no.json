@@ -1,0 +1,80 @@
+{
+  "generic": {
+    "retry": "Prøv igjen",
+    "back_to_wallet": "tilbake til lommebok",
+    "close": "Lukk"
+  },
+  "welcome": {
+    "alreadyrunning": "One-Click Miner kjører allerede. Du kan ikke starte et nytt program mens det er et annet i gang.",
+    "click_button_to_start": "Klikk på knappen under for å gjenoppta utvinning.",
+    "startmining": "Start å utvinne!",
+    "makeapassword": "Lag et passord. Ikke mist det.",
+    "password": "Passord",
+    "confirmpassword": "Bekreft passord",
+    "password_cannot_be_empty": "Passord kan ikke stå tomt",
+    "password_mismatch": "Passordene er ikke identiske",
+    "error_initializing": "Noe feilet under initialiseringen av lommeboka"
+  },
+  "checks": {
+    "prerequisite": "Et nødvendig komponent installeres. Underveis kan du se et popup-vindu som spør om tillatelse (Det kan også bare blinke på oppgavelinjen)",
+    "checks_failed": "Kontrolleringen feilet",
+    "checking_mining_software": "Kontrollerer utvinnings-programmet...",
+    "rapidfail": "Sjekker for hyppige feil",
+    "compatibility": "Sjekker CPU kompatibilitet...",
+    "installing_miners": "Installerer utvinnings-programvare..."
+  },
+  "mining": {
+    "spendable_balance": "Tilgjengelig saldo",
+    "still_maturing": "Under modning",
+    "pending_pool_payout": "Avventende pool-utbetaling",
+    "waiting_for_miners": "Venter på at utvinnere starter",
+    "expected_earnings_24h": "Forventet gevinst (24t)",
+    "estimating": "Estimerer",
+    "stop_mining": "Stopp utvinning"
+  },
+  "sending": {
+    "send_all_to": "Send alle utvunnede kryptomynter til",
+    "youre_sending_x_to": "Du sender {beløp} til",
+    "youre_sending_x_in_y_txs_to": "Du sender {receivedBalance} i {receivedTxCount} transaksjon til",
+    "receiver_address": "Mottaksadresse",
+    "wallet_password": "Lommebokpassord",
+    "send": "Send",
+    "coins_sent": "Dine kryptomynter er sendt!",
+    "view_trans_plural": "Se transaksjoner",
+    "view_trans_singular": "Se transaksjon",
+    "failed_to_send": "Sending av kryptomynter mislyktes",
+    "password_required": "Passord for lommebok er påkrevd",
+    "invalid_address": "Ugyldig addresse",
+    "script_failure": "Script feilet",
+    "could_not_calculate_fee": "Kunne ikke regne ut beløp",
+    "insufficient_funds": "Ikke tilstrekkelige midler",
+    "send_failed": "Kunne ikke gjennomføre transaksjonen. Sjekk debug.log for mer informasjon"
+  },
+  "settings": {
+    "enable_debug": "Aktiver debugging",
+    "enable_debug_sub": "Inkluder OCMs utdata i feilsøkingsloggen. Kan gjøre loggene en del større",
+    "auto_start": "Automatisk start",
+    "auto_start_sub": "Start One-Click Miner når du logger på maskinen",
+    "closed_source": "Bruk utvinningsprogramvare med stengt kildekode",
+    "closed_source_sub": "Bedre hashrate, men ukjente utvinnerprogramvareutvikleren kan ha en avgift for å utvinne",
+    "closed_source_warning": "Du har valgt å bruke utvinningsprogramvare(r) med lukket kildekode. Vertcoin støtter eller verifiserer ikke disse utvinnerne. Deres kildekode kan ikke verifiseres eller godkjennes, og de kan inneholde funksjoner som skader din datamaskin.",
+    "save_n_restart": "Lagre og start på nytt"
+  },
+  "tabbar": {
+    "wallet": "Lommebok",
+    "send_coins": "Send kryptomynter",
+    "settings": "Innstillinger"
+  },
+  "tracking": {
+    "update_available": "Oppdatering tilgjengelig",
+    "tracking_enabled": "Du deler brukerstatistikken anonymt",
+    "disable_tracking": "Deaktiver",
+    "tracking_disabled": "Du deler ikke brukerstatistikk",
+    "enable_tracking": "Aktiver tracking for å hjelpe oss å bedre din brukeropplevelse",
+    "report_issue": "Rapporter et problem"
+  },
+  "update": {
+    "new_version_available": "Ny versjon er tilgjengelig",
+    "download": "Last ned"
+  }
+}
