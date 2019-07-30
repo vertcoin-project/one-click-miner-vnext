@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "ਦੁਬਾਰਾ  ਕੋਸ਼ਿਸ਼  ਕਰੋ",
+        "back_to_wallet" : "ਵਾਪਸ  ਬਟੂਆ  ਵੱਲ",
+        "close" : "ਨੇੜੇ"
+    },
+    "welcome" : {
+        "alreadyrunning" : "ਇਕ ਕਲਿਕ ਖੋਜਕਾਰ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਿਹਾ ਹੈ. ਤੁਸੀਂ ਇਸ ਨੂੰ ਇਕ ਤੋਂ ਵੱਧ ਵਾਰ ਨਹੀਂ ਚਲਾ ਸਕਦੇ.",
+        "click_button_to_start" : "ਦੁਬਾਰਾ ਮਾਈਨਿੰਗ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ਤੇ ਕਲਿਕ ਕਰੋ.",
+        "startmining" : "ਮਾਈਨਿੰਗ ਸ਼ੁਰੂ ਕਰੋ",
+        "makeapassword" : "ਇੱਕ ਪਾਸਵਰਡ ਬਣਾਓ ਇਸ ਨੂੰ ਨਾ ਗੁਆਓ",
+        "password" : "ਪਾਸਵਰਡ",
+        "confirmpassword" : "ਪਾਸਵਰਡ ਪੱਕਾ ਕਰੋ",
+        "password_cannot_be_empty" : "ਪਾਸਵਰਡ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ",
+        "password_mismatch" : "ਪਾਸਵਰਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ",
+        "error_initializing" : "ਵਾਲਿਟ ਨੂੰ ਸ਼ੁਰੂ ਕਰਦਿਆਂ ਕੁਝ ਗਲਤ ਹੋਇਆ"
+    },
+    "checks" : {
+        "prerequisite" : "ਇੱਕ ਜ਼ਰੂਰਤ ਲਗਾਈ ਜਾ ਰਹੀ ਹੈ. ਤੁਸੀਂ ਇਕ ਪੌਪ-ਅਪ ਨੂੰ ਅਨੁਮਤੀ ਮੰਗਦੇ ਹੋਏ ਵੇਖ ਸਕਦੇ ਹੋ (ਸਿਰਫ ਟਾਸਕਬਾਰ ਵਿਚ ਝਪਕਣਾ ਹੋ ਸਕਦਾ ਹੈ)",
+        "checks_failed" : "ਜਾਂਚ ਅਸਫਲ",
+        "checking_mining_software" : "ਮਾਈਨਿੰਗ ਸਾੱਫਟਵੇਅਰ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ",
+        "rapidfail" : "ਤੇਜ਼ੀ ਨਾਲ ਅਸਫਲ ਹੋਣ ਦੀਆਂ ਘਟਨਾਵਾਂ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ",
+        "compatibility" : "ਗ੍ਰਾਫਿਕਸ ਪ੍ਰੋਸੈਸਿੰਗ ਯੂਨਿਟ ਅਨੁਕੂਲਤਾ ਦੀ ਜਾਂਚ ਕਰ ਰਿਹਾ ਹੈ",
+        "installing_miners" : "ਮਾਈਨਿੰਗ ਸਾੱਫਟਵੇਅਰ ਸਥਾਪਤ ਕਰ ਰਿਹਾ ਹੈ..."
+    },
+    "mining" : {
+        "spendable_balance" : "ਖਰਚ ਕਰਨ ਵਾਲਾ ਸੰਤੁਲਨ",
+        "still_maturing" : "ਅਜੇ ਵੀ  ਸਿਆਣਾ",
+        "pending_pool_payout" : "ਬਕਾਇਆ ਪੂਲ ਦਾ ਭੁਗਤਾਨ",
+        "waiting_for_miners" : "ਸ਼ੁਰੂਆਤ ਕਰਨ ਲਈ ਖੋਜਕਾਰ ਦੀ ਉਡੀਕ",
+        "expected_earnings_24h" : "ਉਮੀਦ ਕੀਤੀ ਕਮਾਈ (ਚੋਵੀ ਘੰਟੇ)",
+        "estimating" : "ਅਨੁਮਾਨ ਲਗਾਉਣਾ",
+        "stop_mining" : "ਮਾਈਨਿੰਗ ਰੋਕੋ"
+    },
+    "sending" : {
+        "send_all_to" : "ਆਪਣੇ ਸਾਰੇ ਮਾਈਨ ਕੀਤੇ ਸਿੱਕੇ ਭੇਜੋ",
+        "youre_sending_x_to" : "ਤੁਸੀਂ ਭੇਜ ਰਹੇ ਹੋ {receivedBalance} ਨੂੰ",
+        "youre_sending_x_in_y_txs_to" : "ਤੁਸੀਂ ਭੇਜ ਰਹੇ ਹੋ {receivedBalance} ਵਿੱਚ {receivedTxCount} ਨੂੰ ਲੈਣ-ਦੇਣ",
+        "receiver_address" : "ਪ੍ਰਾਪਤ ਕਰਨ ਵਾਲਾ ਪਤਾ",
+        "wallet_password" : "ਵਾਲਿਟ ਪਾਸਵਰਡ",
+        "send" : "ਭੇਜੋ”,
+        "coins_sent" : "ਤੁਹਾਡੇ ਸਿੱਕੇ ਭੇਜੇ ਗਏ ਹਨ",
+        "view_trans_plural" : "ਲੈਣ-ਦੇਣ ਵੇਖੋ",
+        "view_trans_singular" : "ਲੈਣ-ਦੇਣ ਵੇਖੋ",
+        "failed_to_send" : "ਤੁਹਾਡੇ ਸਿੱਕੇ ਭੇਜਣ ਵਿੱਚ ਅਸਫਲ",
+        "password_required" : "ਵਾਲਿਟ ਦਾ ਪਾਸਵਰਡ ਲੋੜੀਂਦਾ ਹੈ",
+        "invalid_address" : "ਅਵੈਧ ਪਤਾ",
+        "script_failure" : "ਸਕ੍ਰਿਪਟ ਅਸਫਲ",
+        "could_not_calculate_fee" : "ਫੀਸ ਦੀ ਗਣਨਾ ਨਹੀਂ ਕਰ ਸਕਿਆ",
+        "insufficient_funds" : "ਨਾਕਾਫ਼ੀ ਫੰਡ",
+       "send_failed" : "ਲੈਣਦੇਣ ਭੇਜਣ ਵਿੱਚ ਅਸਮਰੱਥ. ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ ਡੀਬੱਗ.ਲੱਗ ਚੈੱਕ ਕਰੋ"
+    },
+    "settings" : {
+        "enable_debug" : "ਡੀਬੱਗਿੰਗ ਨੂੰ ਸਮਰੱਥ ਕਰੋ",
+        "enable_debug_sub" : "ਡੀਬੱਗ ਲੌਗ ਵਿੱਚ ਮਾਈਨਰ ਦੀ ਕੰਸੋਲ ਆਉਟਪੁੱਟ ਸ਼ਾਮਲ ਕਰੋ. ਤੁਹਾਡੇ ਲੌਗਸ ਕਾਫ਼ੀ ਵੱਡੇ ਹੋ ਸਕਦੇ ਹਨ",
+        "auto_start" : "ਆਟੋ ਸਟਾਰਟt",
+        "auto_start_sub" : "ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਕੰਪਿ inਟਰ ਤੇ ਲੌਗ ਇਨ ਕਰਦੇ ਹੋ ਤਾਂ ਵਨ-ਕਲਿਕ ਮਾਈਨਰ ਚਾਲੂ ਕਰੋ",
+        "closed_source" : "ਬੰਦ ਸਰੋਤ ਖੋਜਕਰਤਾ",
+        "closed_source_sub" : "ਬਿਹਤਰ ਹੈਸ਼ਰੇਟ, ਪਰ ਅਣਚਾਹੇ ਮਾਈਨਰ ਜੋ ਇੱਕ ਵਿਕਾਸਕਰਤਾ ਦੀ ਫੀਸ ਲੈਂਦੇ ਹਨ",
+        "closed_source_warning" : "ਤੁਸੀਂ ਬੰਦ ਸਰੋਤ ਮਾਈਨਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੀ ਚੋਣ ਕੀਤੀ ਹੈ. ਵਰਟਕੋਇਨ ਇਨ੍ਹਾਂ ਮਾਈਨਰਾਂ ਨੂੰ ਸਮਰਥਨ ਨਹੀਂ ਦਿੰਦਾ. ਉਨ੍ਹਾਂ ਦੀ ਸਮਗਰੀ 'ਤੇ ਆਡਿਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਅਤੇ ਦੇ ਫੰਕਸ਼ਨ ਹੋ ਸਕਦੇ ਹਨ ਜੋ ਤੁਹਾਡੇ ਕੰਪਿcਟਰ ਨੂੰ ਨੁਕਸਾਨ ਪਹੁੰਚਾ ਸਕਦੇ ਹਨ",
+        "save_n_restart" : "ਸੇਵ ਅਤੇ ਰੀਸਟਾਰਟ”
+    },
+    "tabbar" : {
+        "wallet" : "ਬਟੂਆ",
+        "send_coins" : "ਸਿੱਕੇ ਭੇਜੋ",
+        "settings" : "ਸੈਟਿੰਗਜ਼"
+    },
+    "tracking": { 
+        "update_available" : "ਅਪਡੇਟ ਉਪਲਬਧ ਹੈ",
+        "tracking_enabled" : "ਤੁਸੀਂ ਅਗਿਆਤ ਤੌਰ ਤੇ ਵਰਤੋਂ ਦੇ ਅੰਕੜੇ ਸਾਂਝੇ ਕਰ ਰਹੇ ਹੋ",
+        "disable_tracking" : "ਅਯੋਗ",
+        "tracking_disabled" : "ਤੁਸੀਂ ਵਰਤੋਂ ਦੇ ਅੰਕੜਿਆਂ ਨੂੰ ਸਾਂਝਾ ਨਹੀਂ ਕਰ ਰਹੇ",
+        "enable_tracking" : "ਆਪਣੇ ਤਜ਼ਰਬੇ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿਚ ਸਾਡੀ ਸਹਾਇਤਾ ਕਰਨ ਲਈ ਇਨ੍ਹਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰੋ",
+        "report_issue" : "ਇੱਕ ਮੁੱਦੇ ਦੀ ਰਿਪੋਰਟ ਕਰੋ"
+    },
+    "update" : {
+        "new_version_available" : "ਨਵਾਂ ਵਰਜਨ ਉਪਲਬਧ ਹੈ",
+        "download" : "ਡਾ .ਨਲੋਡ"
+    }
+}
