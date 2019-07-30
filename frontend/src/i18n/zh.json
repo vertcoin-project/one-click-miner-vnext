@@ -8,7 +8,7 @@
         "alreadyrunning" : "一键式矿工《One-Click Miner》 已经在运行。你不能多次运行它。",
         "click_button_to_start" : "点击下面的按钮再次开始挖矿。",
         "startmining" : "开始挖矿!",
-        "makeapassword" : "请输入密码. 不要丢失你的密码。",
+        "makeapassword" : "请输入密码。不要丢失你的密码。",
         "password" : "密码",
         "confirmpassword" : "确认密码",
         "password_cannot_be_empty" : "请输入密码",
