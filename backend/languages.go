@@ -11,6 +11,7 @@ var availableLanguages = []string{
 	"en",
 	"es",
 	"fr",
+	"hi",
         "hr",
 	"it",
 	"ja",
