@@ -7,17 +7,15 @@ import (
 )
 
 var availableLanguages = []string{
-	"da",
 	"en",
 	"es",
-	"fr",
-        "hr",
+	"hr",
 	"it",
 	"ja",
 	"nl",
+	"no",
 	"pl",
 	"pt",
-	"ro",
 	"sl",
 	"sv",
 }
