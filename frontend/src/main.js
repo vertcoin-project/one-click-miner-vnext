@@ -15,6 +15,7 @@ import locale_nl from "./i18n/nl.json";
 import locale_pt from "./i18n/pt.json";
 import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
+import local_zh from "./i18n/zh.json";
 
 import Bridge from "./wailsbridge";
 
@@ -32,6 +33,7 @@ Bridge.Start(() => {
         pt: locale_pt,
         sl: locale_sl,
         sv: locale_sv,
+        zh: local_zh,
       },
     });
 
