@@ -11,6 +11,7 @@ import locale_da from "./i18n/da.json";
 import locale_en from "./i18n/en.json";
 import locale_es from "./i18n/es.json";
 import locale_fr from "./i18n/fr.json";
+import locale_hr from "./i18n/hi.json";
 import locale_hr from "./i18n/hr.json";
 import locale_it from "./i18n/it.json";
 import locale_ja from "./i18n/ja.json";
