@@ -36,6 +36,7 @@ Bridge.Start(() => {
         en: locale_en,
         es: locale_es,
         fr: locale_fr,
+        hi: locale_hi,
         hr: locale_hr,
         it: locale_it,
         ja: locale_ja,
