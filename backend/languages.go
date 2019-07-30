@@ -7,6 +7,7 @@ import (
 )
 
 var availableLanguages = []string{
+	"da",
 	"en",
 	"es",
 	"hr",
@@ -18,7 +19,6 @@ var availableLanguages = []string{
 	"ro",
 	"sl",
 	"sv",
-	"da",
 }
 
 var languageMatcher language.Matcher
