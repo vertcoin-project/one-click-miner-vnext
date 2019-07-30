@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "重试",
+        "back_to_wallet" : "回到钱包",
+        "close" : "关闭"
+    },
+    "welcome" : {
+        "alreadyrunning" : "One-Click挖矿程序已经运行。不能再次运行。",
+        "click_button_to_start" : "点击下面的按钮，再次开始挖矿。",
+        "startmining" : "开始挖矿！",
+        "makeapassword" : "设置密码，不要丢失。",
+        "password" : "密码",
+        "confirmpassword" : "确认密码",
+        "password_cannot_be_empty" : "密码不能为空",
+        "password_mismatch" : "密码不一致",
+        "error_initializing" : "初始化钱包出错"
+    },
+    "checks" : {
+        "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
+        "checks_failed" : "检查失败",
+        "checking_mining_software" : "正在检查挖矿程序...",
+        "rapidfail" : "Checking for rapid failure occurrences",
+        "compatibility" : "正在检查GPU适配情况...",
+        "installing_miners" : "安装挖矿程序中..."
+    },
+    "mining" : {
+        "spendable_balance" : "可花费余额e",
+        "still_maturing" : "仍然等待成熟",
+        "pending_pool_payout" : "等待矿池付款",
+        "waiting_for_miners" : "等待开始挖矿",
+        "expected_earnings_24h" : "24小时预期收益",
+        "estimating" : "预计",
+        "stop_mining" : "停止挖矿"
+    },
+    "sending" : {
+        "send_all_to" : "发送所有币至",
+        "youre_sending_x_to" : "你将发送币至 {receivedBalance}",
+        "youre_sending_x_in_y_txs_to" : "你将发送{receivedTxCount}交易至{receivedBalance}",
+        "receiver_address" : "接收地址",
+        "wallet_password" : "钱包密码",
+        "send" : "发送",
+        "coins_sent" : "你的币已经发送!",
+        "view_trans_plural" : "查看交易信息",
+        "view_trans_singular" : "查看交易",
+        "failed_to_send" : "发送失败",
+        "password_required" : "需要钱包密码",
+        "invalid_address" : "地址错误",
+        "script_failure" : "Script failure",
+        "could_not_calculate_fee" : "Could not calculate fee",
+        "insufficient_funds" : "余额不足",
+        "send_failed" : "不能发送交易，请检查debug.log文件查看更多信息"
+    },
+    "settings" : {
+        "enable_debug" : "启动调试",
+        "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
+        "auto_start" : "自动开始",
+        "auto_start_sub" : "当启动电脑时，开启挖矿程序",
+        "closed_source" : "使用闭源挖矿程序",
+        "closed_source_sub" : "Better hashrate, but unaudited miners that incurr a developer's fee",
+        "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
+        "save_n_restart" : "保存&重启程序"
+    },
+    "tabbar" : {
+        "wallet" : "钱包",
+        "send_coins" : "转币",
+        "settings" : "设置"
+    },
+    "tracking": { 
+        "update_available" : "有新的更新",
+        "tracking_enabled" : "You are anonymously sharing usage statistics",
+        "disable_tracking" : "禁用",
+        "tracking_disabled" : "You are not sharing usage statistics",
+        "enable_tracking" : "开启帮助我们提高你的用户体验",
+        "report_issue" : "报告问题"
+    },
+    "update" : {
+        "new_version_available" : "有新的版本",
+        "download" : "下载"
+    }
+}
