@@ -11,11 +11,13 @@ import locale_da from "./i18n/da.json";
 import locale_en from "./i18n/en.json";
 import locale_es from "./i18n/es.json";
 import locale_fr from "./i18n/fr.json";
+import locale_hi from "./i18n/hi.json";
 import locale_hr from "./i18n/hr.json";
 import locale_it from "./i18n/it.json";
 import locale_ja from "./i18n/ja.json";
 import locale_nl from "./i18n/nl.json";
 import locale_no from "./i18n/no.json";
+import locale_pa from "./i18n/pa.json";
 import locale_pl from "./i18n/pl.json";
 import locale_pt from "./i18n/pt.json";
 import locale_ro from "./i18n/ro.json";
@@ -35,11 +37,13 @@ Bridge.Start(() => {
         en: locale_en,
         es: locale_es,
         fr: locale_fr,
+        hi: locale_hi,
         hr: locale_hr,
         it: locale_it,
         ja: locale_ja,
         nl: locale_nl,
         no: locale_no,
+        pa: locale_pa,
         pl: locale_pl,
         pt: locale_pt,
         ro: locale_ro,

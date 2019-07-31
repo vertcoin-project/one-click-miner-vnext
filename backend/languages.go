@@ -7,15 +7,21 @@ import (
 )
 
 var availableLanguages = []string{
-	"da",
+	// First language is default. So
+	// alphabetical order except for
+	// this one
 	"en",
+
+	"da",
 	"es",
 	"fr",
+	"hi",
 	"hr",
 	"it",
 	"ja",
 	"nl",
 	"no",
+	"pa",
 	"pl",
 	"pt",
 	"ro",

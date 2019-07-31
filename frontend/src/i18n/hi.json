@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "पुन: प्रयास",
+        "back_to_wallet" : "वापस वॉलेट में",
+        "close" : "बंद करे"
+    },
+    "welcome" : {
+        "alreadyrunning" : "वन-क्लिक माइनर पहले से ही चल रहा है। आप इसे एक से अधिक बार नहीं चला सकते।",
+        "click_button_to_start" : "फिर से खनन शुरू करने के लिए नीचे दिए गए बटन पर क्लिक करें।",
+        "startmining" : "खनन शुरू करो!",
+        "makeapassword" : "एक पासवर्ड बनाएं। इसे खोना नहीं है।",
+        "password" : "पारण शब्द",
+        "confirmpassword" : "पासवर्ड की पुष्टि कीजिये",
+        "password_cannot_be_empty" : "पासवर्ड खाली नहीं हो सकता",
+        "password_mismatch" : "पासवर्ड मेल नहीं खाते",
+        "error_initializing" : "वॉलेट को शुरू करने में कुछ गलत हुआ"
+    },
+    "checks" : {
+        "prerequisite" : "एक शर्त लगाई जा रही है। आप एक पॉपअप अनुमति के लिए पूछ सकते हैं (बस टास्कबार में निमिष हो सकता है)",
+        "checks_failed" : "जाँच विफल",
+        "checking_mining_software" : "खनन सॉफ्टवेयर की जाँच करना...",
+        "rapidfail" : "तेजी से विफलता की घटनाओं के लिए जाँच",
+        "compatibility" : "ग्राफिक्स प्रोसेसिंग यूनिट संगतता की जाँच करना...",
+        "installing_miners" : "खनन सॉफ्टवेयर स्थापित करना..."
+    },
+    "mining" : {
+        "spendable_balance" : "व्यय करने योग्य शेष",
+        "still_maturing" : "अभी भी परिपक्व हो रहा है",
+        "pending_pool_payout" : "लंबित पूल भुगतान",
+        "waiting_for_miners" : "खनिकों के शुरू होने का इंतजार",
+        "expected_earnings_24h" : "अपेक्षित कमाई (चौबीस घंटे)",
+        "estimating" : "का आकलन",
+        "stop_mining" : "खनन बंद करो"
+    },
+    "sending" : {
+        "send_all_to" : "करने के लिए अपने सभी खनन सिक्के भेजें",
+        "youre_sending_x_to" : "आप भेज रहे हैं {receivedBalance} सेवा मेरे",
+        "youre_sending_x_in_y_txs_to" : "आप भेज रहे हैं {receivedBalance} में {receivedTxCount} लेन-देन",
+        "receiver_address" : "रिसीवर का पता",
+        "wallet_password" : "वॉलेट पासवर्ड",
+        "send" : "भेजना",
+        "coins_sent" : "आपके सिक्के भेजे हैं",
+        "view_trans_plural" : "लेन-देन देखें",
+        "view_trans_singular" : "लेन-देन देखें",
+        "failed_to_send" : "अपने सिक्के भेजने में विफल",
+        "password_required" : "वॉलेट पासवर्ड की आवश्यकता है",
+        "invalid_address" : "गलत पता",
+        "script_failure" : "स्क्रिप्ट की विफलता",
+        "could_not_calculate_fee" : "शुल्क की गणना नहीं कर सका",
+        "insufficient_funds" : "अपर्याप्त कोष",
+        "send_failed" : "लेनदेन भेजने में असमर्थ। अधिक जानकारी के लिए debug.log की जाँच करें"
+    },
+    "settings" : {
+        "enable_debug" : "डिबगिंग सक्षम करें",
+        "enable_debug_sub" : "डिबग लॉग में माइनर के कंसोल आउटपुट को शामिल करें। अपने लॉग को काफी बड़ा कर सकते हैं",
+        "auto_start" : "ऑटो स्टार्ट",
+        "auto_start_sub" : "जब आप अपने कंप्यूटर में लॉग इन करते हैं तो वन-क्लिक माइनर शुरू करें",
+        "closed_source" : "बंद-स्रोत खनिक का उपयोग करें",
+        "closed_source_sub" : "बेहतर हैशेट, लेकिन अघोषित खनिक जो एक डेवलपर के शुल्क को बढ़ाते हैं",
+        "closed_source_warning" : "आपने बंद स्रोत खननकर्ता का उपयोग करने के लिए चुना है। Vertcoin इन खनिकों का समर्थन या समर्थन नहीं करता है। उनकी सामग्री पर उनका ऑडिट नहीं किया जा सकता है और इसमें आपके कंप्यूटर को नुकसान पहुंचाने वाले कार्य हो सकते हैं।",
+        "save_n_restart" : "सहेजें और पुनरारंभ करें"
+    },
+    "tabbar" : {
+        "wallet" : "बटुआ",
+        "send_coins" : "सिक्के भेजें",
+        "settings" : "सेटिंग्स"
+    },
+    "tracking": { 
+        "update_available" : "अपडेट उपलब्ध",
+        "tracking_enabled" : "आप गुमनाम रूप से उपयोग के आंकड़े साझा कर रहे हैं",
+        "disable_tracking" : "अक्षम",
+        "tracking_disabled" : "आप उपयोग के आंकड़े साझा नहीं कर रहे हैं",
+        "enable_tracking" : "अपने अनुभव को बेहतर बनाने में हमारी सहायता करने के लिए इन्हें सक्षम करें",
+        "report_issue" : "मामले की रिपोर्ट करें"
+    },
+    "update" : {
+        "new_version_available" : "नया संस्करण उपलब्ध है",
+        "download" : "डाउनलोड"
+    }
+}
