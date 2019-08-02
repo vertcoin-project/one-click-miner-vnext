@@ -1,12 +1,16 @@
 package util
 
-import "testing"
+import (
+	"log"
+	"testing"
+)
 
 func TestNvidia(t *testing.T) {
-	gpus := []string{"NVIDIA GeForce 930MX", "NVIDIA GeForce RTX 2070", "NVIDIA P106-100", "NVIDIA Corporation GM107 [GeForce GTX 750 Ti] (rev a2)"}
+	gpus := []string{"NVIDIA GeForce 930MX", "NVIDIA GeForce GTX 1660 Ti", "NVIDIA GeForce RTX 2070", "NVIDIA P106-100", "NVIDIA Corporation GM107 [GeForce GTX 750 Ti] (rev a2)"}
 	g := GetGPUsFromStrings(gpus)
-	for _, gpu := range g {
+	for i, gpu := range g {
 		if gpu.Type != GPUTypeNVidia {
+			log.Printf("Did not detect %s as NVIDIA!", gpus[i])
 			t.Fail()
 		}
 	}
