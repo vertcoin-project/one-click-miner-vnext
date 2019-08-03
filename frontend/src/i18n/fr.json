@@ -1,14 +1,14 @@
 {
     "generic" : {
         "retry" : "Réessayer",
-        "back_to_wallet" : "Retour au portefeuille",
+        "back_to_wallet" : "Revenir au portefeuille",
         "close" : "Fermer"
     },
     "welcome" : {
-        "alreadyrunning" : "Le One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
+        "alreadyrunning" : "One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
         "click_button_to_start" : "Cliquer sur le bouton ci-dessous pour redémarrer le minage.",
-        "startmining" : "Démarrer le minage!",
-        "makeapassword" : "Choisir un mot de passe. Ne le perdez pas!",
+        "startmining" : "Démarrer le minage !",
+        "makeapassword" : "Choisir un mot de passe. Ne le perdez pas !",
         "password" : "Mot de passe",
         "confirmpassword" : "Confirmer le mot de passe",
         "password_cannot_be_empty" : "Le mot de passe ne peut être vide",
@@ -39,7 +39,7 @@
         "receiver_address" : "Adresse du destinataire",
         "wallet_password" : "Mot de passe du portefeuille",
         "send" : "Envoyer",
-        "coins_sent" : "Votre monnaie virtuelle a été envoyée!",
+        "coins_sent" : "Votre monnaie virtuelle a été envoyée !",
         "view_trans_plural" : "Voir les transactions",
         "view_trans_singular" : "Voir la transaction",
         "failed_to_send" : "Echec lors de l'envoi de votre monnaie virtuelle",
@@ -48,17 +48,17 @@
         "script_failure" : "Script défectueux",
         "could_not_calculate_fee" : "Calcul des frais impossible",
         "insufficient_funds" : "Fonds insuffisants",
-        "send_failed" : "Transaction impossibleUnable. Vérifier debug.log pour plus d'informations"
+        "send_failed" : "Transaction impossible. Vérifier debug.log pour plus d'informations"
     },
     "settings" : {
         "enable_debug" : "Activer le débogage",
-        "enable_debug_sub" : "Inclure la sortie console du miner dans le log de débogage. Peut augmenter la taille de vos logs",
+        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter sensiblement la taille de vos logs",
         "auto_start" : "Démarrage auto",
-        "auto_start_sub" : "Démarrer le One-Click Miner quand vous vous connectez à votre ordinateur",
-        "closed_source" : "Utiliser des logiciels de minage non-libres",
-        "closed_source_sub" : "Meilleur hashrate, mais logiciel de minage ne rétribuant pas les développeurs",
-        "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage non-libres. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
-        "save_n_restart" : "Enregistrer et Redémarrer"
+        "auto_start_sub" : "Démarrer One-Click Miner quand vous vous connectez à votre ordinateur",
+        "closed_source" : "Utiliser des logiciels de minage propriétaires",
+        "closed_source_sub" : "Meilleur taux de hachage, mais logiciel de minage ne rétribuant pas les développeurs",
+        "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage propriétaires. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
+        "save_n_restart" : "Enregistrer & Redémarrer"
     },
     "tabbar" : {
         "wallet" : "Portefeuille",
@@ -69,7 +69,7 @@
         "update_available" : "Mise à jour disponible",
         "tracking_enabled" : "Vous partagez anonymement vos statistiques d'utilisation",
         "disable_tracking" : "Désactiver",
-        "tracking_disabled" : "Vous ne partagez pas les statistiques d'utilisation",
+        "tracking_disabled" : "Vous ne partagez pas vos statistiques d'utilisation",
         "enable_tracking" : "Activer pour nous permettre d'améliorer votre expérience utilisateur",
         "report_issue" : "Signaler un problème"
     },
