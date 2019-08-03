@@ -7,6 +7,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 // Import all locales
+import locale_de from "./i18n/de.json";
 import locale_en from "./i18n/en.json";
 import locale_es from "./i18n/es.json";
 import locale_fr from "./i18n/fr.json";
@@ -27,6 +28,7 @@ Bridge.Start(() => {
     const i18n = new VueI18n({
       locale: result, // set locale
       messages : {
+        de: locale_de,
         en: locale_en,
         es: locale_es,
         fr: locale_fr,
