@@ -66,15 +66,15 @@
         "settings" : "Settings"
     },
     "tracking": { 
-        "update_available" : "Update available",
+        "update_available" : "Update verfügbar",
         "tracking_enabled" : "You are anonymously sharing usage statistics",
-        "disable_tracking" : "Disable",
+        "disable_tracking" : "Deaktivieren",
         "tracking_disabled" : "You are not sharing usage statistics",
         "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue"
+        "report_issue" : "Ein Problem melden"
     },
     "update" : {
-        "new_version_available" : "New version available",
-        "download" : "Download"
+        "new_version_available" : "Neue Version verfügbar",
+        "download" : "Laden"
     }
 }
