@@ -7,6 +7,7 @@ import (
 )
 
 var availableLanguages = []string{
+	"de",
 	"en",
 	"es",
 	"fr",
