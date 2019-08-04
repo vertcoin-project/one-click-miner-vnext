@@ -70,7 +70,7 @@
         "tracking_enabled" : "Vous partagez anonymement vos statistiques d'utilisation",
         "disable_tracking" : "Désactiver",
         "tracking_disabled" : "Vous ne partagez pas vos statistiques d'utilisation",
-        "enable_tracking" : "Activer pour nous permettre d'améliorer votre expérience utilisateur",
+        "enable_tracking" : "Activer cette option pour nous permettre d'améliorer votre expérience utilisateur",
         "report_issue" : "Signaler un problème"
     },
     "update" : {
