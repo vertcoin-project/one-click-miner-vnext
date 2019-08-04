@@ -51,14 +51,14 @@
         "send_failed" : "Unable to send transaction. Check debug.log for more information"
     },
     "settings" : {
-        "enable_debug" : "Enable debugging",
+        "enable_debug" : "Aktivieren Sie das Debuggen",
         "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
-        "auto_start" : "Auto start",
-        "auto_start_sub" : "Start the One-Click Miner when you log in your computer",
-        "closed_source" : "Use closed-source miners",
-        "closed_source_sub" : "Better hashrate, but unaudited miners that incurr a developer's fee",
-        "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
-        "save_n_restart" : "Save & Restart"
+        "auto_start" : "Auto-Start",
+        "auto_start_sub" : "Starten Sie das One-Click Miner, wenn Sie sich bei Ihrem Computer anmelden",
+        "closed_source" : "Verwenden Sie proprietäre Bergbau-Software",
+        "closed_source_sub" : "Bessere Hash-Rate, aber Bergbau-Software belohnt Entwickler nicht",
+        "closed_source_warning" : "Sie haben sich für die Verwendung proprietäre Bergbau-Software entschieden. Vertcoin bietet keine Unterstützung. Ihr Inhalt kann nicht überprüft werden und enthält möglicherweise Funktionen, die Ihren Computer beschädigen.",
+        "save_n_restart" : "Speichern & Neustart"
     },
     "tabbar" : {
         "wallet" : "Wallet",
