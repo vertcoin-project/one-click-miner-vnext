@@ -62,15 +62,15 @@
     },
     "tabbar" : {
         "wallet" : "Wallet",
-        "send_coins" : "Send coins",
-        "settings" : "Settings"
+        "send_coins" : "Kryptogeld senden",
+        "settings" : "Einstellungen"
     },
     "tracking": { 
         "update_available" : "Update verfügbar",
-        "tracking_enabled" : "You are anonymously sharing usage statistics",
+        "tracking_enabled" : "Sie geben Nutzungsstatistiken anonym weiter",
         "disable_tracking" : "Deaktivieren",
-        "tracking_disabled" : "You are not sharing usage statistics",
-        "enable_tracking" : "Enable these to help us improve your experience",
+        "tracking_disabled" : "Sie teilen keine Nutzungsstatistiken",
+        "enable_tracking" : "Aktivieren Sie diese Option, um die Benutzerfreundlichkeit zu verbessern",
         "report_issue" : "Ein Problem melden"
     },
     "update" : {
