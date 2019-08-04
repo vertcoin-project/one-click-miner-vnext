@@ -33,12 +33,12 @@
         "stop_mining" : "Stop Mining"
     },
     "sending" : {
-        "send_all_to" : "Send all your mined coins to",
+        "send_all_to" : "Senden Sie alle Ihre abgebauten Kryptogeld an",
         "youre_sending_x_to" : "You're sending {receivedBalance} to",
         "youre_sending_x_in_y_txs_to" : "You're sending {receivedBalance} in {receivedTxCount} transactions to",
         "receiver_address" : "Receiver Address",
-        "wallet_password" : "Wallet Password",
-        "send" : "Send",
+        "wallet_password" : "Wallet Passwort",
+        "send" : "Senden",
         "coins_sent" : "Your coins are sent!",
         "view_trans_plural" : "View transactions",
         "view_trans_singular" : "View transaction",
@@ -52,7 +52,7 @@
     },
     "settings" : {
         "enable_debug" : "Aktivieren Sie das Debuggen",
-        "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
+        "enable_debug_sub" : "Nehmen Sie die Konsolenausgabe der Mining-Software in das Debugprotokoll auf. Kann die Größe Ihrer Protokolle erheblich erhöhen",
         "auto_start" : "Auto-Start",
         "auto_start_sub" : "Starten Sie das One-Click Miner, wenn Sie sich bei Ihrem Computer anmelden",
         "closed_source" : "Verwenden Sie proprietäre Bergbau-Software",
