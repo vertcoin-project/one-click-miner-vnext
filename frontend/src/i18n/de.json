@@ -16,21 +16,21 @@
         "error_initializing" : "Something went wrong initializing the wallet"
     },
     "checks" : {
-        "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
-        "checks_failed" : "Checks failed",
-        "checking_mining_software" : "Checking mining software...",
-        "rapidfail" : "Checking for rapid failure occurrences",
-        "compatibility" : "Checking GPU compatibility...",
-        "installing_miners" : "Installing mining software..."
+        "prerequisite" : "Voraussetzung wird gerade installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
+        "checks_failed" : "Überprüfungen fehlgeschlagen",
+        "checking_mining_software" : "Mining-Software Überprüfung...",
+        "rapidfail" : "Überprüfung des Auftretens eines schnellen Ausfalls",
+        "compatibility" : "GPU-Kompatibilität Überprüfung...",
+        "installing_miners" : "Mining-Software installieren..."
     },
     "mining" : {
-        "spendable_balance" : "Spendable Balance",
-        "still_maturing" : "still maturing",
-        "pending_pool_payout" : "pending pool payout",
-        "waiting_for_miners" : "Waiting for miners to start",
-        "expected_earnings_24h" : "Expected Earnings (24h)",
-        "estimating" : "estimating",
-        "stop_mining" : "Stop Mining"
+        "spendable_balance" : "Verfügbares Guthaben",
+        "still_maturing" : "reift noch",
+        "pending_pool_payout" : "ausstehende Pool Auszahlung",
+        "waiting_for_miners" : "Warten auf Miners zu starten",
+        "expected_earnings_24h" : "Erwartete Einnahmen (24h)",
+        "estimating" : "Schätzung",
+        "stop_mining" : "Stoppen Sie das Mining"
     },
     "sending" : {
         "send_all_to" : "Senden Sie alle Ihre abgebauten Kryptogeld an",
@@ -55,9 +55,9 @@
         "enable_debug_sub" : "Nehmen Sie die Konsolenausgabe der Mining-Software in das Debugprotokoll auf. Kann die Größe Ihrer Protokolle erheblich erhöhen",
         "auto_start" : "Auto-Start",
         "auto_start_sub" : "Starten Sie das One-Click Miner, wenn Sie sich bei Ihrem Computer anmelden",
-        "closed_source" : "Verwenden Sie proprietäre Bergbau-Software",
-        "closed_source_sub" : "Bessere Hash-Rate, aber Bergbau-Software belohnt Entwickler nicht",
-        "closed_source_warning" : "Sie haben sich für die Verwendung proprietäre Bergbau-Software entschieden. Vertcoin bietet keine Unterstützung. Ihr Inhalt kann nicht überprüft werden und enthält möglicherweise Funktionen, die Ihren Computer beschädigen.",
+        "closed_source" : "Verwenden Sie proprietäre Mining-Software",
+        "closed_source_sub" : "Bessere Hash-Rate, aber Mining-Software belohnt Entwickler nicht",
+        "closed_source_warning" : "Sie haben sich für die Verwendung proprietäre Mining-Software entschieden. Vertcoin bietet keine Unterstützung. Ihr Inhalt kann nicht überprüft werden und enthält möglicherweise Funktionen, die Ihren Computer beschädigen.",
         "save_n_restart" : "Speichern & Neustart"
     },
     "tabbar" : {
