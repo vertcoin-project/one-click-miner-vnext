@@ -6,14 +6,14 @@
     },
     "welcome" : {
         "alreadyrunning" : "Das One-Click Miner ausgeführt wird bereits. Sie können es nicht mehr als einmal ausgeführen.",
-        "click_button_to_start" : "Click the button below to start mining again.",
-        "startmining" : "Start Mining!",
+        "click_button_to_start" : "Klicken Sie auf die Schaltfläche unten, um das Mining erneut zu starten.",
+        "startmining" : "Starten Sie Mining !",
         "makeapassword" : "Erstelle ein Passwort. Verliere es nicht !",
-        "password" : "Password",
-        "confirmpassword" : "Confirm Password",
-        "password_cannot_be_empty" : "Password cannot be empty",
-        "password_mismatch" : "Passwords do not match",
-        "error_initializing" : "Something went wrong initializing the wallet"
+        "password" : "Passwort",
+        "confirmpassword" : "Passwort bestätigen",
+        "password_cannot_be_empty" : "Passwort kann nicht leer sein",
+        "password_mismatch" : "Passwort stimmt nicht überein",
+        "error_initializing" : "Fehler beim Initialisieren das Wallet"
     },
     "checks" : {
         "prerequisite" : "Voraussetzung wird gerade installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
