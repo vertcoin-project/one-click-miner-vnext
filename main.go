@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -15,6 +16,24 @@ import (
 )
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			tracking.Track(tracking.TrackingRequest{
+				Category: "Lifecycle",
+				Action:   "Crash",
+				Name:     fmt.Sprintf("%v", err),
+			})
+
+			// Reopen log file, since it's closed now!
+			logging.SetLogLevel(int(logging.LogLevelDebug))
+			logFilePath := filepath.Join(util.DataDirectory(), "debug.log")
+			logFile, _ := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+			logging.SetLogFile(logFile)
+			defer logFile.Close()
+			log.Println(err)
+		}
+	}()
+
 	js := mewn.String("./frontend/dist/app.js")
 	css := mewn.String("./frontend/dist/app.css")
 
@@ -36,6 +55,9 @@ func main() {
 	logFile, _ := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	logging.SetLogFile(logFile)
 	defer logFile.Close()
+
+	log.Printf("OCM v%s Started up\n", tracking.GetVersion())
+
 	app := wails.CreateApp(&wails.AppConfig{
 		Width:  800,
 		Height: 400,
