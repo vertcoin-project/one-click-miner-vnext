@@ -1,16 +1,16 @@
 {
     "generic" : {
         "retry" : "Réessayer",
-        "back_to_wallet" : "Retour au portefeuille",
+        "back_to_wallet" : "Revenir au portefeuille",
         "close" : "Fermer"
     },
     "welcome" : {
-        "alreadyrunning" : "Le One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
+        "alreadyrunning" : "One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
         "click_button_to_start" : "Cliquer sur le bouton ci-dessous pour redémarrer le minage.",
-        "startmining" : "Démarrer le minage!",
-        "makeapassword" : "Choisir un mot de passe. Ne le perdez pas!",
+        "startmining" : "Démarrer le minage !",
+        "makeapassword" : "Choisir un mot de passe. Ne pas le perdre !",
         "password" : "Mot de passe",
-        "confirmpassword" : "Confirmer le mot de passe",
+        "confirmpassword" : "Créer un mot de passe",
         "password_cannot_be_empty" : "Le mot de passe ne peut être vide",
         "password_mismatch" : "Le mot de passe ne correspond pas",
         "error_initializing" : "Erreur pendant l'initialisation du portefeuille"
@@ -19,30 +19,30 @@
         "prerequisite" : "Un prérequis est en cours d'installation. Vous pourriez voir une fenêtre demandant des autorisations (elle pourrait simplement clignoter dans la barre des tâches)",
         "checks_failed" : "Les vérifications ont echoué",
         "checking_mining_software" : "Vérification du logiciel de minage...",
-        "rapidfail" : "Vérification d'occurrence d'échec rapide",
+        "rapidfail" : "Vérification des occurrences d'échec rapide",
         "compatibility" : "Vérification de la compatibilité GPU...",
         "installing_miners" : "Installation du logiciel de minage..."
     },
     "mining" : {
         "spendable_balance" : "Solde disponible",
-        "still_maturing" : "en cours de consolidation",
-        "pending_pool_payout" : "paiement de la pool en attente",
+        "still_maturing" : "En cours de consolidation",
+        "pending_pool_payout" : "Paiement de la pool en attente",
         "waiting_for_miners" : "En attente de mineurs pour démarrer",
         "expected_earnings_24h" : "Bénéfices attendus (24h)",
-        "estimating" : "estimation",
+        "estimating" : "Estimation",
         "stop_mining" : "Arrêt du minage"
     },
     "sending" : {
-        "send_all_to" : "Envoyer toute votre monnaie virtuelle minée à",
+        "send_all_to" : "Envoyer toute votre cryptomonnaie minée à",
         "youre_sending_x_to" : "Vous envoyez {receivedBalance} à",
         "youre_sending_x_in_y_txs_to" : "Vous envoyez {receivedBalance} en {receivedTxCount} transactions à",
         "receiver_address" : "Adresse du destinataire",
         "wallet_password" : "Mot de passe du portefeuille",
         "send" : "Envoyer",
-        "coins_sent" : "Votre monnaie virtuelle a été envoyée!",
+        "coins_sent" : "Votre cryptomonnaie a été envoyée !",
         "view_trans_plural" : "Voir les transactions",
         "view_trans_singular" : "Voir la transaction",
-        "failed_to_send" : "Echec lors de l'envoi de votre monnaie virtuelle",
+        "failed_to_send" : "Echec lors de l'envoi de votre cryptomonnaie",
         "password_required" : "Le mot de passe du portefeuille est requis",
         "invalid_address" : "Adresse invalide",
         "script_failure" : "Script défectueux",
@@ -52,25 +52,25 @@
     },
     "settings" : {
         "enable_debug" : "Activer le débogage",
-        "enable_debug_sub" : "Inclure la sortie console du miner dans le log de débogage. Peut augmenter la taille de vos logs",
+        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter sensiblement la taille de vos logs",
         "auto_start" : "Démarrage auto",
-        "auto_start_sub" : "Démarrer le One-Click Miner quand vous vous connectez à votre ordinateur",
-        "closed_source" : "Utiliser des logiciels de minage non-libres",
-        "closed_source_sub" : "Meilleur hashrate, mais logiciel de minage ne rétribuant pas les développeurs",
-        "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage non-libres. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
-        "save_n_restart" : "Enregistrer et Redémarrer"
+        "auto_start_sub" : "Démarrer One-Click Miner quand vous vous connectez à votre ordinateur",
+        "closed_source" : "Utiliser des logiciels de minage propriétaires",
+        "closed_source_sub" : "Meilleur taux de hachage, mais logiciel de minage ne rétribuant pas les développeurs",
+        "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage propriétaires. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
+        "save_n_restart" : "Enregistrer & Redémarrer"
     },
     "tabbar" : {
         "wallet" : "Portefeuille",
-        "send_coins" : "Envoyer de la monnaie virtuelle",
+        "send_coins" : "Envoyer de la cryptomonnaie",
         "settings" : "Paramètres"
     },
     "tracking": { 
         "update_available" : "Mise à jour disponible",
         "tracking_enabled" : "Vous partagez anonymement vos statistiques d'utilisation",
         "disable_tracking" : "Désactiver",
-        "tracking_disabled" : "Vous ne partagez pas les statistiques d'utilisation",
-        "enable_tracking" : "Activer pour nous permettre d'améliorer votre expérience utilisateur",
+        "tracking_disabled" : "Vous ne partagez pas vos statistiques d'utilisation",
+        "enable_tracking" : "Activer cette option pour nous permettre d'améliorer votre expérience utilisateur",
         "report_issue" : "Signaler un problème"
     },
     "update" : {

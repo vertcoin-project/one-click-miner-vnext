@@ -8,6 +8,7 @@ Vue.config.devtools = true;
 
 // Import all locales
 import locale_da from "./i18n/da.json";
+import locale_de from "./i18n/de.json";
 import locale_en from "./i18n/en.json";
 import locale_es from "./i18n/es.json";
 import locale_fr from "./i18n/fr.json";
@@ -34,6 +35,7 @@ Bridge.Start(() => {
       locale: result, // set locale
       messages : {
         da: locale_da,
+        de: locale_de,
         en: locale_en,
         es: locale_es,
         fr: locale_fr,
