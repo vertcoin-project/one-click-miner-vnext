@@ -1,8 +1,8 @@
 {
     "generic" : {
-        "retry" : "Retry",
-        "back_to_wallet" : "Back to wallet",
-        "close" : "Close"
+        "retry" : "Попробуйте снова",
+        "back_to_wallet" : "Вернуться к кошельку",
+        "close" : "Закройте"
     },
     "welcome" : {
         "alreadyrunning" : "The One-Click Miner is already running. You can't run it more than once.",
