@@ -8,9 +8,9 @@
         "alreadyrunning" : "One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
         "click_button_to_start" : "Cliquer sur le bouton ci-dessous pour redémarrer le minage.",
         "startmining" : "Démarrer le minage !",
-        "makeapassword" : "Choisir un mot de passe. Ne pas le perdre !",
+        "makeapassword" : "Créer un mot de passe. Ne pas le perdre !",
         "password" : "Mot de passe",
-        "confirmpassword" : "Créer un mot de passe",
+        "confirmpassword" : "Confirmer le mot de passe",
         "password_cannot_be_empty" : "Le mot de passe ne peut être vide",
         "password_mismatch" : "Le mot de passe ne correspond pas",
         "error_initializing" : "Erreur pendant l'initialisation du portefeuille"
