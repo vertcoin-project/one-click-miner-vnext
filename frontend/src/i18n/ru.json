@@ -9,10 +9,10 @@
         "click_button_to_start" : "Click the button below to start mining again.",
         "startmining" : "Start Mining!",
         "makeapassword" : "Make a password. Don't lose it.",
-        "password" : "Password",
-        "confirmpassword" : "Confirm Password",
-        "password_cannot_be_empty" : "Password cannot be empty",
-        "password_mismatch" : "Passwords do not match",
+        "password" : "Пароль",
+        "confirmpassword" : "Подтвердите Пароль",
+        "password_cannot_be_empty" : "Пароль не может быть пустым",
+        "password_mismatch" : "Пароли не совпадают",
         "error_initializing" : "Something went wrong initializing the wallet"
     },
     "checks" : {
