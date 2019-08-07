@@ -1,19 +1,19 @@
 {
     "generic" : {
         "retry" : "Попробуйте снова",
-        "back_to_wallet" : "Вернуться к кошельку",
+        "back_to_wallet" : "Вернуться к кошелёк",
         "close" : "Закройте"
     },
     "welcome" : {
-        "alreadyrunning" : "The One-Click Miner is already running. You can't run it more than once.",
-        "click_button_to_start" : "Click the button below to start mining again.",
-        "startmining" : "Start Mining!",
-        "makeapassword" : "Make a password. Don't lose it.",
+        "alreadyrunning" : "One-Click Miner уже запущен. Вы не можете запустить его более одного раза.",
+        "click_button_to_start" : "Нажмите кнопку ниже, чтобы начать майнинг снова.",
+        "startmining" : "Начните майнинг !",
+        "makeapassword" : "Создать пароль. Не забывай это !",
         "password" : "Пароль",
         "confirmpassword" : "Подтвердите Пароль",
         "password_cannot_be_empty" : "Пароль не может быть пустым",
         "password_mismatch" : "Пароли не совпадают",
-        "error_initializing" : "Something went wrong initializing the wallet"
+        "error_initializing" : "Что-то пошло не так при инициализации кошелёк"
     },
     "checks" : {
         "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
@@ -28,9 +28,9 @@
         "still_maturing" : "still maturing",
         "pending_pool_payout" : "pending pool payout",
         "waiting_for_miners" : "Waiting for miners to start",
-        "expected_earnings_24h" : "Expected Earnings (24h)",
-        "estimating" : "estimating",
-        "stop_mining" : "Stop Mining"
+        "expected_earnings_24h" : "Ожидаемый доход (24H)",
+        "estimating" : "расчет",
+        "stop_mining" : "Стоп Майнинг"
     },
     "sending" : {
         "send_all_to" : "Send all your mined coins to",
@@ -74,7 +74,7 @@
         "report_issue" : "Report an issue"
     },
     "update" : {
-        "new_version_available" : "New version available",
-        "download" : "Download"
+        "new_version_available" : "Доступна новая версия",
+        "download" : "Скачать"
     }
 }
