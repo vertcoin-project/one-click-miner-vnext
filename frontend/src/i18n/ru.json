@@ -61,17 +61,17 @@
         "save_n_restart" : "Save & Restart"
     },
     "tabbar" : {
-        "wallet" : "Wallet",
-        "send_coins" : "Send coins",
-        "settings" : "Settings"
+        "wallet" : "кошелёк",
+        "send_coins" : "Отправить криптовалюту",
+        "settings" : "настройки"
     },
     "tracking": { 
-        "update_available" : "Update available",
-        "tracking_enabled" : "You are anonymously sharing usage statistics",
-        "disable_tracking" : "Disable",
-        "tracking_disabled" : "You are not sharing usage statistics",
-        "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue"
+        "update_available" : "Доступно обновление",
+        "tracking_enabled" : "Вы анонимно делитесь своей статистикой использования",
+        "disable_tracking" : "запрещать",
+        "tracking_disabled" : "Вы не делитесь своей статистикой использования",
+        "enable_tracking" : "Включить эту опцию, чтобы помочь нам улучшить ваш пользовательский опыт",
+        "report_issue" : "Сообщить о проблеме"
     },
     "update" : {
         "new_version_available" : "Доступна новая версия",
