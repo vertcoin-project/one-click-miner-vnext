@@ -52,7 +52,7 @@
     },
     "settings" : {
         "enable_debug" : "Activer le débogage",
-        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter sensiblement la taille de vos logs",
+        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter considérablement la taille de vos logs",
         "auto_start" : "Démarrage auto",
         "auto_start_sub" : "Démarrer One-Click Miner quand vous vous connectez à votre ordinateur",
         "closed_source" : "Utiliser des logiciels de minage propriétaires",
