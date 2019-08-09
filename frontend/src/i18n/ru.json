@@ -52,7 +52,7 @@
     },
     "settings" : {
         "enable_debug" : "Включить отладку",
-        "enable_debug_sub" : "Include the miner's console output in the debug log. Can grow your logs quite large",
+        "enable_debug_sub" : "Включите вывод консоли майнера в журнал отладки. Может значительно увеличить размер вашей файлы журналов.",
         "auto_start" : "Авто Старт",
         "auto_start_sub" : "Старт One-Click Miner при входе на компьютер",
         "closed_source" : "Использовать патентованный майнеры",
