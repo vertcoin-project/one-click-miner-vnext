@@ -24,8 +24,8 @@
         "installing_miners" : "Installing mining software..."
     },
     "mining" : {
-        "spendable_balance" : "Spendable Balance",
-        "still_maturing" : "still maturing",
+        "spendable_balance" : "имеющийся остаток",
+        "still_maturing" : "еще вызревание",
         "pending_pool_payout" : "pending pool payout",
         "waiting_for_miners" : "Waiting for miners to start",
         "expected_earnings_24h" : "Ожидаемый доход (24H)",
