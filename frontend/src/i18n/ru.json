@@ -33,12 +33,12 @@
         "stop_mining" : "Стоп Майнинг"
     },
     "sending" : {
-        "send_all_to" : "Send all your mined coins to",
+        "send_all_to" : "Отправлять всю свою криптовалюту на",
         "youre_sending_x_to" : "Вы отправляете {receivedBalance} на",
         "youre_sending_x_in_y_txs_to" : "Вы отправляете {receivedBalance} в {receivedTxCount} операций на",
         "receiver_address" : "Адрес получателя",
         "wallet_password" : "Пароль кошелёк",
-        "send" : "послать",
+        "send" : "Отправлять",
         "coins_sent" : "Ваши криптовалюту отправлены!",
         "view_trans_plural" : "Просмотр операций",
         "view_trans_singular" : "Просмотр операция",
