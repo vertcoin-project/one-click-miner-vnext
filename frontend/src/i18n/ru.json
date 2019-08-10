@@ -16,18 +16,18 @@
         "error_initializing" : "Что-то пошло не так при инициализации кошелёк"
     },
     "checks" : {
-        "prerequisite" : "A prerequisite is being installed. You might see a popup asking for permissions (could just be blinking in the taskbar)",
-        "checks_failed" : "Checks failed",
-        "checking_mining_software" : "Checking mining software...",
-        "rapidfail" : "Checking for rapid failure occurrences",
+        "prerequisite" : "Предпосылки внедряется. Вы можете увидеть окно, запрашивающее разрешение (оно может просто мигать на панели задач)",
+        "checks_failed" : "Проверки не удалась",
+        "checking_mining_software" : "Проверка майнер...",
+        "rapidfail" : "Проверка случаев быстрого отказа",
         "compatibility" : "Проверка совместимости GPU...",
         "installing_miners" : "Установка майнер..."
     },
     "mining" : {
         "spendable_balance" : "имеющийся остаток",
         "still_maturing" : "еще вызревание",
-        "pending_pool_payout" : "pending pool payout",
-        "waiting_for_miners" : "Waiting for miners to start",
+        "pending_pool_payout" : "ожидание пул выплаты",
+        "waiting_for_miners" : "ждем майнеры",
         "expected_earnings_24h" : "Ожидаемый доход (24H)",
         "estimating" : "расчет",
         "stop_mining" : "Стоп Майнинг"
