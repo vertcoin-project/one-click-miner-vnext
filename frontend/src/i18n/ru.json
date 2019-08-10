@@ -7,8 +7,8 @@
     "welcome" : {
         "alreadyrunning" : "One-Click Miner уже запущен. Вы не можете запустить его более одного раза.",
         "click_button_to_start" : "Нажмите кнопку ниже, чтобы начать майнинг снова.",
-        "startmining" : "Старт Майнинг !",
-        "makeapassword" : "Создать пароль. Не забывай это !",
+        "startmining" : "Старт Майнинг!",
+        "makeapassword" : "Создать пароль. Не забывай это!",
         "password" : "Пароль",
         "confirmpassword" : "Подтвердите Пароль",
         "password_cannot_be_empty" : "Пароль не может быть пустым",
