@@ -56,7 +56,7 @@
         "auto_start" : "Auto start",
         "auto_start_sub" : "Start the One-Click Miner when you log in your computer",
         "closed_source" : "Use closed-source miners",
-        "closed_source_sub" : "Better hashrate, but unaudited miners that incurr a developer's fee",
+        "closed_source_sub" : "Better hashrate, but unaudited miners that incur a developer's fee",
         "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
         "save_n_restart" : "Save & Restart"
     },
