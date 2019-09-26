@@ -11,6 +11,7 @@ CD ..
 DEL vertcoin-ocm.exe
 wails build
 REN vertcoin-ocm vertcoin-ocm.exe
+signtool sign /t http://timestamp.comodoca.com vertcoin-ocm.exe
 7z a vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe 
 CD tracking
 DEL version.go
