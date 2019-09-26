@@ -8,9 +8,9 @@
         "alreadyrunning" : "One-Click Miner est déjà en cours d'exécution. Vous ne pouvez pas l'exécuter plus d'une fois.",
         "click_button_to_start" : "Cliquer sur le bouton ci-dessous pour redémarrer le minage.",
         "startmining" : "Démarrer le minage !",
-        "makeapassword" : "Choisir un mot de passe. Ne pas le perdre !",
+        "makeapassword" : "Créer un mot de passe. Ne pas le perdre !",
         "password" : "Mot de passe",
-        "confirmpassword" : "Créer un mot de passe",
+        "confirmpassword" : "Confirmer le mot de passe",
         "password_cannot_be_empty" : "Le mot de passe ne peut être vide",
         "password_mismatch" : "Le mot de passe ne correspond pas",
         "error_initializing" : "Erreur pendant l'initialisation du portefeuille"
@@ -52,7 +52,7 @@
     },
     "settings" : {
         "enable_debug" : "Activer le débogage",
-        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter sensiblement la taille de vos logs",
+        "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter considérablement la taille de vos logs",
         "auto_start" : "Démarrage auto",
         "auto_start_sub" : "Démarrer One-Click Miner quand vous vous connectez à votre ordinateur",
         "closed_source" : "Utiliser des logiciels de minage propriétaires",

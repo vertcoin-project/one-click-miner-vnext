@@ -10,9 +10,7 @@ require (
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
 	github.com/leaanthony/mewn v0.10.7
 	github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0
-	github.com/mit-dci/lit v0.0.0-20190430192525-57c63ed5cc95
 	github.com/mitchellh/go-ps v0.0.0-20190716172923-621e5597135b
-	github.com/narula/btcd v0.0.0-20180217195732-65a975d890c2
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0 // indirect
 	github.com/tidwall/buntdb v1.1.0

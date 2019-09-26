@@ -22,6 +22,7 @@ import locale_pa from "./i18n/pa.json";
 import locale_pl from "./i18n/pl.json";
 import locale_pt from "./i18n/pt.json";
 import locale_ro from "./i18n/ro.json";
+import locale_ru from "./i18n/ru.json";
 import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
 import locale_zh from "./i18n/zh.json";
@@ -29,35 +30,36 @@ import locale_zh from "./i18n/zh.json";
 import Bridge from "./wailsbridge";
 
 Bridge.Start(() => {
-  window.backend.Backend.GetLocale().then(result => {
-    
-    const i18n = new VueI18n({
-      locale: result, // set locale
-      messages : {
-        da: locale_da,
-        de: locale_de,
-        en: locale_en,
-        es: locale_es,
-        fr: locale_fr,
-        hi: locale_hi,
-        hr: locale_hr,
-        it: locale_it,
-        ja: locale_ja,
-        nl: locale_nl,
-        no: locale_no,
-        pa: locale_pa,
-        pl: locale_pl,
-        pt: locale_pt,
-        ro: locale_ro,
-        sl: locale_sl,
-        sv: locale_sv,
-        zh: locale_zh,
-      },
-    });
+    window.backend.Backend.GetLocale().then(result => {
 
-    new Vue({
-      i18n,
-      render: h => h(App)
-    }).$mount("#app");
-  });
+        const i18n = new VueI18n({
+            locale: result, // set locale
+            messages: {
+                da: locale_da,
+                de: locale_de,
+                en: locale_en,
+                es: locale_es,
+                fr: locale_fr,
+                hi: locale_hi,
+                hr: locale_hr,
+                it: locale_it,
+                ja: locale_ja,
+                nl: locale_nl,
+                no: locale_no,
+                pa: locale_pa,
+                pl: locale_pl,
+                pt: locale_pt,
+                ro: locale_ro,
+                ru: locale_ru,
+                sl: locale_sl,
+                sv: locale_sv,
+                zh: locale_zh,
+            },
+        });
+
+        new Vue({
+            i18n,
+            render: h => h(App)
+        }).$mount("#app");
+    });
 });

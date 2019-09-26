@@ -11,7 +11,6 @@ var availableLanguages = []string{
 	// alphabetical order except for
 	// this one
 	"en",
-
 	"da",
 	"de",
 	"es",
@@ -26,6 +25,7 @@ var availableLanguages = []string{
 	"pl",
 	"pt",
 	"ro",
+	"ru",
 	"sl",
 	"sv",
 	"zh",

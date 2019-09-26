@@ -8,16 +8,14 @@ import (
 	"strings"
 
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-
-	"github.com/btcsuite/btcutil/base58"
-	"github.com/mit-dci/lit/bech32"
-	"github.com/narula/btcd/txscript"
-
+	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
+	"github.com/btcsuite/btcutil"
+	"github.com/btcsuite/btcutil/base58"
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertcoin-project/one-click-miner-vnext/util/bech32"
 )
 
 type Wallet struct {

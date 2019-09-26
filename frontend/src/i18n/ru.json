@@ -1,0 +1,80 @@
+{
+    "generic" : {
+        "retry" : "Попробуйте снова",
+        "back_to_wallet" : "Вернуться к кошелёк",
+        "close" : "Закройте"
+    },
+    "welcome" : {
+        "alreadyrunning" : "One-Click Miner уже запущен. Вы не можете запустить его более одного раза.",
+        "click_button_to_start" : "Нажмите кнопку ниже, чтобы начать майнинг снова.",
+        "startmining" : "Старт Майнинг!",
+        "makeapassword" : "Создать пароль. Не забывай это!",
+        "password" : "Пароль",
+        "confirmpassword" : "Подтвердите Пароль",
+        "password_cannot_be_empty" : "Пароль не может быть пустым",
+        "password_mismatch" : "Пароли не совпадают",
+        "error_initializing" : "Что-то пошло не так при инициализации кошелёк"
+    },
+    "checks" : {
+        "prerequisite" : "Предпосылки внедряется. Вы можете увидеть окно, запрашивающее разрешение (оно может просто мигать на панели задач)",
+        "checks_failed" : "Проверки не удалась",
+        "checking_mining_software" : "Проверка майнер...",
+        "rapidfail" : "Проверка случаев быстрого отказа",
+        "compatibility" : "Проверка совместимости GPU...",
+        "installing_miners" : "Установка майнер..."
+    },
+    "mining" : {
+        "spendable_balance" : "имеющийся остаток",
+        "still_maturing" : "еще вызревание",
+        "pending_pool_payout" : "ожидание пул выплаты",
+        "waiting_for_miners" : "ждем майнеры",
+        "expected_earnings_24h" : "Ожидаемый доход (24H)",
+        "estimating" : "расчет",
+        "stop_mining" : "Стоп Майнинг"
+    },
+    "sending" : {
+        "send_all_to" : "Отправлять всю свою криптовалюту на",
+        "youre_sending_x_to" : "Вы отправляете {receivedBalance} на",
+        "youre_sending_x_in_y_txs_to" : "Вы отправляете {receivedBalance} в {receivedTxCount} операций на",
+        "receiver_address" : "Адрес получателя",
+        "wallet_password" : "Пароль кошелёк",
+        "send" : "Отправлять",
+        "coins_sent" : "Ваши криптовалюту отправлены!",
+        "view_trans_plural" : "Просмотр операций",
+        "view_trans_singular" : "Просмотр операция",
+        "failed_to_send" : "Не удалось отправить ваши криптовалюту",
+        "password_required" : "Пароль необходим кошелёк",
+        "invalid_address" : "неправильный адрес",
+        "script_failure" : "Ошибка скрипта",
+        "could_not_calculate_fee" : "Не удалось рассчитать сбор",
+        "insufficient_funds" : "недостаточно средств",
+        "send_failed" : "Невозможно отправить операция. Проверьте debug.log для получения дополнительной информации."
+    },
+    "settings" : {
+        "enable_debug" : "Включить отладку",
+        "enable_debug_sub" : "Включите вывод консоли майнера в журнал отладки. Может значительно увеличить размер вашей файлы журналов.",
+        "auto_start" : "Авто Старт",
+        "auto_start_sub" : "Старт One-Click Miner при входе на компьютер",
+        "closed_source" : "Использовать патентованный майнеры",
+        "closed_source_sub" : "Лучше хэшрейт, но неаудированные майнеры, которые платят разработчикам",
+        "closed_source_warning" : "Вы решили использовать патентованный майнеры. Vertcoin не оказывает поддержку. Их содержание не может быть проверено и может включать функции, которые повреждают ваш компьютер.",
+        "save_n_restart" : "Сохранить и перезапустить"
+    },
+    "tabbar" : {
+        "wallet" : "кошелёк",
+        "send_coins" : "Отправить криптовалюту",
+        "settings" : "настройки"
+    },
+    "tracking": { 
+        "update_available" : "Доступно обновление",
+        "tracking_enabled" : "Вы анонимно делитесь своей статистикой использования",
+        "disable_tracking" : "запрещать",
+        "tracking_disabled" : "Вы не делитесь своей статистикой использования",
+        "enable_tracking" : "Включить эту опцию, чтобы помочь нам улучшить ваш пользовательский опыт",
+        "report_issue" : "Сообщить о проблеме"
+    },
+    "update" : {
+        "new_version_available" : "Доступна новая версия",
+        "download" : "Скачать"
+    }
+}
