@@ -1,9 +1,11 @@
 {
   "generic": {
     "retry": "Försök igen",
-    "back_to_wallet": "Tillbaka till plånboken"
+    "back_to_wallet": "Tillbaka till plånboken",
+    "close": "Stäng"
   },
   "welcome": {
+    "alreadyrunning" : "One-Click Miner har redan startats. Du kan bara köra en instans åt gången.",
     "click_button_to_start": "Klicka på knappen nedan för att börja mina igen.",
     "startmining": "Börja Mina!",
     "makeapassword": "Skapa ett lösenord. Tappa inte bort det.",
