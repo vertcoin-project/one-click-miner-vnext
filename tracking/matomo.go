@@ -14,6 +14,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -91,7 +92,11 @@ func StartTracker() {
 			q.Add("_id", visitorId())
 			req.URL.RawQuery = q.Encode()
 
-			r, _ := matomoClient.Do(req)
+			r, err := matomoClient.Do(req)
+			if err != nil {
+				logging.Warnf("Error sending tracking data: %v", err)
+				continue
+			}
 			if r.Body != nil {
 				r.Body.Close()
 			}
