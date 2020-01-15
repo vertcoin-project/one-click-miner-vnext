@@ -46,6 +46,7 @@
         "script_failure" : "Napaka skripte",
         "could_not_calculate_fee" : "Ni bilo mogoče izračunati pristojbine",
         "insufficient_funds" : "Nezadostna sredstva",
+        "sign_failed":"Transakcije ni mogoče podpisati. Preverite geslo",
         "send_failed" : "Transakcije ni bilo mogoče poslati. Poglej debug.log za več informacij"
     },
     "settings" : {

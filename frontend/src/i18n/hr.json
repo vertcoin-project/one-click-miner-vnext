@@ -46,6 +46,7 @@
         "script_failure" : "Greška skripte",
         "could_not_calculate_fee" : "Nije moguće izračunati naknadu",
         "insufficient_funds" : "Nedostatna sredstva",
+        "sign_failed" : "Nije moguće potpisati transakciju. Provjerite zaporku",
         "send_failed" : "Nije moguće poslati transakciju. Provjerite debug.log za više informacija"
     },
     "settings" : {

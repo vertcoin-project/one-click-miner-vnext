@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="sendError === '' && !sent" class="col-286">
+    <div v-if="sendError === '' && sent === false" class="col-286">
     	<p v-if="receivedBalance === '0.00 VTC'">{{ $t('sending.send_all_to') }}:</p>
 	    <p v-if="receivedBalance !== '0.00 VTC' && receivedTxCount === 1">{{ $t('sending.youre_sending_x_to', { receivedBalance }) }}:</p>
 	    <p v-if="receivedBalance !== '0.00 VTC' && receivedTxCount > 1">{{ $t('sending.youre_sending_x_in_y_txs_to', { receivedBalance, receivedTxCount }) }}:</p>
@@ -11,7 +11,7 @@
           <a class="button" @click="send">{{ $t('sending.send') }}</a>
       </p>
     </div>
-    <div v-if="sent" class="col-286">
+    <div v-if="sent === true" class="col-286">
       <svg style="fill: #048652" width="57px" height="57px" viewBox="0 0 57 57" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
           <title>Group</title>
@@ -54,7 +54,7 @@ export default {
       error : "",
       sent : false,
       sendError: "",
-      txid : "",
+      txids : [],
     };
   },
   mounted() {
@@ -77,26 +77,26 @@ export default {
       if(this.password === "") {
         this.sent = false;
         this.txids = [];
-        this.sendError = $t('sending.password_required');
+        this.sendError = this.$t('sending.password_required');
         return
       }
 
       if(this.target === "") {
         this.sent = false;
         this.txids = [];
-        this.sendError = $t('sending.invalid_address');
+        this.sendError = this.$t('sending.invalid_address');
         return
       }
 
       window.backend.Backend.SendSweep(this.password).then(result => {
-        if(result.length == 1 && result[0].length != 64) { // Error!
+        if(result.length === 1 && result[0].length !== 64) { // Error!
           self.sent = false;
           self.txids = [];
-          self.sendError = $t('sending.' + result[0]);
+          self.sendError = this.$t('sending.' + result[0]);
         } else {
           self.txids = result;
           self.sent = true;
-          self.sendError = '';
+          self.sendError = "";
         }
       });
     },
@@ -107,7 +107,7 @@ export default {
       window.backend.Backend.PrepareSweep(this.target).then(result => {
         if(result !== "") {
           self.receivedBalance = "0.00 VTC";
-          self.error = $t('sending.' + result);
+          self.error = this.$t('sending.' + result);
         } else {
           self.error = "";
         }
@@ -117,13 +117,13 @@ export default {
       this.$emit('back')
     },
     retry() {
-      this.target = "";
       this.password = "";
       this.receivedBalance = "0.00 VTC";
       this.error =  "";
       this.sent = false;
       this.txids = [];
       this.sendError = "";
+      this.calculate();
     },
     showTx(txid) {
       window.backend.Backend.ShowTx(txid);

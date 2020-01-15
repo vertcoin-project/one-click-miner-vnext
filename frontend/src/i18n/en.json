@@ -48,6 +48,7 @@
         "script_failure" : "Script failure",
         "could_not_calculate_fee" : "Could not calculate fee",
         "insufficient_funds" : "Insufficient funds",
+        "sign_failed" : "Unable to sign transaction. Check password.",
         "send_failed" : "Unable to send transaction. Check debug.log for more information"
     },
     "settings" : {

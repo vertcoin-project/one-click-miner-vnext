@@ -48,6 +48,7 @@
         "script_failure" : "Script fejl",
         "could_not_calculate_fee" : "Kunne ikke beregne gebyr",
         "insufficient_funds" : "Utilstrækkelige midler",
+        "sign_failed" : "Kunne ikke underskrive transaktion. Tjek din adgangskode",
         "send_failed" : "Kunne ikke sende transaktion. Check debug.log for mere information"
     },
     "settings" : {

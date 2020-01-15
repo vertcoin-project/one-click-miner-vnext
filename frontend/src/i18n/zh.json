@@ -48,7 +48,8 @@
         "script_failure" : "脚本失败",
         "could_not_calculate_fee" : "无法计算费用",
         "insufficient_funds" : "不足资金",
-        "send_failed" : "无法发送交易。查看debug.log以获取更多的信息"
+        "sign_failed":"无法签署交易。 检查密码",
+    "send_failed" : "无法发送交易。查看debug.log以获取更多的信息"
     },
     "settings" : {
         "enable_debug" : "启用调试",

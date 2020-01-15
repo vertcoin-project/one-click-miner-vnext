@@ -48,6 +48,7 @@
         "script_failure" : "Eroare de script",
         "could_not_calculate_fee" : "Taxa pe tranzacție nu a putut fi calculată",
         "insufficient_funds" : "Fonduri insuficiente",
+        "sign_failed":"Imposibil de semnat tranzacția. Verificați parola",
         "send_failed" : "Nu se poate trimite tranzacția. Verifică fișierul debug.log pentru informații suplimentare"
     },
     "settings" : {

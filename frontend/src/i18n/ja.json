@@ -48,6 +48,7 @@
         "script_failure" : "スクリプトの失敗",
         "could_not_calculate_fee" : "料金を計算できませんでした",
         "insufficient_funds" : "残高不足",
+        "sign_failed" : "トランザクションに署名できません。 パスワードを確認してください",
         "send_failed" : "取引を送信できません。 詳細についてはdebug.logを確認してください"
     },
     "settings" : {

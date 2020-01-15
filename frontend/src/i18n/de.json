@@ -48,6 +48,7 @@
         "script_failure" : "Skriptfehler",
         "could_not_calculate_fee" : "Unmögliche Gebührenkalkulation",
         "insufficient_funds" : "unzureichende Mittel",
+        "sign_failed" : "Transaktion kann nicht signiert werden. Überprüfen Sie Ihr Passwort",
         "send_failed" : "Unmögliche Transaktion. Weitere Informationen finden Sie in debug.log"
     },
     "settings" : {

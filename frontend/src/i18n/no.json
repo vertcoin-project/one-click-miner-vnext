@@ -48,6 +48,7 @@
     "script_failure": "Script feilet",
     "could_not_calculate_fee": "Kunne ikke regne ut beløp",
     "insufficient_funds": "Ikke tilstrekkelige midler",
+    "sign_failed" : "Kan ikke signere transaksjonen. Sjekk passordet ditt",
     "send_failed": "Kunne ikke gjennomføre transaksjonen. Sjekk debug.log for mer informasjon"
   },
   "settings": {

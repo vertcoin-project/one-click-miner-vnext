@@ -37,7 +37,7 @@ func (m *Backend) SendSweep(password string) []string {
 		err := m.wal.SignMyInputs(s, password)
 		if err != nil {
 			logging.Errorf("Error signing transaction: %s", err.Error())
-			return []string{"send_failed"}
+			return []string{"sign_failed"}
 		}
 
 		txHash, err := m.wal.Send(s)
@@ -71,8 +71,11 @@ func (m *Backend) PrepareSweep(addr string) string {
 		Action:   "Prepare",
 	})
 
+	logging.Debugf("Preparing sweep")
+
 	txs, err := m.wal.PrepareSweep(addr)
 	if err != nil {
+		logging.Errorf("Error preparing sweep: %v", err)
 		return err.Error()
 	}
 
@@ -82,7 +85,10 @@ func (m *Backend) PrepareSweep(addr string) string {
 		val += (float64(tx.TxOut[0].Value) / float64(100000000))
 	}
 
-	m.runtime.Events.Emit("createTransactionResult", PrepareResult{fmt.Sprintf("%0.8f VTC", val), len(txs)})
+	result := PrepareResult{fmt.Sprintf("%0.8f VTC", val), len(txs)}
+	logging.Debugf("Prepared sweep: %v", result)
+
+	m.runtime.Events.Emit("createTransactionResult", result)
 	return ""
 }
 

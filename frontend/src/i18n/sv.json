@@ -48,7 +48,8 @@
     "script_failure": "Script fel",
     "could_not_calculate_fee": "Kunde inte beräkna avgift",
     "insufficient_funds": "Otillräckliga saldo",
-    "send_failed": "Det gick inte att skicka transaktion. Kontrollera debug.log filen för mer information"
+    "sign_failed":"Det gick inte att skriva under transaktion. Kontrollera ditt lösenord",
+      "send_failed": "Det gick inte att skicka transaktion. Kontrollera debug.log filen för mer information"
   },
   "settings": {
     "enable_debug": "Aktivera felsökning",

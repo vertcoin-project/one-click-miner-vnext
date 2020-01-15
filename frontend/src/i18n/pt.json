@@ -48,6 +48,7 @@
         "script_failure" : "Erro no Script",
         "could_not_calculate_fee" : "Não foi possível calcular a taxa",
         "insufficient_funds" : "O montante disponível é insuficiente",
+        "sign_failed":"Não foi possível assinar a transação. Verifique sua senha",
         "send_failed" : "Incapaz de realizar a transação. Ver debug.log para mais informações."
     },
     "settings" : {

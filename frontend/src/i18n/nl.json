@@ -48,6 +48,7 @@
         "script_failure" : "Scriptfout",
         "could_not_calculate_fee" : "Kon transactiekosten niet vaststellen",
         "insufficient_funds" : "Onvoldoende saldo",
+        "sign_failed" : "Kon de transactie niet tekenen. Controleer het wachtwoord.",
         "send_failed" : "Kon de transactie niet versturen. Controleer debug.log voor meer informatie"
     },
     "settings" : {

@@ -48,6 +48,7 @@
         "script_failure" : "Script défectueux",
         "could_not_calculate_fee" : "Calcul des frais impossible",
         "insufficient_funds" : "Fonds insuffisants",
+        "sign_failed" : "Impossible de signer la transaction. Vérifiez votre mot de passe",
         "send_failed" : "Transaction impossible. Vérifier debug.log pour plus d'informations"
     },
     "settings" : {

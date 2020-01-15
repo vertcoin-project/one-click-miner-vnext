@@ -48,6 +48,7 @@
         "script_failure" : "Errore nello script",
         "could_not_calculate_fee" : "Impossibile calcolare la commissione",
         "insufficient_funds" : "Fondi insufficienti",
+        "sign_failed" : "Impossibile firmare la transazione. Controlla la tua password",
         "send_failed" : "Impossibile inviare la transazione. Controlla debug.log per ulteriori informazioni"
     },
     "settings" : {
