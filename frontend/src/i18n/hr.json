@@ -1,9 +1,11 @@
 {
     "generic" : {
         "retry" : "Pokušajte ponovno",
-        "back_to_wallet" : "Natrag na novčanik"
+        "back_to_wallet" : "Natrag na novčanik",
+        "close" : "Zatvoriti"
     },
     "welcome" : {
+        "alreadyrunning" : "One-Click Miner već radi. Ne možete ga pokrenuti više od jednom.",
         "click_button_to_start" : "Pritisnite dugme ispod da ponovno započnete sa rudarenjem.",
         "startmining" : "Započnite sa rudarenjem!",
         "makeapassword" : "Kreirajte lozinku. Nemojte ju izgubiti.",
