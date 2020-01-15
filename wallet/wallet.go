@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"math"
 	"path/filepath"
@@ -58,6 +59,7 @@ func NewWallet(addr string) (*Wallet, error) {
 }
 
 func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
+	w.Update()
 	retArr := make([]*wire.MsgTx, 0)
 	for {
 		tx := wire.NewMsgTx(2)
@@ -73,12 +75,25 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 				}
 			}
 
-			if !alreadyIncluded && !(u.IsCoinbase && u.Height+101 > w.TipHeight) {
-				totalIn += u.Amount
-				pkScript, _ := hex.DecodeString(u.ScriptPubKey)
-				h, _ := chainhash.NewHashFromStr(u.TxID)
-				tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), pkScript, nil))
+			if alreadyIncluded {
+				logging.Debugf("UTXO Already Included: %v", u)
+				continue
 			}
+
+			if u.IsCoinbase && u.Height+101 > w.TipHeight {
+				logging.Debugf("UTXO is immature: %v", u)
+				continue
+			}
+
+			totalIn += u.Amount
+			pkScript, _ := hex.DecodeString(u.ScriptPubKey)
+			h, _ := chainhash.NewHashFromStr(u.TxID)
+			tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), pkScript, nil))
+		}
+
+		if len(tx.TxIn) == 0 {
+			logging.Warnf("Trying to sweep with zero UTXOs")
+			return nil, errors.New("insufficient_funds")
 		}
 
 		if strings.HasPrefix(addr, "V") {
