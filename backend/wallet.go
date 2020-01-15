@@ -51,7 +51,7 @@ func (m *Backend) SendSweep(password string) []string {
 	m.pendingSweep = nil
 
 	logging.Debugf("Transaction(s) sent! TXIDs: %v\n", txids)
-
+	m.refreshBalanceChan <- true
 	return txids
 
 }

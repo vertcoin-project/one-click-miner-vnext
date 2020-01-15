@@ -307,4 +307,5 @@ func (w *Wallet) MarkInputsAsInternallySpent(tx *wire.MsgTx) {
 	for _, txi := range tx.TxIn {
 		w.MarkSpent(txi.PreviousOutPoint.Hash.String(), uint(txi.PreviousOutPoint.Index))
 	}
+	w.UpdateSpentStatus()
 }
