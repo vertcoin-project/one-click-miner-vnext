@@ -81,32 +81,32 @@ export default {
   },
   mounted() {
     var self = this;
-    var timer = window.setInterval(() => {
+    window.setInterval(() => {
       var newSpinner = self.spinner + ".";
       if (newSpinner.length > 5) {
         newSpinner = ".";
       }
       self.spinner = newSpinner;
     }, 1000);
-    wails.Events.On("hashRate", result => {
+    window.wails.Events.On("hashRate", result => {
       self.hashrate = result;
     });
-    wails.Events.On("runningMiners", result => {
+    window.wails.Events.On("runningMiners", result => {
       self.runningMiners = result;
     });
-    wails.Events.On("networkHashRate", result => {
+    window.wails.Events.On("networkHashRate", result => {
       self.netHash = result;
     });
-    wails.Events.On("avgEarnings", result => {
+    window.wails.Events.On("avgEarnings", result => {
       self.avgearn = result;
     });
-    wails.Events.On("balance", result => {
+    window.wails.Events.On("balance", result => {
       self.balance = result;
     });
-    wails.Events.On("balanceImmature", result => {
+    window.wails.Events.On("balanceImmature", result => {
       self.balanceImmature = result;
     });
-    wails.Events.On("balancePendingPool", result => {
+    window.wails.Events.On("balancePendingPool", result => {
       self.balancePendingPool = result;
     });
     window.backend.Backend.RefreshBalance();
@@ -116,7 +116,7 @@ export default {
   methods: {
     stop: function() {
       var self = this;
-      window.backend.Backend.StopMining().then(result => {
+      window.backend.Backend.StopMining().then(() => {
         self.$emit("stop-mining");
       });
     },
