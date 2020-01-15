@@ -68,6 +68,14 @@ func GetNetHash() uint64 {
 
 var jsonClient = &http.Client{Timeout: 60 * time.Second}
 
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
 func GetJson(url string, target interface{}) error {
 	r, err := jsonClient.Get(url)
 	if err != nil {
