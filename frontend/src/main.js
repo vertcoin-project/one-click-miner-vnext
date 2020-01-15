@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import VueI18n from "vue-i18n";
+import * as Wails from "@wailsapp/runtime"
 
 Vue.use(VueI18n);
 Vue.config.productionTip = false;
@@ -27,9 +28,7 @@ import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
 import locale_zh from "./i18n/zh.json";
 
-import Bridge from "./wailsbridge";
-
-Bridge.Start(() => {
+Wails.Init(() => {
     window.backend.Backend.GetLocale().then(result => {
 
         const i18n = new VueI18n({
@@ -56,7 +55,7 @@ Bridge.Start(() => {
                 zh: locale_zh,
             },
         });
-
+        
         new Vue({
             i18n,
             render: h => h(App)

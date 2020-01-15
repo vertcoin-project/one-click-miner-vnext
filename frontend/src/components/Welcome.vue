@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="col-286" v-if="alreadyRunning === false && walletInitialized === 0">
-    	<p>{{ $t("welcome.makeapassword") }}</p>
+      <p>{{ $t("welcome.makeapassword") }}</p>
       <p class="error" v-if="error !== ''">{{error}}</p>
-	    <p><input type="password" v-model="password" v-bind:placeholder="$t('welcome.password')" /></p>
-	    <p><input type="password" v-model="confirmPassword" v-bind:placeholder="$t('welcome.confirmpassword')" @keyup.enter="initAndStart" /></p>
+      <p><input type="password" v-model="password" v-bind:placeholder="$t('welcome.password')" /></p>
+      <p><input type="password" v-model="confirmPassword" v-bind:placeholder="$t('welcome.confirmpassword')" @keyup.enter="initAndStart" /></p>
       <p><a class="button" @click="initAndStart">{{ $t("welcome.startmining") }}</a></p>
     </div>
     <div class="col-286" v-if="alreadyRunning === false && walletInitialized === 1">
@@ -32,7 +32,7 @@ export default {
       error: "",
       alreadyRunning: false,
       password: "",
-	  confirmPassword: "",
+      confirmPassword: "",
       walletInitialized: -1
     };
   },
@@ -67,10 +67,10 @@ export default {
       }
       
       var self = this;
-	  
+
       window.backend.Backend.InitWallet(this.password).then(result => {
         if(result !== true){
-			    this.error = this.$t("welcome.error_initializing");
+          this.error = this.$t("welcome.error_initializing");
         } else {
           self.start()
         }
