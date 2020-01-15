@@ -1,9 +1,14 @@
 <template>
-  <div id="app" unselectable="on" onselectstart="return false;" >
-    <TabBar v-on:send="switchToSend" v-on:wallet="switchToWallet" v-on:settings="switchToSettings" v-if="((screen === 'welcome' && manualStop) || screen !== 'welcome') && screen !== 'checks'" />
-    <Welcome v-if="screen === 'welcome'" v-on:start-mining="switchToChecks"/>
-    <Checks v-if="screen === 'checks'" v-on:mining="switchToMining"/>
-    <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining"/>
+  <div id="app" unselectable="on" onselectstart="return false;">
+    <TabBar
+      v-on:send="switchToSend"
+      v-on:wallet="switchToWallet"
+      v-on:settings="switchToSettings"
+      v-if="((screen === 'welcome' && manualStop) || screen !== 'welcome') && (screen !== 'checks' || tabBarVisible)"
+    />
+    <Welcome v-if="screen === 'welcome'" v-on:start-mining="switchToChecks" />
+    <Checks v-if="screen === 'checks'" v-on:mining="switchToMining" v-on:checksFailed="showTabBar" />
+    <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining" />
     <Mining v-show="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
     <Update v-if="screen === 'update'" v-on:back="switchToMining" />
@@ -26,56 +31,68 @@ import "./assets/css/main.css";
 export default {
   data() {
     return {
-      screen : "welcome",
-      manualStop: false
+      screen: "welcome",
+      manualStop: false,
+      tabBarVisible: false
     };
   },
   mounted() {
     var self = this;
-    window.wails.Events.On("minerRapidFail",(result) => {
-		  window.backend.Backend.StopMining().then(result => {
-				self.switchToChecks();
-		  });
+    window.wails.Events.On("minerRapidFail", () => {
+      window.backend.Backend.StopMining().then(() => {
+        self.switchToChecks();
+      });
     });
   },
   methods: {
     stopMining: function() {
-        this.manualStop = true;
-        this.switchToWelcome();
+      this.manualStop = true;
+      this.switchToWelcome();
     },
     // Target for the wallet tab (meta between welcome (if stopped) and mining (if mining))
     switchToWallet: function() {
-      if(this.manualStop) {
-        this.switchToWelcome();
+      var self = this;
+      if (this.tabBarVisible === true) {
+        this.tabBarVisible = false;
+        window.backend.Backend.StopMining().then(() => {
+          self.switchToChecks();
+        });
       } else {
-        this.switchToMining();
+        if (this.manualStop) {
+          this.switchToWelcome();
+        } else {
+          this.switchToMining();
+        }
       }
     },
+    showTabBar: function() {
+      this.tabBarVisible = true;
+    },
     switchToChecks: function() {
-		  this.screen = 'checks';
+      this.screen = "checks";
     },
     switchToSettings: function() {
-		this.screen = 'settings';
+      this.screen = "settings";
     },
     switchToSend: function() {
-        this.screen = 'send';
-	},
-	switchToMining: function() {
-        this.manualStop = false;
-        this.screen = 'mining';
-  },
-  switchToUpdate: function() {
-        this.screen = 'update';
-	},
-	switchToWelcome: function() {
-		this.screen = 'welcome';
-  },
-  restartMining: function() {
-    var self = this;
-    window.backend.Backend.StopMining().then(result => {
-				self.switchToChecks();
-		});
-  }
+      this.screen = "send";
+    },
+    switchToMining: function() {
+      this.manualStop = false;
+      this.screen = "mining";
+    },
+    switchToUpdate: function() {
+      this.screen = "update";
+    },
+    switchToWelcome: function() {
+      this.screen = "welcome";
+    },
+    restartMining: function() {
+      var self = this;
+      window.backend.Backend.StopMining().then(() => {
+        self.switchToChecks();
+      });
+    }
   },
   name: "app",
   components: {
