@@ -74,6 +74,9 @@ func (m *Backend) CheckGPUCompatibility() error {
 		if g.Type != util.GPUTypeOther {
 			compat++
 		}
+		if gpustring != "" {
+			gpustring += " / "
+		}
 		gpustring += g.OSName
 	}
 
@@ -84,7 +87,7 @@ func (m *Backend) CheckGPUCompatibility() error {
 	})
 
 	if compat == 0 {
-		return fmt.Errorf("No compatible GPUs detected")
+		return fmt.Errorf("No compatible GPUs detected\n\nGPUs Found:\n%s", gpustring)
 	}
 	return nil
 }

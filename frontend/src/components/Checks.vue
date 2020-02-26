@@ -10,7 +10,7 @@
       <div class="failureReason" v-if="checkStatus === 'Failed'">
         {{ $t("checks.checks_failed") }}:
         <br />
-        {{failureReason}}
+        <pre>{{failureReason}}</pre>
       </div>
       <p v-if="!prerequisiteInstall && checkStatus === 'Failed'">
         <a class="button" @click="check">{{ $t('generic.retry') }}</a>
