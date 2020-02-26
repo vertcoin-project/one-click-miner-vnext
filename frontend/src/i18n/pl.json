@@ -48,7 +48,8 @@
         "script_failure" : "Błąd skryptu",
         "could_not_calculate_fee" : "Obliczenie opłaty nie powiodło się",
         "insufficient_funds" : "Za mało środków",
-        "send_failed" : "Wysyłka nieudana. Więcej informacji w pliku debug.log"
+        "sign_failed":"Nie można podpisać transakcji. Sprawdź swoje hasło",
+       "send_failed" : "Wysyłka nieudana. Więcej informacji w pliku debug.log"
     },
     "settings" : {
         "enable_debug" : "Włącz debugging",
