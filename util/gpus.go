@@ -95,6 +95,11 @@ func GetGPUs() []GPU {
 				if vgaIdx > -1 {
 					gpus = append(gpus, l[vgaIdx+27:])
 				}
+
+				vgaIdx = strings.Index(l, "3D controller: ")
+				if vgaIdx > -1 {
+					gpus = append(gpus, l[vgaIdx+15:])
+				}
 			}
 		} else if runtime.GOOS == "darwin" {
 			Info := exec.Command("system_profiler", "SPDisplaysDataType")
