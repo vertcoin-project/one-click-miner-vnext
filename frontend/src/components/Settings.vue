@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="col-286">
-      <p style="text-align: left">
+    <div class="col-286" v-if="!showWarning">
+      <p style="text-align: left" >
         <input type="checkbox" v-model="debugging" />
         {{ $t("settings.enable_debug") }}
         <br />
@@ -16,14 +16,21 @@
       <p style="text-align: left">
         <input type="checkbox" v-model="closedSourceMiner" />
         {{ $t("settings.closed_source") }}
+        <a v-if="closedSourceMiner" class="warning" @click="toggleWarning">[ ! ]</a>
         <br />
         <span class="subtext">{{ $t("settings.closed_source_sub") }}</span>
       </p>
-      <div class="warning" v-if="closedSourceMiner">
-        <p>{{ $t("settings.closed_source_warning") }}</p>
-      </div>
+      
       <p>
         <a class="button" @click="save">{{ $t("settings.save_n_restart") }}</a>
+      </p>
+    </div>
+    <div class="col-286" v-if="showWarning">
+      <div class="warning" v-if="closedSourceMiner && showWarning">
+        <p>{{ $t("settings.closed_source_warning") }}</p>
+      </div>
+       <p>
+        <a class="button" @click="toggleWarning">{{ $t("generic.close") }}</a>
       </p>
     </div>
   </div>
@@ -35,7 +42,8 @@ export default {
     return {
       closedSourceMiner: false,
       debugging: false,
-      autoStart: false
+      autoStart: false,
+      showWarning: false,
     };
   },
   created() {
@@ -51,6 +59,11 @@ export default {
     });
   },
   methods: {
+    toggleWarning: function() {
+      this.showWarning = !this.showWarning;
+      var self = this;
+      setTimeout(() => { self.showWarning = false; }, 5000);
+    },
     save: function() {
       var self = this;
       window.backend.Backend.SetClosedSource(this.closedSourceMiner).then(
@@ -77,6 +90,13 @@ div.warning {
   text-align: justify;
   line-height: 10pt;
   font-size: 10pt;
+}
+a.warning {
+  display: block; 
+  float:right;
+  color: #d0a000;
+  cursor: pointer;
+  text-decoration: underline;
 }
 div.warning p {
   margin: 0px;
