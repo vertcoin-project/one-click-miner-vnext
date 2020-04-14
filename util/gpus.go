@@ -32,7 +32,7 @@ var gpusCache []GPU
 var gpusCached = false
 
 var knownGPUs = []KnownGPU{
-	KnownGPU{"Radeon( \\(TM\\))?( RX)? (Vega|[4-5][7-9]0)", GPUTypeAMD, nil},
+	KnownGPU{"Radeon( \\(TM\\))?( RX)? (Vega|[4-5][6-9]0)", GPUTypeAMD, nil},
 	KnownGPU{"AMD Radeon\\(TM\\) R[79] Graphics", GPUTypeAMD, nil},
 	KnownGPU{"AMD Radeon VII", GPUTypeAMD, nil},
 	KnownGPU{"NVIDIA P[0-9]{3}-[0-9]{3}", GPUTypeNVidia, nil},

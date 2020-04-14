@@ -17,7 +17,7 @@ func TestNvidia(t *testing.T) {
 }
 
 func TestAMD(t *testing.T) {
-	gpus := []string{"Radeon (TM) RX 480 Graphics", "AMD Radeon(TM) R7 Graphics", "Radeon RX 480"}
+	gpus := []string{"Radeon (TM) RX 480 Graphics", "AMD Radeon(TM) R7 Graphics", "Radeon RX 480", "Radeon (TM) RX 560 Graphics"}
 	g := GetGPUsFromStrings(gpus)
 	for _, gpu := range g {
 		if gpu.Type != GPUTypeAMD {
