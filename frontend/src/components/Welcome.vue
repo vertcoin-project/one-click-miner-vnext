@@ -80,7 +80,7 @@ export default {
 
       window.backend.Backend.InitWallet(this.password).then(result => {
         if (result !== true) {
-          this.error = this.$t("welcome.error_initializing");
+          this.error = self.$t("welcome.error_initializing");
         } else {
           self.start();
         }

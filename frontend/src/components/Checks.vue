@@ -35,7 +35,7 @@ export default {
       if (result === "Failed") {
         self.checkStatus = result;
       } else {
-        self.checkStatus = this.$t("checks." + result);
+        self.checkStatus = self.$t("checks." + result);
       }
     });
     window.wails.Events.On("prerequisiteInstall", result => {

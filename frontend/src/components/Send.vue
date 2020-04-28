@@ -158,7 +158,7 @@ export default {
           // Error!
           self.sent = false;
           self.txids = [];
-          self.sendError = this.$t("sending." + result[0]);
+          self.sendError = self.$t("sending." + result[0]);
         } else {
           self.txids = result;
           self.sent = true;
@@ -173,7 +173,7 @@ export default {
       window.backend.Backend.PrepareSweep(this.target).then(result => {
         if (result !== "") {
           self.receivedBalance = "0.00 VTC";
-          self.error = this.$t("sending." + result);
+          self.error = self.$t("sending." + result);
         } else {
           self.error = "";
         }
