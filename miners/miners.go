@@ -50,6 +50,7 @@ type MinerImpl interface {
 	Configure(args BinaryArguments) error
 	HashRate() uint64
 	ConstructCommandlineArgs(args BinaryArguments) []string
+	AvailableGPUs() int8
 }
 
 func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunner, error) {
@@ -202,6 +203,11 @@ func (b *BinaryRunner) Start(args BinaryArguments) error {
 	b.usedArgs = args
 	b.lastStarted = time.Now()
 	b.rapidFails = 0
+
+	// Check if there is a compatible GPU!
+	if b.MinerImpl.AvailableGPUs() == 0 {
+		return fmt.Errorf("err_no_gpus")
+	}
 
 	// Always do a fresh unpack of the executable to ensure there's been no funny
 	// business. EnsureAvailable already checked the SHA hash.

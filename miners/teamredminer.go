@@ -13,6 +13,7 @@ var _ MinerImpl = &TeamRedMinerImpl{}
 type TeamRedMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	gpuCount     int8
 }
 
 func NewTeamRedMinerImpl(br *BinaryRunner) MinerImpl {
@@ -28,6 +29,14 @@ func (l *TeamRedMinerImpl) ParseOutput(line string) {
 		logging.Debugf("[teamRedMiner] %s\n", line)
 	}
 	line = strings.TrimSpace(line)
+	if strings.Contains(line, "] Detected") && strings.Contains(line, "devices, ") {
+		startCountIdx := strings.Index(line, "] Detected ") + 11
+		gpuCountString := line[startCountIdx : startCountIdx+1]
+		logging.Debugf("GPUCountString: %s", gpuCountString)
+		gpuCount64, _ := strconv.ParseInt(gpuCountString, 10, 8)
+		l.gpuCount = int8(gpuCount64)
+		logging.Debugf("Set GPU Count to %d", l.gpuCount)
+	}
 	if strings.Contains(line, "] GPU ") && strings.Contains(line, "lyra2rev3") {
 		startDeviceIdx := strings.Index(line, "] GPU ")
 		endDeviceIdx := strings.Index(line[startDeviceIdx:], "[")
@@ -68,4 +77,11 @@ func (l *TeamRedMinerImpl) HashRate() uint64 {
 
 func (l *TeamRedMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
 	return []string{"--log_interval=10", "--disable_colors", "-a", "lyra2rev3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+}
+
+func (l *TeamRedMinerImpl) AvailableGPUs() int8 {
+	l.binaryRunner.launch([]string{"--list_devices"}, false)
+	l.binaryRunner.cmd.Wait()
+	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
+	return l.gpuCount
 }
