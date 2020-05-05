@@ -189,7 +189,7 @@ export default {
       this.sent = false;
       this.txids = [];
       this.sendError = "";
-      this.calculate();
+      this.recalculate();
     },
     showTx(txid) {
       window.backend.Backend.ShowTx(txid);

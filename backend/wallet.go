@@ -33,6 +33,12 @@ func (m *Backend) SendSweep(password string) []string {
 
 	txids := make([]string, 0)
 
+	if len(m.pendingSweep) == 0 {
+		// Somehow user managed to press send without properly
+		// preparing the sweep first
+		return []string{"send_failed"}
+	}
+
 	for _, s := range m.pendingSweep {
 		err := m.wal.SignMyInputs(s, password)
 		if err != nil {
