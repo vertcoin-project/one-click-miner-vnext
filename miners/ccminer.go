@@ -13,6 +13,7 @@ var _ MinerImpl = &CCMinerImpl{}
 type CCMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	gpuCount     int8
 }
 
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {
@@ -28,6 +29,14 @@ func (l *CCMinerImpl) ParseOutput(line string) {
 		logging.Debugf("[ccminer] %s\n", line)
 	}
 	line = strings.TrimSpace(line)
+
+	if strings.Contains(line, "GPU #") && strings.HasSuffix(line, ")") {
+		startCountIdx := strings.Index(line, "GPU #") + 5
+		gpuCountString := line[startCountIdx : startCountIdx+1]
+		gpuCount64, _ := strconv.ParseInt(gpuCountString, 10, 8)
+		l.gpuCount = int8(gpuCount64) + 1
+		logging.Debugf("Set GPU Count to %d", l.gpuCount)
+	}
 
 	if strings.Contains(line, "GPU #") && strings.HasSuffix(line, "H/s") {
 		startDeviceIdx := strings.Index(line, "GPU #")
@@ -69,4 +78,11 @@ func (l *CCMinerImpl) HashRate() uint64 {
 
 func (l *CCMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
 	return []string{"--max-log-rate", "0", "--no-color", "-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+}
+
+func (l *CCMinerImpl) AvailableGPUs() int8 {
+	l.binaryRunner.launch([]string{"-n"}, false)
+	l.binaryRunner.cmd.Wait()
+	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
+	return l.gpuCount
 }

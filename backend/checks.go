@@ -56,6 +56,11 @@ func (m *Backend) PerformChecks() string {
 			m.runtime.Events.Emit("checkStatus", "Failed")
 			return errorString
 		}
+
+		if br.MinerImpl.AvailableGPUs() == 0 {
+			m.runtime.Events.Emit("checkStatus", "Failed")
+			return "Miner software reported no compatible GPUs"
+		}
 	}
 
 	tracking.Track(tracking.TrackingRequest{

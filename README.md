@@ -1,12 +1,12 @@
 # One-Click Miner
 
-This is a redevelopment of Vertcoin's [One Click Miner](https://github.com/vertcoin-project/one-click-miner) that adds:
+The One-Click Miner allows cryptocurrency enthusiasts to get into mining with minimal effort. When you download the One-Click Miner, you will be asked to provide a password for your (built in) wallet. It will then immediately commence mining, using [P2Proxy](https://p2proxy.vertcoin.org) as mining pool. 
 
-* Built-in Wallet
-* Linux Support
-* True One-Click design
+If you want to support the further development of the One Click Miner, feel free to donate Vertcoin to [Vmnbtn5nnNbs1otuYa2LGBtEyFuarFY1f8](https://insight.vertcoin.org/address/Vmnbtn5nnNbs1otuYa2LGBtEyFuarFY1f8).
 
-Want to donate to the development of this software? Send VTC to [VjEBWk2jJBbesrVUhneVCEZ3Lf1t8gEqk6](https://insight.vertcoin.org/address/VjEBWk2jJBbesrVUhneVCEZ3Lf1t8gEqk6).
+This is a redevelopment of Vertcoin's [One Click Miner](https://github.com/vertcoin-project/one-click-miner).
+
+This software is available for Windows and Linux.
 
 ## Building
 
@@ -24,14 +24,6 @@ Then clone this repository, and inside its main folder, execute:
 wails build
 ```
 
-## Milestone #1: MVP (Minimal Viable Product)
+## Donations
 
-* [X] (Password protected) built-in wallet
-* [X] Allows sweeping your entire balance to another address
-* [X] Uses Vertcoin Insight to retrieve balances
-* [X] Uses P2Proxy as mining pool
-* [X] Supports lyclMiner (AMD) on Linux
-* [X] Supports lyclMiner (AMD) on Windows
-* [X] Supports ccminer (Nvidia) on Windows
-* [X] Supports ccminer (Nvidia) on Linux
-
+If you want to support the further development of the One Click Miner, feel free to donate Vertcoin to [Vmnbtn5nnNbs1otuYa2LGBtEyFuarFY1f8](https://insight.vertcoin.org/address/Vmnbtn5nnNbs1otuYa2LGBtEyFuarFY1f8).

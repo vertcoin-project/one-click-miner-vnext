@@ -3,6 +3,7 @@ package miners
 import (
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
@@ -13,6 +14,7 @@ var _ MinerImpl = &CryptoDredgeMinerImpl{}
 type CryptoDredgeMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	gpuCount     int8
 }
 
 func NewCryptoDredgeMinerImpl(br *BinaryRunner) MinerImpl {
@@ -29,6 +31,13 @@ func (l *CryptoDredgeMinerImpl) ParseOutput(line string) {
 	}
 	line = strings.TrimSpace(line)
 
+	if strings.Contains(line, "INFO  - GPU") && strings.Contains(line, "MB") {
+		startCountIdx := strings.Index(line, "INFO  - GPU") + 11
+		gpuCountString := line[startCountIdx : startCountIdx+1]
+		gpuCount64, _ := strconv.ParseInt(gpuCountString, 10, 8)
+		l.gpuCount = int8(gpuCount64) + 1
+		logging.Debugf("Set GPU Count to %d", l.gpuCount)
+	}
 	if strings.Contains(line, "INFO  - GPU") && strings.Contains(line, "H/s") {
 		startDeviceIdx := strings.Index(line, "INFO  - GPU")
 		endDeviceIdx := strings.Index(line[startDeviceIdx+9:], " ")
@@ -71,4 +80,12 @@ func (l *CryptoDredgeMinerImpl) HashRate() uint64 {
 
 func (l *CryptoDredgeMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
 	return []string{"--intensity", "5", "--no-color", "-a", "lyra2v3", "-o", args.StratumUrl, "-u", args.StratumUsername, "-p", args.StratumPassword}
+}
+
+func (l *CryptoDredgeMinerImpl) AvailableGPUs() int8 {
+	l.binaryRunner.launch([]string{}, false)
+	time.Sleep(time.Second)
+	l.binaryRunner.Stop()
+	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
+	return l.gpuCount
 }

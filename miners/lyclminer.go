@@ -116,3 +116,36 @@ func (l *LyclMinerImpl) HashRate() uint64 {
 func (l *LyclMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
 	return []string{filepath.Join(util.DataDirectory(), "lyclMiner.conf")}
 }
+
+func (l *LyclMinerImpl) AvailableGPUs() int8 {
+	tmpCfg := filepath.Join(util.DataDirectory(), "lyclMiner_tmp.conf")
+	err := l.binaryRunner.launch([]string{"-g", tmpCfg}, false)
+	err2 := l.binaryRunner.cmd.Wait()
+	if err != nil {
+		return 0
+	}
+	if err2 != nil {
+		return 0
+	}
+
+	if !l.binaryRunner.cmd.ProcessState.Success() {
+		return 0
+	}
+
+	in, err := os.Open(filepath.Join(util.DataDirectory(), "lyclMiner_tmpl.conf"))
+	if err != nil {
+		logging.Error(err)
+		return 0
+	}
+	gpu := int8(0)
+	scanner := bufio.NewScanner(in)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "<Device") {
+			gpu++
+		}
+	}
+	in.Close()
+	os.Remove(tmpCfg)
+	return gpu
+}

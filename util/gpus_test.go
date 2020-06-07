@@ -6,7 +6,7 @@ import (
 )
 
 func TestNvidia(t *testing.T) {
-	gpus := []string{"NVIDIA GeForce 930MX", "NVIDIA GeForce GTX 1660 Ti", "NVIDIA GeForce RTX 2070", "NVIDIA P106-100", "NVIDIA Corporation GM107 [GeForce GTX 750 Ti] (rev a2)"}
+	gpus := []string{"NVIDIA something", "NVIDIA GeForce 930MX", "NVIDIA GeForce GTX 1660 Ti", "NVIDIA GeForce RTX 2070", "NVIDIA P106-100", "NVIDIA Corporation GM107 [GeForce GTX 750 Ti] (rev a2)"}
 	g := GetGPUsFromStrings(gpus)
 	for i, gpu := range g {
 		if gpu.Type != GPUTypeNVidia {
@@ -17,7 +17,7 @@ func TestNvidia(t *testing.T) {
 }
 
 func TestAMD(t *testing.T) {
-	gpus := []string{"Radeon (TM) RX 480 Graphics", "AMD Radeon(TM) R7 Graphics", "Radeon RX 480"}
+	gpus := []string{"AMD something", "Radeon something", "Radeon (TM) RX 480 Graphics", "AMD Radeon(TM) R7 Graphics", "Radeon RX 480", "Radeon (TM) RX 560 Graphics"}
 	g := GetGPUsFromStrings(gpus)
 	for _, gpu := range g {
 		if gpu.Type != GPUTypeAMD {
@@ -27,7 +27,7 @@ func TestAMD(t *testing.T) {
 }
 
 func TestInvalid(t *testing.T) {
-	gpus := []string{"NVIDIA GeForce GTX 580"}
+	gpus := []string{"Intel Integrated Graphics"}
 	g := GetGPUsFromStrings(gpus)
 	for _, gpu := range g {
 		if gpu.Type != GPUTypeOther {
