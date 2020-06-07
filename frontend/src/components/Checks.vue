@@ -4,7 +4,7 @@
       <p>{{ $t("checks.prerequisite") }}</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
-      <p>{{checkStatus}}...</p>
+      <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}...</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       prerequisiteInstall: false,
-      checkStatus: this.$t("checks.checking_mining_software"),
+      checkStatus: null,
       failureReason: ""
     };
   },
@@ -32,11 +32,7 @@ export default {
     this.check();
     var self = this;
     window.wails.Events.On("checkStatus", result => {
-      if (result === "Failed") {
-        self.checkStatus = result;
-      } else {
-        self.checkStatus = this.$t("checks." + result);
-      }
+      self.checkStatus = result;
     });
     window.wails.Events.On("prerequisiteInstall", result => {
       self.prerequisiteInstall = result === "1";
@@ -77,3 +73,4 @@ div.failureReason {
   margin: 0 auto;
 }
 </style>
+
