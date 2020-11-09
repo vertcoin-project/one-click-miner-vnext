@@ -9,6 +9,7 @@ import (
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -90,7 +91,7 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 
 	r := txSendReply{}
 
-	err := util.PostJson("https://insight.vertcoin.org/insight-vtc-api/tx/send", s, &r)
+	err := util.PostJson(fmt.Sprintf("%sinsight-vtc-api/tx/send", networks.Active.InsightURL), s, &r)
 	if err != nil {
 		return "", err
 	}

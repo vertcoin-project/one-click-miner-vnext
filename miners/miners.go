@@ -27,6 +27,7 @@ type MinerBinary struct {
 	Hash               string   `json:"sha256"`
 	MainExecutableName string   `json:"mainExecutableName"`
 	ClosedSource       bool     `json:"closedSource"`
+	Testnet            bool     `json:"testnet"`
 	GPUType            util.GPUType
 }
 
@@ -63,6 +64,8 @@ func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunne
 		br.MinerImpl = NewTeamRedMinerImpl(br)
 	} else if strings.HasPrefix(m.MainExecutableName, "CryptoDredge") {
 		br.MinerImpl = NewCryptoDredgeMinerImpl(br)
+	} else if strings.HasPrefix(m.MainExecutableName, "VerthashMiner") {
+		br.MinerImpl = NewVerthashMinerImpl(br)
 	} else {
 		return nil, fmt.Errorf("Could not determine implementation for miner binary")
 	}

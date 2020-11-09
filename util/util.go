@@ -20,6 +20,7 @@ import (
 
 	"github.com/btcsuite/fastsha256"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 )
 
 const APP_NAME string = "vertcoin-ocm"
@@ -56,7 +57,7 @@ type DifficultyResponse struct {
 
 func GetDifficulty() uint64 {
 	diff := DifficultyResponse{}
-	GetJson("https://insight.vertcoin.org/insight-vtc-api/status?q=getDifficulty", &diff)
+	GetJson(fmt.Sprintf("%sinsight-vtc-api/status?q=getDifficulty", networks.Active.InsightURL), &diff)
 	return diff.Difficulty
 }
 

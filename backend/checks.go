@@ -2,8 +2,10 @@ package backend
 
 import (
 	"fmt"
+	"path/filepath"
 	"runtime"
 
+	verthash "github.com/gertjaap/verthash-go"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
@@ -40,6 +42,22 @@ func (m *Backend) PerformChecks() string {
 		})
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		return err.Error()
+	}
+
+	if m.GetTestnet() {
+		m.runtime.Events.Emit("checkStatus", "verthash")
+		verthashFile := filepath.Join(util.DataDirectory(), "verthash.dat")
+		var err error
+		if m.GetVerthashExtendedVerify() {
+			err = verthash.EnsureVerthashDatafile(verthashFile)
+		} else {
+			err = verthash.MakeVerthashDatafileIfNotExists(verthashFile)
+		}
+		if err != nil {
+			errorString := fmt.Sprintf("Failed to create or verify Verthash data file: %s", err.Error())
+			m.runtime.Events.Emit("checkStatus", "Failed")
+			return errorString
+		}
 	}
 
 	args := m.GetArgs()
@@ -101,6 +119,7 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	binaries := miners.GetMinerBinaries()
 	gpus := util.GetGPUs()
 	closedSource := m.GetClosedSource()
+	testnet := m.GetTestnet()
 	brs := []*miners.BinaryRunner{}
 	for _, b := range binaries {
 		match := false
@@ -108,8 +127,10 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 			for _, g := range gpus {
 				if g.Type == b.GPUType {
 					if b.ClosedSource == closedSource {
-						match = true
-						break
+						if b.Testnet == testnet {
+							match = true
+							break
+						}
 					}
 				}
 			}

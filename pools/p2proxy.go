@@ -3,6 +3,8 @@ package pools
 import (
 	"fmt"
 
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
+
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -18,7 +20,7 @@ func NewP2Proxy(addr string) *P2Proxy {
 
 func (p *P2Proxy) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("https://p2proxy.vertcoin.org/api/balance?address=%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/balance?address=%s", networks.Active.P2ProxyURL, p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -31,7 +33,7 @@ func (p *P2Proxy) GetPendingPayout() uint64 {
 }
 
 func (p *P2Proxy) GetStratumUrl() string {
-	return "stratum+tcp://p2proxy.vertcoin.org:9171"
+	return networks.Active.P2ProxyStratum
 }
 
 func (p *P2Proxy) GetUsername() string {

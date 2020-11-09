@@ -11,6 +11,7 @@ import (
 	"github.com/btcsuite/btcutil"
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"golang.org/x/crypto/nacl/secretbox"
 	"golang.org/x/crypto/scrypt"
@@ -74,7 +75,7 @@ func loadPublicKey() []byte {
 
 func GetAddress() string {
 	pub := loadPublicKey()
-	return base58.CheckEncode(btcutil.Hash160(pub), 71)
+	return base58.CheckEncode(btcutil.Hash160(pub), networks.Active.Base58P2PKHVersion)
 }
 
 func LoadPrivateKey(password string) ([]byte, error) {

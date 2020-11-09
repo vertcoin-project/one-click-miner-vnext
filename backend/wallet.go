@@ -5,6 +5,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
@@ -63,7 +64,7 @@ func (m *Backend) SendSweep(password string) []string {
 }
 
 func (m *Backend) ShowTx(txid string) {
-	util.OpenBrowser(fmt.Sprintf("https://insight.vertcoin.org/tx/%s", txid))
+	util.OpenBrowser(fmt.Sprintf("%stx/%s", networks.Active.InsightURL, txid))
 }
 
 type PrepareResult struct {

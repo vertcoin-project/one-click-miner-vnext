@@ -15,6 +15,7 @@ import (
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/util/bech32"
 )
@@ -51,7 +52,7 @@ type Tx struct {
 
 func NewWallet(addr string) (*Wallet, error) {
 	logging.Infof("Initializing wallet %s", addr)
-	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), "wallet.db"))
+	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), networks.Active.WalletDB))
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +97,9 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 			return nil, errors.New("insufficient_funds")
 		}
 
-		if strings.HasPrefix(addr, "V") {
-			pubKeyHash, _, err := base58.CheckDecode(addr)
+		hash, version, err := base58.CheckDecode(addr)
+		if err == nil && version == networks.Active.Base58P2PKHVersion {
+			pubKeyHash := hash
 			if err != nil {
 				return nil, fmt.Errorf("invalid_address")
 			}
@@ -111,8 +113,8 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 				return nil, fmt.Errorf("script_failure")
 			}
 			tx.AddTxOut(wire.NewTxOut(0, p2pkhScript))
-		} else if strings.HasPrefix(addr, "3") {
-			scriptHash, _, err := base58.CheckDecode(addr)
+		} else if err == nil && version == networks.Active.Base58P2SHVersion {
+			scriptHash := hash
 			if err != nil {
 				return nil, fmt.Errorf("invalid_address")
 			}
@@ -124,7 +126,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 				return nil, fmt.Errorf("script_failure")
 			}
 			tx.AddTxOut(wire.NewTxOut(0, p2shScript))
-		} else if strings.HasPrefix(addr, "vtc1") {
+		} else if strings.HasPrefix(addr, fmt.Sprintf("%s1", networks.Active.Bech32Prefix)) {
 			script, err := bech32.SegWitAddressDecode(addr)
 			if err != nil {
 				return nil, fmt.Errorf("invalid_address")
@@ -221,7 +223,7 @@ func DirectWPKHScriptFromPKH(pkh [20]byte) []byte {
 // if it is a coinbase, and cache that
 func (w *Wallet) Update() {
 	utxos := []Utxo{}
-	err := util.GetJson(fmt.Sprintf("https://insight.vertcoin.org/insight-vtc-api/addr/%s/utxo", w.Address), &utxos)
+	err := util.GetJson(fmt.Sprintf("%sinsight-vtc-api/addr/%s/utxo", networks.Active.InsightURL, w.Address), &utxos)
 	if err != nil {
 		logging.Errorf("Error fetching UTXOs from Insight: %s", err.Error())
 		return
@@ -231,7 +233,7 @@ func (w *Wallet) Update() {
 	w.UpdateCoinbaseStatus()
 
 	status := Status{}
-	err = util.GetJson("https://insight.vertcoin.org/insight-vtc-api/sync", &status)
+	err = util.GetJson(fmt.Sprintf("%sinsight-vtc-api/sync", networks.Active.InsightURL), &status)
 	if err != nil {
 		logging.Errorf("Error fetching sync status of Insight: %s", err.Error())
 		return
@@ -280,7 +282,7 @@ func (w *Wallet) IsCoinbase(txid string) bool {
 	}
 
 	isTx := Tx{}
-	err = util.GetJson(fmt.Sprintf("https://insight.vertcoin.org/insight-vtc-api/tx/%s", txid), &isTx)
+	err = util.GetJson(fmt.Sprintf("%sinsight-vtc-api/tx/%s", networks.Active.InsightURL, txid), &isTx)
 	if err != nil {
 		logging.Errorf("Error fetching coinbase status of TX from Insight: %s", err.Error())
 		return false

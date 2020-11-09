@@ -3,6 +3,7 @@ package backend
 import (
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -26,6 +27,29 @@ func (m *Backend) setSetting(name string, value bool) {
 		_, _, err := tx.Set(name, setting, nil)
 		return err
 	})
+}
+
+func (m *Backend) GetTestnet() bool {
+	return m.getSetting("testnet")
+}
+
+func (m *Backend) SetTestnet(newTestnet bool) {
+	if m.GetTestnet() != newTestnet {
+		logging.Infof("Setting testnet to [%b]\n", newTestnet)
+
+		networks.SetNetwork(newTestnet)
+		m.WalletInitialized()
+		m.setSetting("testnet", newTestnet)
+	}
+}
+
+func (m *Backend) GetVerthashExtendedVerify() bool {
+	return m.getSetting("verthashverify")
+}
+
+func (m *Backend) SetVerthashExtendedVerify(newVerthashVerify bool) {
+	logging.Infof("Setting verthash verify to [%b]\n", newVerthashVerify)
+	m.setSetting("verthashverify", newVerthashVerify)
 }
 
 func (m *Backend) GetClosedSource() bool {
