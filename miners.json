@@ -45,10 +45,7 @@
         "sha256" : "67649a4dfe71d1f106aa1e98ed2245f1ea01c11759499dc2b29c5ba91da85597",
         "mainExecutableName" : "VerthashMiner",
         "closedSource" : false,
-        "testnet" : true,
-        "minerPrerequisites" : [
-            "amddriverlinux"
-        ]
+        "testnet" : true
     },
     {
         "platform": "linux",
