@@ -1,38 +1,43 @@
 <template>
-  <div class="container">
-    <div class="col-286" v-if="!showWarning">
-      <p style="text-align: left" >
-        <input type="checkbox" v-model="debugging" />
-        {{ $t("settings.enable_debug") }}
-        <br />
-        <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
-      </p>
-      <p style="text-align: left">
-        <input type="checkbox" v-model="autoStart" />
-        {{ $t("settings.auto_start") }}
-        <br />
-        <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
-      </p>
-      <p style="text-align: left">
-        <input type="checkbox" v-model="testnet" />
-        {{ $t("settings.testnet") }}
-        <br />
-        <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-      </p>
-      <p v-if="testnet" style="text-align: left">
-        <input type="checkbox" v-model="verthashverify" />
-        {{ $t("settings.verthashverify") }}
-        <br />
-        <span class="subtext">{{ $t("settings.verthashverify_sub") }}</span>
-      </p>
-      <p style="text-align: left">
-        <input type="checkbox" v-model="closedSourceMiner" />
-        {{ $t("settings.closed_source") }}
-        <a v-if="closedSourceMiner" class="warning" @click="toggleWarning">[ ! ]</a>
-        <br />
-        <span class="subtext">{{ $t("settings.closed_source_sub") }}</span>
-      </p>
-      
+  <div class="settings-container">
+    <div class="col-settings" v-if="!showWarning">
+      <div class="col-settings-sub">
+        <p style="text-align: left" >
+          <input type="checkbox" v-model="debugging" />
+          {{ $t("settings.enable_debug") }}
+          <br />
+          <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
+        </p>
+        <p style="text-align: left">
+          <input type="checkbox" v-model="autoStart" />
+          {{ $t("settings.auto_start") }}
+          <br />
+          <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
+        </p>
+        <p style="text-align: left">
+          <input type="checkbox" v-model="closedSourceMiner" />
+          {{ $t("settings.closed_source") }}
+          <a v-if="closedSourceMiner" class="warning" @click="toggleWarning">[ ! ]</a>
+          <br />
+          <span class="subtext">{{ $t("settings.closed_source_sub") }}</span>
+        </p>
+      </div>
+      <div class="col-settings-sub">
+        <p style="text-align: left">
+          <input type="checkbox" v-model="testnet" />
+          {{ $t("settings.testnet") }}
+          <br />
+          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
+        </p>
+        <p v-if="testnet" style="text-align: left">
+          <input type="checkbox" v-model="verthashverify" />
+          {{ $t("settings.verthashverify") }}
+          <br />
+          <span class="subtext">{{ $t("settings.verthashverify_sub") }}</span>
+        </p>
+      </div>
+    </div>
+    <div class="col-286 height-100" v-if="!showWarning">
       <p>
         <a class="button" @click="save">{{ $t("settings.save_n_restart") }}</a>
       </p>

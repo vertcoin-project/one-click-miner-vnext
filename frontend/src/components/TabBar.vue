@@ -89,9 +89,11 @@ a {
 
 div.testnet {
   height: 38px;
-  color: #900000;
-  border: 1px solid #900000;
+  color: #ff0000;
+  border: 1px solid #ff0000;
   font-weight: bold;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 20px;
   margin-top: 10px;
   margin-right: 20px;

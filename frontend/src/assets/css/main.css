@@ -64,6 +64,28 @@ div.col-286 {
   text-align: center;
 }
 
+div.col-settings {
+  height: 250px;
+  width: 80%;
+  margin-left: 10%;
+  vertical-align: middle;
+  text-align: center;
+  overflow-y: auto;
+  display: flex;
+  flex-basis: 1;
+}
+
+div.col-settings-sub {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+div.col-286.height-100 {
+  height: 100px;
+  display: inline;
+}
+
+
 div.col-wide {
   margin: 0px;
   padding-left: 50px;
@@ -74,7 +96,11 @@ div.col-wide {
   vertical-align: middle;
   text-align: center;
 }
-
+div.settings-container {
+  height: 348px;
+  width: 100%;
+  text-align: center;
+}
 div.container {
   height: 348px;
   width: 100%;
