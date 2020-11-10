@@ -9,11 +9,12 @@ require (
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
-	github.com/fatih/color v1.9.0 // indirect
+	github.com/fatih/color v1.10.0 // indirect
 	github.com/gertjaap/verthash-go v0.0.0-20201109222709-eba9330fd004
 	github.com/leaanthony/mewn v0.10.7
-	github.com/leaanthony/slicer v1.4.1 // indirect
+	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0
+	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mitchellh/go-ps v0.0.0-20190716172923-621e5597135b
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
@@ -27,8 +28,11 @@ require (
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
 	github.com/wailsapp/wails v1.9.1
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/text v0.3.0
+	golang.org/x/image v0.0.0-20200927104501-e162460cd6b5 // indirect
+	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
+	golang.org/x/sys v0.0.0-20201109165425-215b40eba54c // indirect
+	golang.org/x/text v0.3.3
 	golang.org/x/tools v0.0.0-20190701194522-38ae2c8f6412 // indirect
-	gopkg.in/AlecAivazis/survey.v1 v1.8.7 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20191120175047-4206685974f2 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.8.8 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )

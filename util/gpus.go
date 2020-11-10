@@ -15,6 +15,7 @@ const (
 	GPUTypeOther  GPUType = 0
 	GPUTypeAMD    GPUType = 1
 	GPUTypeNVidia GPUType = 2
+	GPUTypeIntel  GPUType = 3
 )
 
 type GPU struct {
@@ -40,6 +41,7 @@ var knownGPUs = []KnownGPU{
 	KnownGPU{"Advanced Micro Devices, Inc. \\[AMD/ATI\\] .*", GPUTypeAMD, nil},*/
 	KnownGPU{".*NVIDIA.*", GPUTypeNVidia, nil},
 	KnownGPU{".*AMD.*", GPUTypeAMD, nil},
+	KnownGPU{".*Intel.*", GPUTypeIntel, nil},
 	KnownGPU{".*Radeon.*", GPUTypeAMD, nil},
 }
 

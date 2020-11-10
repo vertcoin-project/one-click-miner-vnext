@@ -75,18 +75,21 @@ func (m *Backend) StartMining() bool {
 			for _, br := range m.minerBinaries {
 				hr += br.HashRate()
 			}
-			hashrate := float64(hr) / float64(1000000)
-			hashrateUnit := "MH/s"
+			hashrate := float64(hr) / float64(1000)
+			hashrateUnit := "kH/s"
+			if hashrate > 1000 {
+				hashrate /= 1000
+				hashrateUnit = "MH/s"
+			}
 			if hashrate > 1000 {
 				hashrate /= 1000
 				hashrateUnit = "GH/s"
 			}
-			m.runtime.Events.Emit("hashRate", fmt.Sprintf("%0.2f %s", hashrate, hashrateUnit))
-			hashrateUnit = "GH/s"
 			if hashrate > 1000 {
 				hashrate /= 1000
 				hashrateUnit = "TH/s"
 			}
+			m.runtime.Events.Emit("hashRate", fmt.Sprintf("%0.2f %s", hashrate, hashrateUnit))
 
 			netHash := float64(nhr) / float64(1000000000)
 
