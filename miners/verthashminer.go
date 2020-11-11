@@ -144,6 +144,9 @@ func (l *VerthashMinerImpl) AvailableGPUs() int8 {
 		if strings.HasPrefix(line, "<CL_Device") {
 			gpu++
 		}
+		if strings.HasPrefix(line, "<CU_Device") {
+			gpu++
+		}
 	}
 	in.Close()
 	os.Remove(tmpCfg)
