@@ -1,6 +1,7 @@
 package util
 
 import (
+	"os"
 	"os/exec"
 	"regexp"
 	"runtime"
@@ -46,6 +47,12 @@ var knownGPUs = []KnownGPU{
 }
 
 func init() {
+	for _, a := range os.Args {
+		if a == "--virtualbox" {
+			knownGPUs = append(knownGPUs, KnownGPU{".*VirtualBox.*", GPUTypeIntel, nil})
+		}
+	}
+
 	for i := range knownGPUs {
 		knownGPUs[i].RegExp, _ = regexp.Compile(knownGPUs[i].RegExPattern)
 	}
