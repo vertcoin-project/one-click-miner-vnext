@@ -47,10 +47,8 @@ var knownGPUs = []KnownGPU{
 }
 
 func init() {
-	for _, a := range os.Args {
-		if a == "--virtualbox" {
-			knownGPUs = append(knownGPUs, KnownGPU{".*VirtualBox.*", GPUTypeIntel, nil})
-		}
+	if os.Getenv("OCM_VIRTUALBOX") == "1" {
+		knownGPUs = append(knownGPUs, KnownGPU{".*VirtualBox.*", GPUTypeIntel, nil})
 	}
 
 	for i := range knownGPUs {
