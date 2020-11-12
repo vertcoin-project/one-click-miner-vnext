@@ -4,7 +4,7 @@
         "gpuplatform" : "AMD",
         "url" : "https://github.com/CryptoGraphics/VerthashMiner/releases/download/0.6.1/VerthashMiner-0.6.1-CUDA11-windows.zip",
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
-        "mainExecutableName" : "VerthashMiner",
+        "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : true
     },
@@ -13,7 +13,7 @@
         "gpuplatform" : "INTEL",
         "url" : "https://github.com/CryptoGraphics/VerthashMiner/releases/download/0.6.1/VerthashMiner-0.6.1-CUDA11-windows.zip",
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
-        "mainExecutableName" : "VerthashMiner",
+        "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : true
     },
@@ -22,7 +22,7 @@
         "gpuplatform" : "NVIDIA",
         "url" : "https://github.com/CryptoGraphics/VerthashMiner/releases/download/0.6.1/VerthashMiner-0.6.1-CUDA11-windows.zip",
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
-        "mainExecutableName" : "VerthashMiner",
+        "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : true
     },
