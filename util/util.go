@@ -18,6 +18,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/btcsuite/btcd/blockchain"
 	"github.com/btcsuite/fastsha256"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
@@ -51,20 +52,44 @@ func ReplaceInFile(file string, find string, replace string) error {
 	return nil
 }
 
-type DifficultyResponse struct {
-	Difficulty uint64 `json:"difficulty"`
+type BlocksResponse struct {
+	Blocks []Block `json:"blocks"`
 }
 
-func GetDifficulty() uint64 {
-	diff := DifficultyResponse{}
-	GetJson(fmt.Sprintf("%sinsight-vtc-api/status?q=getDifficulty", networks.Active.InsightURL), &diff)
-	return diff.Difficulty
+type Block struct {
+	Hash string `json:"hash"`
+}
+
+type BlockResponse struct {
+	Bits uint32 `json:"bits"`
+}
+
+var genesisDiff *big.Int
+
+func init() {
+	genesisDiff = blockchain.CompactToBig(0x1e00ffff)
+}
+
+func targetToDiff(target *big.Int) float64 {
+	f, _ := big.NewFloat(0).Quo(big.NewFloat(0).SetInt(genesisDiff), big.NewFloat(0).SetInt(target)).Float64()
+	return f
+}
+
+func GetDifficulty() float64 {
+	blocks := BlocksResponse{}
+	GetJson(fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL), &blocks)
+	block := BlockResponse{}
+	GetJson(fmt.Sprintf("%sinsight-vtc-api/block/%s", networks.Active.InsightURL, blocks.Blocks[0].Hash), &block)
+	target := blockchain.CompactToBig(block.Bits)
+	return targetToDiff(target)
 }
 
 func GetNetHash() uint64 {
-	difficulty := big.NewInt(int64(GetDifficulty()))
-	netHash := difficulty.Mul(difficulty, big.NewInt(0).Exp(big.NewInt(2), big.NewInt(48), nil))
-	return netHash.Div(netHash, big.NewInt(9830250)).Uint64() // 0xffff * blocktime in seconds
+	difficulty := big.NewFloat(GetDifficulty())
+	factor := big.NewInt(0).Exp(big.NewInt(2), big.NewInt(48), nil)
+	netHash := difficulty.Mul(difficulty, big.NewFloat(0).SetInt(factor))
+	u, _ := netHash.Quo(netHash, big.NewFloat(9830250)).Uint64() // 0xffff * blocktime in seconds
+	return u
 }
 
 var jsonClient = &http.Client{Timeout: 60 * time.Second}
