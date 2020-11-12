@@ -27,7 +27,10 @@ func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
 func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 	os.Remove(filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf"))
 	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf")}, false)
-	err2 := l.binaryRunner.cmd.Wait()
+	var err2 error
+	if l.binaryRunner.cmd != nil {
+		err2 = l.binaryRunner.cmd.Wait()
+	}
 	if err != nil {
 		return err
 	}
