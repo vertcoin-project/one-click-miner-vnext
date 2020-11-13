@@ -6,7 +6,8 @@
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
-        "testnet" : true
+        "testnet" : true,
+        "multiGPUMiner": true
     },
     {
         "platform": "windows",
@@ -15,7 +16,8 @@
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
-        "testnet" : true
+        "testnet" : true,
+        "multiGPUMiner": true
     },
     {
         "platform": "windows",
@@ -24,7 +26,8 @@
         "sha256" : "ff30661353d20213ae37da2a2953f1effc0e0e37fc6493e33fabaf07415c8e20",
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
-        "testnet" : true
+        "testnet" : true,
+        "multiGPUMiner": true
     },
     {
         "platform": "linux",
@@ -36,7 +39,8 @@
         "testnet" : true,
         "minerPrerequisites" : [
             "amddriverlinux"
-        ]
+        ],
+        "multiGPUMiner": true
     },
     {
         "platform": "linux",
@@ -45,7 +49,8 @@
         "sha256" : "67649a4dfe71d1f106aa1e98ed2245f1ea01c11759499dc2b29c5ba91da85597",
         "mainExecutableName" : "VerthashMiner",
         "closedSource" : false,
-        "testnet" : true
+        "testnet" : true,
+        "multiGPUMiner": true
     },
     {
         "platform": "linux",
@@ -57,7 +62,8 @@
         "testnet" : true,
         "minerPrerequisites" : [
             "nvidiadriverlinux"
-        ]
+        ],
+        "multiGPUMiner": true
     },
     {
         "platform": "linux",
