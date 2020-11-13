@@ -28,6 +28,7 @@ type MinerBinary struct {
 	MainExecutableName string   `json:"mainExecutableName"`
 	ClosedSource       bool     `json:"closedSource"`
 	Testnet            bool     `json:"testnet"`
+	MultiGPUMiner      bool     `json:"multiGPUMiner"`
 	GPUType            util.GPUType
 }
 

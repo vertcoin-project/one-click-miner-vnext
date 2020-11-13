@@ -137,6 +137,19 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 		}
 
 		if match {
+			if b.MultiGPUMiner {
+				alreadyPresent := false
+				for _, br := range brs {
+					if br.MinerBinary.MainExecutableName == b.MainExecutableName {
+						alreadyPresent = true
+						break
+					}
+				}
+				if alreadyPresent {
+					logging.Debugf("Not adding already present multi-gpu binary [%s] again\n", b.MainExecutableName)
+					continue
+				}
+			}
 			logging.Debugf("Found compatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
 			br, err := miners.NewBinaryRunner(b, m.prerequisiteInstall)
 			if err != nil {
