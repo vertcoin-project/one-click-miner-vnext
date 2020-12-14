@@ -11,7 +11,7 @@
     <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining" />
     <Mining v-show="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
-    <Update v-if="screen === 'update'" v-on:back="switchToMining" />
+    <Update v-if="screen === 'update'" v-on:back="restartMiningIfNotStopped" />
     <Tracking v-on:update="switchToUpdate" />
   </div>
 </template>
@@ -86,6 +86,13 @@ export default {
     },
     switchToWelcome: function() {
       this.screen = "welcome";
+    },
+    restartMiningIfNotStopped: function() {
+      if(this.manualStop) {
+        this.switchToWelcome();
+      } else {
+        this.restartMining();
+      }
     },
     restartMining: function() {
       var self = this;
