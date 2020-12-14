@@ -12,6 +12,10 @@ DEL vertcoin-ocm.exe
 wails build
 CD build 
 7z a ../vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe 
+CD ..
+wails build -d
+CD build 
+7z a ../vertcoin-ocm-%ver%-windows-x64-debug.zip vertcoin-ocm.exe 
 CD ../tracking
 DEL version.go
 REN version.go.build version.go
