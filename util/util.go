@@ -53,7 +53,13 @@ func ReplaceInFile(file string, find string, replace string) error {
 }
 
 type BlocksResponse struct {
-	Blocks []Block `json:"blocks"`
+	Blocks     []Block           `json:"blocks"`
+	Pagination InsightPagination `json:"pagination"`
+}
+
+type InsightPagination struct {
+	Next string `json:"next"`
+	Prev string `json:"prev"`
 }
 
 type Block struct {
@@ -76,8 +82,15 @@ func targetToDiff(target *big.Int) float64 {
 }
 
 func GetDifficulty() float64 {
-	blocks := BlocksResponse{}
-	GetJson(fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL), &blocks)
+	blocks := BlocksResponse{Blocks: []Block{}}
+	url := fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL)
+	GetJson(url, &blocks)
+	for len(blocks.Blocks) == 0 {
+		time.Sleep(time.Second * 1)
+		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blocksDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
+		GetJson(url, &blocks)
+	}
+
 	block := BlockResponse{}
 	GetJson(fmt.Sprintf("%sinsight-vtc-api/block/%s", networks.Active.InsightURL, blocks.Blocks[0].Hash), &block)
 	target := blockchain.CompactToBig(block.Bits)
