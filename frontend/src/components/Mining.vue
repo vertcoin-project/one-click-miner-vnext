@@ -57,7 +57,8 @@
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
       <p>
-        <a class="button" @click="stop">{{$t('mining.stop_mining')}}</a>
+        <a class="button" v-if="stopping">{{spinner}}</a>
+        <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
       </p>
     </div>
   </div>
@@ -76,7 +77,8 @@ export default {
       balanceImmature: "0.00000000",
       balancePendingPool: "0.00000000",
       runningMiners: 0,
-      spinner: "..."
+      spinner: "...",
+      stopping: false,
     };
   },
   mounted() {
@@ -116,6 +118,7 @@ export default {
   methods: {
     stop: function() {
       var self = this;
+      this.stopping = true;
       window.backend.Backend.StopMining().then(() => {
         self.$emit("stop-mining");
       });
