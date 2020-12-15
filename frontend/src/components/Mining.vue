@@ -120,6 +120,7 @@ export default {
       var self = this;
       this.stopping = true;
       window.backend.Backend.StopMining().then(() => {
+        self.stopping = false;
         self.$emit("stop-mining");
       });
     },
