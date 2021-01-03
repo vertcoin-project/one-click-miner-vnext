@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sync"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -18,10 +19,11 @@ var _ MinerImpl = &VerthashMinerImpl{}
 type VerthashMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	hashRatesLock sync.Mutex
 }
 
 func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
-	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
+	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
 
 func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
@@ -99,16 +101,22 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 			} else if hashRateUnit == "G" {
 				f = f * 1000 * 1000 * 1000
 			}
+			l.hashRatesLock.Lock()
 			l.hashRates[0] = uint64(f)
+			l.hashRatesLock.Unlock()
+			
 		}
 	}
 }
 
 func (l *VerthashMinerImpl) HashRate() uint64 {
 	totalHash := uint64(0)
+	l.hashRatesLock.Lock()
 	for _, h := range l.hashRates {
 		totalHash += h
 	}
+	l.hashRatesLock.Unlock()
+			
 	return totalHash
 }
 

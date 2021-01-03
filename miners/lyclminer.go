@@ -7,7 +7,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-
+	"sync"
+	
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -18,10 +19,11 @@ var _ MinerImpl = &LyclMinerImpl{}
 type LyclMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	hashRatesLock sync.Mutex
 }
 
 func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {
-	return &LyclMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
+	return &LyclMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
 
 func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
@@ -100,16 +102,20 @@ func (l *LyclMinerImpl) ParseOutput(line string) {
 			} else if hashRateUnit == "G" {
 				f = f * 1000 * 1000 * 1000
 			}
+			l.hashRatesLock.Lock()
 			l.hashRates[deviceIdx] = uint64(f)
+			l.hashRatesLock.Unlock()
 		}
 	}
 }
 
 func (l *LyclMinerImpl) HashRate() uint64 {
 	totalHash := uint64(0)
+	l.hashRatesLock.Lock()
 	for _, h := range l.hashRates {
 		totalHash += h
 	}
+	l.hashRatesLock.Unlock()
 	return totalHash
 }
 
