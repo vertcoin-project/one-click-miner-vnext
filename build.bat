@@ -8,7 +8,7 @@ REN version.go version.go.build
 ECHO package tracking >> version.go
 ECHO var version="%ver%-%gitver%" >> version.go
 CD ..
-DEL vertcoin-ocm.exe
+DEL build\vertcoin-ocm.exe
 wails build
 CD build 
 7z a ../vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe 
