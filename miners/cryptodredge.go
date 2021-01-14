@@ -4,7 +4,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
+	"sync"
+	
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
@@ -14,11 +15,12 @@ var _ MinerImpl = &CryptoDredgeMinerImpl{}
 type CryptoDredgeMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	hashRatesLock sync.Mutex
 	gpuCount     int8
 }
 
 func NewCryptoDredgeMinerImpl(br *BinaryRunner) MinerImpl {
-	return &CryptoDredgeMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
+	return &CryptoDredgeMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
 
 func (l *CryptoDredgeMinerImpl) Configure(args BinaryArguments) error {
@@ -65,16 +67,20 @@ func (l *CryptoDredgeMinerImpl) ParseOutput(line string) {
 				f = f * 1000 * 1000 * 1000
 			}
 
+			l.hashRatesLock.Lock()
 			l.hashRates[deviceIdx] = uint64(f)
+			l.hashRatesLock.Unlock()
 		}
 	}
 }
 
 func (l *CryptoDredgeMinerImpl) HashRate() uint64 {
 	totalHash := uint64(0)
+	l.hashRatesLock.Lock()
 	for _, h := range l.hashRates {
 		totalHash += h
 	}
+	l.hashRatesLock.Unlock()
 	return totalHash
 }
 

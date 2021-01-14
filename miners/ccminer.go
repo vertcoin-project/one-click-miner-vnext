@@ -3,7 +3,8 @@ package miners
 import (
 	"strconv"
 	"strings"
-
+	"sync"
+	
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
@@ -13,11 +14,12 @@ var _ MinerImpl = &CCMinerImpl{}
 type CCMinerImpl struct {
 	binaryRunner *BinaryRunner
 	hashRates    map[int64]uint64
+	hashRatesLock sync.Mutex
 	gpuCount     int8
 }
 
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {
-	return &CCMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}}
+	return &CCMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
 
 func (l *CCMinerImpl) Configure(args BinaryArguments) error {
@@ -63,16 +65,20 @@ func (l *CCMinerImpl) ParseOutput(line string) {
 				f = f * 1000 * 1000 * 1000
 			}
 
+			l.hashRatesLock.Lock()
 			l.hashRates[deviceIdx] = uint64(f)
+			l.hashRatesLock.Unlock()
 		}
 	}
 }
 
 func (l *CCMinerImpl) HashRate() uint64 {
 	totalHash := uint64(0)
+	l.hashRatesLock.Lock()
 	for _, h := range l.hashRates {
 		totalHash += h
 	}
+	l.hashRatesLock.Unlock()
 	return totalHash
 }
 
