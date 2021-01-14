@@ -83,7 +83,8 @@ func main() {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	networks.SetNetwork(backend.GetTestnet())
+	networks.SetNetwork(0, backend.GetTestnet())
+	networks.SetNetwork(util.GetBlockHeight(), backend.GetTestnet())
 
 	app.Bind(backend)
 	app.Run()

@@ -62,6 +62,7 @@ func (m *Backend) StartMining() bool {
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
+		bh := util.GetBlockHeight()
 		continueLoop := true
 		for continueLoop {
 			cycles++
@@ -69,6 +70,9 @@ func (m *Backend) StartMining() bool {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 150s is fine (every block)
 				nhr = util.GetNetHash()
+
+				bh = util.GetBlockHeight()
+
 				cycles = 0
 			}
 			hr := uint64(0)
@@ -98,6 +102,9 @@ func (m *Backend) StartMining() bool {
 			avgEarning := float64(hr) / float64(nhr) * float64(14400) // 14400 = Emission per day. Need to adjust for halving
 
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
+
+			m.runtime.Events.Emit("blockHeight", fmt.Sprintf("%d", bh))
+
 			select {
 			case <-m.stopHash:
 				continueLoop = false

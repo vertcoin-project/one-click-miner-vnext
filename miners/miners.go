@@ -29,6 +29,8 @@ type MinerBinary struct {
 	ClosedSource       bool     `json:"closedSource"`
 	Testnet            bool     `json:"testnet"`
 	MultiGPUMiner      bool     `json:"multiGPUMiner"`
+	BlockHeightMin     int64    `json:"blockHeightMin"`
+	BlockHeightMax     int64    `json:"blockHeightMax"`
 	GPUType            util.GPUType
 }
 

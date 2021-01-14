@@ -12,7 +12,7 @@ type Network struct {
 
 var Active Network
 
-func SetNetwork(testnet bool) {
+func SetNetwork(blockHeight int64, testnet bool) {
 	if testnet {
 		Active = Network{
 			Base58P2PKHVersion: 74,
@@ -32,6 +32,9 @@ func SetNetwork(testnet bool) {
 			P2ProxyStratum:     "stratum+tcp://p2proxy.vertcoin.org:9171",
 			P2ProxyURL:         "https://p2proxy.vertcoin.org/",
 			WalletDB:           "wallet-testnet.db",
+		}
+		if blockHeight >= 1500000 {
+			Active.P2ProxyStratum = "stratum+tcp://p2proxy.vertcoin.org:9172"
 		}
 	}
 }

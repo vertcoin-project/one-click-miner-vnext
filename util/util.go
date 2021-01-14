@@ -63,7 +63,8 @@ type InsightPagination struct {
 }
 
 type Block struct {
-	Hash string `json:"hash"`
+	Hash   string `json:"hash"`
+	Height int64  `json:"height"`
 }
 
 type BlockResponse struct {
@@ -103,6 +104,18 @@ func GetNetHash() uint64 {
 	netHash := difficulty.Mul(difficulty, big.NewFloat(0).SetInt(factor))
 	u, _ := netHash.Quo(netHash, big.NewFloat(9830250)).Uint64() // 0xffff * blocktime in seconds
 	return u
+}
+
+func GetBlockHeight() int64 {
+	blocks := BlocksResponse{Blocks: []Block{}}
+	url := fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL)
+	GetJson(url, &blocks)
+	for len(blocks.Blocks) == 0 {
+		time.Sleep(time.Second * 1)
+		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blocksDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
+		GetJson(url, &blocks)
+	}
+	return blocks.Blocks[0].Height
 }
 
 var jsonClient = &http.Client{Timeout: 60 * time.Second}

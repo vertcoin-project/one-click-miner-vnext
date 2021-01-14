@@ -56,6 +56,7 @@
         v-if="runningMiners > 0 && hashrate === '0.00 MH/s'"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
+      <p v-if="blockHeight > 0 && blockHeight < 1500000" class="fork"><a @click="launchForkSite">Hardfork in {{1500000-blockHeight}} blocks. Restart OCM after fork!</a></p>
       <p>
         <a class="button" v-if="stopping">{{spinner}}</a>
         <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
@@ -79,6 +80,7 @@ export default {
       runningMiners: 0,
       spinner: "...",
       stopping: false,
+      blockHeight: 0,
     };
   },
   mounted() {
@@ -90,6 +92,9 @@ export default {
       }
       self.spinner = newSpinner;
     }, 1000);
+    window.wails.Events.On("blockHeight", result => {
+      self.blockHeight = parseInt(result);
+    });
     window.wails.Events.On("hashRate", result => {
       self.hashrate = result;
     });
@@ -129,6 +134,9 @@ export default {
     },
     sendMoney: function() {
       this.$emit("send");
+    },
+    launchForkSite : function() { 
+      window.backend.Backend.LaunchForkSite();
     }
   }
 };
@@ -173,4 +181,18 @@ p.header {
   padding-bottom: 5px;
   opacity: 0.6;
 }
+p.fork {
+  display: block;
+  border: 2px solid #d0a000;
+  color: #d0a000;
+  font-weight: bold;
+}
+
+p.fork>a, p.fork>a:active, p.fork>a:visited {
+  color: #d0a000;
+  font-weight: bold;
+  padding: 5px;
+  cursor: pointer;
+}
+
 </style>
