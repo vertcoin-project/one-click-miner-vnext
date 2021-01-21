@@ -56,7 +56,7 @@
         v-if="runningMiners > 0 && hashrate === '0.00 MH/s'"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
-      <p v-if="blockHeight > 0 && blockHeight < 1500000" class="fork"><a @click="launchForkSite">Hardfork in {{1500000-blockHeight}} blocks. Restart OCM after fork!</a></p>
+      <p v-if="testnet === false && blockHeight > 0 && blockHeight < 1500000" class="fork"><a @click="launchForkSite">Hardfork in {{1500000-blockHeight}} blocks. Restart OCM after fork!</a></p>
       <p>
         <a class="button" v-if="stopping">{{spinner}}</a>
         <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
@@ -73,6 +73,7 @@ export default {
       avgearn: "0.00 VTC",
       netHash: "",
       gpu: "",
+      testnet: false,
       wallet: "",
       balance: "0.00000000",
       balanceImmature: "0.00000000",
@@ -92,6 +93,9 @@ export default {
       }
       self.spinner = newSpinner;
     }, 1000);
+    window.backend.Backend.GetTestnet().then(result => {
+      self.testnet = result;
+    });
     window.wails.Events.On("blockHeight", result => {
       self.blockHeight = parseInt(result);
     });

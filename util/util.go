@@ -88,7 +88,7 @@ func GetDifficulty() float64 {
 	GetJson(url, &blocks)
 	for len(blocks.Blocks) == 0 {
 		time.Sleep(time.Second * 1)
-		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blocksDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
+		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blockDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
 		GetJson(url, &blocks)
 	}
 
@@ -112,7 +112,8 @@ func GetBlockHeight() int64 {
 	GetJson(url, &blocks)
 	for len(blocks.Blocks) == 0 {
 		time.Sleep(time.Second * 1)
-		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blocksDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
+		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blockDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
+		logging.Info("No blocks found, trying url %s", url)
 		GetJson(url, &blocks)
 	}
 	return blocks.Blocks[0].Height

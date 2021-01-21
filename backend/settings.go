@@ -36,13 +36,18 @@ func (m *Backend) GetTestnet() bool {
 func (m *Backend) SetTestnet(newTestnet bool) {
 	if m.GetTestnet() != newTestnet {
 		logging.Infof("Setting testnet to [%b]\n", newTestnet)
+		m.setSetting("testnet", newTestnet)
 
 		// Intentionally twice since blockheight is fetched from insight that differs per network
+		logging.Infof("Setting network to testnet=%b\n", newTestnet)
 		networks.SetNetwork(0, newTestnet)
-		networks.SetNetwork(util.GetBlockHeight(), newTestnet)
+		blockHeight := util.GetBlockHeight()
+		logging.Infof("Setting network again with blockheight %d\n", blockHeight)
+		networks.SetNetwork(blockHeight, newTestnet)
 
+		logging.Infof("Calling WalletInitialized\n")
 		m.WalletInitialized()
-		m.setSetting("testnet", newTestnet)
+		logging.Infof("Done!")
 	}
 }
 
