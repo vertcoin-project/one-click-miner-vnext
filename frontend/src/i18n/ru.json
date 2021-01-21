@@ -21,7 +21,7 @@
         "checking_mining_software" : "Проверка майнеров...",
         "rapidfail" : "Проверка случаев быстрой неисправности",
         "compatibility" : "Проверка совместимости GPU...",
-        "installing_miners" : "Установка майнеров..."
+        "installing_miners" : "Установка майнеров...",
         "verthash" : "Проверка / создание файла данных Verthash ..."
     },
     "mining" : {
