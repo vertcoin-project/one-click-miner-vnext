@@ -46,7 +46,6 @@ func (m *Backend) PerformChecks() string {
 
 	m.runtime.Events.Emit("checkStatus", "verthash")
 	verthashFile := filepath.Join(util.DataDirectory(), "verthash.dat")
-	var err error
 	if m.GetVerthashExtendedVerify() {
 		err = verthash.EnsureVerthashDatafile(verthashFile)
 	} else {
