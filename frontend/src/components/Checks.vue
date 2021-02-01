@@ -4,7 +4,7 @@
       <p>{{ $t("checks.prerequisite") }}</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
-      <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}...</p>
+      <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}... <span v-if="verthashProgress > 0">({verthashProgress}%)</span></p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
@@ -25,7 +25,8 @@ export default {
     return {
       prerequisiteInstall: false,
       checkStatus: null,
-      failureReason: ""
+      failureReason: "",
+      verthashProgress: 0,
     };
   },
   mounted() {
@@ -37,6 +38,9 @@ export default {
     window.wails.Events.On("prerequisiteInstall", result => {
       self.prerequisiteInstall = result === "1";
     });
+    window.wails.Events.On("verthashProgress", result => {
+      self.verthashProgress = result;
+    })
   },
   methods: {
     check: function() {

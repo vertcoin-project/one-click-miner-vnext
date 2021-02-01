@@ -14,13 +14,6 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="closedSourceMiner" />
-          {{ $t("settings.closed_source") }}
-          <a v-if="closedSourceMiner" class="warning" @click="toggleWarning">[ ! ]</a>
-          <br />
-          <span class="subtext">{{ $t("settings.closed_source_sub") }}</span>
-        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -29,11 +22,11 @@
           <br />
           <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
         </p>
-        <p v-if="testnet" style="text-align: left">
-          <input type="checkbox" v-model="verthashverify" />
-          {{ $t("settings.verthashverify") }}
+        <p style="text-align: left">
+          <input type="checkbox" v-model="skipVerthashverify" />
+          {{ $t("settings.skipverthashverify") }}
           <br />
-          <span class="subtext">{{ $t("settings.verthashverify_sub") }}</span>
+          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
         </p>
       </div>
     </div>
@@ -62,7 +55,7 @@ export default {
       autoStart: false,
       showWarning: false,
       testnet: false,
-      verthashverify: false
+      skipVerthashverify: false
     };
   },
   created() {
@@ -75,8 +68,8 @@ export default {
           self.debugging = result;
            window.backend.Backend.GetTestnet().then(result => {
             self.testnet = result;
-            window.backend.Backend.GetVerthashExtendedVerify().then(result => {
-              self.verthashverify = result;
+            window.backend.Backend.GetSkipVerthashExtendedVerify().then(result => {
+              self.skipVerthashverify = result;
             })
           });
         });
@@ -99,7 +92,7 @@ export default {
           window.backend.Backend.SetDebugging(self.debugging).then(() => {
             window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
-                window.backend.Backend.SetVerthashExtendedVerify(self.verthashverify).then(() => {
+                window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
                   self.$emit("committed");
                 });
               });

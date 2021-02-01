@@ -46,11 +46,13 @@ func (m *Backend) PerformChecks() string {
 
 	m.runtime.Events.Emit("checkStatus", "verthash")
 	verthashFile := filepath.Join(util.DataDirectory(), "verthash.dat")
-	if m.GetVerthashExtendedVerify() {
-		err = verthash.EnsureVerthashDatafile(verthashFile)
-	} else {
+
+	if m.GetSkipVerthashExtendedVerify() {
 		err = verthash.MakeVerthashDatafileIfNotExists(verthashFile)
+	} else {
+		err = verthash.EnsureVerthashDatafile(verthashFile)
 	}
+
 	if err != nil {
 		errorString := fmt.Sprintf("Failed to create or verify Verthash data file: %s", err.Error())
 		m.runtime.Events.Emit("checkStatus", "Failed")

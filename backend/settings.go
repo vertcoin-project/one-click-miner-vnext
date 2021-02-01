@@ -51,17 +51,18 @@ func (m *Backend) SetTestnet(newTestnet bool) {
 	}
 }
 
-func (m *Backend) GetVerthashExtendedVerify() bool {
-	return m.getSetting("verthashverify")
+func (m *Backend) GetSkipVerthashExtendedVerify() bool {
+	return m.getSetting("skipverthashverify")
 }
 
-func (m *Backend) SetVerthashExtendedVerify(newVerthashVerify bool) {
-	logging.Infof("Setting verthash verify to [%b]\n", newVerthashVerify)
-	m.setSetting("verthashverify", newVerthashVerify)
+func (m *Backend) SetSkipVerthashExtendedVerify(newVerthashVerify bool) {
+	logging.Infof("Setting skip verthash verify to [%b]\n", newVerthashVerify)
+	m.setSetting("skipverthashverify", newVerthashVerify)
 }
 
 func (m *Backend) GetClosedSource() bool {
-	return m.getSetting("closedsource")
+	return false // No closed source Verthash miners - return false
+	//return m.getSetting("closedsource")
 }
 
 func (m *Backend) SetClosedSource(newClosedSource bool) {
