@@ -12,8 +12,8 @@ import (
 )
 
 func (m *Backend) GetArgs() miners.BinaryArguments {
-	// Default to P2Proxy for now
-	m.pool = pools.NewP2Proxy(m.wal.Address)
+	// Default to P2Pool for now
+	m.pool = pools.NewP2Pool(m.wal.Address)
 	return miners.BinaryArguments{
 		StratumUrl:      m.pool.GetStratumUrl(),
 		StratumUsername: m.pool.GetUsername(),

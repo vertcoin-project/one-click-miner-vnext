@@ -29,12 +29,9 @@ func SetNetwork(blockHeight int64, testnet bool) {
 			Base58P2SHVersion:  5,
 			InsightURL:         "https://insight.vertcoin.org/",
 			Bech32Prefix:       "vtc",
-			P2ProxyStratum:     "stratum+tcp://p2proxy.vertcoin.org:9171",
-			P2ProxyURL:         "https://p2proxy.vertcoin.org/",
+			P2ProxyStratum:     "stratum+tcp://p2proxy.vertcoin.org:9172",
+			P2ProxyURL:         "http://p2proxy.vertcoin.org:9172/",
 			WalletDB:           "wallet-testnet.db",
-		}
-		if blockHeight >= 1500000 {
-			Active.P2ProxyStratum = "stratum+tcp://p2proxy.vertcoin.org:9172"
 		}
 	}
 }

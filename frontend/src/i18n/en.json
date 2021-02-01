@@ -62,8 +62,8 @@
         "closed_source_warning" : "You have selected to use closed source miner(s). Vertcoin does not endorse or support these miners. They cannot be audited on their contents and could contain functions that harm your computer.",
         "testnet":"Testnet mode",
         "testnet_sub":"Enables testnet mode. You will not be mining real coins.",
-        "verthashverify":"Verify Verthash data on startup",
-        "verthashverify_sub":"Will verify the file integrity of Verthash data on startup (slow)",
+        "skipverthashverify":"Don't verify Verthash on startup",
+        "skipverthashverify_sub":"Will skip verifying the file integrity of Verthash data on startup (not recommended)",
         "save_n_restart" : "Save & Restart"
     },
     "tabbar" : {

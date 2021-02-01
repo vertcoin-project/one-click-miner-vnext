@@ -71,6 +71,14 @@ type BlockResponse struct {
 	Bits uint32 `json:"bits"`
 }
 
+type getInfoResponse struct {
+	Info infoData `json:"info"`
+}
+
+type infoData struct {
+	Difficulty float64 `json:"difficulty"`
+}
+
 var genesisDiff *big.Int
 
 func init() {
@@ -83,19 +91,10 @@ func targetToDiff(target *big.Int) float64 {
 }
 
 func GetDifficulty() float64 {
-	blocks := BlocksResponse{Blocks: []Block{}}
-	url := fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL)
-	GetJson(url, &blocks)
-	for len(blocks.Blocks) == 0 {
-		time.Sleep(time.Second * 1)
-		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blockDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
-		GetJson(url, &blocks)
-	}
-
-	block := BlockResponse{}
-	GetJson(fmt.Sprintf("%sinsight-vtc-api/block/%s", networks.Active.InsightURL, blocks.Blocks[0].Hash), &block)
-	target := blockchain.CompactToBig(block.Bits)
-	return targetToDiff(target)
+	info := getInfoResponse{}
+	url := fmt.Sprintf("%sinsight-vtc-api/status?q=getInfo", networks.Active.InsightURL)
+	GetJson(url, &info)
+	return info.Info.Difficulty
 }
 
 func GetNetHash() uint64 {
@@ -103,6 +102,8 @@ func GetNetHash() uint64 {
 	factor := big.NewInt(0).Exp(big.NewInt(2), big.NewInt(48), nil)
 	netHash := difficulty.Mul(difficulty, big.NewFloat(0).SetInt(factor))
 	u, _ := netHash.Quo(netHash, big.NewFloat(9830250)).Uint64() // 0xffff * blocktime in seconds
+	logging.Debugf("Nethash: %d", u)
+
 	return u
 }
 

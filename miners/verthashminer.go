@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sync"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
@@ -17,8 +17,8 @@ import (
 var _ MinerImpl = &VerthashMinerImpl{}
 
 type VerthashMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
 }
 
@@ -85,9 +85,15 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 	logging.Debugf("[VerthashMiner] %s\n", line)
 	//}
 	line = strings.TrimSpace(line)
-	if strings.Contains(line, "total hashrate:") && strings.HasSuffix(line, "H/s") {
+	if strings.Contains(line, "_device(") && strings.HasSuffix(line, "H/s") {
 		startMHs := strings.LastIndex(line, ": ")
 		if startMHs > -1 {
+			deviceIdxStart := strings.Index(line, "_device(") + 8
+			deviceIdxEnd := strings.Index(line[deviceIdxStart:], ")")
+			deviceIdxString := line[deviceIdxStart : deviceIdxStart+deviceIdxEnd]
+			deviceIdx, _ := strconv.ParseInt(deviceIdxString, 10, 64)
+			logging.Debugf("Device IDX: %s", deviceIdxString)
+
 			hashRateUnit := strings.ToUpper(line[len(line)-4 : len(line)-3])
 			line = line[startMHs+2 : len(line)-5]
 			f, err := strconv.ParseFloat(line, 64)
@@ -101,10 +107,10 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 			} else if hashRateUnit == "G" {
 				f = f * 1000 * 1000 * 1000
 			}
+
 			l.hashRatesLock.Lock()
-			l.hashRates[0] = uint64(f)
+			l.hashRates[deviceIdx] = uint64(f)
 			l.hashRatesLock.Unlock()
-			
 		}
 	}
 }
@@ -116,7 +122,7 @@ func (l *VerthashMinerImpl) HashRate() uint64 {
 		totalHash += h
 	}
 	l.hashRatesLock.Unlock()
-			
+
 	return totalHash
 }
 
