@@ -28,6 +28,15 @@
           <br />
           <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.pool") }}:
+          <br />
+          <select style="width: 100%" name="pool" v-model="poolID">
+            <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
+                {{ option.name }}
+            </option>
+          </select>
+        </p>
       </div>
     </div>
     <div class="col-286 height-100" v-if="!showWarning">
@@ -55,7 +64,9 @@ export default {
       autoStart: false,
       showWarning: false,
       testnet: false,
-      skipVerthashverify: false
+      skipVerthashverify: false,
+      poolID: -1,
+      pools: [],
     };
   },
   created() {
@@ -70,6 +81,12 @@ export default {
             self.testnet = result;
             window.backend.Backend.GetSkipVerthashExtendedVerify().then(result => {
               self.skipVerthashverify = result;
+              window.backend.Backend.GetPools().then(result => {
+                self.pools = result;
+                window.backend.Backend.GetPool().then(result => {
+                  self.poolID = result;
+                })
+              })
             })
           });
         });
@@ -93,7 +110,9 @@ export default {
             window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
-                  self.$emit("committed");
+                  window.backend.Backend.SetPool(self.poolID).then(() => {
+                    self.$emit("committed");
+                  });
                 });
               });
             });

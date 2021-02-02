@@ -43,3 +43,11 @@ func (p *P2Proxy) GetUsername() string {
 func (p *P2Proxy) GetPassword() string {
 	return "x"
 }
+
+func (p *P2Proxy) GetID() int {
+	return 1
+}
+
+func (p *P2Proxy) GetName() string {
+	return "P2Proxy"
+}

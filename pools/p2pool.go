@@ -53,3 +53,11 @@ func (p *P2Pool) GetUsername() string {
 func (p *P2Pool) GetPassword() string {
 	return "x"
 }
+
+func (p *P2Pool) GetID() int {
+	return 2
+}
+
+func (p *P2Pool) GetName() string {
+	return "P2Pool"
+}

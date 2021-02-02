@@ -1,9 +1,13 @@
 package backend
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -27,6 +31,61 @@ func (m *Backend) setSetting(name string, value bool) {
 		_, _, err := tx.Set(name, setting, nil)
 		return err
 	})
+}
+
+func (m *Backend) setIntSetting(name string, value int) {
+	setting := fmt.Sprintf("%d", value)
+	m.settings.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set(name, setting, nil)
+		return err
+	})
+}
+
+func (m *Backend) getIntSetting(name string) int {
+	setting := "0"
+	m.settings.View(func(tx *buntdb.Tx) error {
+		v, err := tx.Get(name)
+		setting = v
+		return err
+	})
+	i, _ := strconv.Atoi(setting)
+	return i
+}
+
+func (m *Backend) GetPool() int {
+	pool := m.getIntSetting("pool")
+	if pool == 0 {
+		if m.GetTestnet() {
+			return 2 // Default P2Pool on testnet
+		}
+		return 3 // Default Hashalot on mainnet (for now...)
+	}
+	return pool
+}
+
+func (m *Backend) SetPool(pool int) {
+	if m.GetPool() != pool {
+		m.setIntSetting("pool", pool)
+		logging.Infof("Calling WalletInitialized\n")
+		m.WalletInitialized()
+		logging.Infof("Done!")
+	}
+}
+
+type PoolChoice struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func (m *Backend) GetPools() []PoolChoice {
+	pc := make([]PoolChoice, 0)
+	for _, p := range pools.GetPools(m.Address(), m.GetTestnet()) {
+		pc = append(pc, PoolChoice{
+			ID:   p.GetID(),
+			Name: p.GetName(),
+		})
+	}
+	return pc
 }
 
 func (m *Backend) GetTestnet() bool {

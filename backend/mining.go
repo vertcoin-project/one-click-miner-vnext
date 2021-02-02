@@ -12,8 +12,14 @@ import (
 )
 
 func (m *Backend) GetArgs() miners.BinaryArguments {
-	// Default to P2Pool for now
-	m.pool = pools.NewP2Pool(m.wal.Address)
+	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Mining",
+		Action:   "Switch Pool",
+		Name:     fmt.Sprintf("%v", m.pool.GetName()),
+	})
+
 	return miners.BinaryArguments{
 		StratumUrl:      m.pool.GetStratumUrl(),
 		StratumUsername: m.pool.GetUsername(),

@@ -14,6 +14,15 @@
   font-size: 14px;
 }
 
+select {
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  border: 2px solid #eee !important;
+  background: #191b1c !important;
+  color: #eee !important;
+  -webkit-appearance: none;
+  padding: 4px 10px;
+}
+
 
 /* ubuntu-regular - latin */
 /* montserrat-regular - latin */
@@ -65,7 +74,7 @@ div.col-286 {
 }
 
 div.col-settings {
-  height: 250px;
+  height: 235px;
   width: 80%;
   margin-left: 10%;
   vertical-align: middle;
