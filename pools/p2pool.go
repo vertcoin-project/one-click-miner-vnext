@@ -30,7 +30,8 @@ func (p *P2Pool) GetPendingPayout() uint64 {
 			logging.Warnf("Unable to fetch p2pool payouts: %s", err.Error())
 			p.LastPayout = 0
 		}
-		vtc, ok := jsonPayload[p.Address].(float64)
+		address := p.Address
+		vtc, ok := jsonPayload[address].(float64)
 		if !ok {
 			p.LastFetchedPayout = time.Now()
 			p.LastPayout = 0
@@ -63,5 +64,5 @@ func (p *P2Pool) GetName() string {
 }
 
 func (p *P2Pool) GetFee() float64 {
-	return 0
+	return 1.0
 }
