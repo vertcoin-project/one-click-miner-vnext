@@ -6,14 +6,11 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
-	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
 func (m *Backend) GetArgs() miners.BinaryArguments {
-	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
-
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Mining",
 		Action:   "Switch Pool",
@@ -25,6 +22,14 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		StratumUsername: m.pool.GetUsername(),
 		StratumPassword: m.pool.GetPassword(),
 	}
+}
+
+func (m *Backend) GetPoolFee() string {
+	return fmt.Sprintf("%0.1f%%", m.pool.GetFee())
+}
+
+func (m *Backend) GetPoolName() string {
+	return m.pool.GetName()
 }
 
 func (m *Backend) StartMining() bool {

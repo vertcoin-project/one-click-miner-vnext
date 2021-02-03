@@ -58,7 +58,7 @@ func (m *Backend) GetPool() int {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
 		}
-		return 3 // Default Hashalot on mainnet (for now...)
+		return 4 // Default Suprnova on mainnet (for now...)
 	}
 	return pool
 }
@@ -66,6 +66,7 @@ func (m *Backend) GetPool() int {
 func (m *Backend) SetPool(pool int) {
 	if m.GetPool() != pool {
 		m.setIntSetting("pool", pool)
+		m.ResetPool()
 		logging.Infof("Calling WalletInitialized\n")
 		m.WalletInitialized()
 		logging.Infof("Done!")
@@ -82,7 +83,7 @@ func (m *Backend) GetPools() []PoolChoice {
 	for _, p := range pools.GetPools(m.Address(), m.GetTestnet()) {
 		pc = append(pc, PoolChoice{
 			ID:   p.GetID(),
-			Name: p.GetName(),
+			Name: fmt.Sprintf("%s (%0.1f%% fee)", p.GetName(), p.GetFee()),
 		})
 	}
 	return pc

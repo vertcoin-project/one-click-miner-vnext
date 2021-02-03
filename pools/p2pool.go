@@ -61,3 +61,7 @@ func (p *P2Pool) GetID() int {
 func (p *P2Pool) GetName() string {
 	return "P2Pool"
 }
+
+func (p *P2Pool) GetFee() float64 {
+	return 0
+}

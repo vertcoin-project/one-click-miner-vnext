@@ -61,6 +61,10 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 	return backend, nil
 }
 
+func (m *Backend) ResetPool() {
+	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
+}
+
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {
 	// Save runtime
 	m.runtime = runtime

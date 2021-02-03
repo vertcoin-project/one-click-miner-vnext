@@ -51,3 +51,7 @@ func (p *P2Proxy) GetID() int {
 func (p *P2Proxy) GetName() string {
 	return "P2Proxy"
 }
+
+func (p *P2Proxy) GetFee() float64 {
+	return 1.00
+}

@@ -63,7 +63,7 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			skip = false
 		}
 		if strings.HasPrefix(line, "<Connection") {
-			out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Lyra2REv3\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
+			out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Verthash\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
 			skip = true
 		}
 		if strings.HasPrefix(line, "<Global") {

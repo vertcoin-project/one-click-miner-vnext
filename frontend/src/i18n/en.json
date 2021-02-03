@@ -31,7 +31,9 @@
         "waiting_for_miners" : "Waiting for miners to start",
         "expected_earnings_24h" : "Expected Earnings (24h)",
         "estimating" : "estimating",
-        "stop_mining" : "Stop Mining"
+        "stop_mining" : "Stop Mining",
+        "active_pool" : "Active pool",
+        "pool_fee" : "fee"
     },
     "sending" : {
         "send_all_to" : "Send all your mined coins to",

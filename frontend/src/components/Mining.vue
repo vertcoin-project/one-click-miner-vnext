@@ -45,6 +45,10 @@
         <span style="opacity: 1">{{balancePendingPool}} VTC</span>
         {{$t('mining.pending_pool_payout')}})
       </p>
+      <p class="pool">
+        <span style="opacity: 1">{{$t('mining.active_pool')}}: {{activePool}} <span v-if="poolFee != '0.0%'">({{$t('mining.pool_fee')}}: {{poolFee}})</span></span>
+      </p>
+      
       <p class="spacer">&nbsp;</p>
       <p v-if="runningMiners === 0">{{$t('mining.waiting_for_miners')}}</p>
       <p v-if="runningMiners > 0" class="header">{{$t('mining.expected_earnings_24h')}}:</p>
@@ -82,6 +86,8 @@ export default {
       spinner: "...",
       stopping: false,
       blockHeight: 0,
+      poolFee: "0.0%",
+      activePool: "",
     };
   },
   mounted() {
@@ -95,6 +101,20 @@ export default {
     }, 1000);
     window.backend.Backend.GetTestnet().then(result => {
       self.testnet = result;
+    });
+    window.setInterval(() => {
+      window.backend.Backend.GetPoolName().then(result => {
+        self.activePool = result;
+      });
+      window.backend.Backend.GetPoolFee().then(result => {
+        self.poolFee = result;
+      });
+    }, 5000);
+    window.backend.Backend.GetPoolName().then(result => {
+      self.activePool = result;
+    });
+    window.backend.Backend.GetPoolFee().then(result => {
+      self.poolFee = result;
     });
     window.wails.Events.On("blockHeight", result => {
       self.blockHeight = parseInt(result);

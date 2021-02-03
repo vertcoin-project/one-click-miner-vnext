@@ -7,17 +7,18 @@ type Pool interface {
 	GetPassword() string
 	GetName() string
 	GetID() int
+	GetFee() float64
 }
 
 func GetPools(addr string, testnet bool) []Pool {
 	if testnet {
 		return []Pool{
-			NewP2Pool(addr),
+			NewP2Proxy(addr),
 		}
 	}
 	return []Pool{
+		NewSuprnova(addr),
 		NewHashalot(addr),
-		//NewSuprnova(addr),
 		NewP2Pool(addr),
 	}
 }
