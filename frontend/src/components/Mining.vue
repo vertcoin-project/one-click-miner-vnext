@@ -34,6 +34,24 @@
           </svg>
         </a>
         &nbsp;{{balance}} VTC
+        <a class="tiny" @click="copyAddress" v-bind:title="$t('mining.copy_address')">
+          <svg width="16" height="16" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          viewBox="0 0 368.008 368.008" style="enable-background:new 0 0 368.008 368.008;" xml:space="preserve">
+            <g>
+              <g>
+                <path style="fill: #048652" d="M368,88.004c0-1.032-0.224-2.04-0.6-2.976c-0.152-0.376-0.416-0.664-0.624-1.016c-0.272-0.456-0.472-0.952-0.832-1.352
+                  l-72.008-80c-1.512-1.688-3.672-2.656-5.944-2.656h-15.648c-0.232,0-0.472,0-0.704,0H151.992c-13.232,0-24,10.768-24,24v40H24
+                  c-13.232,0-24,10.768-24,24v256c0,13.232,10.768,24,24,24h192c13.232,0,24-10.768,24-24v-40h104c13.232,0,24-10.768,24-24v-175.96
+                  c0-0.016,0.008-0.024,0.008-0.04L368,88.004z M224,344.004c0,4.408-3.592,8-8,8H24c-4.408,0-8-3.592-8-8v-256c0-4.408,3.592-8,8-8
+                  h104v88c0,4.416,3.584,8,8,8h88V344.004z M224,160.004h-80v-80h4.688L224,155.324V160.004z M352,280.004c0,4.416-3.592,8-8,8H240
+                  v-119.64c0-0.12,0.008-0.24,0.008-0.36l-0.008-16c0,0,0-0.008,0-0.024c-0.008-2.12-0.832-4.04-2.184-5.464
+                  c0-0.016-0.024-0.016-0.016-0.016c0,0-0.008-0.008-0.008-0.016c-0.008,0-0.016-0.008-0.016-0.016
+                  c-0.032-0.032-0.072-0.072-0.112-0.112l-80-80c-1.504-1.504-3.544-2.352-5.664-2.352h-8.008v-40c0-4.408,3.592-8,8-8h112v88
+                  c0,4.416,3.584,8,8,8H352V280.004z M352,96.004h-72.008v-80h4.44L352,91.076V96.004z"/>
+              </g>
+            </g>
+          </svg>
+        </a>
       </p>
       <p class="immatureBalance" v-if="balanceImmature != '0.00000000'">
         (
@@ -88,6 +106,7 @@ export default {
       blockHeight: 0,
       poolFee: "0.0%",
       activePool: "",
+      address:"",
     };
   },
   mounted() {
@@ -115,6 +134,9 @@ export default {
     });
     window.backend.Backend.GetPoolFee().then(result => {
       self.poolFee = result;
+    });
+    window.backend.Backend.Address().then(result => {
+      self.address = result;
     });
     window.wails.Events.On("blockHeight", result => {
       self.blockHeight = parseInt(result);
@@ -155,6 +177,27 @@ export default {
     },
     refreshBalance: function() {
       window.backend.Backend.RefreshBalance();
+    },
+    copyAddress: function() {
+      var textArea = document.createElement("textarea");
+      textArea.value = this.address;
+      textArea.style.display = "none";
+      // Avoid scrolling to bottom
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+    
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+    
+      try {
+        document.execCommand('copy');
+      } catch(e) {
+        // ignore
+      }
+    
+      document.body.removeChild(textArea);
     },
     sendMoney: function() {
       this.$emit("send");

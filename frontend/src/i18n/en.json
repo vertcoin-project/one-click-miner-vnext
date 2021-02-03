@@ -33,7 +33,8 @@
         "estimating" : "estimating",
         "stop_mining" : "Stop Mining",
         "active_pool" : "Active pool",
-        "pool_fee" : "fee"
+        "pool_fee" : "fee",
+        "copy_address" : "Copy your wallet address"
     },
     "sending" : {
         "send_all_to" : "Send all your mined coins to",
