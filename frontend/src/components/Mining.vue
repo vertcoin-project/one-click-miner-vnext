@@ -182,7 +182,7 @@ export default {
     copyAddress: function() {
       var textArea = document.createElement("textarea");
       textArea.value = this.address;
-      textArea.style.display = "none";
+      // textArea.style.display = "none";
       // Avoid scrolling to bottom
       textArea.style.top = "0";
       textArea.style.left = "0";
