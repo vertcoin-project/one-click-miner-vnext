@@ -47,10 +47,30 @@ func (m *Backend) PerformChecks() string {
 	m.runtime.Events.Emit("checkStatus", "verthash")
 	verthashFile := filepath.Join(util.DataDirectory(), "verthash.dat")
 
-	if m.GetSkipVerthashExtendedVerify() {
-		err = verthash.MakeVerthashDatafileIfNotExists(verthashFile)
-	} else {
-		err = verthash.EnsureVerthashDatafile(verthashFile)
+	doneChan := make(chan bool, 1)
+	progress := make(chan float64, 1)
+
+	go func() {
+		if m.GetSkipVerthashExtendedVerify() {
+			err = verthash.MakeVerthashDatafileIfNotExistsWithProgress(verthashFile, progress)
+		} else {
+			err = verthash.EnsureVerthashDatafileWithProgress(verthashFile, progress)
+		}
+		doneChan <- true
+	}()
+
+	for {
+		done := false
+		select {
+		case done = <-doneChan:
+			break
+		case prog := <-progress:
+			m.runtime.Events.Emit("verthashProgress", prog*100)
+			break
+		}
+		if done {
+			break
+		}
 	}
 
 	if err != nil {

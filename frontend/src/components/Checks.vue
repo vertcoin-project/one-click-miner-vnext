@@ -4,7 +4,13 @@
       <p>{{ $t("checks.prerequisite") }}</p>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
-      <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}... <span v-if="verthashProgress > 0">({verthashProgress}%)</span></p>
+      <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}</p>
+      <div class="verthashProgress" v-if="verthashProgress !== 0">
+        <div class="progressBar">
+          <div class="progress" v-bind:style="{width: verthashProgress + '%'}">&nbsp;</div>
+        </div>
+        <div class="progressText">{{Math.floor(verthashProgress)}}%</div>
+      </div>
     </div>
     <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
@@ -75,6 +81,28 @@ div.failureReason {
   border: 1px solid red;
   width: 600px;
   margin: 0 auto;
+}
+
+div.verthashProgress {
+  margin: 0 auto;
+  width: 200px;
+}
+
+div.progressBar {
+  border: 1px solid #048652;
+  height: 10px;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 10px;
+}
+
+div.progress {
+  float:left;
+  background-color: #048652;
+  margin: 0px;
+  padding: 0px;
+  height: 10px; 
 }
 </style>
 
