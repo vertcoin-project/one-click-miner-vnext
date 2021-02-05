@@ -112,6 +112,7 @@ func (m *Backend) InitWallet(password string) bool {
 	err := keyfile.CreateKeyFile(password)
 	if err == nil {
 		m.WalletInitialized()
+		m.ResetPool()
 		return true
 	}
 	logging.Errorf("Error: %s", err.Error())
