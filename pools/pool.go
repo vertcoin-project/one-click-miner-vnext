@@ -17,8 +17,8 @@ func GetPools(addr string, testnet bool) []Pool {
 		}
 	}
 	return []Pool{
-		NewSuprnova(addr),
 		NewHashalot(addr),
+		NewSuprnova(addr),
 		NewP2Pool(addr),
 	}
 }
