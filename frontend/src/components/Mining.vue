@@ -128,6 +128,9 @@ export default {
       window.backend.Backend.GetPoolFee().then(result => {
         self.poolFee = result;
       });
+      window.backend.Backend.Address().then(result => {
+        self.address = result;
+      });
     }, 5000);
     window.backend.Backend.GetPoolName().then(result => {
       self.activePool = result;
@@ -135,9 +138,7 @@ export default {
     window.backend.Backend.GetPoolFee().then(result => {
       self.poolFee = result;
     });
-    window.backend.Backend.Address().then(result => {
-      self.address = result;
-    });
+    
     window.wails.Events.On("blockHeight", result => {
       self.blockHeight = parseInt(result);
     });
