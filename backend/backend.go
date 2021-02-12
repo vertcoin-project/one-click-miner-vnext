@@ -8,6 +8,7 @@ import (
 	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
+	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
 	"github.com/wailsapp/wails"
@@ -21,6 +22,7 @@ type Backend struct {
 	minerBinaries       []*miners.BinaryRunner
 	rapidFailures       []*miners.BinaryRunner
 	pool                pools.Pool
+	payout              payouts.Payout
 	refreshBalanceChan  chan bool
 	refreshHashChan     chan bool
 	refreshRunningState chan bool
@@ -63,6 +65,10 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 
 func (m *Backend) ResetPool() {
 	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
+}
+
+func (m *Backend) ResetPayout() {
+	m.payout = payouts.GetPayout(m.GetPayout(), m.GetTestnet())
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {

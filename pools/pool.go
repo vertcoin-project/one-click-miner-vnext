@@ -20,6 +20,7 @@ func GetPools(addr string, testnet bool) []Pool {
 		NewHashalot(addr),
 		NewSuprnova(addr),
 		NewP2Pool(addr),
+		NewZergpool(addr),
 	}
 }
 

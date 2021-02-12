@@ -17,10 +17,20 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		Name:     fmt.Sprintf("%v", m.pool.GetName()),
 	})
 
+    // TODO: Alert user through UI that payment dropdown
+    // only applies when Zergpool is selected
+    var password string
+	if m.pool.GetID() == 5 {
+	    // Use the payout dropdown option for Zergpool only
+	    password = m.payout.GetPassword()
+	} else {
+	    password = m.pool.GetPassword()
+	}
+
 	return miners.BinaryArguments{
 		StratumUrl:      m.pool.GetStratumUrl(),
 		StratumUsername: m.pool.GetUsername(),
-		StratumPassword: m.pool.GetPassword(),
+		StratumPassword: password,
 	}
 }
 

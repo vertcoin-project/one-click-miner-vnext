@@ -66,6 +66,7 @@ export default {
       testnet: false,
       skipVerthashverify: false,
       poolID: -1,
+      payoutID: -1,
       pools: [],
     };
   },
@@ -85,6 +86,12 @@ export default {
                 self.pools = result;
                 window.backend.Backend.GetPool().then(result => {
                   self.poolID = result;
+                  window.backend.Backend.GetPayouts().then(result => {
+                    self.payouts = result;
+                    window.backend.Backend.GetPayout().then(result => {
+                      self.payoutID = result;
+                    })
+                  })
                 })
               })
             })
@@ -111,7 +118,9 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
                   window.backend.Backend.SetPool(self.poolID).then(() => {
-                    self.$emit("committed");
+                    window.backend.Backend.SetPayout(self.payoutID).then(() => {
+                      self.$emit("committed");
+                    });
                   });
                 });
               });

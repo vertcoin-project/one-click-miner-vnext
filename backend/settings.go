@@ -8,6 +8,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
+	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -84,6 +85,40 @@ func (m *Backend) GetPools() []PoolChoice {
 		pc = append(pc, PoolChoice{
 			ID:   p.GetID(),
 			Name: fmt.Sprintf("%s (%0.1f%% fee)", p.GetName(), p.GetFee()),
+		})
+	}
+	return pc
+}
+
+func (m *Backend) GetPayout() int {
+	payout := m.getIntSetting("payout")
+	if payout == 0 {
+		if m.GetTestnet() {
+			return 1 // Default Vertcoin on testnet
+		}
+		return 1 // Default Vertcoin on mainnet
+	}
+	return payout
+}
+
+func (m *Backend) SetPayout(payout int) {
+	if m.GetPayout() != payout {
+		m.setIntSetting("payout", payout)
+		m.ResetPayout()
+	}
+}
+
+type PayoutChoice struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func (m *Backend) GetPayouts() []PayoutChoice {
+	pc := make([]PayoutChoice, 0)
+	for _, p := range payouts.GetPayouts(m.GetTestnet()) {
+		pc = append(pc, PayoutChoice{
+			ID:   p.GetID(),
+			Name: p.GetName(),
 		})
 	}
 	return pc

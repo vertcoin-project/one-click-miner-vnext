@@ -113,6 +113,7 @@ func (m *Backend) InitWallet(password string) bool {
 	if err == nil {
 		m.WalletInitialized()
 		m.ResetPool()
+		m.ResetPayout()
 		return true
 	}
 	logging.Errorf("Error: %s", err.Error())
