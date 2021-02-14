@@ -14,6 +14,15 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.pool") }}:
+          <br />
+          <select style="width: 100%" name="pool" v-model="poolID">
+            <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
+                {{ option.name }}
+            </option>
+          </select>
+        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -29,10 +38,10 @@
           <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
         </p>
         <p style="text-align: left">
-          {{ $t("settings.pool") }}:
+          {{ $t("settings.payout") }}:
           <br />
-          <select style="width: 100%" name="pool" v-model="poolID">
-            <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
+          <select style="width: 100%" name="payout" v-model="payoutID">
+            <option v-for="option in payouts" v-bind:value="option.id" v-bind:key="option.id">
                 {{ option.name }}
             </option>
           </select>
