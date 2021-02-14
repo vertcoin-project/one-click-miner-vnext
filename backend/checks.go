@@ -139,21 +139,15 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	gpus := util.GetGPUs()
 	closedSource := m.GetClosedSource()
 	testnet := m.GetTestnet()
-	blockHeight := util.GetBlockHeight()
 	brs := []*miners.BinaryRunner{}
 	for _, b := range binaries {
 		match := false
-		blockHeightMatch := false
 		if b.Platform == runtime.GOOS {
 			for _, g := range gpus {
 				if g.Type == b.GPUType {
 					if b.ClosedSource == closedSource {
 						if b.Testnet == testnet {
-							blockHeightMatch = (b.BlockHeightMin == -1 || b.BlockHeightMin-1 < blockHeight) && (b.BlockHeightMax == -1 || b.BlockHeightMax-1 >= blockHeight)
-							if b.Testnet || blockHeightMatch {
-								match = true
-								break
-							}
+							match = true
 						}
 					}
 				}
@@ -182,7 +176,7 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 			br.Debug = m.GetDebugging()
 			brs = append(brs, br)
 		} else {
-			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t) (Block height %d - %d - match: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource, b.BlockHeightMin, b.BlockHeightMax, blockHeightMatch)
+			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
 		}
 	}
 

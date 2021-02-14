@@ -78,7 +78,6 @@
         v-if="runningMiners > 0 && hashrate === '0.00 MH/s'"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
-      <p v-if="testnet === false && blockHeight > 0 && blockHeight < 1500000" class="fork"><a @click="launchForkSite">Hardfork in {{1500000-blockHeight}} blocks. Restart OCM after fork!</a></p>
       <p>
         <a class="button" v-if="stopping">{{spinner}}</a>
         <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
@@ -103,7 +102,6 @@ export default {
       runningMiners: 0,
       spinner: "...",
       stopping: false,
-      blockHeight: 0,
       poolFee: "0.0%",
       activePool: "",
       address:"",
@@ -137,10 +135,6 @@ export default {
     });
     window.backend.Backend.GetPoolFee().then(result => {
       self.poolFee = result;
-    });
-    
-    window.wails.Events.On("blockHeight", result => {
-      self.blockHeight = parseInt(result);
     });
     window.wails.Events.On("hashRate", result => {
       self.hashrate = result;
@@ -202,9 +196,6 @@ export default {
     },
     sendMoney: function() {
       this.$emit("send");
-    },
-    launchForkSite : function() { 
-      window.backend.Backend.LaunchForkSite();
     }
   }
 };
