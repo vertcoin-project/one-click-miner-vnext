@@ -77,6 +77,7 @@ export default {
       poolID: -1,
       payoutID: -1,
       pools: [],
+      payouts: [],
     };
   },
   created() {

@@ -87,6 +87,7 @@ func main() {
 	networks.SetNetwork(util.GetBlockHeight(), backend.GetTestnet())
 
 	backend.ResetPool()
+	backend.ResetPayout()
 	app.Bind(backend)
 	app.Run()
 	backend.StopMining()
