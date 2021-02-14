@@ -22,16 +22,16 @@ func NewZergpool(addr string) *Zergpool {
 
 func (p *Zergpool) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://api.zergpool.com:8080/api/wallet?address=%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("http://api.zergpool.com:8080/api/walletEx?address=%s", p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
-	doge, ok := jsonPayload["unpaid"].(float64)
+	vtc, ok := jsonPayload["unpaid"].(float64)
 	if !ok {
 		return 0
 	}
-	doge *= 100000000
-	return uint64(doge)
+	vtc *= 100000000
+	return uint64(vtc)
 }
 
 func (p *Zergpool) GetStratumUrl() string {
