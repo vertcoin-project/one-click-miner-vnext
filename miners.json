@@ -7,6 +7,8 @@
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "multiGPUMiner": true
     },
     {
@@ -17,6 +19,8 @@
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "multiGPUMiner": true
     },
     {
@@ -27,6 +31,8 @@
         "mainExecutableName" : "VerthashMiner.exe",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "multiGPUMiner": true
     },
     {
@@ -37,6 +43,8 @@
         "mainExecutableName" : "VerthashMiner",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "minerPrerequisites" : [
             "amddriverlinux"
         ],
@@ -50,6 +58,8 @@
         "mainExecutableName" : "VerthashMiner",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "multiGPUMiner": true
     },
     {
@@ -60,6 +70,8 @@
         "mainExecutableName" : "VerthashMiner",
         "closedSource" : false,
         "testnet" : false,
+        "blockHeightMin": 1499999,
+        "blockHeightMax": -1,
         "minerPrerequisites" : [
             "nvidiadriverlinux"
         ],
