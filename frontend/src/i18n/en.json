@@ -69,7 +69,8 @@
         "skipverthashverify_sub":"Will skip verifying the file integrity of Verthash data on startup (not recommended)",
         "save_n_restart" : "Save & Restart",
         "pool": "Mining pool",
-        "payout" : "Zergpool payout"
+        "payout" : "Zergpool payout",
+        "zergpoolAddress" : "Address to receive payout"
     },
     "tabbar" : {
         "wallet" : "Wallet",

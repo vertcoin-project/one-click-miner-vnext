@@ -17,19 +17,23 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		Name:     fmt.Sprintf("%v", m.pool.GetName()),
 	})
 
-    // TODO: Alert user through UI that payment dropdown
-    // only applies when Zergpool is selected
-    var password string
-	if m.pool.GetID() == 5 {
-	    // Use the payout dropdown option for Zergpool only
-	    password = m.payout.GetPassword()
+	var username string
+	var password string
+	if m.pool.GetID() == 5 && m.payout.GetID() != 1 && m.ValidZergpoolAddress() {
+		// Use the "Zergpool payout" config settings only if
+		// - Zergpool is selected
+		// - non-Vertcoin payout option is selected
+		// - address for payout is valid
+		username = m.zergpoolAddress
+		password = m.payout.GetPassword()
 	} else {
-	    password = m.pool.GetPassword()
+		username = m.pool.GetUsername()
+		password = m.pool.GetPassword()
 	}
 
 	return miners.BinaryArguments{
 		StratumUrl:      m.pool.GetStratumUrl(),
-		StratumUsername: m.pool.GetUsername(),
+		StratumUsername: username,
 		StratumPassword: password,
 	}
 }

@@ -88,6 +88,7 @@ func main() {
 
 	backend.ResetPool()
 	backend.ResetPayout()
+	backend.ResetZergpoolAddress()
 	app.Bind(backend)
 	app.Run()
 	backend.StopMining()

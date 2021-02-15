@@ -7,8 +7,8 @@ import (
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
-	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -51,6 +51,24 @@ func (m *Backend) getIntSetting(name string) int {
 	})
 	i, _ := strconv.Atoi(setting)
 	return i
+}
+
+func (m *Backend) setStringSetting(name string, value string) {
+	setting := fmt.Sprintf("%s", value)
+	m.settings.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set(name, setting, nil)
+		return err
+	})
+}
+
+func (m *Backend) getStringSetting(name string) string {
+	setting := ""
+	m.settings.View(func(tx *buntdb.Tx) error {
+		v, err := tx.Get(name)
+		setting = v
+		return err
+	})
+	return setting
 }
 
 func (m *Backend) GetPool() int {
@@ -122,6 +140,24 @@ func (m *Backend) GetPayouts() []PayoutChoice {
 		})
 	}
 	return pc
+}
+
+func (m *Backend) GetZergpoolAddress() string {
+	return m.getStringSetting("zergpoolAddress")
+}
+
+func (m *Backend) SetZergpoolAddress(newZergpoolAddress string) {
+	logging.Infof("Setting Zergpool address to [%s]\n", newZergpoolAddress)
+	m.setStringSetting("zergpoolAddress", newZergpoolAddress)
+}
+
+// TODO: Improve address validation
+func (m *Backend) ValidZergpoolAddress() bool {
+	zergpoolAddress := m.GetZergpoolAddress()
+	if zergpoolAddress != "" {
+		return true
+	}
+	return false
 }
 
 func (m *Backend) GetTestnet() bool {
