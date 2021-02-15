@@ -8,12 +8,6 @@
           <br />
           <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="autoStart" />
-          {{ $t("settings.auto_start") }}
-          <br />
-          <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
-        </p>
         <p v-if="poolID == 5" style="text-align: left">
           {{ $t("settings.payout") }}:
           <br />
@@ -24,7 +18,7 @@
           </select>
         </p>
         <!-- TODO: Improve address validation -->
-        <p v-if="poolID == 5 && payoutID != 1 && zergpoolAddress == ''" class="error">{{"Enter payout address below"}}</p>
+        <p v-if="poolID == 5 && payoutID != 1 && zergpoolAddress == ''">
         <p v-if="poolID == 5 && payoutID != 1">
           <input type="text" style="width:90%"
             v-model="zergpoolAddress"
@@ -34,16 +28,10 @@
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
-          <input type="checkbox" v-model="testnet" />
-          {{ $t("settings.testnet") }}
+          <input type="checkbox" v-model="autoStart" />
+          {{ $t("settings.auto_start") }}
           <br />
-          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="skipVerthashverify" />
-          {{ $t("settings.skipverthashverify") }}
-          <br />
-          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
+          <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
         <p style="text-align: left">
           {{ $t("settings.pool") }}:
