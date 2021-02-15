@@ -12,7 +12,7 @@ type Network struct {
 
 var Active Network
 
-func SetNetwork(blockHeight int64, testnet bool) {
+func SetNetwork(testnet bool) {
 	if testnet {
 		Active = Network{
 			Base58P2PKHVersion: 74,

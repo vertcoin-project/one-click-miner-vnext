@@ -90,6 +90,14 @@ func targetToDiff(target *big.Int) float64 {
 	return f
 }
 
+type blockBookApiResponse struct {
+	Backend blockBookApiBackendResponse `json:"backend"`
+}
+
+type blockBookApiBackendResponse struct {
+	DifficultyString string `json:"difficulty"`
+}
+
 func GetDifficulty() float64 {
 	info := getInfoResponse{}
 	url := fmt.Sprintf("%sinsight-vtc-api/status?q=getInfo", networks.Active.InsightURL)
@@ -105,19 +113,6 @@ func GetNetHash() uint64 {
 	logging.Debugf("Nethash: %d", u)
 
 	return u
-}
-
-func GetBlockHeight() int64 {
-	blocks := BlocksResponse{Blocks: []Block{}}
-	url := fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1", networks.Active.InsightURL)
-	GetJson(url, &blocks)
-	for len(blocks.Blocks) == 0 {
-		time.Sleep(time.Second * 1)
-		url = fmt.Sprintf("%sinsight-vtc-api/blocks?limit=1&blockDate=%s", networks.Active.InsightURL, blocks.Pagination.Prev)
-		logging.Info("No blocks found, trying url %s", url)
-		GetJson(url, &blocks)
-	}
-	return blocks.Blocks[0].Height
 }
 
 var jsonClient = &http.Client{Timeout: 60 * time.Second}

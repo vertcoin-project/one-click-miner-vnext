@@ -87,17 +87,13 @@ func (m *Backend) StartMining() bool {
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
-		bh := util.GetBlockHeight()
 		continueLoop := true
 		for continueLoop {
 			cycles++
-			if cycles > 150 {
+			if cycles > 600 {
 				// Don't refresh this every time since we refresh it every second
-				// and this pulls from Insight. Every 150s is fine (every block)
+				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
-
-				bh = util.GetBlockHeight()
-
 				cycles = 0
 			}
 			hr := uint64(0)
@@ -128,8 +124,6 @@ func (m *Backend) StartMining() bool {
 
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 
-			m.runtime.Events.Emit("blockHeight", fmt.Sprintf("%d", bh))
-
 			select {
 			case <-m.stopHash:
 				continueLoop = false
@@ -141,14 +135,26 @@ func (m *Backend) StartMining() bool {
 
 	go func() {
 		continueLoop := true
+		loop := 0
+		var pb uint64
 		for continueLoop {
-
-			logging.Infof("Updating balance...")
-			m.wal.Update()
-			b, bi := m.wal.GetBalance()
-			pb := m.pool.GetPendingPayout()
-			m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
-			m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
+			if loop == 6 { // Every half hour
+				loop = 0
+			}
+			if loop == 0 {
+				logging.Infof("Updating balance...")
+				m.wal.Update()
+				b, bi := m.wal.GetBalance()
+				m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
+				m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
+			}
+			loop++
+			logging.Infof("Updating pending pool payout...")
+			newPb := m.pool.GetPendingPayout()
+			if newPb < pb { // If pending pool payout dropped, we should've received payout. Refresh balance
+				loop = 0
+			}
+			pb = newPb
 			m.runtime.Events.Emit("balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
 			select {
 			case <-m.stopBalance:

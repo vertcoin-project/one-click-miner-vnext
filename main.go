@@ -83,8 +83,7 @@ func main() {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	networks.SetNetwork(0, backend.GetTestnet())
-	networks.SetNetwork(util.GetBlockHeight(), backend.GetTestnet())
+	networks.SetNetwork(backend.GetTestnet())
 
 	backend.ResetPool()
 	backend.ResetPayout()
