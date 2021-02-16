@@ -22,6 +22,7 @@
           <input type="text" style="width:90%" class="critical-input"
             v-model="zergpoolAddress"
             v-bind:placeholder="$t('settings.zergpoolAddress')"
+            v-on:change="sanitizeAddress"
           />
         </p>
       </div>
@@ -126,6 +127,10 @@ export default {
       this.showWarning = !this.showWarning;
       var self = this;
       setTimeout(() => { self.showWarning = false; }, 5000);
+    },
+    sanitizeAddress: function() {
+      var self = this;
+      self.zergpoolAddress = self.zergpoolAddress.trim();
     },
     save: function() {
       var self = this;
