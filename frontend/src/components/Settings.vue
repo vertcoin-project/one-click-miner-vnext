@@ -47,9 +47,8 @@
           </select>
         </p>
         <!-- TODO: Improve address validation -->
-        <p v-if="poolID == 5 && payoutID != 1 && zergpoolAddress == ''" class="error">{{"Enter payout address below"}}</p>
         <p v-if="poolID == 5 && payoutID != 1">
-          <input type="text" style="width:90%"
+          <input type="text" style="width:90%" class="critical-input"
             v-model="zergpoolAddress"
             v-bind:placeholder="$t('settings.zergpoolAddress')"
           />
@@ -121,10 +120,6 @@ export default {
         });
       });
     });
-    
-    
-   
-    
   },
   methods: {
     toggleWarning: function() {
@@ -182,5 +177,8 @@ div.warning p {
 span.subtext {
   opacity: 0.6;
   font-size: 8pt;
+}
+.critical-input::placeholder {
+  color: red;
 }
 </style>
