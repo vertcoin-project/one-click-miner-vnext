@@ -8,12 +8,6 @@
           <br />
           <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="autoStart" />
-          {{ $t("settings.auto_start") }}
-          <br />
-          <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
-        </p>
         <p v-if="poolID == 5" style="text-align: left">
           {{ $t("settings.payout") }}:
           <br />
@@ -44,6 +38,12 @@
           <br />
           <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
         </p> -->
+        <p style="text-align: left">
+          <input type="checkbox" v-model="autoStart" />
+          {{ $t("settings.auto_start") }}
+          <br />
+          <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
+        </p>
         <p style="text-align: left">
           {{ $t("settings.pool") }}:
           <br />
