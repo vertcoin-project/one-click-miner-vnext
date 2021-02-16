@@ -148,12 +148,13 @@ func (m *Backend) GetZergpoolAddress() string {
 
 func (m *Backend) SetZergpoolAddress(newZergpoolAddress string) {
 	logging.Infof("Setting Zergpool address to [%s]\n", newZergpoolAddress)
+	m.zergpoolAddress = newZergpoolAddress
 	m.setStringSetting("zergpoolAddress", newZergpoolAddress)
 }
 
 // TODO: Improve address validation
 func (m *Backend) ValidZergpoolAddress() bool {
-	zergpoolAddress := m.GetZergpoolAddress()
+	zergpoolAddress := m.zergpoolAddress
 	if zergpoolAddress != "" {
 		return true
 	}
