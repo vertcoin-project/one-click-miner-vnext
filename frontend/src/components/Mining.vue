@@ -63,6 +63,9 @@
         <span style="opacity: 1">{{balancePendingPool}} {{activePayout}}</span>
         {{$t('mining.pending_pool_payout')}})
       </p>
+      <p class="poolBalance" v-if="balancePendingPool == '0.00000000'">
+        {{$t('mining.pending_payout_info_unavailable')}}
+      </p>
       <p class="pool">
         <span style="opacity: 1">{{$t('mining.active_pool')}}: {{activePool}} <span v-if="poolFee != '0.0%'">({{$t('mining.pool_fee')}}: {{poolFee}})</span></span>
       </p>
