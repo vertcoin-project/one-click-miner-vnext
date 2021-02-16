@@ -11,7 +11,6 @@ var _ Pool = &Zergpool{}
 
 type Zergpool struct {
 	Address           string
-	Payout            string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
 }
