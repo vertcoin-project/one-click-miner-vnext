@@ -32,18 +32,18 @@
         </p>
       </div>
       <div class="col-settings-sub">
-        <p style="text-align: left">
+        <!-- <p style="text-align: left">
           <input type="checkbox" v-model="testnet" />
           {{ $t("settings.testnet") }}
           <br />
           <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p>
-        <p style="text-align: left">
+        </p> -->
+        <!-- <p style="text-align: left">
           <input type="checkbox" v-model="skipVerthashverify" />
           {{ $t("settings.skipverthashverify") }}
           <br />
           <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
-        </p>
+        </p> -->
         <p style="text-align: left">
           {{ $t("settings.pool") }}:
           <br />
