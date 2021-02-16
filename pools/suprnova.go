@@ -10,18 +10,17 @@ import (
 var _ Pool = &Suprnova{}
 
 type Suprnova struct {
-	Address           string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
 }
 
-func NewSuprnova(addr string) *Suprnova {
-	return &Suprnova{Address: addr}
+func NewSuprnova() *Suprnova {
+	return &Suprnova{}
 }
 
-func (p *Suprnova) GetPendingPayout() uint64 {
+func (p *Suprnova) GetPendingPayout(addr string) uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("https://vtc.suprnova.cc/index.php?page=api&action=getuserbalance&api_key=%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("https://vtc.suprnova.cc/index.php?page=api&action=getuserbalance&api_key=%s", addr), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -51,10 +50,6 @@ func (p *Suprnova) GetPendingPayout() uint64 {
 
 func (p *Suprnova) GetStratumUrl() string {
 	return "stratum+tcp://vtc.suprnova.cc:1776"
-}
-
-func (p *Suprnova) GetUsername() string {
-	return p.Address
 }
 
 func (p *Suprnova) GetPassword() string {

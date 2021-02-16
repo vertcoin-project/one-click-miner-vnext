@@ -23,6 +23,7 @@ type Backend struct {
 	rapidFailures       []*miners.BinaryRunner
 	pool                pools.Pool
 	payout              payouts.Payout
+	vertcoinAddress     string
 	zergpoolAddress     string
 	refreshBalanceChan  chan bool
 	refreshHashChan     chan bool
@@ -65,7 +66,7 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 }
 
 func (m *Backend) ResetPool() {
-	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
+	m.pool = pools.GetPool(m.GetPool(), m.GetTestnet())
 }
 
 func (m *Backend) ResetPayout() {
@@ -74,6 +75,10 @@ func (m *Backend) ResetPayout() {
 
 func (m *Backend) ResetZergpoolAddress() {
 	m.zergpoolAddress = m.GetZergpoolAddress()
+}
+
+func (m *Backend) ResetVertcoinAddress() {
+	m.vertcoinAddress = m.Address()
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {

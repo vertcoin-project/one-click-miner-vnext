@@ -85,6 +85,7 @@ func main() {
 	}
 	networks.SetNetwork(backend.GetTestnet())
 
+	backend.ResetVertcoinAddress()
 	backend.ResetPool()
 	backend.ResetPayout()
 	backend.ResetZergpoolAddress()

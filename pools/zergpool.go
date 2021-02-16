@@ -10,19 +10,17 @@ import (
 var _ Pool = &Zergpool{}
 
 type Zergpool struct {
-	Address           string
-	Payout            string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
 }
 
-func NewZergpool(addr string) *Zergpool {
-	return &Zergpool{Address: addr}
+func NewZergpool() *Zergpool {
+	return &Zergpool{}
 }
 
-func (p *Zergpool) GetPendingPayout() uint64 {
+func (p *Zergpool) GetPendingPayout(addr string) uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://api.zergpool.com:8080/api/walletEx?address=%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("http://api.zergpool.com:8080/api/walletEx?address=%s", addr), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -36,10 +34,6 @@ func (p *Zergpool) GetPendingPayout() uint64 {
 
 func (p *Zergpool) GetStratumUrl() string {
 	return "stratum+tcp://verthash.na.mine.zergpool.com:4534"
-}
-
-func (p *Zergpool) GetUsername() string {
-	return p.Address
 }
 
 func (p *Zergpool) GetPassword() string {

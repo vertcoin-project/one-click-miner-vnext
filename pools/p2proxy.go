@@ -10,21 +10,19 @@ import (
 
 var _ Pool = &P2Proxy{}
 
-type P2Proxy struct {
-	Address string
+type P2Proxy struct {}
+
+func NewP2Proxy() *P2Proxy {
+	return &P2Proxy{}
 }
 
-func NewP2Proxy(addr string) *P2Proxy {
-	return &P2Proxy{Address: addr}
-}
-
-func (p *P2Proxy) GetPendingPayout() uint64 {
+func (p *P2Proxy) GetPendingPayout(addr string) uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("%sapi/balance?address=%s", networks.Active.P2ProxyURL, p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/balance?address=%s", networks.Active.P2ProxyURL, addr), &jsonPayload)
 	if err != nil {
 		return 0
 	}
-	vtc, ok := jsonPayload[p.Address].(float64)
+	vtc, ok := jsonPayload[addr].(float64)
 	if !ok {
 		return 0
 	}
@@ -34,10 +32,6 @@ func (p *P2Proxy) GetPendingPayout() uint64 {
 
 func (p *P2Proxy) GetStratumUrl() string {
 	return networks.Active.P2ProxyStratum
-}
-
-func (p *P2Proxy) GetUsername() string {
-	return p.Address
 }
 
 func (p *P2Proxy) GetPassword() string {

@@ -99,7 +99,7 @@ type PoolChoice struct {
 
 func (m *Backend) GetPools() []PoolChoice {
 	pc := make([]PoolChoice, 0)
-	for _, p := range pools.GetPools(m.Address(), m.GetTestnet()) {
+	for _, p := range pools.GetPools(m.GetTestnet()) {
 		pc = append(pc, PoolChoice{
 			ID:   p.GetID(),
 			Name: fmt.Sprintf("%s (%0.1f%% fee)", p.GetName(), p.GetFee()),

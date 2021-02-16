@@ -1,31 +1,30 @@
 package pools
 
 type Pool interface {
-	GetPendingPayout() uint64
+	GetPendingPayout(addr string) uint64
 	GetStratumUrl() string
-	GetUsername() string
 	GetPassword() string
 	GetName() string
 	GetID() int
 	GetFee() float64
 }
 
-func GetPools(addr string, testnet bool) []Pool {
+func GetPools(testnet bool) []Pool {
 	if testnet {
 		return []Pool{
-			NewP2Proxy(addr),
+			NewP2Proxy(),
 		}
 	}
 	return []Pool{
-		NewHashalot(addr),
-		NewSuprnova(addr),
-		NewP2Pool(addr),
-		NewZergpool(addr),
+		NewHashalot(),
+		NewSuprnova(),
+		NewP2Pool(),
+		NewZergpool(),
 	}
 }
 
-func GetPool(pool int, addr string, testnet bool) Pool {
-	pools := GetPools(addr, testnet)
+func GetPool(pool int, testnet bool) Pool {
+	pools := GetPools(testnet)
 	for _, p := range pools {
 		if p.GetID() == pool {
 			return p

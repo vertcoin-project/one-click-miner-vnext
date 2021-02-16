@@ -13,16 +13,15 @@ import (
 var _ Pool = &P2Pool{}
 
 type P2Pool struct {
-	Address           string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
 }
 
-func NewP2Pool(addr string) *P2Pool {
-	return &P2Pool{Address: addr}
+func NewP2Pool() *P2Pool {
+	return &P2Pool{}
 }
 
-func (p *P2Pool) GetPendingPayout() uint64 {
+func (p *P2Pool) GetPendingPayout(addr string) uint64 {
 	if time.Now().Sub(p.LastFetchedPayout) > time.Minute*2 {
 		jsonPayload := map[string]interface{}{}
 		err := util.GetJson(fmt.Sprintf("%scurrent_payouts", networks.Active.P2ProxyURL), &jsonPayload)
@@ -30,7 +29,7 @@ func (p *P2Pool) GetPendingPayout() uint64 {
 			logging.Warnf("Unable to fetch p2pool payouts: %s", err.Error())
 			p.LastPayout = 0
 		}
-		address := p.Address
+		address := addr
 		vtc, ok := jsonPayload[address].(float64)
 		if !ok {
 			p.LastFetchedPayout = time.Now()
@@ -45,10 +44,6 @@ func (p *P2Pool) GetPendingPayout() uint64 {
 
 func (p *P2Pool) GetStratumUrl() string {
 	return networks.Active.P2ProxyStratum
-}
-
-func (p *P2Pool) GetUsername() string {
-	return p.Address
 }
 
 func (p *P2Pool) GetPassword() string {

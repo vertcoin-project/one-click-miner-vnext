@@ -10,18 +10,17 @@ import (
 var _ Pool = &Hashalot{}
 
 type Hashalot struct {
-	Address           string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
 }
 
-func NewHashalot(addr string) *Hashalot {
-	return &Hashalot{Address: addr}
+func NewHashalot() *Hashalot {
+	return &Hashalot{}
 }
 
-func (p *Hashalot) GetPendingPayout() uint64 {
+func (p *Hashalot) GetPendingPayout(addr string) uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://api.hashalot.net/pools/vtc/miners/%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("http://api.hashalot.net/pools/vtc/miners/%s", addr), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -35,10 +34,6 @@ func (p *Hashalot) GetPendingPayout() uint64 {
 
 func (p *Hashalot) GetStratumUrl() string {
 	return "stratum+tcp://vertcoin.hashalot.net:3950"
-}
-
-func (p *Hashalot) GetUsername() string {
-	return p.Address
 }
 
 func (p *Hashalot) GetPassword() string {
