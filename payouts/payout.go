@@ -2,7 +2,7 @@ package payouts
 
 type Payout interface {
 	GetID() int
-    GetName() string
+	GetName() string
 	GetTicker() string
 	GetPassword() string
 }
