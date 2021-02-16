@@ -14,29 +14,6 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          {{ $t("settings.pool") }}:
-          <br />
-          <select style="width: 100%" name="pool" v-model="poolID">
-            <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
-                {{ option.name }}
-            </option>
-          </select>
-        </p>
-      </div>
-      <div class="col-settings-sub">
-        <p style="text-align: left">
-          <input type="checkbox" v-model="testnet" />
-          {{ $t("settings.testnet") }}
-          <br />
-          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="skipVerthashverify" />
-          {{ $t("settings.skipverthashverify") }}
-          <br />
-          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
-        </p>
         <p v-if="poolID == 5" style="text-align: left">
           {{ $t("settings.payout") }}:
           <br />
@@ -52,6 +29,29 @@
             v-model="zergpoolAddress"
             v-bind:placeholder="$t('settings.zergpoolAddress')"
           />
+        </p>
+      </div>
+      <div class="col-settings-sub">
+        <p style="text-align: left">
+          <input type="checkbox" v-model="testnet" />
+          {{ $t("settings.testnet") }}
+          <br />
+          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
+        </p>
+        <p style="text-align: left">
+          <input type="checkbox" v-model="skipVerthashverify" />
+          {{ $t("settings.skipverthashverify") }}
+          <br />
+          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
+        </p>
+        <p style="text-align: left">
+          {{ $t("settings.pool") }}:
+          <br />
+          <select style="width: 100%" name="pool" v-model="poolID">
+            <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
+                {{ option.name }}
+            </option>
+          </select>
         </p>
       </div>
     </div>
