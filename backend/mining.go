@@ -154,7 +154,7 @@ func (m *Backend) StartMining() bool {
 			loop++
 			logging.Infof("Updating pending pool payout...")
 			var payoutAddr string
-			if m.ValidZergpoolAddress() {
+			if m.UseZergpoolPayout() {
 				payoutAddr = m.zergpoolAddress
 			} else {
 				payoutAddr = m.vertcoinAddress
