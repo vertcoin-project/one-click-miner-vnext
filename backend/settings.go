@@ -161,7 +161,7 @@ func (m *Backend) ValidZergpoolAddress() bool {
 }
 
 func (m *Backend) GetTestnet() bool {
-    return false // Testnet is not necessary - return false
+	return false // Testnet is not necessary - return false
 	//return m.getSetting("testnet")
 }
 
@@ -180,7 +180,7 @@ func (m *Backend) SetTestnet(newTestnet bool) {
 }
 
 func (m *Backend) GetSkipVerthashExtendedVerify() bool {
-    return false // Verification is fast and chain split is possible if datafile is wrong - return false
+	return false // Verification is fast and chain split is possible if datafile is wrong - return false
 	//return m.getSetting("skipverthashverify")
 }
 
