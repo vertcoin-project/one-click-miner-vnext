@@ -19,11 +19,7 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 
 	var username string
 	var password string
-	if m.pool.GetID() == 5 && m.payout.GetID() != 1 && m.ValidZergpoolAddress() {
-		// Use the "Zergpool payout" config settings only if
-		// - Zergpool is selected
-		// - non-Vertcoin payout option is selected
-		// - address for payout is valid
+	if m.UseZergpoolPayout() {
 		username = m.zergpoolAddress
 		password = m.payout.GetPassword()
 	} else {
@@ -44,6 +40,13 @@ func (m *Backend) GetPoolFee() string {
 
 func (m *Backend) GetPoolName() string {
 	return m.pool.GetName()
+}
+
+func (m *Backend) GetPayoutTicker() string {
+	if m.UseZergpoolPayout() {
+		return m.payout.GetTicker()
+	}
+	return "VTC"
 }
 
 func (m *Backend) StartMining() bool {

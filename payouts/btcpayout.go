@@ -16,6 +16,10 @@ func (p *BTCPayout) GetName() string {
 	return "Bitcoin"
 }
 
+func (p *BTCPayout) GetTicker() string {
+	return "BTC"
+}
+
 func (p *BTCPayout) GetPassword() string {
 	return "c=BTC,mc=VTC"
 }

@@ -16,6 +16,10 @@ func (p *VTCPayout) GetName() string {
 	return "Vertcoin"
 }
 
+func (p *VTCPayout) GetTicker() string {
+	return "VTC"
+}
+
 func (p *VTCPayout) GetPassword() string {
 	return "x"
 }

@@ -55,12 +55,12 @@
       </p>
       <p class="immatureBalance" v-if="balanceImmature != '0.00000000'">
         (
-        <span style="opacity: 1">{{balanceImmature}} VTC</span>
+        <span style="opacity: 1">{{balanceImmature}} {{activePayout}}</span>
         {{$t('mining.still_maturing')}})
       </p>
       <p class="poolBalance" v-if="balancePendingPool != '0.00000000'">
         (
-        <span style="opacity: 1">{{balancePendingPool}} VTC</span>
+        <span style="opacity: 1">{{balancePendingPool}} {{activePayout}}</span>
         {{$t('mining.pending_pool_payout')}})
       </p>
       <p class="pool">
@@ -104,6 +104,7 @@ export default {
       stopping: false,
       poolFee: "0.0%",
       activePool: "",
+      activePayout: "",
       address:"",
     };
   },
@@ -126,6 +127,9 @@ export default {
       window.backend.Backend.GetPoolFee().then(result => {
         self.poolFee = result;
       });
+      window.backend.Backend.GetPayoutTicker().then(result => {
+        self.activePayout = result;
+      });
       window.backend.Backend.Address().then(result => {
         self.address = result;
       });
@@ -135,6 +139,9 @@ export default {
     });
     window.backend.Backend.GetPoolFee().then(result => {
       self.poolFee = result;
+    });
+    window.backend.Backend.GetPayoutTicker().then(result => {
+      self.activePayout = result;
     });
     window.wails.Events.On("hashRate", result => {
       self.hashrate = result;

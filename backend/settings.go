@@ -161,6 +161,17 @@ func (m *Backend) ValidZergpoolAddress() bool {
 	return false
 }
 
+func (m *Backend) UseZergpoolPayout() bool {
+	// Use the "Zergpool payout" config settings only if
+	// - Zergpool is selected
+	// - non-Vertcoin payout option is selected
+	// - address for payout is valid
+	if m.pool.GetID() == 5 && m.payout.GetID() != 1 && m.ValidZergpoolAddress() {
+		return true
+	}
+	return false
+}
+
 func (m *Backend) GetTestnet() bool {
 	return false // Testnet is not necessary - return false
 	//return m.getSetting("testnet")
