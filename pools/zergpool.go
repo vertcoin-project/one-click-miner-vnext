@@ -42,7 +42,7 @@ func (p *Zergpool) GetUsername() string {
 }
 
 func (p *Zergpool) GetPassword() string {
-	return "x"
+	return "c=VTC,mc=VTC"
 }
 
 func (p *Zergpool) GetID() int {
