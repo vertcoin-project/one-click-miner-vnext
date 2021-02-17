@@ -34,7 +34,7 @@ func (p *Zergpool) GetPendingPayout() uint64 {
 }
 
 func (p *Zergpool) GetStratumUrl() string {
-	return "stratum+tcp://verthash.na.mine.zergpool.com:4534"
+	return "stratum+tcp://verthash.mine.zergpool.com:4534"
 }
 
 func (p *Zergpool) GetUsername() string {
