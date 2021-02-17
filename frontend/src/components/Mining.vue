@@ -55,7 +55,7 @@
       </p>
       <p class="immatureBalance" v-if="balanceImmature != '0.00000000'">
         (
-        <span style="opacity: 1">{{balanceImmature}} {{activePayout}}</span>
+        <span style="opacity: 1">{{balanceImmature}} VTC</span>
         {{$t('mining.still_maturing')}})
       </p>
       <p class="poolBalance" v-if="balancePendingPool != '0.00000000'">
