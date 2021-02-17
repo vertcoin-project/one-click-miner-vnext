@@ -41,7 +41,7 @@
         "youre_sending_x_to" : "Вы отправляете {receivedBalance} на",
         "youre_sending_x_in_y_txs_to" : "Вы отправляете {receivedBalance} в {receivedTxCount} транзакции на",
         "receiver_address" : "Адрес получателя",
-        "wallet_password" : "Пароль от кошелёка",
+        "wallet_password" : "Пароль от кошелька",
         "send" : "Отправить",
         "coins_sent" : "Криптовалюта отправлена!",
         "view_trans_plural" : "Просмотр транзакций",
