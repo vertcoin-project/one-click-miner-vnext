@@ -8,15 +8,15 @@ This software is available for Windows and Linux.
 
 ## FAQ
 
-###Which GPUs are supported?
+### Which GPUs are supported?
 
 Please refer to this list of [supported hardware.](https://github.com/CryptoGraphics/VerthashMiner#supported-hardware)
 
-###I have an error message that reads 'Failure to configure'
+### I have an error message that reads 'Failure to configure'
 
 You may need to add an exclusion to your antivirus / Windows Defender.
 
-###My GPU is supported but an error messages reads 'no compatible GPUs'
+### My GPU is supported but an error messages reads 'no compatible GPUs'
 
 Update your GPU drivers to the latest version.
 
