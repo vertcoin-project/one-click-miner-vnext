@@ -54,5 +54,5 @@ func (p *Hashalot) GetName() string {
 }
 
 func (p *Hashalot) GetFee() float64 {
-	return 1.00
+	return 2.00
 }
