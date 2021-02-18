@@ -77,7 +77,7 @@ func (m *Backend) GetPool() int {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
 		}
-		return 3 // Default Hashalot on mainnet (for now...)
+		return 5 // Default Zergpool
 	}
 	return pool
 }
