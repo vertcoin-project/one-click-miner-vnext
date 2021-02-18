@@ -10,6 +10,10 @@ This adds the ability to change the default [Zergpool](https://zergpool.com/site
 
 `LTC payment threshold is 0.25 LTC and 0.05 LTC on Sunday late evening(CET)`
 
+`BCH payment threshold is ~0.00712 and ~0.00142 on Sunday late evening(CET)`
+
+`DASH payment threshold is ~0.0169 and ~0.00338 on Sunday late evening(CET)`
+
 *Network and exchange fees may apply
 
 The One-Click Miner allows cryptocurrency enthusiasts to get into mining with minimal effort. When you download the One-Click Miner, you will be asked to provide a password for your (built in) wallet. It will then immediately commence mining.
