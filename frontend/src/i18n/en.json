@@ -28,6 +28,7 @@
         "spendable_balance" : "Spendable Balance",
         "still_maturing" : "still maturing",
         "pending_pool_payout" : "pending pool payout",
+        "pending_payout_info_unavailable" : "Please wait for pending payout information",
         "waiting_for_miners" : "Waiting for miners to start",
         "expected_earnings_24h" : "Expected Earnings (24h)",
         "estimating" : "estimating",
