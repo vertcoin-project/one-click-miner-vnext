@@ -1,128 +1,128 @@
 #app {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #eee;
-  -moz-user-select: none; 
-  -webkit-user-select: none; 
-  -ms-user-select:none; 
-  user-select:none;
-  -o-user-select:none;
-  margin: 0px;
-  padding: 0px;
-  font-size: 14px;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #eee;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
 }
 
 select {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  border: 2px solid #eee !important;
-  background: #191b1c !important;
-  color: #eee !important;
-  -webkit-appearance: none;
-  padding: 4px 10px;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    border: 2px solid #eee !important;
+    background: #191b1c !important;
+    color: #eee !important;
+    -webkit-appearance: none;
+    padding: 4px 10px;
 }
 
 
 /* ubuntu-regular - latin */
 /* montserrat-regular - latin */
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../fonts/montserrat-v13-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local('Montserrat Regular'), local('Montserrat-Regular'),
-       url('../fonts/montserrat-v13-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/montserrat-v13-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../fonts/montserrat-v13-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('../fonts/montserrat-v13-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('../fonts/montserrat-v13-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/montserrat-v13-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Montserrat Regular'), local('Montserrat-Regular'),
+    url('../fonts/montserrat-v13-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/montserrat-v13-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('../fonts/montserrat-v13-latin-regular.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/montserrat-v13-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/montserrat-v13-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
 }
 
 
 html {
-  height: 100%;
-  overflow: hidden;
-  background-color: #191b1c;
-  background-size: 20px 20px;
-  padding: 0px; margin: 0px;
-  
+    height: 100%;
+    overflow: hidden;
+    background-color: #00351E;
+    background-size: 20px 20px;
+    padding: 0px; margin: 0px;
+
 }
 
 body {
-  padding: 0px; margin: 0px;
+    padding: 0px; margin: 0px;
 }
 
 .logo {
-  width: 16em;
+    width: 16em;
 }
 
 .col-6 {
-	width: 50%;
-	float: left;
+    width: 50%;
+    float: left;
 }
 
 div.col-286 {
-  margin: 0px;
-  padding-left: 200px;
-  padding-right: 200px;
-  height: 100%;
-  width: 100%;
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
+    margin: 0px;
+    padding-left: 200px;
+    padding-right: 200px;
+    height: 100%;
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
 div.col-settings {
-  height: 235px;
-  width: 80%;
-  margin-left: 10%;
-  vertical-align: middle;
-  text-align: center;
-  overflow-y: auto;
-  display: flex;
-  flex-basis: 1;
+    height: 235px;
+    width: 80%;
+    margin-left: 10%;
+    vertical-align: middle;
+    text-align: center;
+    overflow-y: auto;
+    display: flex;
+    flex-basis: 1;
 }
 
 div.col-settings-sub {
-  padding: 20px;
-  flex-grow: 1;
+    padding: 20px;
+    flex-grow: 1;
 }
 
 div.col-286.height-100 {
-  height: 100px;
-  display: inline;
+    height: 100px;
+    display: inline;
 }
 
 
 div.col-wide {
-  margin: 0px;
-  padding-left: 50px;
-  padding-right: 50px;
-  height: 100%;
-  width: 100%;
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
+    margin: 0px;
+    padding-left: 50px;
+    padding-right: 50px;
+    height: 100%;
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 div.settings-container {
-  height: 348px;
-  width: 100%;
-  text-align: center;
+    height: 348px;
+    width: 100%;
+    text-align: center;
 }
 div.container {
-  height: 348px;
-  width: 100%;
-  display: table;
-  text-align: center;
+    height: 348px;
+    width: 100%;
+    display: table;
+    text-align: center;
 }
 
 a.button:hover {
-  opacity: 1.0;
-  transition: 500ms;
+    opacity: 1.0;
+    transition: 500ms;
 }
 a.button {
-	  opacity: 0.6;
+    opacity: 0.6;
     line-height: 45px;
     background: #048652;
     max-width: 286px;
@@ -146,43 +146,43 @@ a.link, a.inlineLink {
     text-align: center;
 }
 
-a.link { 
-  display: block;
+a.link {
+    display: block;
 }
 
 a.inlineLink {
-  display: inline;
+    display: inline;
 }
 
 input[type='text'], input[type='password'] {
-  border: 0px;
-  background-color: #202225;
-  color: white;
-  border-radius: 5px;
-  line-height: 45px;
-  padding: 0px 10px;
-  height: 45px;
-  width: 400px;
-  margin: 0 auto;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  font-size: 14px;
+    border: 0px;
+    background-color: #202225;
+    color: white;
+    border-radius: 5px;
+    line-height: 45px;
+    padding: 0px 10px;
+    height: 45px;
+    width: 400px;
+    margin: 0 auto;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
 
 p.error {
-  color: #900000;
+    color: #900000;
 }
 input.error {
-  border: 1px solid #900000;
+    border: 1px solid #900000;
 }
 input.success {
-  border: 1px solid #048652;
+    border: 1px solid #048652;
 }
 
 input:-moz-focusring {
-  color:transparent;
-  text-shadow:0 0 0 #000; /* your normal text color here */
+    color:transparent;
+    text-shadow:0 0 0 #000; /* your normal text color here */
 }
 input:-moz-focusring * {
-  color:#000; /* your normal text color here */
-  text-shadow:none;
+    color:#000; /* your normal text color here */
+    text-shadow:none;
 }
