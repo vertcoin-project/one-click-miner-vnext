@@ -18,6 +18,8 @@ func GetPayouts(testnet bool) []Payout {
 		NewBTCPayout(),
 		NewLTCPayout(),
 		NewDOGEPayout(),
+		NewBCHPayout(),
+		NewDASHPayout(),
 	}
 }
 
