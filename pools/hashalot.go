@@ -50,7 +50,7 @@ func (p *Hashalot) GetID() int {
 }
 
 func (p *Hashalot) GetName() string {
-	return "Hashalot"
+	return "Hashalot.net"
 }
 
 func (p *Hashalot) GetFee() float64 {
