@@ -1,8 +1,11 @@
 # Verthash One-Click Miner
 
-This adds the ability to change the default [Zergpool](https://zergpool.com/site/faq) payout in VTC to a user-inputted DOGE, BTC, LTC, BCH or DASH address.  Pending payout information will accurately track the payout of choice although Expected Earnings (24h) still reflects an amount in VTC.
+The Verthash One Click Miner is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.
 
-**Current Zergpool payout thresholds as of February 16, 2021:**
+This allows the default [Zergpool](https://zergpool.com/site/faq) payout in VTC to be changed to a user-inputted Dogecoin, Bitcoin, Litecoin, Bitcoin Cash or Dash address. Pending payout information will accurately track the payout of choice although Expected Earnings (24h) still reflects an amount in VTC.
+
+
+**Current Zergpool payout thresholds as of February 18, 2021:**
 
 `DOGE payment threshold is 400 DOGE and 80 DOGE on Sunday late evening(CET)`
 
@@ -17,8 +20,6 @@ This adds the ability to change the default [Zergpool](https://zergpool.com/site
 *Network and exchange fees may apply
 
 The One-Click Miner allows cryptocurrency enthusiasts to get into mining with minimal effort. When you download the One-Click Miner, you will be asked to provide a password for your (built in) wallet. It will then immediately commence mining.
-
-This is a redevelopment of Vertcoin's [One Click Miner](https://github.com/vertcoin-project/one-click-miner).
 
 This software is available for Windows and Linux.
 
