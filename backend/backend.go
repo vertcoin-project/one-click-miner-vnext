@@ -62,14 +62,6 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 }
 
 func (m *Backend) ResetPool() {
-	// First time we run the program we get a random pool.
-	// Save this setting immediately so that we don't get
-	// a different random pool in future calls to GetPool().
-	poolID := m.getIntSetting("pool")
-	if poolID == 0 {
-		poolID = m.GetPool()
-		m.setIntSetting("pool", poolID)
-	}
 	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
 }
 

@@ -63,7 +63,11 @@ func (m *Backend) GetPool() int {
 		// Default to a random pool
 		rand.Seed(time.Now().UnixNano())
 		pools := pools.GetPools(m.Address(), m.GetTestnet())
-		return pools[rand.Intn(len(pools))].GetID()
+		pool := pools[rand.Intn(len(pools))].GetID()
+		// Save this setting immediately so that we don't get
+		// a different random pool in future calls to GetPool().
+		m.setIntSetting("pool", pool)
+		return pool
 	}
 	return pool
 }
