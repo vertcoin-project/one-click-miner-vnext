@@ -29,7 +29,7 @@ var trackingEnabled bool
 var waitGroup sync.WaitGroup
 
 func Enable() {
-	trackingEnabled = true
+	trackingEnabled = false
 	saveState()
 }
 
