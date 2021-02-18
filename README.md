@@ -1,12 +1,12 @@
 # Verthash One-Click Miner
 
-This adds the ability to change the default [Zergpool](https://zergpool.com/site/faq) payout in VTC to a user-inputted BTC, LTC or DOGE address.  Pending payout information will accurately track the payout of choice although Expected Earnings (24h) still reflects an amount in VTC.
+This adds the ability to change the default [Zergpool](https://zergpool.com/site/faq) payout in VTC to a user-inputted DOGE, BTC, LTC, BCH or DASH address.  Pending payout information will accurately track the payout of choice although Expected Earnings (24h) still reflects an amount in VTC.
 
 **Current Zergpool payout thresholds as of February 16, 2021:**
 
-`BTC payment threshold is 0.0025 BTC`
-
 `DOGE payment threshold is 400 DOGE and 80 DOGE on Sunday late evening(CET)`
+
+`BTC payment threshold is 0.0025 BTC`
 
 `LTC payment threshold is 0.25 LTC and 0.05 LTC on Sunday late evening(CET)`
 
