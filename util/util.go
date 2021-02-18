@@ -24,7 +24,7 @@ import (
 	"github.com/vertiond/verthash-one-click-miner/networks"
 )
 
-const APP_NAME string = "vertcoin-ocm"
+const APP_NAME string = "verthash-ocm"
 
 func DataDirectory() string {
 	if runtime.GOOS == "windows" {
