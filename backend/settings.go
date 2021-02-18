@@ -5,12 +5,12 @@ import (
 	"strconv"
 
 	"github.com/tidwall/buntdb"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
-	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
-	"github.com/vertcoin-project/one-click-miner-vnext/pools"
-	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/networks"
+	"github.com/vertiond/verthash-one-click-miner/payouts"
+	"github.com/vertiond/verthash-one-click-miner/pools"
+	"github.com/vertiond/verthash-one-click-miner/tracking"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 func (m *Backend) getSetting(name string) bool {

@@ -3,12 +3,12 @@ package backend
 import (
 	"fmt"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
-	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
-	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
+	"github.com/vertiond/verthash-one-click-miner/keyfile"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/networks"
+	"github.com/vertiond/verthash-one-click-miner/tracking"
+	"github.com/vertiond/verthash-one-click-miner/util"
+	"github.com/vertiond/verthash-one-click-miner/wallet"
 )
 
 func (m *Backend) WalletInitialized() int {

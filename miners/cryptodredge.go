@@ -3,20 +3,20 @@ package miners
 import (
 	"strconv"
 	"strings"
-	"time"
 	"sync"
-	
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"time"
+
+	"github.com/vertiond/verthash-one-click-miner/logging"
 )
 
 // Compile time assertion on interface
 var _ MinerImpl = &CryptoDredgeMinerImpl{}
 
 type CryptoDredgeMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
-	gpuCount     int8
+	gpuCount      int8
 }
 
 func NewCryptoDredgeMinerImpl(br *BinaryRunner) MinerImpl {

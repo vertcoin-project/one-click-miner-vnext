@@ -4,18 +4,18 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+
+	"github.com/vertiond/verthash-one-click-miner/logging"
 )
 
 // Compile time assertion on interface
 var _ MinerImpl = &CCMinerImpl{}
 
 type CCMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
-	gpuCount     int8
+	gpuCount      int8
 }
 
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {

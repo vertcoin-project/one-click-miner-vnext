@@ -6,11 +6,11 @@ import (
 	"github.com/tidwall/buntdb"
 
 	"github.com/btcsuite/btcd/wire"
-	"github.com/vertcoin-project/one-click-miner-vnext/miners"
-	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
-	"github.com/vertcoin-project/one-click-miner-vnext/pools"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
-	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
+	"github.com/vertiond/verthash-one-click-miner/miners"
+	"github.com/vertiond/verthash-one-click-miner/payouts"
+	"github.com/vertiond/verthash-one-click-miner/pools"
+	"github.com/vertiond/verthash-one-click-miner/util"
+	"github.com/vertiond/verthash-one-click-miner/wallet"
 	"github.com/wailsapp/wails"
 )
 

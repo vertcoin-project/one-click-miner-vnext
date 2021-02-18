@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/prerequisites"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/prerequisites"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 type MinerBinary struct {
@@ -34,7 +34,7 @@ type MinerBinary struct {
 
 func GetMinerBinaries() []MinerBinary {
 	binaries := []MinerBinary{}
-	util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/miners.json", &binaries)
+	util.GetJson("https://raw.githubusercontent.com/vertiond/verthash-one-click-miner/master/miners.json", &binaries)
 	for i := range binaries {
 		if binaries[i].GpuPlatformString == "AMD" {
 			binaries[i].GPUType = util.GPUTypeAMD
@@ -276,7 +276,7 @@ func (b *BinaryRunner) unpack() error {
 
 	if _, err := os.Stat(unpackDir); !os.IsNotExist(err) {
 		logging.Debugf("%sRemoving unpack directory", b.logPrefix())
-		time.Sleep(1 * time.Second)  // Necessary on Windows to avoid permission error
+		time.Sleep(1 * time.Second) // Necessary on Windows to avoid permission error
 		err = os.RemoveAll(unpackDir)
 		if err != nil {
 			return err

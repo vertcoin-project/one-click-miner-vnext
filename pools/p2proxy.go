@@ -3,14 +3,14 @@ package pools
 import (
 	"fmt"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
+	"github.com/vertiond/verthash-one-click-miner/networks"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 var _ Pool = &P2Proxy{}
 
-type P2Proxy struct {}
+type P2Proxy struct{}
 
 func NewP2Proxy() *P2Proxy {
 	return &P2Proxy{}

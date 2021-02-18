@@ -17,7 +17,7 @@ type GithubRelease struct {
 var releases []GithubRelease
 
 func init() {
-	GetJson("https://api.github.com/repos/vertcoin-project/one-click-miner-vnext/releases", &releases)
+	GetJson("https://api.github.com/repos/vertiond/verthash-one-click-miner/releases", &releases)
 }
 
 func GetLatestRelease() (GithubRelease, error) {

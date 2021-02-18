@@ -14,10 +14,10 @@ import (
 	"github.com/btcsuite/btcutil"
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/tidwall/buntdb"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
-	"github.com/vertcoin-project/one-click-miner-vnext/util/bech32"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/networks"
+	"github.com/vertiond/verthash-one-click-miner/util"
+	"github.com/vertiond/verthash-one-click-miner/util/bech32"
 )
 
 type Wallet struct {

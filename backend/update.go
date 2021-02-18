@@ -3,8 +3,8 @@ package backend
 import (
 	"time"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/tracking"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 func (m *Backend) UpdateAvailable() bool {
