@@ -16,7 +16,8 @@
         -
         <a @click="update">{{ $t('tracking.update_available') }}</a>
       </span> -
-      <span>{{ $t('tracking.tracking_disabled') }}.&nbsp;</span>>
+      <span>{{ $t('tracking.tracking_disabled') }}.&nbsp;</span>
+      <!-- <a @click="enableTracking">{{ $t('tracking.enable_tracking') }}</a> -->
       <span>
         &nbsp;-
         <a @click="reportIssue">{{ $t('tracking.report_issue') }}</a>
@@ -37,7 +38,7 @@ export default {
   mounted() {
     var self = this;
     window.backend.Backend.TrackingEnabled().then(result => {
-      self.tracking = result === "2";
+      self.tracking = result === "1";
     });
     window.backend.Backend.GetVersion().then(result => {
       self.version = result;

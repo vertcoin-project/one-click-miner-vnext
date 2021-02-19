@@ -29,7 +29,7 @@ var trackingEnabled bool
 var waitGroup sync.WaitGroup
 
 func Enable() {
-	trackingEnabled = false
+	trackingEnabled = true
 	saveState()
 }
 
@@ -45,7 +45,10 @@ func Disable() {
 func loadState() {
 	dat, err := ioutil.ReadFile(filepath.Join(util.DataDirectory(), "tracking"))
 	if err != nil {
-		Enable()
+		// // Default enable tracking
+		// Enable()
+		// Default disable tracking
+		Disable()
 		return
 	}
 	trackingEnabled = (string(dat) == "1")
