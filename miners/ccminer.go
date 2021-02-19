@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	
+
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
@@ -12,10 +12,18 @@ import (
 var _ MinerImpl = &CCMinerImpl{}
 
 type CCMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
-	gpuCount     int8
+	gpuCount      int8
+}
+
+func (l *CCMinerImpl) EnableIntegratedGPU() error {
+	return nil
+}
+
+func (l *CCMinerImpl) DisableIntegratedGPU() error {
+	return nil
 }
 
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {

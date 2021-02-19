@@ -16,19 +16,17 @@ import (
 // Compile time assertion on interface
 var _ MinerImpl = &VerthashMinerImpl{}
 
+var cfgPath = "verthash-miner-tmpl.conf"
+
 type VerthashMinerImpl struct {
 	binaryRunner  *BinaryRunner
 	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
 }
 
-func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
-	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
-}
-
-func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
-	os.Remove(filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf"))
-	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf")}, false)
+func (l *VerthashMinerImpl) generateTempConf() error {
+	os.Remove(filepath.Join(util.DataDirectory(), cfgPath))
+	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), cfgPath)}, false)
 	var err2 error
 	if l.binaryRunner.cmd != nil {
 		err2 = l.binaryRunner.cmd.Wait()
@@ -38,6 +36,76 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 	}
 	if err2 != nil {
 		return err2
+	}
+	return nil
+}
+
+func (l *VerthashMinerImpl) EnableIntegratedGPU() error {
+	err := l.generateTempConf()
+	if err != nil {
+		logging.Error(err)
+		return err
+	}
+
+	in, err := os.Open(cfgPath)
+	if err != nil {
+		logging.Error(err)
+		return err
+	}
+	defer in.Close()
+
+	//create
+	os.Rename(filepath.Join(util.DataDirectory(), "verthash-miner.conf"), filepath.Join(util.DataDirectory(), "verthash-miner.conf.bak"))
+	out, err := os.Create(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
+	defer out.Close()
+
+	scanner := bufio.NewScanner(in)
+	insideDeviceBlock := false
+	deviceBlockStr := ""
+	allGPUs := []util.VerthashMinerDeviceConfig{}
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.Contains(line, "OpenCL Device Config") || strings.Contains(line, "CUDA Device Config") {
+			//// Do this, then call Configure to fill in pool details
+			insideDeviceBlock = true
+		}
+
+		if insideDeviceBlock {
+			deviceBlockStr += line
+		}
+
+		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") {
+			insideDeviceBlock = false
+			parsedDevices := util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
+			allGPUs = append(allGPUs, parsedDevices...)
+			deviceBlockStr = ""
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (l *VerthashMinerImpl) DisableIntegratedGPU() error {
+	err := l.generateTempConf()
+	if err != nil {
+		logging.Error(err)
+		return err
+	}
+	return nil
+}
+
+func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
+	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
+}
+
+func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
+	err := l.generateTempConf()
+	if err != nil {
+		return err
 	}
 
 	if !l.binaryRunner.cmd.ProcessState.Success() {

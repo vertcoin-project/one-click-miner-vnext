@@ -3,9 +3,9 @@ package miners
 import (
 	"strconv"
 	"strings"
-	"time"
 	"sync"
-	
+	"time"
+
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
@@ -13,10 +13,18 @@ import (
 var _ MinerImpl = &CryptoDredgeMinerImpl{}
 
 type CryptoDredgeMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
-	gpuCount     int8
+	gpuCount      int8
+}
+
+func (l *CryptoDredgeMinerImpl) EnableIntegratedGPU() error {
+	return nil
+}
+
+func (l *CryptoDredgeMinerImpl) DisableIntegratedGPU() error {
+	return nil
 }
 
 func NewCryptoDredgeMinerImpl(br *BinaryRunner) MinerImpl {

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	
+
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -17,9 +17,17 @@ import (
 var _ MinerImpl = &LyclMinerImpl{}
 
 type LyclMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
+}
+
+func (l *LyclMinerImpl) EnableIntegratedGPU() error {
+	return nil
+}
+
+func (l *LyclMinerImpl) DisableIntegratedGPU() error {
+	return nil
 }
 
 func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {

@@ -55,6 +55,8 @@ type MinerImpl interface {
 	HashRate() uint64
 	ConstructCommandlineArgs(args BinaryArguments) []string
 	AvailableGPUs() int8
+	EnableIntegratedGPU() error
+	DisableIntegratedGPU() error
 }
 
 func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunner, error) {
