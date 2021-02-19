@@ -25,7 +25,7 @@ func init() {
 	}
 	app = &autostart.App{
 		Name:        "verthash-ocm",
-		DisplayName: "Verrthash One-Click miner",
+		DisplayName: "Verthash One-Click miner",
 		Exec:        []string{fullPath},
 	}
 

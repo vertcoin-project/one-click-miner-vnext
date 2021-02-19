@@ -71,7 +71,7 @@ func main() {
 	})
 
 	alreadyRunning := false
-	s := single.New("certhash-ocm")
+	s := single.New("verthash-ocm")
 	if err := s.CheckLock(); err != nil && err == single.ErrAlreadyRunning {
 		alreadyRunning = true
 	} else if err == nil {

@@ -1,4 +1,4 @@
-module github.com/vertcoin-project/one-click-miner-vnext
+module github.com/vertiond/verthash-one-click-miner
 
 go 1.12
 
@@ -27,7 +27,7 @@ require (
 	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e // indirect
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
-	github.com/wailsapp/wails v1.10.1
+	github.com/wailsapp/wails v1.11.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/image v0.0.0-20201208152932-35266b937fa6 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
