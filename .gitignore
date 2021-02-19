@@ -2,3 +2,7 @@ verthash-ocm
 *.zip
 .vscode/
 verthash-ocm.exe
+verthash-ocm-res.syso
+verthash-ocm.exe.manifest
+verthash-ocm.ico
+verthash-ocm.rc
