@@ -2,9 +2,9 @@ package backend
 
 import (
 	"fmt"
-	"math/rand"
+	// "math/rand"
 	"strconv"
-	"time"
+	// "time"
 
 	"github.com/tidwall/buntdb"
 	"github.com/vertiond/verthash-one-click-miner/logging"
