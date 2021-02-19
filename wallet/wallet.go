@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"math"
@@ -22,19 +21,16 @@ import (
 
 type Wallet struct {
 	Address   string
-	Utxos     []Utxo
-	TipHeight uint
+	Script    []byte
+	Spendable uint64
+	Maturing  uint64
 	db        *buntdb.DB
 }
 
 type Utxo struct {
-	TxID         string `json:"txid"`
-	Vout         uint   `json:"vout"`
-	ScriptPubKey string `json:"scriptPubKey"`
-	Amount       uint64 `json:"satoshis"`
-	Height       uint   `json:"height"`
-	IsCoinbase   bool
-	Spent        bool
+	TxID   string `json:"txid"`
+	Vout   uint   `json:"vout"`
+	Amount uint64 `json:"satoshis"`
 }
 
 // Insight's limit is 100kB HEX (so 50kB raw bytes) - limiting this to 45kB. Once we have
@@ -42,30 +38,35 @@ type Utxo struct {
 // full node or just using Vertcoin Core) we can scale this up.
 var maxTxSize = 45000
 
-type Status struct {
-	Height uint `json:"height"`
-}
-
-type Tx struct {
-	IsCoinBase bool `json:"isCoinBase"`
-}
-
-func NewWallet(addr string) (*Wallet, error) {
+func NewWallet(addr string, script []byte) (*Wallet, error) {
 	logging.Infof("Initializing wallet %s", addr)
 	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), networks.Active.WalletDB))
 	if err != nil {
 		return nil, err
 	}
-	return &Wallet{Address: addr, db: db}, nil
+	return &Wallet{Address: addr, Script: script, db: db}, nil
+}
+
+func (w *Wallet) Utxos() ([]Utxo, error) {
+	utxos := []Utxo{}
+	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.InsightURL, w.Script), &utxos)
+	if err != nil {
+		logging.Errorf("Error fetching UTXOs from OCM Backend: %s", err.Error())
+		return utxos, err
+	}
+	return utxos, nil
 }
 
 func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
-	w.Update()
+	utxos, err := w.Utxos()
+	if err != nil {
+		return nil, errors.New("backend_failure")
+	}
 	retArr := make([]*wire.MsgTx, 0)
 	for {
 		tx := wire.NewMsgTx(2)
 		totalIn := uint64(0)
-		for _, u := range w.Utxos {
+		for _, u := range utxos {
 			alreadyIncluded := false
 			for _, t := range retArr {
 				for _, i := range t.TxIn {
@@ -75,21 +76,13 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 					}
 				}
 			}
-
 			if alreadyIncluded {
 				logging.Debugf("UTXO Already Included: %v", u)
 				continue
 			}
-
-			if u.IsCoinbase && u.Height+101 > w.TipHeight {
-				logging.Debugf("UTXO is immature: %v", u)
-				continue
-			}
-
 			totalIn += u.Amount
-			pkScript, _ := hex.DecodeString(u.ScriptPubKey)
 			h, _ := chainhash.NewHashFromStr(u.TxID)
-			tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), pkScript, nil))
+			tx.AddTxIn(wire.NewTxIn(wire.NewOutPoint(h, uint32(u.Vout)), w.Script, nil))
 		}
 
 		if len(tx.TxIn) == 0 {
@@ -155,7 +148,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 			// want to have enough money to create an output with enough value
 			valueRemoved := uint64(0)
 			for tx.SerializeSize() > maxTxSize || valueRemoved < 100000 {
-				for _, u := range w.Utxos {
+				for _, u := range utxos {
 					if u.TxID == tx.TxIn[len(tx.TxIn)-1].PreviousOutPoint.Hash.String() &&
 						uint32(u.Vout) == tx.TxIn[len(tx.TxIn)-1].PreviousOutPoint.Index {
 						totalIn -= u.Amount
@@ -170,7 +163,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		logging.Debugf("Transaction weight is %d\n", txWeight)
 		btcTx := btcutil.NewTx(tx)
 
-		sigOpCost, err := w.GetSigOpCost(btcTx, false, true, true)
+		sigOpCost, err := w.GetSigOpCost(btcTx, w.Script, false, true, true)
 		if err != nil {
 			return nil, fmt.Errorf("could_not_calculate_fee")
 		}
@@ -202,15 +195,6 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 	return retArr, nil
 }
 
-func (w *Wallet) GetUtxo(txid string, pout uint) Utxo {
-	for _, u := range w.Utxos {
-		if u.TxID == txid && u.Vout == pout {
-			return u
-		}
-	}
-	return Utxo{}
-}
-
 func DirectWPKHScriptFromPKH(pkh [20]byte) []byte {
 	builder := txscript.NewScriptBuilder()
 	builder.AddOp(txscript.OP_0).AddData(pkh[:])
@@ -218,89 +202,21 @@ func DirectWPKHScriptFromPKH(pkh [20]byte) []byte {
 	return b
 }
 
-// Update will rescan the chain for UTXOs on the wallet's address
-// It will fetch the transaction details for each UTXO to determine
-// if it is a coinbase, and cache that
+type BalanceResponse struct {
+	Spendable uint64 `json:"confirmed"`
+	Maturing  uint64 `json:"maturing"`
+}
+
+// Update will reload balance from the backend
 func (w *Wallet) Update() {
-	utxos := []Utxo{}
-	err := util.GetJson(fmt.Sprintf("%sinsight-vtc-api/addr/%s/utxo", networks.Active.InsightURL, w.Address), &utxos)
+	bal := BalanceResponse{}
+	err := util.GetJson(fmt.Sprintf("%sbalance/%x", networks.Active.OCMBackend, w.Script), &bal)
 	if err != nil {
-		logging.Errorf("Error fetching UTXOs from Insight: %s", err.Error())
+		logging.Errorf("Error fetching balance from backend: %s", err.Error())
 		return
 	}
-	w.Utxos = utxos
-	w.UpdateSpentStatus()
-	w.UpdateCoinbaseStatus()
-
-	status := Status{}
-	err = util.GetJson(fmt.Sprintf("%sinsight-vtc-api/sync", networks.Active.InsightURL), &status)
-	if err != nil {
-		logging.Errorf("Error fetching sync status of Insight: %s", err.Error())
-		return
-	}
-	w.TipHeight = status.Height
-}
-
-func (w *Wallet) UpdateCoinbaseStatus() {
-	for i := range w.Utxos {
-		w.Utxos[i].IsCoinbase = w.IsCoinbase(w.Utxos[i].TxID)
-	}
-}
-
-func (w *Wallet) UpdateSpentStatus() {
-	for i := range w.Utxos {
-		w.Utxos[i].Spent = w.IsSpent(w.Utxos[i].TxID, w.Utxos[i].Vout)
-	}
-}
-
-func (w *Wallet) IsSpent(txid string, vout uint) bool {
-	spent := ""
-	w.db.View(func(tx *buntdb.Tx) error {
-		v, err := tx.Get(fmt.Sprintf("spent-%s-%09d", txid, vout))
-		spent = v
-		return err
-	})
-	return spent == "1"
-}
-
-func (w *Wallet) MarkSpent(txid string, vout uint) {
-	w.db.Update(func(tx *buntdb.Tx) error {
-		_, _, err := tx.Set(fmt.Sprintf("spent-%s-%09d", txid, vout), "1", nil)
-		return err
-	})
-}
-
-func (w *Wallet) IsCoinbase(txid string) bool {
-	coinBase := ""
-	err := w.db.View(func(tx *buntdb.Tx) error {
-		v, err := tx.Get(fmt.Sprintf("coinbase-%s", txid))
-		coinBase = v
-		return err
-	})
-	if err == nil {
-		return coinBase == "1"
-	}
-
-	isTx := Tx{}
-	err = util.GetJson(fmt.Sprintf("%sinsight-vtc-api/tx/%s", networks.Active.InsightURL, txid), &isTx)
-	if err != nil {
-		logging.Errorf("Error fetching coinbase status of TX from Insight: %s", err.Error())
-		return false
-	}
-	coinBase = "0"
-	if isTx.IsCoinBase {
-		coinBase = "1"
-	}
-
-	err = w.db.Update(func(tx *buntdb.Tx) error {
-		_, _, err := tx.Set(fmt.Sprintf("coinbase-%s", txid), coinBase, nil)
-		return err
-	})
-	if err != nil {
-		logging.Errorf("Error writing coinbase status to database: %s", err.Error())
-		return false
-	}
-	return coinBase == "1"
+	w.Spendable = bal.Spendable
+	w.Maturing = bal.Maturing
 }
 
 // GetBalance will scan the utxos in the wallet and return
@@ -308,21 +224,5 @@ func (w *Wallet) IsCoinbase(txid string) bool {
 // need to wait for 101 confirmations before being allowed
 // to spend
 func (w *Wallet) GetBalance() (bal uint64, balImmature uint64) {
-	for _, u := range w.Utxos {
-		if !u.Spent {
-			if u.IsCoinbase && u.Height+101 > w.TipHeight {
-				balImmature += u.Amount
-			} else {
-				bal += u.Amount
-			}
-		}
-	}
-	return
-}
-
-func (w *Wallet) MarkInputsAsInternallySpent(tx *wire.MsgTx) {
-	for _, txi := range tx.TxIn {
-		w.MarkSpent(txi.PreviousOutPoint.Hash.String(), uint(txi.PreviousOutPoint.Index))
-	}
-	w.UpdateSpentStatus()
+	return w.Spendable, w.Maturing
 }
