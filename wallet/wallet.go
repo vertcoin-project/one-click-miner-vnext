@@ -49,7 +49,7 @@ func NewWallet(addr string, script []byte) (*Wallet, error) {
 
 func (w *Wallet) Utxos() ([]Utxo, error) {
 	utxos := []Utxo{}
-	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.InsightURL, w.Script), &utxos)
+	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.OCMBackend, w.Script), &utxos)
 	if err != nil {
 		logging.Errorf("Error fetching UTXOs from OCM Backend: %s", err.Error())
 		return utxos, err

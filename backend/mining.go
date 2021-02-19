@@ -121,25 +121,14 @@ func (m *Backend) StartMining() bool {
 
 	go func() {
 		continueLoop := true
-		loop := 0
 		var pb uint64
 		for continueLoop {
-			if loop == 6 { // Every half hour
-				loop = 0
-			}
-			if loop == 0 {
-				logging.Infof("Updating balance...")
-				m.wal.Update()
-				b, bi := m.wal.GetBalance()
-				m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
-				m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
-			}
-			loop++
+			m.wal.Update()
+			b, bi := m.wal.GetBalance()
+			m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
+			m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
 			logging.Infof("Updating pending pool payout...")
 			newPb := m.pool.GetPendingPayout()
-			if newPb < pb { // If pending pool payout dropped, we should've received payout. Refresh balance
-				loop = 0
-			}
 			pb = newPb
 			m.runtime.Events.Emit("balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
 			select {
