@@ -238,8 +238,8 @@ p.poolBalance,
 p.netHash {
   margin: 0;
   padding: 0;
-  font-size: 12px;
-  opacity: 0.6;
+  font-size: 14px;
+  opacity: 1;
 }
 p.spacer {
   padding: 0px;
