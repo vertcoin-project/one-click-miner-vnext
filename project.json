@@ -1,12 +1,12 @@
 {
- "name": "Vertcoin One Click Miner",
+ "name": "Verthash One Click Miner",
  "description": "Enter your project description",
  "author": {
   "name": "Gert-Jaap Glasbergen",
   "email": "gertjaap@gertjaap.org"
  },
  "version": "0.1.0",
- "binaryname": "vertcoin-ocm",
+ "binaryname": "verthash-ocm",
  "frontend": {
   "dir": "frontend",
   "install": "npm install",

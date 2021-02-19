@@ -6,10 +6,10 @@ import (
 	"runtime"
 
 	verthash "github.com/gertjaap/verthash-go"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/miners"
-	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/miners"
+	"github.com/vertiond/verthash-one-click-miner/tracking"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 func (m *Backend) PerformChecks() string {

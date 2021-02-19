@@ -1,5 +1,5 @@
 {
-  "name": "vertcoin_one_click_miner",
+  "name": "verthash_one_click_miner",
   "author": "Gert-Jaap Glasbergen<gertjaap@gertjaap.nl>",
   "private": true,
   "scripts": {

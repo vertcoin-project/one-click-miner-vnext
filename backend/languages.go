@@ -2,7 +2,7 @@ package backend
 
 import (
 	"github.com/cloudfoundry/jibber_jabber"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertiond/verthash-one-click-miner/logging"
 	"golang.org/x/text/language"
 )
 

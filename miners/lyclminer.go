@@ -8,17 +8,17 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 // Compile time assertion on interface
 var _ MinerImpl = &LyclMinerImpl{}
 
 type LyclMinerImpl struct {
-	binaryRunner *BinaryRunner
-	hashRates    map[int64]uint64
+	binaryRunner  *BinaryRunner
+	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
 }
 

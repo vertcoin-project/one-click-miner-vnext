@@ -9,8 +9,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 // Compile time assertion on interface

@@ -14,8 +14,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 type TrackingRequest struct {
@@ -29,7 +29,7 @@ var trackingEnabled bool
 var waitGroup sync.WaitGroup
 
 func Enable() {
-	trackingEnabled = true
+	trackingEnabled = false
 	saveState()
 }
 

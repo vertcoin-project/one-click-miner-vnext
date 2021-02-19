@@ -1,7 +1,7 @@
 package prerequisites
 
 import (
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
+	"github.com/vertiond/verthash-one-click-miner/logging"
 )
 
 func Install(name string, install chan bool) error {

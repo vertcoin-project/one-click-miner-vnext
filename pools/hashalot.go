@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 var _ Pool = &Hashalot{}

@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/tidwall/buntdb"
-	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
-	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
-	"github.com/vertcoin-project/one-click-miner-vnext/pools"
-	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
-	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/vertiond/verthash-one-click-miner/logging"
+	"github.com/vertiond/verthash-one-click-miner/networks"
+	"github.com/vertiond/verthash-one-click-miner/payouts"
+	"github.com/vertiond/verthash-one-click-miner/pools"
+	"github.com/vertiond/verthash-one-click-miner/tracking"
+	"github.com/vertiond/verthash-one-click-miner/util"
 )
 
 func (m *Backend) getSetting(name string) bool {
@@ -79,14 +79,15 @@ func (m *Backend) GetPool() int {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
 		}
-		// Default to a random pool
-		rand.Seed(time.Now().UnixNano())
-		pools := pools.GetPools(m.GetTestnet())
-		pool := pools[rand.Intn(len(pools))].GetID()
-		// Save this setting immediately so that we don't get
-		// a different random pool in future calls to GetPool().
-		m.setIntSetting("pool", pool)
-		return pool
+		// // Default to a random pool
+		// rand.Seed(time.Now().UnixNano())
+		// pools := pools.GetPools(m.GetTestnet())
+		// pool := pools[rand.Intn(len(pools))].GetID()
+		// // Save this setting immediately so that we don't get
+		// // a different random pool in future calls to GetPool().
+		// m.setIntSetting("pool", pool)
+		// return pool
+		return 5 // Default Zergpool
 	}
 	return pool
 }
