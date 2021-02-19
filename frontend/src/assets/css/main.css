@@ -43,7 +43,7 @@ select {
 html {
   height: 100%;
   overflow: hidden;
-  background-color: #00351E;
+  background-color: #8b7426;
   background-size: 20px 20px;
   padding: 0px; margin: 0px;
 
@@ -124,7 +124,7 @@ a.button:hover {
 a.button {
   opacity: 0.6;
   line-height: 45px;
-  background: #048652;
+  background: #202225;
   max-width: 286px;
   height: 45px;
   margin: 0 auto;
