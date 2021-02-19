@@ -79,7 +79,6 @@ func (m *Backend) ResetZergpoolAddress() {
 
 func (m *Backend) ResetVertcoinAddress() {
 	m.vertcoinAddress = m.Address()
-	m.pool = pools.GetPool(m.GetPool(), m.GetTestnet())
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {
