@@ -2,7 +2,9 @@ package backend
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -58,7 +60,14 @@ func (m *Backend) GetPool() int {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
 		}
-		return 3 // Default Hashalot on mainnet (for now...)
+		// Default to a random pool
+		rand.Seed(time.Now().UnixNano())
+		pools := pools.GetPools(m.Address(), m.GetTestnet())
+		pool := pools[rand.Intn(len(pools))].GetID()
+		// Save this setting immediately so that we don't get
+		// a different random pool in future calls to GetPool().
+		m.setIntSetting("pool", pool)
+		return pool
 	}
 	return pool
 }
