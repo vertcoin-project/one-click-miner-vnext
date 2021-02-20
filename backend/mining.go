@@ -90,28 +90,31 @@ func (m *Backend) StartMining() bool {
 
 	go func() {
 		cycles := 0
-		nhr := util.GetNetHash()
+		nhr := uint64(0)
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
-		if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
-			unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
-			unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
-			logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
-		}
 		continueLoop := true
 		for continueLoop {
-			cycles++
-			if cycles > 600 {
+			if cycles >= 600 {
+				cycles = 0
+			}
+			if cycles == 0 {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
 				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
 					unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+					if m.PayoutIsBitcoin() {
+						unitPayoutCoinPerBtc = 1
+					} else {
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+					}
 					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
 				}
-				cycles = 0
 			}
+			cycles++
+
 			hr := uint64(0)
 			for _, br := range m.minerBinaries {
 				hr += br.HashRate()
@@ -147,7 +150,22 @@ func (m *Backend) StartMining() bool {
 				}
 			}
 
-			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f %s", avgEarning, avgEarningTicker))
+			// Show at least three significant figures of average earning value
+			avgEarningDecimals := 2
+			if avgEarning > 0.0 && avgEarning < 1.0 {
+				avgEarningScaled := avgEarning
+				addDecimals := 1
+				for addDecimals = 1; addDecimals <= 10; addDecimals++ {
+					avgEarningScaled *= 10
+					if avgEarningScaled >= 1.0 {
+						break
+					}
+				}
+				avgEarningDecimals += addDecimals
+			}
+			avgEarningStrfmt := "%0." + fmt.Sprint(avgEarningDecimals) + "f %s"
+
+			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf(avgEarningStrfmt, avgEarning, avgEarningTicker))
 
 			select {
 			case <-m.stopHash:

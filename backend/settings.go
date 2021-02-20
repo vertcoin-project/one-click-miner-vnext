@@ -170,6 +170,10 @@ func (m *Backend) PayoutIsVertcoin() bool {
 	return (m.payout.GetID() == 1)
 }
 
+func (m *Backend) PayoutIsBitcoin() bool {
+	return (m.payout.GetID() == 2)
+}
+
 // TODO: Improve address validation
 func (m *Backend) ValidZergpoolAddress() bool {
 	zergpoolAddress := m.zergpoolAddress
