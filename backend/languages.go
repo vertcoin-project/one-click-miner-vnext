@@ -28,6 +28,7 @@ var availableLanguages = []string{
 	"ru",
 	"sl",
 	"sv",
+	"tr",
 	"zh",
 }
 
