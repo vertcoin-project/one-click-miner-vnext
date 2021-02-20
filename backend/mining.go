@@ -6,6 +6,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
+	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -90,6 +91,13 @@ func (m *Backend) StartMining() bool {
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
+		unitVtcPerBtc := 0.0
+		unitPayoutCoinPerBtc := 0.0
+		if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+			unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
+			unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+			logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
+		}
 		continueLoop := true
 		for continueLoop {
 			cycles++
@@ -97,6 +105,11 @@ func (m *Backend) StartMining() bool {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
+				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
+					unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
+				}
 				cycles = 0
 			}
 			hr := uint64(0)
@@ -125,7 +138,16 @@ func (m *Backend) StartMining() bool {
 
 			avgEarning := float64(hr) / float64(nhr) * float64(14400) // 14400 = Emission per day. Need to adjust for halving
 
-			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
+			// Convert average earning from Vertcoin to selected payout coin
+			avgEarningTicker := "VTC"
+			if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+				if unitVtcPerBtc != 0 && unitPayoutCoinPerBtc != 0 {
+					avgEarningTicker = m.payout.GetTicker()
+					avgEarning = avgEarning * unitVtcPerBtc / unitPayoutCoinPerBtc
+				}
+			}
+
+			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f %s", avgEarning, avgEarningTicker))
 
 			select {
 			case <-m.stopHash:
