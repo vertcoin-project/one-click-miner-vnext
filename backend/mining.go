@@ -95,7 +95,11 @@ func (m *Backend) StartMining() bool {
 		unitPayoutCoinPerBtc := 0.0
 		if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
 			unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
-			unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+			if m.PayoutIsBitcoin() {
+				unitPayoutCoinPerBtc = 1
+			} else {
+				unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+			}
 			logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
 		}
 		continueLoop := true
@@ -107,7 +111,11 @@ func (m *Backend) StartMining() bool {
 				nhr = util.GetNetHash()
 				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
-					unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+					if m.PayoutIsBitcoin() {
+						unitPayoutCoinPerBtc = 1
+					} else {
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+					}
 					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
 				}
 				cycles = 0
