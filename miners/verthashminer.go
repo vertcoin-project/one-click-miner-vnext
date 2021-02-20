@@ -103,14 +103,14 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			logging.Debug("Entering device block")
 			insideDeviceBlock = true
 		} else if insideDeviceBlock {
-			deviceBlockStr += line
+			deviceBlockStr += line + "\n"
 		}
 
 		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") && insideDeviceBlock {
 			insideDeviceBlock = false
 			parsedDevices = util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
 			logging.Debug("Exiting device block")
-			logging.Debug(len(parsedDevices))
+			logging.Debug(parsedDevices[0])
 			deviceBlockStr = ""
 		}
 
@@ -120,7 +120,7 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 
 			if device, ok := parsedDevices[thisDeviceIndexNumber]; ok {
 				if strings.Contains(device.Platform, "Intel") && !args.EnableIntegrated {
-					logging.Debugf("Intel disabled.")
+					logging.Debug("Intel disabled.")
 					skip = true
 				}
 			}

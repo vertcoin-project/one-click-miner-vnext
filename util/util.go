@@ -312,7 +312,6 @@ func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 
 	isGettingDeviceInfo := false
 	isGettingPlatformInfo := false
-
 	for _, line := range lines {
 
 		if strings.Contains(line, "Available platforms") {
@@ -342,7 +341,6 @@ func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 		}
 
 		if isGettingDeviceInfo && strings.Contains(line, "Name:") {
-			logging.Debug(line)
 			deviceCFG.Name = strings.TrimSpace(strings.SplitAfter(line, ":")[1])
 		}
 
