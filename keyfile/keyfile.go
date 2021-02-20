@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcutil"
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/vertiond/verthash-one-click-miner/logging"
@@ -76,6 +77,13 @@ func loadPublicKey() []byte {
 func GetAddress() string {
 	pub := loadPublicKey()
 	return base58.CheckEncode(btcutil.Hash160(pub), networks.Active.Base58P2PKHVersion)
+}
+
+func GetScript() ([]byte, error) {
+	pub := loadPublicKey()
+	return txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).
+		AddOp(txscript.OP_HASH160).AddData(btcutil.Hash160(pub)).
+		AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
 }
 
 func LoadPrivateKey(password string) ([]byte, error) {

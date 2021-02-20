@@ -8,6 +8,7 @@ type Network struct {
 	P2ProxyStratum     string
 	P2ProxyURL         string
 	WalletDB           string
+	OCMBackend         string
 }
 
 var Active Network
@@ -28,6 +29,7 @@ func SetNetwork(testnet bool) {
 			Base58P2PKHVersion: 71,
 			Base58P2SHVersion:  5,
 			InsightURL:         "https://insight.vertcoin.org/",
+			OCMBackend:         "https://ocm-backend.blkidx.org/",
 			Bech32Prefix:       "vtc",
 			P2ProxyStratum:     "stratum+tcp://p2p-usa.xyz:9171",
 			P2ProxyURL:         "http://p2p-usa.xyz:9171/",
