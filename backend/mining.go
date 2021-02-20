@@ -93,6 +93,7 @@ func (m *Backend) StartMining() bool {
 		nhr := uint64(0)
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
+		vtcPayout := payouts.NewVTCPayout()
 		continueLoop := true
 		for continueLoop {
 			if cycles >= 600 {
@@ -103,11 +104,11 @@ func (m *Backend) StartMining() bool {
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
 				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
-					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin("vertcoin", "VTC")
+					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
 					if m.PayoutIsBitcoin() {
 						unitPayoutCoinPerBtc = 1
 					} else {
-						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker())
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker(), m.payout.GetCoingeckoExchange())
 					}
 					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
 				}
