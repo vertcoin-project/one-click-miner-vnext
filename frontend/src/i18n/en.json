@@ -8,7 +8,7 @@
         "alreadyrunning" : "The One-Click Miner is already running. You can't run it more than once.",
         "click_button_to_start" : "Click the button below to start mining again.",
         "startmining" : "Start Mining!",
-        "makeapassword" : "Make a password. Don't lose it.",
+        "makeapassword" : "Make a password. This is only for the native Vertcoin wallet.",
         "password" : "Password",
         "confirmpassword" : "Confirm Password",
         "password_cannot_be_empty" : "Password cannot be empty",
