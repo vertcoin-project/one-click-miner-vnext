@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "बटुआ",
-        "send_coins" : "सिक्के भेजें",
+        "send_coins" : "सिक्के भेजें (VTC)",
         "settings" : "सेटिंग्स"
     },
     "tracking": { 

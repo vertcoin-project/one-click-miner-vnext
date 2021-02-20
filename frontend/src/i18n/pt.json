@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Carteira",
-        "send_coins" : "Enviar moedas",
+        "send_coins" : "Enviar moedas (VTC)",
         "settings" : "Definições"
     },
     "tracking": { 

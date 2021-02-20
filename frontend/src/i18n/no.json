@@ -63,7 +63,7 @@
   },
   "tabbar": {
     "wallet": "Lommebok",
-    "send_coins": "Send kryptomynter",
+    "send_coins": "Send kryptomynter (VTC)",
     "settings": "Innstillinger"
   },
   "tracking": {
