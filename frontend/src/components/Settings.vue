@@ -14,6 +14,12 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          <input type="checkbox" v-model="enableIntegrated" />
+          {{ $t("settings.enable_integrated") }}
+          <br />
+          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
+        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -62,6 +68,7 @@ export default {
       closedSourceMiner: false,
       debugging: false,
       autoStart: false,
+      enableIntegrated: true,
       showWarning: false,
       testnet: false,
       skipVerthashverify: false,
@@ -85,6 +92,9 @@ export default {
                 self.pools = result;
                 window.backend.Backend.GetPool().then(result => {
                   self.poolID = result;
+                  window.backend.Backend.GetEnableIntegrated().then(result => {
+                    self.enableIntegrated = result;
+                })
                 })
               })
             })
@@ -111,7 +121,9 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
                   window.backend.Backend.SetPool(self.poolID).then(() => {
-                    self.$emit("committed");
+                    window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+                      self.$emit("committed");
+                    })
                   });
                 });
               });

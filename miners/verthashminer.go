@@ -41,51 +41,6 @@ func (l *VerthashMinerImpl) generateTempConf() error {
 }
 
 func (l *VerthashMinerImpl) EnableIntegratedGPU() error {
-	err := l.generateTempConf()
-	if err != nil {
-		logging.Error(err)
-		return err
-	}
-
-	in, err := os.Open(cfgPath)
-	if err != nil {
-		logging.Error(err)
-		return err
-	}
-	defer in.Close()
-
-	//create
-	os.Rename(filepath.Join(util.DataDirectory(), "verthash-miner.conf"), filepath.Join(util.DataDirectory(), "verthash-miner.conf.bak"))
-	out, err := os.Create(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
-	defer out.Close()
-
-	scanner := bufio.NewScanner(in)
-	insideDeviceBlock := false
-	deviceBlockStr := ""
-	allGPUs := []util.VerthashMinerDeviceConfig{}
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(line, "OpenCL Device Config") || strings.Contains(line, "CUDA Device Config") {
-			//// Do this, then call Configure to fill in pool details
-			insideDeviceBlock = true
-		}
-
-		if insideDeviceBlock {
-			deviceBlockStr += line
-		}
-
-		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") {
-			insideDeviceBlock = false
-			parsedDevices := util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
-			allGPUs = append(allGPUs, parsedDevices...)
-			deviceBlockStr = ""
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -123,8 +78,13 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 	out, err := os.Create(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
 	defer out.Close()
 
+	var parsedDevices map[int]util.VerthashMinerDeviceConfig
+
 	scanner := bufio.NewScanner(in)
 	skip := false
+	insideDeviceBlock := false
+	deviceBlockStr := ""
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "#") {
@@ -138,6 +98,35 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"true\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
 			skip = true
 		}
+
+		if strings.Contains(line, "OpenCL Device Config") || strings.Contains(line, "CUDA Device Config") {
+			//// Do this, then call Configure to fill in pool details
+			insideDeviceBlock = true
+		}
+
+		if insideDeviceBlock {
+			deviceBlockStr += line
+		}
+
+		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") {
+			insideDeviceBlock = false
+			parsedDevices = util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
+			deviceBlockStr = ""
+		}
+
+		if strings.HasPrefix(line, "<CL_Device") {
+			words := strings.SplitAfter(line, " ")
+			thisDeviceIndexNumber, _ := strconv.Atoi(strings.Trim(words[3], "\""))
+
+			if device, ok := parsedDevices[thisDeviceIndexNumber]; ok {
+				if strings.Contains(device.Platform, "Intel") && !args.EnableIntegrated {
+					logging.Debugf("!!!!!!!!!!!!!!!!!!!")
+					skip = true
+				}
+			}
+
+		}
+
 		if !skip {
 			out.WriteString(fmt.Sprintf("%s\n", line))
 		}

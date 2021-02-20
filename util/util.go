@@ -81,7 +81,7 @@ type infoData struct {
 }
 
 type VerthashMinerDeviceConfig struct {
-	DeviceIndex string
+	DeviceIndex int
 	PCIeBus     string
 	OpenCL      bool
 	Name        string
@@ -295,10 +295,10 @@ func ShaSum(file string) ([]byte, error) {
 	return h.Sum(nil), nil
 }
 
-func ParseVerthashMinerDeviceCfg(cfg string) []VerthashMinerDeviceConfig {
+func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 	lines := strings.Split(cfg, "\n")
 	deviceCFG := VerthashMinerDeviceConfig{}
-	allDeviceCFG := []VerthashMinerDeviceConfig{}
+	allDeviceCFG := make(map[int]VerthashMinerDeviceConfig)
 	platforms := make(map[int]string)
 
 	// line 0 will always have the platform type
@@ -329,11 +329,17 @@ func ParseVerthashMinerDeviceCfg(cfg string) []VerthashMinerDeviceConfig {
 		}
 
 		if strings.Contains(line, "DeviceIndex:") {
+
+			// if we were already getting info, save that device and start again
+			if isGettingDeviceInfo {
+				allDeviceCFG[deviceCFG.DeviceIndex] = deviceCFG
+				deviceCFG = VerthashMinerDeviceConfig{}
+			}
 			isGettingDeviceInfo = true
 			tmpStr := strings.SplitAfter(line, " ")
 
 			// in order to capture negative / 2 digit numbers
-			deviceCFG.DeviceIndex = strings.TrimSpace(tmpStr[len(tmpStr)-1])
+			deviceCFG.DeviceIndex, _ = strconv.Atoi(strings.TrimSpace(tmpStr[len(tmpStr)-1]))
 		}
 
 		if isGettingDeviceInfo && strings.Contains(line, "Name:") {
@@ -352,14 +358,10 @@ func ParseVerthashMinerDeviceCfg(cfg string) []VerthashMinerDeviceConfig {
 			platformIdx, _ := strconv.Atoi(strings.TrimSpace(tmpStr[len(tmpStr)-1]))
 
 			deviceCFG.Platform = platforms[platformIdx]
-
 		}
 
 		if isGettingDeviceInfo && strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#") {
 			isGettingDeviceInfo = false
-
-			allDeviceCFG = append(allDeviceCFG, deviceCFG)
-			deviceCFG = VerthashMinerDeviceConfig{}
 		}
 	}
 	return allDeviceCFG

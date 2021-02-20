@@ -78,9 +78,10 @@ func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunne
 }
 
 type BinaryArguments struct {
-	StratumUrl      string
-	StratumUsername string
-	StratumPassword string
+	StratumUrl       string
+	StratumUsername  string
+	StratumPassword  string
+	EnableIntegrated bool
 }
 
 type BinaryRunner struct {
@@ -278,7 +279,7 @@ func (b *BinaryRunner) unpack() error {
 
 	if _, err := os.Stat(unpackDir); !os.IsNotExist(err) {
 		logging.Debugf("%sRemoving unpack directory", b.logPrefix())
-		time.Sleep(1 * time.Second)  // Necessary on Windows to avoid permission error
+		time.Sleep(1 * time.Second) // Necessary on Windows to avoid permission error
 		err = os.RemoveAll(unpackDir)
 		if err != nil {
 			return err
