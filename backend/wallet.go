@@ -17,7 +17,11 @@ func (m *Backend) WalletInitialized() int {
 	if keyfile.KeyFileValid() {
 		checkWallet = 1
 	}
-	wal, err := wallet.NewWallet(keyfile.GetAddress()) // TODO: Replace with actual address!
+	script, err := keyfile.GetScript()
+	if err != nil {
+		logging.Errorf("Error initializing wallet: %s", err.Error())
+	}
+	wal, err := wallet.NewWallet(keyfile.GetAddress(), script)
 	if err != nil {
 		logging.Errorf("Error initializing wallet: %s", err.Error())
 	}
