@@ -23,3 +23,7 @@ func (p *BTCPayout) GetTicker() string {
 func (p *BTCPayout) GetPassword() string {
 	return "c=BTC,mc=VTC"
 }
+
+func (p *BTCPayout) GetCoingeckoExchange() string {
+	return "bittrex"
+}

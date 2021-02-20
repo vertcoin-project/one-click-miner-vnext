@@ -23,3 +23,7 @@ func (p *DASHPayout) GetTicker() string {
 func (p *DASHPayout) GetPassword() string {
 	return "c=DASH,mc=VTC"
 }
+
+func (p *DASHPayout) GetCoingeckoExchange() string {
+	return "okex"
+}

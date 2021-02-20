@@ -12,6 +12,7 @@ type Payout interface {
 	GetName() string
 	GetTicker() string
 	GetPassword() string
+	GetCoingeckoExchange() string
 }
 
 func GetPayouts(testnet bool) []Payout {
@@ -40,9 +41,12 @@ func GetPayout(payout int, testnet bool) Payout {
 	return payouts[0]
 }
 
-func GetBitcoinPerUnitCoin(coinName string, coinTicker string) float64 {
+func GetBitcoinPerUnitCoin(coinName string, coinTicker string, coingeckoExchange string) float64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("https://api.coingecko.com/api/v3/exchanges/bittrex/tickers?coin_ids=%s", strings.ReplaceAll(strings.ToLower(coinName), " ", "-")), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf(
+		"https://api.coingecko.com/api/v3/exchanges/%s/tickers?coin_ids=%s",
+		coingeckoExchange, strings.ReplaceAll(strings.ToLower(coinName), " ", "-")),
+	&jsonPayload)
 	if err != nil {
 		return 0.0
 	}
