@@ -162,6 +162,14 @@ func (m *Backend) SetZergpoolAddress(newZergpoolAddress string) {
 	m.setStringSetting("zergpoolAddress", newZergpoolAddress)
 }
 
+func (m *Backend) PoolIsZergpool() bool {
+	return (m.pool.GetID() == 5)
+}
+
+func (m *Backend) PayoutIsVertcoin() bool {
+	return (m.payout.GetID() == 1)
+}
+
 // TODO: Improve address validation
 func (m *Backend) ValidZergpoolAddress() bool {
 	zergpoolAddress := m.zergpoolAddress
@@ -176,7 +184,7 @@ func (m *Backend) UseZergpoolPayout() bool {
 	// - Zergpool is selected
 	// - non-Vertcoin payout option is selected
 	// - address for payout is valid
-	if m.pool.GetID() == 5 && m.payout.GetID() != 1 && m.ValidZergpoolAddress() {
+	if m.PoolIsZergpool() && (!m.PayoutIsVertcoin()) && m.ValidZergpoolAddress() {
 		return true
 	}
 	return false
