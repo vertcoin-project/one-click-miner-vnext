@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Portafoglio",
-        "send_coins" : "Invia monete",
+        "send_coins" : "Invia monete (VTC)",
         "settings" : "Impostazioni"
     },
     "tracking": { 

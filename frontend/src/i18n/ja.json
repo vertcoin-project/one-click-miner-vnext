@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "ウォレット",
-        "send_coins" : "コインを送る",
+        "send_coins" : "コインを送る (VTC)",
         "settings" : "設定"
     },
     "tracking": { 

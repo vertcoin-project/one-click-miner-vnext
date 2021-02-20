@@ -72,7 +72,7 @@
     },
     "tabbar" : {
         "wallet" : "Кошелёк",
-        "send_coins" : "Отправить криптовалюту",
+        "send_coins" : "Отправить криптовалюту (VTC)",
         "settings" : "Настройки"
     },
     "tracking": { 

@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Portofel",
-        "send_coins" : "Trimite monede",
+        "send_coins" : "Trimite monede (VTC)",
         "settings" : "Setări"
     },
     "tracking": { 

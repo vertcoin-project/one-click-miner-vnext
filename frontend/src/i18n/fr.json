@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Portefeuille",
-        "send_coins" : "Envoyer de la cryptomonnaie",
+        "send_coins" : "Envoyer de la cryptomonnaie (VTC)",
         "settings" : "Paramètres"
     },
     "tracking": { 

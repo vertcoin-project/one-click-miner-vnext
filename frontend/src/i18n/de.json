@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Wallet",
-        "send_coins" : "Kryptogeld senden",
+        "send_coins" : "Kryptogeld senden (VTC)",
         "settings" : "Einstellungen"
     },
     "tracking": { 
