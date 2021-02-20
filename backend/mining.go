@@ -150,7 +150,22 @@ func (m *Backend) StartMining() bool {
 				}
 			}
 
-			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f %s", avgEarning, avgEarningTicker))
+			// Show at least three significant figures of average earning value
+			avgEarningDecimals := 2
+			if avgEarning > 0.0 && avgEarning < 1.0 {
+				avgEarningScaled := avgEarning
+				addDecimals := 1
+				for addDecimals = 1; addDecimals <= 10; addDecimals++ {
+					avgEarningScaled *= 10
+					if avgEarningScaled >= 1.0 {
+						break
+					}
+				}
+				avgEarningDecimals += addDecimals
+			}
+			avgEarningStrfmt := "%0." + fmt.Sprint(avgEarningDecimals) + "f %s"
+
+			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf(avgEarningStrfmt, avgEarning, avgEarningTicker))
 
 			select {
 			case <-m.stopHash:
