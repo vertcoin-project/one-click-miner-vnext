@@ -99,18 +99,18 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			skip = true
 		}
 
-		if strings.Contains(line, "OpenCL Device Config") || strings.Contains(line, "CUDA Device Config") {
-			//// Do this, then call Configure to fill in pool details
+		if strings.Contains(line, "OpenCL device config") || strings.Contains(line, "CUDA Device config") {
+			logging.Debug("Entering device block")
 			insideDeviceBlock = true
-		}
-
-		if insideDeviceBlock {
+		} else if insideDeviceBlock {
 			deviceBlockStr += line
 		}
 
-		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") {
+		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") && insideDeviceBlock {
 			insideDeviceBlock = false
 			parsedDevices = util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
+			logging.Debug("Exiting device block")
+			logging.Debug(len(parsedDevices))
 			deviceBlockStr = ""
 		}
 
@@ -120,7 +120,7 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 
 			if device, ok := parsedDevices[thisDeviceIndexNumber]; ok {
 				if strings.Contains(device.Platform, "Intel") && !args.EnableIntegrated {
-					logging.Debugf("!!!!!!!!!!!!!!!!!!!")
+					logging.Debugf("Intel disabled.")
 					skip = true
 				}
 			}

@@ -82,7 +82,9 @@ func (m *Backend) PerformChecks() string {
 	args := m.GetArgs()
 
 	for _, br := range m.minerBinaries {
+		logging.Debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		err := br.MinerImpl.Configure(args)
+		logging.Debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		if err != nil {
 			errorString := fmt.Sprintf("Failure to configure %s: %s", br.MinerBinary.MainExecutableName, err.Error())
 			tracking.Track(tracking.TrackingRequest{

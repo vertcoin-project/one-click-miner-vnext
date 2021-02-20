@@ -329,7 +329,6 @@ func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 		}
 
 		if strings.Contains(line, "DeviceIndex:") {
-
 			// if we were already getting info, save that device and start again
 			if isGettingDeviceInfo {
 				allDeviceCFG[deviceCFG.DeviceIndex] = deviceCFG
@@ -343,6 +342,7 @@ func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 		}
 
 		if isGettingDeviceInfo && strings.Contains(line, "Name:") {
+			logging.Debug(line)
 			deviceCFG.Name = strings.TrimSpace(strings.SplitAfter(line, ":")[1])
 		}
 
@@ -364,5 +364,9 @@ func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
 			isGettingDeviceInfo = false
 		}
 	}
+
+	allDeviceCFG[deviceCFG.DeviceIndex] = deviceCFG
+	deviceCFG = VerthashMinerDeviceConfig{}
+
 	return allDeviceCFG
 }
