@@ -2,11 +2,17 @@
   <div class="settings-container">
     <div class="col-settings" v-if="!showWarning">
       <div class="col-settings-sub">
-        <p style="text-align: left" >
-          <input type="checkbox" v-model="debugging" />
-          {{ $t("settings.enable_debug") }}
+<!--        <p style="text-align: left" >-->
+<!--          <input type="checkbox" v-model="debugging" />-->
+<!--          {{ $t("settings.enable_debug") }}-->
+<!--          <br />-->
+<!--          <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>-->
+<!--        </p>-->
+        <p style="text-align: left">
+          <input type="checkbox" v-model="enableIntegrated" />
+          {{ $t("settings.enable_integrated") }}
           <br />
-          <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
+          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
         </p>
         <p v-if="poolID == 5" style="text-align: left">
           {{ $t("settings.payout") }}:
@@ -33,12 +39,6 @@
 <!--          <br />-->
 <!--          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>-->
 <!--        </p>-->
-        <p style="text-align: left">
-          <input type="checkbox" v-model="enableIntegrated" />
-          {{ $t("settings.enable_integrated") }}
-          <br />
-          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
-        </p>
         <p style="text-align: left">
           <input type="checkbox" v-model="autoStart" />
           {{ $t("settings.auto_start") }}
@@ -142,13 +142,11 @@ export default {
           window.backend.Backend.SetDebugging(self.debugging).then(() => {
             window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
-                window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
-                  window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
-                    window.backend.Backend.SetPool(self.poolID).then(() => {
-                      window.backend.Backend.SetPayout(self.payoutID).then(() => {
-                        window.backend.Backend.SetZergpoolAddress(self.zergpoolAddress).then(() => {
-                          self.$emit("committed");
-                        });
+                window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+                  window.backend.Backend.SetPool(self.poolID).then(() => {
+                    window.backend.Backend.SetPayout(self.payoutID).then(() => {
+                      window.backend.Backend.SetZergpoolAddress(self.zergpoolAddress).then(() => {
+                        self.$emit("committed");
                       });
                     });
                   });
