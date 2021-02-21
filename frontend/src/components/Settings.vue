@@ -109,11 +109,9 @@ export default {
           window.backend.Backend.SetDebugging(self.debugging).then(() => {
             window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
-                window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
-                  window.backend.Backend.SetPool(self.poolID).then(() => {
-                    window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
-                      self.$emit("committed");
-                    })
+                window.backend.Backend.SetPool(self.poolID).then(() => {
+                  window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+                    self.$emit("committed");
                   });
                 });
               });
