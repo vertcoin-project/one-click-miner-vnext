@@ -73,7 +73,9 @@ type BlockResponse struct {
 }
 
 type getInfoResponse struct {
-	Info infoData `json:"info"`
+	Difficulty       float64 `json:"difficulty"`
+	TipHeight        int64   `json:"tipHeight"`
+	BackendTipHeight int64   `json:"backendTipHeight"`
 }
 
 type infoData struct {
@@ -99,19 +101,11 @@ func targetToDiff(target *big.Int) float64 {
 	return f
 }
 
-type blockBookApiResponse struct {
-	Backend blockBookApiBackendResponse `json:"backend"`
-}
-
-type blockBookApiBackendResponse struct {
-	DifficultyString string `json:"difficulty"`
-}
-
 func GetDifficulty() float64 {
 	info := getInfoResponse{}
-	url := fmt.Sprintf("%sinsight-vtc-api/status?q=getInfo", networks.Active.InsightURL)
+	url := fmt.Sprintf("%sinfo", networks.Active.OCMBackend)
 	GetJson(url, &info)
-	return info.Info.Difficulty
+	return info.Difficulty
 }
 
 func GetNetHash() uint64 {

@@ -26,7 +26,6 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 
 	// make the stashes for signatures / witnesses
 	sigStash := make([][]byte, len(tx.TxIn))
-	witStash := make([][][]byte, len(tx.TxIn))
 
 	// get key
 	privBytes, err := keyfile.LoadPrivateKey(password)
@@ -37,25 +36,7 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 	priv, _ := btcec.PrivKeyFromBytes(btcec.S256(), privBytes)
 
 	for i := range tx.TxIn {
-		var found bool
-		var utxo Utxo
-		for _, u := range w.Utxos {
-			if u.TxID == (tx.TxIn[i].PreviousOutPoint.Hash.String()) && u.Vout == uint(tx.TxIn[i].PreviousOutPoint.Index) {
-				utxo = u
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			return fmt.Errorf("Cannot sign input %s/%d - Not present in known UTXOs", tx.TxIn[i].PreviousOutPoint.Hash.String(), tx.TxIn[i].PreviousOutPoint.Index)
-		}
-		pkScript, err := hex.DecodeString(utxo.ScriptPubKey)
-		if err != nil {
-			return err
-		}
-
-		sigStash[i], err = txscript.SignatureScript(tx, i, pkScript, txscript.SigHashAll, priv, true)
+		sigStash[i], err = txscript.SignatureScript(tx, i, w.Script, txscript.SigHashAll, priv, true)
 		if err != nil {
 			return err
 		}
@@ -64,10 +45,6 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 	for i, txin := range tx.TxIn {
 		if sigStash[i] != nil {
 			txin.SignatureScript = sigStash[i]
-		}
-		if witStash[i] != nil {
-			txin.Witness = witStash[i]
-			txin.SignatureScript = nil
 		}
 	}
 
@@ -91,12 +68,10 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 
 	r := txSendReply{}
 
-	err := util.PostJson(fmt.Sprintf("%sinsight-vtc-api/tx/send", networks.Active.InsightURL), s, &r)
+	err := util.PostJson(fmt.Sprintf("%stx", networks.Active.OCMBackend), s, &r)
 	if err != nil {
 		return "", err
 	}
-
-	w.MarkInputsAsInternallySpent(tx)
 
 	return r.TxId, err
 }
