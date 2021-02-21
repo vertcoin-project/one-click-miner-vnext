@@ -27,18 +27,18 @@
         </p>
       </div>
       <div class="col-settings-sub">
-        <!-- <p style="text-align: left">
-          <input type="checkbox" v-model="testnet" />
-          {{ $t("settings.testnet") }}
+<!--        <p style="text-align: left">-->
+<!--          <input type="checkbox" v-model="testnet" />-->
+<!--          {{ $t("settings.testnet") }}-->
+<!--          <br />-->
+<!--          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>-->
+<!--        </p>-->
+        <p style="text-align: left">
+          <input type="checkbox" v-model="enableIntegrated" />
+          {{ $t("settings.enable_integrated") }}
           <br />
-          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p> -->
-        <!-- <p style="text-align: left">
-          <input type="checkbox" v-model="skipVerthashverify" />
-          {{ $t("settings.skipverthashverify") }}
-          <br />
-          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
-        </p> -->
+          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
+        </p>
         <p style="text-align: left">
           <input type="checkbox" v-model="autoStart" />
           {{ $t("settings.auto_start") }}
@@ -79,9 +79,9 @@ export default {
       closedSourceMiner: false,
       debugging: false,
       autoStart: false,
+      enableIntegrated: true,
       showWarning: false,
       testnet: false,
-      skipVerthashverify: false,
       poolID: -1,
       payoutID: -1,
       pools: [],
@@ -99,8 +99,8 @@ export default {
           self.debugging = result;
            window.backend.Backend.GetTestnet().then(result => {
             self.testnet = result;
-            window.backend.Backend.GetSkipVerthashExtendedVerify().then(result => {
-              self.skipVerthashverify = result;
+            window.backend.Backend.GetEnableIntegrated().then(result => {
+              self.enableIntegrated = result;
               window.backend.Backend.GetPools().then(result => {
                 self.pools = result;
                 window.backend.Backend.GetPool().then(result => {
@@ -121,6 +121,10 @@ export default {
         });
       });
     });
+    
+    
+   
+    
   },
   methods: {
     toggleWarning: function() {
@@ -139,10 +143,12 @@ export default {
             window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetSkipVerthashExtendedVerify(self.skipVerthashverify).then(() => {
-                  window.backend.Backend.SetPool(self.poolID).then(() => {
-                    window.backend.Backend.SetPayout(self.payoutID).then(() => {
-                      window.backend.Backend.SetZergpoolAddress(self.zergpoolAddress).then(() => {
-                        self.$emit("committed");
+                  window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+                    window.backend.Backend.SetPool(self.poolID).then(() => {
+                      window.backend.Backend.SetPayout(self.payoutID).then(() => {
+                        window.backend.Backend.SetZergpoolAddress(self.zergpoolAddress).then(() => {
+                          self.$emit("committed");
+                        });
                       });
                     });
                   });

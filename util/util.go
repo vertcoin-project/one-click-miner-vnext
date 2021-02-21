@@ -15,6 +15,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -79,6 +80,14 @@ type getInfoResponse struct {
 
 type infoData struct {
 	Difficulty float64 `json:"difficulty"`
+}
+
+type VerthashMinerDeviceConfig struct {
+	DeviceIndex int
+	PCIeBus     string
+	OpenCL      bool
+	Name        string
+	Platform    string
 }
 
 var genesisDiff *big.Int
@@ -278,4 +287,78 @@ func ShaSum(file string) ([]byte, error) {
 		}
 	}
 	return h.Sum(nil), nil
+}
+
+func ParseVerthashMinerDeviceCfg(cfg string) map[int]VerthashMinerDeviceConfig {
+	lines := strings.Split(cfg, "\n")
+	deviceCFG := VerthashMinerDeviceConfig{}
+	allDeviceCFG := make(map[int]VerthashMinerDeviceConfig)
+	platforms := make(map[int]string)
+
+	// line 0 will always have the platform type
+	if strings.Contains(lines[0], "OpenCL") {
+		deviceCFG.OpenCL = true
+	} else {
+		deviceCFG.OpenCL = false
+	}
+
+	lines = lines[1:] //dont need to process the first line anymore...
+
+	isGettingDeviceInfo := false
+	isGettingPlatformInfo := false
+	for _, line := range lines {
+
+		if strings.Contains(line, "Available platforms") {
+			isGettingPlatformInfo = true
+		}
+		if strings.Contains(line, "Available devices") {
+			isGettingPlatformInfo = false
+		}
+
+		if isGettingPlatformInfo && strings.Contains(line, "Platform name") {
+			parsedNum, _ := strconv.Atoi(string(line[2]))
+
+			platforms[parsedNum-1] = strings.TrimSpace(strings.Split(line, ": ")[1])
+		}
+
+		if strings.Contains(line, "DeviceIndex:") {
+			// if we were already getting info, save that device and start again
+			if isGettingDeviceInfo {
+				allDeviceCFG[deviceCFG.DeviceIndex] = deviceCFG
+				deviceCFG = VerthashMinerDeviceConfig{}
+			}
+			isGettingDeviceInfo = true
+			tmpStr := strings.SplitAfter(line, " ")
+
+			// in order to capture negative / 2 digit numbers
+			deviceCFG.DeviceIndex, _ = strconv.Atoi(strings.TrimSpace(tmpStr[len(tmpStr)-1]))
+		}
+
+		if isGettingDeviceInfo && strings.Contains(line, "Name:") {
+			deviceCFG.Name = strings.TrimSpace(strings.SplitAfter(line, ":")[1])
+		}
+
+		if isGettingDeviceInfo && strings.Contains(line, "PCIeBusId:") {
+			tmpStr := strings.SplitAfter(line, " ")
+
+			deviceCFG.PCIeBus = strings.TrimSpace(tmpStr[len(tmpStr)-1])
+		}
+
+		if isGettingDeviceInfo && strings.Contains(line, "Platform index:") {
+			tmpStr := strings.SplitAfter(line, ": ")
+
+			platformIdx, _ := strconv.Atoi(strings.TrimSpace(tmpStr[len(tmpStr)-1]))
+
+			deviceCFG.Platform = platforms[platformIdx]
+		}
+
+		if isGettingDeviceInfo && strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#") {
+			isGettingDeviceInfo = false
+		}
+	}
+
+	allDeviceCFG[deviceCFG.DeviceIndex] = deviceCFG
+	deviceCFG = VerthashMinerDeviceConfig{}
+
+	return allDeviceCFG
 }

@@ -16,19 +16,17 @@ import (
 // Compile time assertion on interface
 var _ MinerImpl = &VerthashMinerImpl{}
 
+var cfgPath = "verthash-miner-tmpl.conf"
+
 type VerthashMinerImpl struct {
 	binaryRunner  *BinaryRunner
 	hashRates     map[int64]uint64
 	hashRatesLock sync.Mutex
 }
 
-func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
-	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
-}
-
-func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
-	os.Remove(filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf"))
-	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), "verthash-miner-tmpl.conf")}, false)
+func (l *VerthashMinerImpl) generateTempConf() error {
+	os.Remove(filepath.Join(util.DataDirectory(), cfgPath))
+	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), cfgPath)}, false)
 	var err2 error
 	if l.binaryRunner.cmd != nil {
 		err2 = l.binaryRunner.cmd.Wait()
@@ -38,6 +36,18 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 	}
 	if err2 != nil {
 		return err2
+	}
+	return nil
+}
+
+func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
+	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
+}
+
+func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
+	err := l.generateTempConf()
+	if err != nil {
+		return err
 	}
 
 	if !l.binaryRunner.cmd.ProcessState.Success() {
@@ -55,8 +65,13 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 	out, err := os.Create(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
 	defer out.Close()
 
+	var parsedDevices map[int]util.VerthashMinerDeviceConfig
+
 	scanner := bufio.NewScanner(in)
 	skip := false
+	insideDeviceBlock := false
+	deviceBlockStr := ""
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "#") {
@@ -67,9 +82,37 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			skip = true
 		}
 		if strings.HasPrefix(line, "<Global") {
-			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"true\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
+			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"false\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
 			skip = true
 		}
+
+		if strings.Contains(line, "OpenCL device config") || strings.Contains(line, "CUDA Device config") {
+			logging.Debug("Entering device block")
+			insideDeviceBlock = true
+		} else if insideDeviceBlock {
+			deviceBlockStr += line + "\n"
+		}
+
+		if strings.Contains(line, "#-#-#-#-#-#-#-#-#-#-#-") && insideDeviceBlock {
+			insideDeviceBlock = false
+			parsedDevices = util.ParseVerthashMinerDeviceCfg(deviceBlockStr)
+			logging.Debug("Exiting device block")
+			logging.Debug(parsedDevices[0])
+			deviceBlockStr = ""
+		}
+
+		if strings.HasPrefix(line, "<CL_Device") {
+			words := strings.SplitAfter(line, " ")
+			thisDeviceIndexNumber, _ := strconv.Atoi(strings.Trim(words[3], "\""))
+
+			if device, ok := parsedDevices[thisDeviceIndexNumber]; ok {
+				if strings.Contains(device.Platform, "Intel") && !args.EnableIntegrated {
+					logging.Debug("Intel disabled.")
+					skip = true
+				}
+			}
+		}
+
 		if !skip {
 			out.WriteString(fmt.Sprintf("%s\n", line))
 		}

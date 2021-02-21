@@ -1,0 +1,91 @@
+{
+    "generic" : {
+        "retry" : "Tekrar dene",
+        "back_to_wallet" : "Cüzdana dön",
+        "close" : "Kapat"
+    },
+    "welcome" : {
+        "alreadyrunning" : "Tek-tıkta-madencilik zaten çalışıyor. Birden fazla açamazsınız.",
+        "click_button_to_start" : "Madenciliğe devam etmek için butona tıklayın.",
+        "startmining" : "Madenciliğe Başla!",
+        "makeapassword" : "Bir şifre oluşturun. Bu şifreyi unutmayın!",
+        "password" : "Şifre",
+        "confirmpassword" : "Şifreyi tekrar gir",
+        "password_cannot_be_empty" : "Şifreyi boş bırakamazsınız",
+        "password_mismatch" : "Şifreler eşleşmiyor",
+        "error_initializing" : "Cüzdanı başlatırken bir şeyler ters gitti."
+    },
+    "checks" : {
+        "prerequisite" : "Gerekli bir program yükleniyor. İzin isteyen bir pencere açılabilir (ya da görev çubuğunuz renk değiştirebilir)",
+        "checks_failed" : "Kontroller başarısız oldu.",
+        "checking_mining_software" : "Madencilik yazılımı kontrol ediliyor...",
+        "rapidfail" : "Ani oluşan hatalar kontrol ediliyor...",
+        "compatibility" : "GPU uyumluluğu kontrol ediliyor...",
+        "installing_miners" : "Madencilik yazılımı yükleniyor...",
+        "verthash" : "Verthash dosyası onaylanıyor / oluşturuluyor..."
+    },
+    "mining" : {
+        "spendable_balance" : "Harcanabilir Bakiye",
+        "still_maturing" : "Olgunlaşmakta olan:",
+        "pending_pool_payout" : "havuz ödemesi bekleniyor",
+        "pending_payout_info_unavailable" : "Beklenen ödeme bilgisi için lütfen bekleyin...",
+        "waiting_for_miners" : "Madencinin başlaması bekleniyor",
+        "expected_earnings_24h" : "Tahmini Kazanç (24 saat)",
+        "estimating" : "Tahmin ediliyor...",
+        "stop_mining" : "Madenciliği durdur",
+        "active_pool" : "Aktif havuz",
+        "pool_fee" : "Havuz komisyonu",
+        "copy_address" : "Cüzdan adresinizi kopyalayın"
+    },
+    "sending" : {
+        "send_all_to" : "Kazdığım tüm coinleri şu adrese gönder:",
+        "youre_sending_x_to" : "Bu adrese {receivedBalance} adet coin yolluyorsunuz;",
+        "youre_sending_x_in_y_txs_to" : "Bu adrese {receivedBalance} adet coini {receivedTxCount} adet transferle yolluyorsunuz ",
+        "receiver_address" : "Alıcı Adresi",
+        "wallet_password" : "Cüzdan Şifresi",
+        "send" : "Gönder",
+        "coins_sent" : "Coinleriniz gönderildi!",
+        "view_trans_plural" : "Transferleri görüntüle",
+        "view_trans_singular" : "Transferi görüntüle",
+        "failed_to_send" : "Coinleriniz gönderilemedi",
+        "password_required" : "Cüzdan şifresini giriniz.",
+        "invalid_address" : "Geçersiz adres.",
+        "script_failure" : "Script başarısız oldu.",
+        "could_not_calculate_fee" : "Komisyon hesaplanamadı",
+        "insufficient_funds" : "Yetersiz bakiye",
+        "sign_failed" : "Transfer imzalanamadı. Şifreyi kontrol ediniz.",
+        "send_failed" : "Transfer yapılamadı. Daha fazla bilgi için debug.log inceleyiniz."
+    },
+    "settings" : {
+        "enable_debug" : "Debugging'i aktif et",
+        "enable_debug_sub" : "Madenci konsolunun çıktılarını debug.log'a dahil et. Log boyutu çok büyüyebilir",
+        "auto_start" : "Otomatik başlat",
+        "auto_start_sub" : "Madenciyi bilgisayar açıldığında otomatik başlat",
+        "closed_source" : "Kapalı kaynak kodlu madenci yazılımlarını kullan",
+        "closed_source_sub" : "Daha iyi hashrate alırsınız, fakat yazılımın geliştiricisi sizden komisyon alır",
+        "closed_source_warning" : "Kapalı kaynak kodlu madenci yazılımı kullanmayı seçtiniz. Vertcoin bu yazılımları desteklemez. İçerikleri bilinemez ve bilgisayarınıza zarar verebilecek yazılımlar içerebilir.",
+        "testnet":"Testnet modu",
+        "testnet_sub":"Testnet modunu aktifleştirir. Kazılan coinler gerçek değildir.",
+        "skipverthashverify":"Başlangıçta Verthash'i doğrulama",
+        "skipverthashverify_sub":"Başlangıçta Verthash dosyasının bütünlüğünü doğrulamayı atlayacak (önerilmez)",
+        "save_n_restart" : "Kaydet ve Yeniden Başlat",
+        "pool": "Madenci havuzu"
+    },
+    "tabbar" : {
+        "wallet" : "Cüzdan",
+        "send_coins" : "Coin gönder",
+        "settings" : "Ayarlar"
+    },
+    "tracking": { 
+        "update_available" : "Yeni bir güncelleme var.",
+        "tracking_enabled" : "Anonim olarak kullanıcı istatistiği gönderiyorsunuz",
+        "disable_tracking" : "Deaktive et",
+        "tracking_disabled" : "Kullanım istatistiği yollamıyorsunuz",
+        "enable_tracking" : "Kullanıcı deneyimini geliştirmemize yardımcı olmak için aktif edin",
+        "report_issue" : "Sorun bildir"
+    },
+    "update" : {
+        "new_version_available" : "Yeni bir versiyon mevcut",
+        "download" : "İndir"
+    }
+}

@@ -32,6 +32,7 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		StratumUrl:      m.pool.GetStratumUrl(),
 		StratumUsername: username,
 		StratumPassword: password,
+		EnableIntegrated: m.getSetting("enableIntegrated"),
 	}
 }
 

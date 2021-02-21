@@ -102,6 +102,14 @@ func (m *Backend) SetPool(pool int) {
 	}
 }
 
+func (m *Backend) SetEnableIntegrated(enabled bool) {
+	m.setSetting("enableIntegrated", enabled)
+}
+
+func (m *Backend) GetEnableIntegrated() bool {
+	return m.getSetting("enableIntegrated")
+}
+
 type PoolChoice struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`

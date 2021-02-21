@@ -26,6 +26,7 @@ import locale_ro from "./i18n/ro.json";
 import locale_ru from "./i18n/ru.json";
 import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
+import locale_tr from "./i18n/tr.json";
 import locale_zh from "./i18n/zh.json";
 
 Wails.Init(() => {
@@ -52,6 +53,7 @@ Wails.Init(() => {
                 ru: locale_ru,
                 sl: locale_sl,
                 sv: locale_sv,
+				tr: locale_tr,
                 zh: locale_zh,
             },
         });
