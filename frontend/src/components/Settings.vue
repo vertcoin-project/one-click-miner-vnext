@@ -14,12 +14,6 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          <input type="checkbox" v-model="enableIntegrated" />
-          {{ $t("settings.enable_integrated") }}
-          <br />
-          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
-        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -29,10 +23,10 @@
           <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
         </p>
         <p style="text-align: left">
-          <input type="checkbox" v-model="skipVerthashverify" />
-          {{ $t("settings.skipverthashverify") }}
+          <input type="checkbox" v-model="enableIntegrated" />
+          {{ $t("settings.enable_integrated") }}
           <br />
-          <span class="subtext">{{ $t("settings.skipverthashverify_sub") }}</span>
+          <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
         </p>
         <p style="text-align: left">
           {{ $t("settings.pool") }}:
@@ -71,7 +65,6 @@ export default {
       enableIntegrated: true,
       showWarning: false,
       testnet: false,
-      skipVerthashverify: false,
       poolID: -1,
       pools: [],
     };
@@ -84,20 +77,17 @@ export default {
         self.autoStart = result;
         window.backend.Backend.GetDebugging().then(result => {
           self.debugging = result;
-           window.backend.Backend.GetTestnet().then(result => {
-            self.testnet = result;
-            window.backend.Backend.GetSkipVerthashExtendedVerify().then(result => {
-              self.skipVerthashverify = result;
-              window.backend.Backend.GetPools().then(result => {
-                self.pools = result;
-                window.backend.Backend.GetPool().then(result => {
-                  self.poolID = result;
-                  window.backend.Backend.GetEnableIntegrated().then(result => {
-                    self.enableIntegrated = result;
-                })
-                })
-              })
-            })
+          window.backend.Backend.GetTestnet().then(result => {
+          self.testnet = result;
+            window.backend.Backend.GetPools().then(result => {
+              self.pools = result;
+              window.backend.Backend.GetPool().then(result => {
+                self.poolID = result;
+                window.backend.Backend.GetEnableIntegrated().then(result => {
+                  self.enableIntegrated = result;
+                });
+              });
+            });
           });
         });
       });
