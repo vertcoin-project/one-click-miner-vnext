@@ -86,6 +86,7 @@ div.col-settings {
 
 div.col-settings-sub {
   padding: 20px;
+  width: 50%;
   flex-grow: 1;
 }
 
