@@ -18,14 +18,6 @@ type CCMinerImpl struct {
 	gpuCount      int8
 }
 
-func (l *CCMinerImpl) EnableIntegratedGPU() error {
-	return nil
-}
-
-func (l *CCMinerImpl) DisableIntegratedGPU() error {
-	return nil
-}
-
 func NewCCMinerImpl(br *BinaryRunner) MinerImpl {
 	return &CCMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }

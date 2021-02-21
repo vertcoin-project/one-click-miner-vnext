@@ -19,14 +19,6 @@ type CryptoDredgeMinerImpl struct {
 	gpuCount      int8
 }
 
-func (l *CryptoDredgeMinerImpl) EnableIntegratedGPU() error {
-	return nil
-}
-
-func (l *CryptoDredgeMinerImpl) DisableIntegratedGPU() error {
-	return nil
-}
-
 func NewCryptoDredgeMinerImpl(br *BinaryRunner) MinerImpl {
 	return &CryptoDredgeMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }

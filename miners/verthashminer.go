@@ -40,19 +40,6 @@ func (l *VerthashMinerImpl) generateTempConf() error {
 	return nil
 }
 
-func (l *VerthashMinerImpl) EnableIntegratedGPU() error {
-	return nil
-}
-
-func (l *VerthashMinerImpl) DisableIntegratedGPU() error {
-	err := l.generateTempConf()
-	if err != nil {
-		logging.Error(err)
-		return err
-	}
-	return nil
-}
-
 func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
 	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
@@ -124,7 +111,6 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 					skip = true
 				}
 			}
-
 		}
 
 		if !skip {

@@ -18,14 +18,6 @@ type TeamRedMinerImpl struct {
 	gpuCount      int8
 }
 
-func (l *TeamRedMinerImpl) EnableIntegratedGPU() error {
-	return nil
-}
-
-func (l *TeamRedMinerImpl) DisableIntegratedGPU() error {
-	return nil
-}
-
 func NewTeamRedMinerImpl(br *BinaryRunner) MinerImpl {
 	return &TeamRedMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }

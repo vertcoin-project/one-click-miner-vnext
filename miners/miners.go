@@ -29,6 +29,7 @@ type MinerBinary struct {
 	ClosedSource       bool     `json:"closedSource"`
 	Testnet            bool     `json:"testnet"`
 	MultiGPUMiner      bool     `json:"multiGPUMiner"`
+	EnableIntegrated   bool     `json:"enableIntegrated"`
 	GPUType            util.GPUType
 }
 
@@ -55,8 +56,6 @@ type MinerImpl interface {
 	HashRate() uint64
 	ConstructCommandlineArgs(args BinaryArguments) []string
 	AvailableGPUs() int8
-	EnableIntegratedGPU() error
-	DisableIntegratedGPU() error
 }
 
 func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunner, error) {

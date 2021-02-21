@@ -22,14 +22,6 @@ type LyclMinerImpl struct {
 	hashRatesLock sync.Mutex
 }
 
-func (l *LyclMinerImpl) EnableIntegratedGPU() error {
-	return nil
-}
-
-func (l *LyclMinerImpl) DisableIntegratedGPU() error {
-	return nil
-}
-
 func NewLyclMinerImpl(br *BinaryRunner) MinerImpl {
 	return &LyclMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
