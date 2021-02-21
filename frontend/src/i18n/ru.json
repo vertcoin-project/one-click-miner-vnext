@@ -28,6 +28,7 @@
         "spendable_balance" : "Доступный баланс",
         "still_maturing" : "Ожидает подтверждений",
         "pending_pool_payout" : "Ожидание выплаты с пула",
+        "pending_payout_info_unavailable" : "Дождитесь информации об ожидающих выплатах",
         "waiting_for_miners" : "Ждем майнеры для старта",
         "expected_earnings_24h" : "Ожидаемый доход (24Ч)",
         "estimating" : "идет расчет",
