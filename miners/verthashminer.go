@@ -82,7 +82,7 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			skip = true
 		}
 		if strings.HasPrefix(line, "<Global") {
-			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"true\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
+			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"false\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
 			skip = true
 		}
 
