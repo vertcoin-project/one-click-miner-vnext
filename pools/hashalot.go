@@ -55,13 +55,25 @@ func (p *Hashalot) GetName() string {
 
 func (p *Hashalot) GetFee() float64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://api.hashalot.net/pools/"), &jsonPayload)
+	err := util.GetJson("http://api.hashalot.net/pools", &jsonPayload)
 	if err != nil {
 		return 2.0
 	}
-	fee, ok := jsonPayload[0]["poolFeePercent"].(float64)
+	
+	pools, ok := jsonPayload["pools"].([]interface{})
 	if !ok {
 		return 2.0
 	}
-	return uint64(fee)
+	
+	pool, ok := pools[0].(map[string]interface{})
+	if !ok {
+		return 2.0
+	}
+	
+	fee, ok := pool["poolFeePercent"].(float64)
+	if !ok {
+		return 2.0
+	}
+
+	return fee
 }
