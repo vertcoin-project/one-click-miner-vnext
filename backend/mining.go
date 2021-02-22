@@ -6,6 +6,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
+	"github.com/vertcoin-project/one-click-miner-vnext/payouts"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -89,16 +90,31 @@ func (m *Backend) StartMining() bool {
 
 	go func() {
 		cycles := 0
-		nhr := util.GetNetHash()
+		nhr := uint64(0)
+		unitVtcPerBtc := 0.0
+		unitPayoutCoinPerBtc := 0.0
+		vtcPayout := payouts.NewVTCPayout()
 		continueLoop := true
 		for continueLoop {
-			cycles++
-			if cycles > 600 {
+			if cycles >= 600 {
+				cycles = 0
+			}
+			if cycles == 0 {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
-				cycles = 0
+				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
+					if m.PayoutIsBitcoin() {
+						unitPayoutCoinPerBtc = 1
+					} else {
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker(), m.payout.GetCoingeckoExchange())
+					}
+					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
+				}
 			}
+			cycles++
+
 			hr := uint64(0)
 			for _, br := range m.minerBinaries {
 				hr += br.HashRate()
@@ -125,7 +141,31 @@ func (m *Backend) StartMining() bool {
 
 			avgEarning := float64(hr) / float64(nhr) * float64(14400) // 14400 = Emission per day. Need to adjust for halving
 
-			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
+			// Convert average earning from Vertcoin to selected payout coin
+			avgEarningTicker := "VTC"
+			if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+				if unitVtcPerBtc != 0 && unitPayoutCoinPerBtc != 0 {
+					avgEarningTicker = m.payout.GetTicker()
+					avgEarning = avgEarning * unitVtcPerBtc / unitPayoutCoinPerBtc
+				}
+			}
+
+			// Show at least three significant figures of average earning value
+			avgEarningDecimals := 2
+			if avgEarning > 0.0 && avgEarning < 1.0 {
+				avgEarningScaled := avgEarning
+				addDecimals := 1
+				for addDecimals = 1; addDecimals <= 10; addDecimals++ {
+					avgEarningScaled *= 10
+					if avgEarningScaled >= 1.0 {
+						break
+					}
+				}
+				avgEarningDecimals += addDecimals
+			}
+			avgEarningStrfmt := "%0." + fmt.Sprint(avgEarningDecimals) + "f %s"
+
+			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf(avgEarningStrfmt, avgEarning, avgEarningTicker))
 
 			select {
 			case <-m.stopHash:
@@ -138,20 +178,12 @@ func (m *Backend) StartMining() bool {
 
 	go func() {
 		continueLoop := true
-		loop := 0
 		var pb uint64
 		for continueLoop {
-			if loop == 6 { // Every half hour
-				loop = 0
-			}
-			if loop == 0 {
-				logging.Infof("Updating balance...")
-				m.wal.Update()
-				b, bi := m.wal.GetBalance()
-				m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
-				m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
-			}
-			loop++
+			m.wal.Update()
+			b, bi := m.wal.GetBalance()
+			m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
+			m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
 			logging.Infof("Updating pending pool payout...")
 			var payoutAddr string
 			if m.UseZergpoolPayout() {
@@ -160,9 +192,6 @@ func (m *Backend) StartMining() bool {
 				payoutAddr = m.vertcoinAddress
 			}
 			newPb := m.pool.GetPendingPayout(payoutAddr)
-			if newPb < pb { // If pending pool payout dropped, we should've received payout. Refresh balance
-				loop = 0
-			}
 			pb = newPb
 			m.runtime.Events.Emit("balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
 			select {

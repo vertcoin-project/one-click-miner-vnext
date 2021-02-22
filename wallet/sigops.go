@@ -1,9 +1,6 @@
 package wallet
 
 import (
-	"encoding/hex"
-	"fmt"
-
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcutil"
 )
@@ -35,7 +32,7 @@ func CountSigOps(tx *btcutil.Tx) int {
 	return totalSigOps
 }
 
-func (w *Wallet) GetSigOpCost(tx *btcutil.Tx, isCoinBaseTx bool, bip16, segWit bool) (int, error) {
+func (w *Wallet) GetSigOpCost(tx *btcutil.Tx, pkScript []byte, isCoinBaseTx bool, bip16, segWit bool) (int, error) {
 	numSigOps := CountSigOps(tx) * WitnessScaleFactor
 	if bip16 {
 		numP2SHSigOps, err := w.CountP2SHSigOps(tx, isCoinBaseTx)
@@ -47,22 +44,9 @@ func (w *Wallet) GetSigOpCost(tx *btcutil.Tx, isCoinBaseTx bool, bip16, segWit b
 
 	if segWit && !isCoinBaseTx {
 		msgTx := tx.MsgTx()
-		for txInIndex, txIn := range msgTx.TxIn {
-			// Ensure the referenced output is available and hasn't
-			// already been spent.
-			utxo := w.GetUtxo(txIn.PreviousOutPoint.Hash.String(), uint(txIn.PreviousOutPoint.Index))
-			if utxo.TxID == "" {
-				str := fmt.Sprintf("output %v referenced from "+
-					"transaction %s:%d either does not "+
-					"exist or has already been spent",
-					txIn.PreviousOutPoint, tx.Hash(),
-					txInIndex)
-				return 0, fmt.Errorf(str)
-			}
-
+		for _, txIn := range msgTx.TxIn {
 			witness := txIn.Witness
 			sigScript := txIn.SignatureScript
-			pkScript, _ := hex.DecodeString(utxo.ScriptPubKey)
 			numSigOps += txscript.GetWitnessSigOpCount(sigScript, pkScript, witness)
 		}
 
@@ -76,50 +60,53 @@ func (w *Wallet) GetSigOpCost(tx *btcutil.Tx, isCoinBaseTx bool, bip16, segWit b
 // precise, signature operation counting mechanism from the script engine which
 // requires access to the input transaction scripts.
 func (w *Wallet) CountP2SHSigOps(tx *btcutil.Tx, isCoinBaseTx bool) (int, error) {
-	// Coinbase transactions have no interesting inputs.
-	if isCoinBaseTx {
-		return 0, nil
-	}
-
-	// Accumulate the number of signature operations in all transaction
-	// inputs.
-	msgTx := tx.MsgTx()
-	totalSigOps := 0
-	for txInIndex, txIn := range msgTx.TxIn {
-		// Ensure the referenced input transaction is available.
-		utxo := w.GetUtxo(txIn.PreviousOutPoint.Hash.String(), uint(txIn.PreviousOutPoint.Index))
-		if utxo.TxID == "" {
-			str := fmt.Sprintf("output %v referenced from "+
-				"transaction %s:%d either does not exist or "+
-				"has already been spent", txIn.PreviousOutPoint,
-				tx.Hash(), txInIndex)
-			return 0, fmt.Errorf(str)
+	// We never spend P2SH in OCM, so this can be disabled
+	return 0, nil
+	/*
+		// Coinbase transactions have no interesting inputs.
+		if isCoinBaseTx {
+			return 0, nil
 		}
 
-		// We're only interested in pay-to-script-hash types, so skip
-		// this input if it's not one.
-		pkScript, _ := hex.DecodeString(utxo.ScriptPubKey)
-		if !txscript.IsPayToScriptHash(pkScript) {
-			continue
+		// Accumulate the number of signature operations in all transaction
+		// inputs.
+		msgTx := tx.MsgTx()
+		totalSigOps := 0
+		for txInIndex, txIn := range msgTx.TxIn {
+			// Ensure the referenced input transaction is available.
+			utxo := w.GetUtxo(txIn.PreviousOutPoint.Hash.String(), uint(txIn.PreviousOutPoint.Index))
+			if utxo.TxID == "" {
+				str := fmt.Sprintf("output %v referenced from "+
+					"transaction %s:%d either does not exist or "+
+					"has already been spent", txIn.PreviousOutPoint,
+					tx.Hash(), txInIndex)
+				return 0, fmt.Errorf(str)
+			}
+
+			// We're only interested in pay-to-script-hash types, so skip
+			// this input if it's not one.
+			pkScript, _ := hex.DecodeString(utxo.ScriptPubKey)
+			if !txscript.IsPayToScriptHash(pkScript) {
+				continue
+			}
+
+			// Count the precise number of signature operations in the
+			// referenced public key script.
+			sigScript := txIn.SignatureScript
+			numSigOps := txscript.GetPreciseSigOpCount(sigScript, pkScript,
+				true)
+
+			// We could potentially overflow the accumulator so check for
+			// overflow.
+			lastSigOps := totalSigOps
+			totalSigOps += numSigOps
+			if totalSigOps < lastSigOps {
+				str := fmt.Sprintf("the public key script from output "+
+					"%v contains too many signature operations - "+
+					"overflow", txIn.PreviousOutPoint)
+				return 0, fmt.Errorf(str)
+			}
 		}
 
-		// Count the precise number of signature operations in the
-		// referenced public key script.
-		sigScript := txIn.SignatureScript
-		numSigOps := txscript.GetPreciseSigOpCount(sigScript, pkScript,
-			true)
-
-		// We could potentially overflow the accumulator so check for
-		// overflow.
-		lastSigOps := totalSigOps
-		totalSigOps += numSigOps
-		if totalSigOps < lastSigOps {
-			str := fmt.Sprintf("the public key script from output "+
-				"%v contains too many signature operations - "+
-				"overflow", txIn.PreviousOutPoint)
-			return 0, fmt.Errorf(str)
-		}
-	}
-
-	return totalSigOps, nil
+		return totalSigOps, nil*/
 }

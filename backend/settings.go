@@ -2,7 +2,9 @@ package backend
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -77,7 +79,14 @@ func (m *Backend) GetPool() int {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
 		}
-		return 3 // Default Hashalot on mainnet (for now...)
+		// Default to a random pool
+		rand.Seed(time.Now().UnixNano())
+		pools := pools.GetPools(m.GetTestnet())
+		pool := pools[rand.Intn(len(pools))].GetID()
+		// Save this setting immediately so that we don't get
+		// a different random pool in future calls to GetPool().
+		m.setIntSetting("pool", pool)
+		return pool
 	}
 	return pool
 }
@@ -152,6 +161,18 @@ func (m *Backend) SetZergpoolAddress(newZergpoolAddress string) {
 	m.setStringSetting("zergpoolAddress", newZergpoolAddress)
 }
 
+func (m *Backend) PoolIsZergpool() bool {
+	return (m.pool.GetID() == 5)
+}
+
+func (m *Backend) PayoutIsVertcoin() bool {
+	return (m.payout.GetID() == 1)
+}
+
+func (m *Backend) PayoutIsBitcoin() bool {
+	return (m.payout.GetID() == 2)
+}
+
 // TODO: Improve address validation
 func (m *Backend) ValidZergpoolAddress() bool {
 	zergpoolAddress := m.zergpoolAddress
@@ -166,7 +187,7 @@ func (m *Backend) UseZergpoolPayout() bool {
 	// - Zergpool is selected
 	// - non-Vertcoin payout option is selected
 	// - address for payout is valid
-	if m.pool.GetID() == 5 && m.payout.GetID() != 1 && m.ValidZergpoolAddress() {
+	if m.PoolIsZergpool() && (!m.PayoutIsVertcoin()) && m.ValidZergpoolAddress() {
 		return true
 	}
 	return false
