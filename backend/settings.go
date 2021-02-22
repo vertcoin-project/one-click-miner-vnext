@@ -125,7 +125,8 @@ func (m *Backend) SetTestnet(newTestnet bool) {
 }
 
 func (m *Backend) GetSkipVerthashExtendedVerify() bool {
-	return m.getSetting("skipverthashverify")
+	return false // Verification is default - return false
+	//return m.getSetting("skipverthashverify")
 }
 
 func (m *Backend) SetSkipVerthashExtendedVerify(newVerthashVerify bool) {
