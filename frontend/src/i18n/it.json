@@ -78,7 +78,7 @@
         "send_coins" : "Invia monete",
         "settings" : "Impostazioni"
     },
-    "tracking" : {
+    "tracking": {
         "update_available" : "Aggiornamento disponibile",
         "tracking_enabled" : "Stai condividendo in modo anonimo le statistiche sull'utilizzo",
         "disable_tracking" : "Disabilita",
