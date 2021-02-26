@@ -16,21 +16,26 @@
         "error_initializing" : "Si è verificato un errore durante l'inizializzazione del portafoglio"
     },
     "checks" : {
-        "prerequisite" : "È in corso l'installazione di un prerequisito. È possibile che venga visualizzato un popup che richiede i permessi (potrebbe lampeggiare nella barra delle applicazioni)",
+        "prerequisite" : "È in corso l'installazione di un prerequisito. È possibile che venga visualizzato un popup che richiede dei permessi (potrebbe lampeggiare nella barra delle applicazioni)",
         "checks_failed" : "Controlli falliti",
         "checking_mining_software" : "Controllo del software di mining...",
         "rapidfail" : "Controllo della presenza di errori",
         "compatibility" : "Controllo di compatibilità della GPU...",
-        "installing_miners" : "Installazione del software di mining..."
+        "installing_miners" : "Installazione del software di mining...",
+        "verthash" : "Verifica / creazione file di dati Verthash..."
     },
     "mining" : {
         "spendable_balance" : "Saldo Disponibile",
         "still_maturing" : "non ancora maturato",
         "pending_pool_payout" : "pagamento del pool in sospeso",
-        "waiting_for_miners" : "In attesa dei miners per iniziare",
+        "pending_payout_info_unavailable" : "Attendi le informazioni sul pagamento in sospeso",
+        "waiting_for_miners" : "In attesa dei miner per iniziare",
         "expected_earnings_24h" : "Guadagno Atteso (24h)",
         "estimating" : "calcolo in corso",
-        "stop_mining" : "Smetti di Minare"
+        "stop_mining" : "Smetti di Minare",
+        "active_pool" : "Pool attiva",
+        "pool_fee" : "tassa",
+        "copy_address" : "Copia l'indirizzo del tuo portafoglio"
     },
     "sending" : {
         "send_all_to" : "Invia tutte le tue monete minate a",
@@ -56,10 +61,17 @@
         "enable_debug_sub" : "Includi l'output della console del miner nel log di debug. Può far aumentare di molto la dimensione dei tuoi log",
         "auto_start" : "Avvio automatico",
         "auto_start_sub" : "Avvia One-Click Miner quando esegui l'accesso al tuo computer",
-        "closed_source" : "Usa miners closed-source",
-        "closed_source_sub" : "Miglior hashrate, ma miners non certificati che incorrono in una commissione per gli sviluppatori",
-        "closed_source_warning" : "Hai scelto di usare miner(s) closed-source. Vertcoin non approva né supporta questi miners. Non possono essere controllati sul loro contenuto e potrebbero contenere funzioni dannose per il tuo computer.",
-        "save_n_restart" : "Salva e Riavvia"
+        "closed_source" : "Usa miner closed-source",
+        "closed_source_sub" : "Miglior hashrate, ma miner non certificati che incorrono in una commissione per gli sviluppatori",
+        "closed_source_warning" : "Hai scelto di usare miner closed-source. Vertcoin non approva né supporta questi miners. Non possono essere controllati sul loro contenuto e potrebbero contenere funzioni dannose per il tuo computer.",
+        "enable_integrated" : "Mina con la grafica integrata",
+        "enable_integrated_sub" : "Il miner userà la grafica di bordo (se possibile)",
+        "testnet" : "Modalità testnet",
+        "testnet_sub" : "Abilita la modalità testnet. Non minerai monete reali.",
+        "skipverthashverify" : "Non verificare Verthash all'avvio",
+        "skipverthashverify_sub" : "Salta la verifica di integrità del file dei dati di Verthash all'avvio (non raccomandato)",
+        "save_n_restart" : "Salva e Riavvia",
+        "pool" : "Pool di mining"
     },
     "tabbar" : {
         "wallet" : "Portafoglio",
