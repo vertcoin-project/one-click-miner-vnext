@@ -74,6 +74,11 @@ func loadPublicKey() []byte {
 	return ret
 }
 
+func GetPublicKey() []byte {
+        pub := loadPublicKey()
+        return pub
+}
+
 func GetAddress() string {
 	pub := loadPublicKey()
 	return base58.CheckEncode(btcutil.Hash160(pub), networks.Active.Base58P2PKHVersion)
