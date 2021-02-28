@@ -1,77 +1,77 @@
 {
     "generic" : {
-        "retry" : "Wiederholung",
-        "back_to_wallet" : "Rückkehr ins Wallet",
+        "retry" : "Wiederholen",
+        "back_to_wallet" : "Zurück zum Wallet",
         "close" : "Schließen"
     },
     "welcome" : {
-        "alreadyrunning" : "Das One-Click Miner ausgeführt wird bereits. Sie können es nicht mehr als einmal ausgeführen.",
+        "alreadyrunning" : "One-Click Miner wird bereits ausgeführt, Sie können es nicht mehr als einmal ausführen.",
         "click_button_to_start" : "Klicken Sie auf die Schaltfläche unten, um das Mining erneut zu starten.",
-        "startmining" : "Starten Sie Mining !",
-        "makeapassword" : "Erstelle ein Passwort. Verliere es nicht !",
+        "startmining" : "Mining starten!",
+        "makeapassword" : "Erstellen Sie ein Passwort. Verlieren Sie es nicht!",
         "password" : "Passwort",
         "confirmpassword" : "Passwort bestätigen",
         "password_cannot_be_empty" : "Passwort kann nicht leer sein",
         "password_mismatch" : "Passwort stimmt nicht überein",
-        "error_initializing" : "Fehler beim Initialisieren das Wallet"
+        "error_initializing" : "Fehler beim Initialisieren des Wallets"
     },
     "checks" : {
-        "prerequisite" : "Voraussetzung wird gerade installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
+        "prerequisite" : "Voraussetzungen werden installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
         "checks_failed" : "Überprüfungen fehlgeschlagen",
-        "checking_mining_software" : "Mining-Software Überprüfung...",
-        "rapidfail" : "Überprüfung des Auftretens eines schnellen Ausfalls",
-        "compatibility" : "GPU-Kompatibilität Überprüfung...",
-        "installing_miners" : "Mining-Software installieren..."
+        "checking_mining_software" : "Mining-Software wird überprüft...",
+        "rapidfail" : "Überprüfung des Auftretens eines schnellen Ausfalls...",
+        "compatibility" : "GPU-Kompatibilität wird überprüft...",
+        "installing_miners" : "Mining-Software wird installiert..."
     },
     "mining" : {
         "spendable_balance" : "Verfügbares Guthaben",
         "still_maturing" : "reift noch",
         "pending_pool_payout" : "ausstehende Pool Auszahlung",
-        "waiting_for_miners" : "Warten auf Miners zu starten",
+        "waiting_for_miners" : "Warten auf Minerstart",
         "expected_earnings_24h" : "Erwartete Einnahmen (24h)",
         "estimating" : "Schätzung",
-        "stop_mining" : "Stoppen Sie das Mining"
+        "stop_mining" : "Mining stoppen"
     },
     "sending" : {
-        "send_all_to" : "Senden Sie alle Ihr abgebauten Kryptogeld an",
+        "send_all_to" : "Senden Sie alle Ihr abgebauten Coins an",
         "youre_sending_x_to" : "Sie senden {receivedBalance} an",
         "youre_sending_x_in_y_txs_to" : "Sie senden {receivedBalance} in {receivedTxCount} Transaktionen an",
         "receiver_address" : "Empfängeradresse",
         "wallet_password" : "Wallet Passwort",
         "send" : "Senden",
-        "coins_sent" : "Ihr Kryptogeld wurde gesendet !",
+        "coins_sent" : "Ihre Coins wurden gesendet!",
         "view_trans_plural" : "Transaktionen anzeigen",
         "view_trans_singular" : "Transaktion anzeigen",
-        "failed_to_send" : "Fehler beim Senden Ihr Kryptogeld",
-        "password_required" : "Das Wallet passwort ist erforderlich",
+        "failed_to_send" : "Fehler beim Senden Ihrer Coins",
+        "password_required" : "Das Wallet Passwort ist erforderlich",
         "invalid_address" : "Ungültige Adresse",
         "script_failure" : "Skriptfehler",
-        "could_not_calculate_fee" : "Unmögliche Gebührenkalkulation",
+        "could_not_calculate_fee" : "Gebührenkalkulation fehlgeschlagen",
         "insufficient_funds" : "unzureichende Mittel",
         "sign_failed" : "Transaktion kann nicht signiert werden. Überprüfen Sie Ihr Passwort",
-        "send_failed" : "Unmögliche Transaktion. Weitere Informationen finden Sie in debug.log"
+        "send_failed" : "Transaktion fehlgeschlagen. Weitere Informationen finden Sie in debug.log"
     },
     "settings" : {
-        "enable_debug" : "Aktivieren Sie das Debuggen",
-        "enable_debug_sub" : "Nehmen Sie die Konsolenausgabe der Mining-Software in das Debugprotokoll auf. Kann die Größe Ihrer Protokolle erheblich erhöhen",
+        "enable_debug" : "Debuggen aktivieren",
+        "enable_debug_sub" : "Konsolenausgabe der Mining-Software in das Debugprotokoll aufnehmen. Kann die Größe Ihrer Protokolle erheblich erhöhen",
         "auto_start" : "Auto-Start",
-        "auto_start_sub" : "Starten Sie das One-Click Miner, wenn Sie sich bei Ihrem Computer anmelden",
+        "auto_start_sub" : "Starten Sie One-Click Miner, wenn Sie sich an Ihrem Computer anmelden",
         "closed_source" : "Verwenden Sie proprietäre Mining-Software",
         "closed_source_sub" : "Bessere Hash-Rate, aber Mining-Software belohnt Entwickler nicht",
-        "closed_source_warning" : "Sie haben sich für die Verwendung proprietäre Mining-Software entschieden. Vertcoin bietet keine Unterstützung. Ihr Inhalt kann nicht überprüft werden und enthält möglicherweise Funktionen, die Ihren Computer beschädigen.",
+        "closed_source_warning" : "Sie haben sich für die Verwendung proprietärer Mining-Software entschieden. Vertcoin bietet keine Unterstützung. Ihr Inhalt kann nicht überprüft werden und enthält möglicherweise Funktionen, die Ihren Computer beschädigen.",
         "save_n_restart" : "Speichern & Neustart"
     },
     "tabbar" : {
         "wallet" : "Wallet",
-        "send_coins" : "Kryptogeld senden (VTC)",
+        "send_coins" : "Coins senden",
         "settings" : "Einstellungen"
     },
     "tracking": { 
         "update_available" : "Update verfügbar",
-        "tracking_enabled" : "Sie geben Nutzungsstatistiken anonym weiter",
+        "tracking_enabled" : "Nutzungsstatistiken werden anonym geteilt",
         "disable_tracking" : "Deaktivieren",
         "tracking_disabled" : "Sie teilen keine Nutzungsstatistiken",
-        "enable_tracking" : "Aktivieren Sie diese Option, um die Benutzerfreundlichkeit zu verbessern",
+        "enable_tracking" : "Aktivieren Sie diese Option, um uns bei der Verbesserung der Benutzerfreundlichkeit zu helfen",
         "report_issue" : "Ein Problem melden"
     },
     "update" : {
