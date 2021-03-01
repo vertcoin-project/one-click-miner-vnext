@@ -54,7 +54,7 @@ func CreateKeyFile(pass string) error {
 }
 
 func keyFile() string {
-	return filepath.Join(util.DataDirectory(), "keyfile.hex")
+	return filepath.Join(util.DataDirectory(), "dogekeyfile.hex")
 }
 
 func loadPublicKey() []byte {

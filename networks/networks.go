@@ -9,6 +9,7 @@ type Network struct {
 	P2ProxyURL         string
 	WalletDB           string
 	OCMBackend         string
+	DOGEBackend        string
 }
 
 var Active Network
@@ -26,10 +27,11 @@ func SetNetwork(testnet bool) {
 		}
 	} else {
 		Active = Network{
-			Base58P2PKHVersion: 71,
-			Base58P2SHVersion:  5,
-			InsightURL:         "https://insight.vertcoin.org/",
+			Base58P2PKHVersion: 113,
+			Base58P2SHVersion:  196,
+			InsightURL:         "https://sochain.com/api/v2/",
 			OCMBackend:         "https://ocm-backend.blkidx.org/",
+			DOGEBackend:        "http://69.30.201.130:8000/",
 			Bech32Prefix:       "vtc",
 			P2ProxyStratum:     "stratum+tcp://p2p-usa.xyz:9171",
 			P2ProxyURL:         "http://p2p-usa.xyz:9171/",
