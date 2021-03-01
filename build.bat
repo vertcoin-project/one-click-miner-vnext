@@ -10,11 +10,17 @@ ECHO var version="%ver%-%gitver%" >> version.go
 CD ..
 DEL build\vertcoin-ocm.exe
 wails build
+ECHO "Sign the release assembly now on the windows machine if desired, then:"
+PAUSE
 CD build 
+COPY vertcoin-ocm.exe ../vertcoin-ocm-%ver%-windows-x64.exe
 7z a ../vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe 
 CD ..
 wails build -d
+ECHO "Sign the debug assembly now on the windows machine if desired, then:"
+PAUSE
 CD build 
+COPY vertcoin-ocm.exe ../vertcoin-ocm-%ver%-windows-x64-debug.exe
 7z a ../vertcoin-ocm-%ver%-windows-x64-debug.zip vertcoin-ocm.exe 
 CD ../tracking
 DEL version.go
