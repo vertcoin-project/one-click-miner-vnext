@@ -125,9 +125,9 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 }
 
 func (l *VerthashMinerImpl) ParseOutput(line string) {
-	//if l.binaryRunner.Debug {
-	logging.Debugf("[VerthashMiner] %s\n", line)
-	//}
+	if l.binaryRunner.Debug {
+		logging.Debugf("[VerthashMiner] %s\n", line)
+	}
 	line = strings.TrimSpace(line)
 	if strings.Contains(line, "_device(") && strings.HasSuffix(line, "H/s") {
 		startMHs := strings.LastIndex(line, ": ")
@@ -138,8 +138,6 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 			deviceIdxString := line[deviceIdxStart : deviceIdxStart+deviceIdxEnd]
 			deviceIdx, _ := strconv.ParseInt(deviceIdxString, 10, 64)
 			deviceType := line[deviceTypeStart : deviceTypeStart+2]
-			logging.Debugf("Device IDX: %s", deviceIdxString)
-			logging.Debugf("Device Type: %s", deviceType)
 
 			hashRateUnit := strings.ToUpper(line[len(line)-4 : len(line)-3])
 			line = line[startMHs+2 : len(line)-5]
