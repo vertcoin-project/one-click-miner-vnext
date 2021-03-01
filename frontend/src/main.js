@@ -34,6 +34,7 @@ Wails.Init(() => {
 
         const i18n = new VueI18n({
             locale: result, // set locale
+            fallbackLocale: 'en',
             messages: {
                 da: locale_da,
                 de: locale_de,

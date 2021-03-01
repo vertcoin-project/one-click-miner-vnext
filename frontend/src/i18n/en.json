@@ -42,7 +42,7 @@
         "youre_sending_x_to" : "You're sending {receivedBalance} to",
         "youre_sending_x_in_y_txs_to" : "You're sending {receivedBalance} in {receivedTxCount} transactions to",
         "receiver_address" : "Receiver Address",
-        "wallet_password" : "Wallet Password",
+        "wallet_password" : "OCM Wallet Password",
         "send" : "Send",
         "coins_sent" : "Your coins are sent!",
         "view_trans_plural" : "View transactions",
