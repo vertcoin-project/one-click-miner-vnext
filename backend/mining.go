@@ -48,7 +48,7 @@ func (m *Backend) GetPayoutTicker() string {
 	if m.UseCustomPayout() {
 		return m.payout.GetTicker()
 	}
-	return "VTC"
+	return "DOGE"
 }
 
 func (m *Backend) StartMining() bool {
