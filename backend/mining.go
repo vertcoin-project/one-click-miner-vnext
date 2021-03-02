@@ -24,7 +24,7 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		username = m.zergpoolAddress
 		password = m.payout.GetPassword()
 	} else {
-		username = m.vertcoinAddress
+		username = m.walletaddress
 		password = m.pool.GetPassword()
 	}
 
@@ -190,7 +190,7 @@ func (m *Backend) StartMining() bool {
 			if m.UseZergpoolPayout() {
 				payoutAddr = m.zergpoolAddress
 			} else {
-				payoutAddr = m.vertcoinAddress
+				payoutAddr = m.walletaddress
 			}
 			newPb := m.pool.GetPendingPayout(payoutAddr)
 			pb = newPb
