@@ -24,14 +24,16 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		username = m.zergpoolAddress
 		password = m.payout.GetPassword()
 	} else {
+		// Use wallet address (Dogecoin) for payout
+		walletPayout := payouts.NewDOGEPayout()
 		username = m.walletaddress
-		password = m.pool.GetPassword()
+		password = walletPayout.GetPassword()
 	}
 
 	return miners.BinaryArguments{
-		StratumUrl:      m.pool.GetStratumUrl(),
-		StratumUsername: username,
-		StratumPassword: password,
+		StratumUrl:       m.pool.GetStratumUrl(),
+		StratumUsername:  username,
+		StratumPassword:  password,
 		EnableIntegrated: m.getSetting("enableIntegrated"),
 	}
 }

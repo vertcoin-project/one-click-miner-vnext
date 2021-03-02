@@ -37,7 +37,7 @@ func (p *Zergpool) GetStratumUrl() string {
 }
 
 func (p *Zergpool) GetPassword() string {
-	return "c=DOGE,mc=VTC"
+	return "x"
 }
 
 func (p *Zergpool) GetID() int {
