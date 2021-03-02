@@ -174,16 +174,11 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		vSizeInt := uint64(vSize + float64(0.5)) // Round Up
 		logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
 
-		//If vSizeInt is 0-999
-		//feeinbytes = 0
-		//
-		//If vSizeInt is 1000-1999
-		//feeinbytes = 1
-		//
-		//If vSizeInt is 2000-2999
-		//feeinbytes = 2
+		// Vertcoin fee calculation
+		// fee := uint64(vSizeInt * 100)
+		// Dogecoin fee calculation
+		fee := uint64(math.Floor(float64(vSizeInt) / float64(1000)))
 
-		fee := uint64(1)
 		logging.Debugf("Setting fee to %d\n", fee)
 
 		// empty out the dummy sigs
