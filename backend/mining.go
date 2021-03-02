@@ -92,8 +92,6 @@ func (m *Backend) StartMining() bool {
 	}()
 
 	go func() {
-		cycles := 0
-		nhr := uint64(0)
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
 		vtcPayout := payouts.NewVTCPayout()
@@ -104,6 +102,9 @@ func (m *Backend) StartMining() bool {
 			// Default Dogecoin payout
 			myPayout = payouts.NewDOGEPayout()
 		}
+
+		cycles := 0
+		nhr := uint64(0)
 		continueLoop := true
 		for continueLoop {
 			if cycles >= 600 {
