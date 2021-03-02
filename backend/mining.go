@@ -97,6 +97,13 @@ func (m *Backend) StartMining() bool {
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
 		vtcPayout := payouts.NewVTCPayout()
+		var myPayout payouts.Payout
+		if m.UseCustomPayout() {
+			myPayout = m.payout
+		} else {
+			// Default Dogecoin payout
+			myPayout = payouts.NewDOGEPayout()
+		}
 		continueLoop := true
 		for continueLoop {
 			if cycles >= 600 {
@@ -106,14 +113,14 @@ func (m *Backend) StartMining() bool {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
-				if !(m.PayoutIsVertcoin() && m.UseCustomPayout()) {
+				if myPayout.GetName() != vtcPayout.GetName() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
 					if m.PayoutIsBitcoin() {
 						unitPayoutCoinPerBtc = 1
 					} else {
-						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker(), m.payout.GetCoingeckoExchange())
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(myPayout.GetName(), myPayout.GetTicker(), myPayout.GetCoingeckoExchange())
 					}
-					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
+					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, myPayout.GetTicker(), unitPayoutCoinPerBtc))
 				}
 			}
 			cycles++
@@ -146,9 +153,9 @@ func (m *Backend) StartMining() bool {
 
 			// Convert average earning from Vertcoin to selected payout coin
 			avgEarningTicker := "VTC"
-			if !(m.PayoutIsVertcoin() && m.UseCustomPayout()) {
+			if myPayout.GetName() != vtcPayout.GetName() {
 				if unitVtcPerBtc != 0 && unitPayoutCoinPerBtc != 0 {
-					avgEarningTicker = m.payout.GetTicker()
+					avgEarningTicker = myPayout.GetTicker()
 					avgEarning = avgEarning * unitVtcPerBtc / unitPayoutCoinPerBtc
 				}
 			}
