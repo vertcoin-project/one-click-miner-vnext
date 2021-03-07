@@ -25,7 +25,7 @@ func (p *Hashalot) GetPendingPayout() uint64 {
 	if err != nil {
 		return 0
 	}
-	vtc, ok := jsonPayload["balance"].(float64)
+	vtc, ok := jsonPayload["pendingBalance"].(float64)
 	if !ok {
 		return 0
 	}
