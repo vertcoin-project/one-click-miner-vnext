@@ -46,7 +46,7 @@ func (p *Vertcoinpool) GetPassword() string {
 }
 
 func (p *Vertcoinpool) GetID() int {
-	return 3
+	return 6
 }
 
 func (p *Vertcoinpool) GetName() string {
