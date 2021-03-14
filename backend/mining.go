@@ -29,15 +29,15 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 	}
 
 	return miners.BinaryArguments{
-		StratumUrl:      m.pool.GetStratumUrl(),
-		StratumUsername: username,
-		StratumPassword: password,
+		StratumUrl:       m.pool.GetStratumUrl(),
+		StratumUsername:  username,
+		StratumPassword:  password,
 		EnableIntegrated: m.getSetting("enableIntegrated"),
 	}
 }
 
 func (m *Backend) GetPoolFee() string {
-	return fmt.Sprintf("%0.1f%%", m.pool.GetFee())
+	return fmt.Sprintf("%0.2f%%", m.pool.GetFee())
 }
 
 func (m *Backend) GetPoolName() string {
