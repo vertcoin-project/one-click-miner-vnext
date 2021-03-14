@@ -26,7 +26,7 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 }
 
 func (m *Backend) GetPoolFee() string {
-	return fmt.Sprintf("%0.1f%%", m.pool.GetFee())
+	return fmt.Sprintf("%0.2f%%", m.pool.GetFee())
 }
 
 func (m *Backend) GetPoolName() string {
