@@ -57,22 +57,22 @@ func (p *Vertcoinpool) GetFee() float64 {
 	jsonPayload := map[string]interface{}{}
 	err := util.GetJson("http://vertcoinpool.com:4000/api/pools", &jsonPayload)
 	if err != nil {
-		return 0.25
+		return 0.42
 	}
 	
 	pools, ok := jsonPayload["pools"].([]interface{})
 	if !ok {
-		return 0.25
+		return 0.42
 	}
 	
 	pool, ok := pools[0].(map[string]interface{})
 	if !ok {
-		return 0.25
+		return 0.42
 	}
 	
 	fee, ok := pool["poolFeePercent"].(float64)
 	if !ok {
-		return 0.25
+		return 0.42
 	}
 
 	return fee
