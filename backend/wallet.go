@@ -8,7 +8,7 @@ import (
 	"github.com/vertiond/verthash-one-click-miner/networks"
 	"github.com/vertiond/verthash-one-click-miner/tracking"
 	"github.com/vertiond/verthash-one-click-miner/util"
-	"github.com/vertiond/verthash-one-click-miner/wallet"
+	"github.com/vertiond/verthash-one-click-miner/wallet_doge"
 )
 
 func (m *Backend) WalletInitialized() int {

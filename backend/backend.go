@@ -10,7 +10,7 @@ import (
 	"github.com/vertiond/verthash-one-click-miner/payouts"
 	"github.com/vertiond/verthash-one-click-miner/pools"
 	"github.com/vertiond/verthash-one-click-miner/util"
-	"github.com/vertiond/verthash-one-click-miner/wallet"
+	"github.com/vertiond/verthash-one-click-miner/wallet_doge"
 	"github.com/wailsapp/wails"
 )
 
@@ -23,7 +23,7 @@ type Backend struct {
 	rapidFailures       []*miners.BinaryRunner
 	pool                pools.Pool
 	payout              payouts.Payout
-	vertcoinAddress     string
+	walletaddress       string
 	zergpoolAddress     string
 	refreshBalanceChan  chan bool
 	refreshHashChan     chan bool
@@ -77,8 +77,8 @@ func (m *Backend) ResetZergpoolAddress() {
 	m.zergpoolAddress = m.GetZergpoolAddress()
 }
 
-func (m *Backend) ResetVertcoinAddress() {
-	m.vertcoinAddress = m.Address()
+func (m *Backend) ResetWalletaddress() {
+	m.walletaddress = m.Address()
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {
