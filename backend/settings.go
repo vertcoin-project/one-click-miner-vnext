@@ -179,7 +179,7 @@ func (m *Backend) PayoutIsVertcoin() bool {
 }
 
 func (m *Backend) PayoutIsDogecoin() bool {
-	return (m.payout.GetID() == 1)
+	return (m.payout.GetID() == 4)
 }
 
 func (m *Backend) PayoutIsBitcoin() bool {
