@@ -49,7 +49,7 @@ func NewWallet(addr string, script []byte) (*Wallet, error) {
 
 func (w *Wallet) Utxos() ([]Utxo, error) {
 	utxos := []Utxo{}
-	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.OCMBackend, w.Script), &utxos)
+	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.DOGEBackend, w.Script), &utxos)
 	if err != nil {
 		logging.Errorf("Error fetching UTXOs from OCM Backend: %s", err.Error())
 		return utxos, err
@@ -174,7 +174,11 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		vSizeInt := uint64(vSize + float64(0.5)) // Round Up
 		logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
 
-		fee := uint64(vSizeInt * 100)
+		// Vertcoin fee calculation
+		// fee := uint64(vSizeInt * 100)
+		// Dogecoin fee calculation
+		fee := uint64(math.Floor(float64(vSizeInt) / float64(1000)))
+
 		logging.Debugf("Setting fee to %d\n", fee)
 
 		// empty out the dummy sigs
@@ -210,7 +214,7 @@ type BalanceResponse struct {
 // Update will reload balance from the backend
 func (w *Wallet) Update() {
 	bal := BalanceResponse{}
-	err := util.GetJson(fmt.Sprintf("%sbalance/%x", networks.Active.OCMBackend, w.Script), &bal)
+	err := util.GetJson(fmt.Sprintf("%sbalance/%x", networks.Active.DOGEBackend, w.Script), &bal)
 	if err != nil {
 		logging.Errorf("Error fetching balance from backend: %s", err.Error())
 		return
