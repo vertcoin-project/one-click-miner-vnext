@@ -32,7 +32,7 @@
     </div>
     <div v-if="sent === true" class="col-286">
       <svg
-        style="fill: #048652"
+        style="fill: #eee"
         width="57px"
         height="57px"
         viewBox="0 0 57 57"
