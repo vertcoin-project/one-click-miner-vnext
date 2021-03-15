@@ -77,8 +77,8 @@ div.failureReason {
   height: 200px;
   overflow-y: auto;
   font-family: "Courier New", Courier, monospace;
-  color: red;
-  border: 1px solid red;
+  color: white;
+  border: 1px solid white;
   width: 600px;
   margin: 0 auto;
 }
