@@ -17,8 +17,8 @@ func GetPools(testnet bool) []Pool {
 	}
 	return []Pool{
 		NewZergpool(),
-		NewHashalot(),
-		NewSuprnova(),
+		//NewHashalot(),
+		//NewSuprnova(),
 		//NewP2Pool(),
 	}
 }
