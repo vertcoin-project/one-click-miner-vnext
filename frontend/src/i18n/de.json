@@ -73,7 +73,7 @@
     },
     "tabbar" : {
         "wallet" : "Wallet",
-        "send_coins" : "Coins senden",
+        "send_coins" : "Coins senden (DOGE)",
         "settings" : "Einstellungen"
     },
     "tracking": { 

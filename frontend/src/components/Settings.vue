@@ -2,12 +2,6 @@
   <div class="settings-container">
     <div class="col-settings" v-if="!showWarning">
       <div class="col-settings-sub">
-<!--        <p style="text-align: left" >-->
-<!--          <input type="checkbox" v-model="debugging" />-->
-<!--          {{ $t("settings.enable_debug") }}-->
-<!--          <br />-->
-<!--          <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>-->
-<!--        </p>-->
         <p style="text-align: left">
           <input type="checkbox" v-model="enableIntegrated" />
           {{ $t("settings.enable_integrated") }}
@@ -44,6 +38,12 @@
           {{ $t("settings.auto_start") }}
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
+        </p>
+        <p style="text-align: left" >
+          <input type="checkbox" v-model="debugging" />
+          {{ $t("settings.enable_debug") }}
+          <br />
+          <span class="subtext">{{ $t("settings.enable_debug_sub") }}</span>
         </p>
         <p style="text-align: left">
           {{ $t("settings.pool") }}:

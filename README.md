@@ -16,7 +16,7 @@ Mine Vertcoin and receive payouts to your Dogecoin, Bitcoin, Litecoin, Bitcoin C
 
 *Network and exchange fees may apply
 
-The Verthash One-Click Miner is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This allows cryptocurrency enthusiasts to get into mining with minimal effort. When you download the Verthash One-Click Miner, you will be asked to provide a password for the native (built in) Vertcoin wallet. It will then immediately commence mining.
+The Verthash One-Click Miner is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This is essentially a fancy wrapper for [VerthashMiner](https://github.com/CryptoGraphics/VerthashMiner) which is also open source. When you download the Verthash One-Click Miner, you will be asked to provide a password for the native (built in) Vertcoin wallet. It will then immediately commence mining.
 
 This software is available for Windows and Linux.
 
