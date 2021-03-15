@@ -5,15 +5,15 @@
         "close" : "Zamknij"
     },
     "welcome" : {
-        "alreadyrunning" : "The One-Click Miner jest już uruchomiony. Nie możesz uruchomić kolejnego.",
-        "click_button_to_start" : "Naciśnij przycisk poniżej aby rozpocząć kopanie.",
+        "alreadyrunning" : "One-Click Miner jest już uruchomiony. Nie możesz uruchomić kolejnego.",
+        "click_button_to_start" : "Naciśnij przycisk poniżej, aby rozpocząć kopanie.",
         "startmining" : "Start kopania!",
         "makeapassword" : "Utwórz hasło. Nie zapomnij go.",
         "password" : "Hasło",
         "confirmpassword" : "Potwierdź hasło",
         "password_cannot_be_empty" : "Hasło nie może być puste",
-        "password_mismatch" : "Hasło nieprawidłowe",
-        "error_initializing" : "Coś poszło nie tak"
+        "password_mismatch" : "Hasła nie pasują do siebie",
+        "error_initializing" : "Coś poszło nie tak podczas inicjalizacji portfela"
     },
     "checks" : {
         "prerequisite" : "Instalowanie dodatków. Może pojawić się prośba o nadanie uprawnień (podświetlona na pasku zadań)",
@@ -21,16 +21,21 @@
         "checking_mining_software" : "Sprawdzanie oprogramowania do kopania...",
         "rapidfail" : "Sprawdzanie komunikatów o błędach",
         "compatibility" : "Sprawdzanie kompatybilności karty graficznej...",
-        "installing_miners" : "Instalowanie oprogramowania..."
+        "installing_miners" : "Instalowanie oprogramowania...",
+        "verthash" : "Weryfikowanie / Tworzenie pliku danych Verthash..."
     },
     "mining" : {
         "spendable_balance" : "Kwota do wydania",
         "still_maturing" : "nadal dojrzewa",
         "pending_pool_payout" : "wypłata w trakcie",
+        "pending_payout_info_unavailable" : "Poczekaj na informacje o oczekujących wypłatach",
         "waiting_for_miners" : "Oczekiwanie na uruchomienie kopania",
         "expected_earnings_24h" : "Oczekiwany dochód (24h)",
         "estimating" : "około",
-        "stop_mining" : "Zatrzymaj kopanie"
+        "stop_mining" : "Zatrzymaj kopanie",
+        "active_pool" : "Aktywna kopalnia",
+        "pool_fee" : "Prowizja",
+        "copy_address" : "Kopiuj adres swojego portfela"
     },
     "sending" : {
         "send_all_to" : "Wyślij wszystkie monety do",
@@ -46,20 +51,27 @@
         "password_required" : "Podaj hasło do portfela",
         "invalid_address" : "Błędny adres",
         "script_failure" : "Błąd skryptu",
-        "could_not_calculate_fee" : "Obliczenie opłaty nie powiodło się",
+        "could_not_calculate_fee" : "Obliczenie prowizji nie powiodło się",
         "insufficient_funds" : "Za mało środków",
-        "sign_failed":"Nie można podpisać transakcji. Sprawdź swoje hasło",
-       "send_failed" : "Wysyłka nieudana. Więcej informacji w pliku debug.log"
+        "sign_failed" : "Nie można podpisać transakcji. Sprawdź swoje hasło.",
+        "send_failed" : "Wysyłka nieudana. Więcej informacji w pliku debug.log"
     },
     "settings" : {
         "enable_debug" : "Włącz debugging",
-        "enable_debug_sub" : "Dołącz komunikaty z kopania do pliku debug.log. Plik może osiągnąć duży rozmiar",
+        "enable_debug_sub" : "Dołącz komunikaty z kopania do pliku debug.log. Plik może zrobić się duży",
         "auto_start" : "Automatyczne uruchamianie",
         "auto_start_sub" : "Uruchom One-Click Miner kiedy uruchamiasz komputer",
         "closed_source" : "Używaj górników typu closed-source",
         "closed_source_sub" : "Większa wydajność, ale oprogramowanie może pobierać dodatkową opłatę dla jego autora",
         "closed_source_warning" : "Zaznaczyłeś używanie górników typu closed-source. Vertcoin nie popiera i nie wspiera tych górników. Ich kod źródłowy nie jest publicznie dostępny i nie można sprawdzić, czy nie zawierają szkodliwego oprogramowania.",
-        "save_n_restart" : "Zapisz i Wznów"
+        "enable_integrated" : "Kop na zintegrowanych kartach graficznych",
+        "enable_integrated_sub" : "Zintegrowane karty graficzne będą wykorzystywane do kopania (jeśli możliwe)",
+        "testnet" : "Tryb Testnet",
+        "testnet_sub" : "Włącza tryb Testnet. Nie będziesz kopał prawdziwych monet.",
+        "skipverthashverify" : "Nie weryfikuj Verthash podczas uruchamiania",
+        "skipverthashverify_sub" : "Weryfikacja integralności pliku verthash.dat podczas uruchamiania zostanie pominięta (niezalecane)",
+        "save_n_restart" : "Zapisz i Wznów",
+        "pool" : "Kopalnia"
     },
     "tabbar" : {
         "wallet" : "Portfel",
@@ -71,7 +83,7 @@
         "tracking_enabled" : "Udostępnianie statystyk włączone",
         "disable_tracking" : "Wyłącz",
         "tracking_disabled" : "Udostępnianie statystyk wyłączone",
-        "enable_tracking" : "Włącz statystyki by pomóc nam w rozwoju programu",
+        "enable_tracking" : "Włącz statystyki, by pomóc nam w rozwoju programu",
         "report_issue" : "Zgłoś problem z programem"
     },
     "update" : {

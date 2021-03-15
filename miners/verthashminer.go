@@ -20,7 +20,8 @@ var cfgPath = "verthash-miner-tmpl.conf"
 
 type VerthashMinerImpl struct {
 	binaryRunner  *BinaryRunner
-	hashRates     map[int64]uint64
+	clhashRates   map[int64]uint64
+	cuhashRates   map[int64]uint64
 	hashRatesLock sync.Mutex
 }
 
@@ -41,7 +42,7 @@ func (l *VerthashMinerImpl) generateTempConf() error {
 }
 
 func NewVerthashMinerImpl(br *BinaryRunner) MinerImpl {
-	return &VerthashMinerImpl{binaryRunner: br, hashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
+	return &VerthashMinerImpl{binaryRunner: br, clhashRates: map[int64]uint64{}, cuhashRates: map[int64]uint64{}, hashRatesLock: sync.Mutex{}}
 }
 
 func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
@@ -124,18 +125,19 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 }
 
 func (l *VerthashMinerImpl) ParseOutput(line string) {
-	//if l.binaryRunner.Debug {
-	logging.Debugf("[VerthashMiner] %s\n", line)
-	//}
+	if l.binaryRunner.Debug {
+		logging.Debugf("[VerthashMiner] %s\n", line)
+	}
 	line = strings.TrimSpace(line)
 	if strings.Contains(line, "_device(") && strings.HasSuffix(line, "H/s") {
 		startMHs := strings.LastIndex(line, ": ")
 		if startMHs > -1 {
 			deviceIdxStart := strings.Index(line, "_device(") + 8
+			deviceTypeStart := strings.Index(line, "_device(") - 2
 			deviceIdxEnd := strings.Index(line[deviceIdxStart:], ")")
 			deviceIdxString := line[deviceIdxStart : deviceIdxStart+deviceIdxEnd]
 			deviceIdx, _ := strconv.ParseInt(deviceIdxString, 10, 64)
-			logging.Debugf("Device IDX: %s", deviceIdxString)
+			deviceType := line[deviceTypeStart : deviceTypeStart+2]
 
 			hashRateUnit := strings.ToUpper(line[len(line)-4 : len(line)-3])
 			line = line[startMHs+2 : len(line)-5]
@@ -152,7 +154,11 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 			}
 
 			l.hashRatesLock.Lock()
-			l.hashRates[deviceIdx] = uint64(f)
+			if deviceType == "cu" {
+				l.cuhashRates[deviceIdx] = uint64(f)
+			} else {
+				l.clhashRates[deviceIdx] = uint64(f)
+			}
 			l.hashRatesLock.Unlock()
 		}
 	}
@@ -161,7 +167,10 @@ func (l *VerthashMinerImpl) ParseOutput(line string) {
 func (l *VerthashMinerImpl) HashRate() uint64 {
 	totalHash := uint64(0)
 	l.hashRatesLock.Lock()
-	for _, h := range l.hashRates {
+	for _, h := range l.cuhashRates {
+		totalHash += h
+	}
+	for _, h := range l.clhashRates {
 		totalHash += h
 	}
 	l.hashRatesLock.Unlock()
