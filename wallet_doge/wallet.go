@@ -170,6 +170,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		logging.Debugf("Transaction serialize size stripped is %d\n", tx.SerializeSizeStripped())
 
 		chunked := false
+		utxo_txids_removed := []string{}
 		// Chunk if needed
 		if tx.SerializeSize() > maxTxSize {
 			chunked = true
@@ -182,6 +183,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 						uint32(u.Vout) == tx.TxIn[len(tx.TxIn)-1].PreviousOutPoint.Index {
 						totalIn -= u.Amount
 						valueRemoved += u.Amount
+						utxo_txids_removed = append(utxo_txids_removed, u.TxID)
 					}
 				}
 				tx.TxIn = tx.TxIn[:len(tx.TxIn)-1]
@@ -213,8 +215,18 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		fee += uint64(math.Floor(float64(vSizeInt) / float64(1000)))
 		// 1 DOGE added fee for each dust output
 		for _, utxo := range utxos {
-			if utxo.Amount < 100000000 {  // Utxo Amount is in Satoshis
-				fee += 1
+			if utxo.Amount < 100000000 {  // UTXO Amount is in Satoshis
+				// Check if this UTXO was removed from chunking step
+				utxo_was_removed := false
+				for _, txid := range utxo_txids_removed {
+					if utxo.TxID == txid {
+						utxo_was_removed = true
+						break
+					}
+				}
+				if !utxo_was_removed {
+					fee += 1
+				}
 			}
 		}
 
