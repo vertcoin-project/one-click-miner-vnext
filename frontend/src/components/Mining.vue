@@ -33,7 +33,7 @@
             </g>
           </svg>
         </a>
-        &nbsp;{{balance}} VTC
+        &nbsp;{{balance}} DOGE
         <a class="tiny" @click="copyAddress" v-bind:title="$t('mining.copy_address')">
           <svg width="16" height="16" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           viewBox="0 0 368.008 368.008" style="enable-background:new 0 0 368.008 368.008;" xml:space="preserve">

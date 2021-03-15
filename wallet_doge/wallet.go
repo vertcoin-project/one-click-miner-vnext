@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
@@ -214,9 +215,28 @@ type BalanceResponse struct {
 // Update will reload balance from the backend
 func (w *Wallet) Update() {
 	bal := BalanceResponse{}
-	err := util.GetJson(fmt.Sprintf("%sbalance/%x", networks.Active.DOGEBackend, w.Script), &bal)
-	if err != nil {
-		logging.Errorf("Error fetching balance from backend: %s", err.Error())
+	jsonPayload := map[string]interface{}{}
+	err := util.GetJson(fmt.Sprintf("%sget_address_balance/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	json_parse_success := false
+	if err == nil {
+		jsonData, ok := jsonPayload["data"].(map[string]interface{})
+		if ok {
+			balance_confirmed_in_dogecoin_str, ok := jsonData["confirmed_balance"].(string)
+			if ok {
+				tx_value_in_dogecoin_float_float, _ := strconv.ParseFloat(balance_confirmed_in_dogecoin_str, 64)
+				balance_confirmed := uint64(math.Round(tx_value_in_dogecoin_float_float * float64(100000000)))
+				balance_maturing := uint64(0)
+				bal = BalanceResponse{balance_confirmed, balance_maturing}
+				json_parse_success = true
+			}
+		}
+	}
+	if !json_parse_success {
+		if err != nil {
+			logging.Errorf("Error fetching balance from backend: %s", err.Error())
+		} else {
+			logging.Errorf("Error fetching balance from backend")
+		}
 		return
 	}
 	w.Spendable = bal.Spendable
