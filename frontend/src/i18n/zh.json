@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "钱包",
-        "send_coins" : "发送币 (VTC)",
+        "send_coins" : "发送币 (DOGE)",
         "settings" : "设置"
     },
     "tracking": { 

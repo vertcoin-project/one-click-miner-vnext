@@ -75,7 +75,7 @@
     },
     "tabbar" : {
         "wallet" : "Кошелёк",
-        "send_coins" : "Отправить криптовалюту (VTC)",
+        "send_coins" : "Отправить криптовалюту (DOGE)",
         "settings" : "Настройки"
     },
     "tracking": { 

@@ -75,7 +75,7 @@
     },
     "tabbar" : {
         "wallet" : "Portfel",
-        "send_coins" : "Wyślij monety (VTC)",
+        "send_coins" : "Wyślij monety (DOGE)",
         "settings" : "Ustawienia"
     },
     "tracking": { 

@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Novčanik",
-        "send_coins" : "Pošalji novčiće (VTC)",
+        "send_coins" : "Pošalji novčiće (DOGE)",
         "settings" : "Postavke"
     },
     "tracking": { 

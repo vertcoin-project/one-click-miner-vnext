@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Portemonnee",
-        "send_coins" : "Verstuur coins (VTC)",
+        "send_coins" : "Verstuur coins (DOGE)",
         "settings" : "Instellingen"
     },
     "tracking": { 

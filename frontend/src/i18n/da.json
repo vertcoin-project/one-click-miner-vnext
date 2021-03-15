@@ -63,7 +63,7 @@
     },
     "tabbar" : {
         "wallet" : "Wallet",
-        "send_coins" : "Send coins (VTC)",
+        "send_coins" : "Send coins (DOGE)",
         "settings" : "Indstillinger"
     },
     "tracking": { 

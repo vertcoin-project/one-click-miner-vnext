@@ -73,7 +73,7 @@
     },
     "tabbar" : {
         "wallet" : "Cüzdan",
-        "send_coins" : "Coin gönder",
+        "send_coins" : "Coin gönder (DOGE)",
         "settings" : "Ayarlar"
     },
     "tracking": { 
