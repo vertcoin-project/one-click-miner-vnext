@@ -68,7 +68,7 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 
 	r := txSendReply{}
 
-	err := util.PostJson(fmt.Sprintf("%stx", networks.Active.OCMBackend), s, &r)
+	err := util.PostJson(fmt.Sprintf("%stx", networks.Active.InsightURL), s, &r)
 	if err != nil {
 		return "", err
 	}

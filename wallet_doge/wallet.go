@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
@@ -49,9 +50,37 @@ func NewWallet(addr string, script []byte) (*Wallet, error) {
 
 func (w *Wallet) Utxos() ([]Utxo, error) {
 	utxos := []Utxo{}
-	err := util.GetJson(fmt.Sprintf("%sutxos/%x", networks.Active.OCMBackend, w.Script), &utxos)
-	if err != nil {
-		logging.Errorf("Error fetching UTXOs from OCM Backend: %s", err.Error())
+	jsonPayload := map[string]interface{}{}
+	err := util.GetJson(fmt.Sprintf("%sget_tx_unspent/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	json_parse_success := false
+	if err == nil {
+		jsonData, ok := jsonPayload["data"].(map[string]interface{})
+		if ok {
+			jsonDataTxArr, ok := jsonData["txs"].([]interface{})
+			if ok {
+				json_parse_success = true
+				for tx_ind, jsonDataTxInfo := range jsonDataTxArr {
+					jsonDataTxInfoMap := jsonDataTxInfo.(map[string]interface{})
+					utxo_txid, ok1 := jsonDataTxInfoMap["txid"].(string)
+					utxo_vout, ok2 := jsonDataTxInfoMap["output_no"].(uint)
+					tx_value_in_dogecoin_str, ok3 := jsonDataTxInfoMap["value"].(string)
+					if !ok1 || !ok2 || !ok3 {
+						json_parse_success = false
+						break
+					}
+					tx_value_in_dogecoin_float, _ := strconv.ParseFloat(tx_value_in_dogecoin_str, 64)
+					utxo_amount := uint64(math.Round(tx_value_in_dogecoin_float * float64(100000000)))
+					utxos[tx_ind] = Utxo{utxo_txid, utxo_vout, utxo_amount}
+				}
+			}
+		}
+	}
+	if !json_parse_success {
+		if err != nil {
+			logging.Errorf("Error fetching UTXOs from DOGE Backend: %s", err.Error())
+		} else {
+			logging.Errorf("Error fetching UTXOs from DOGE Backend")
+		}
 		return utxos, err
 	}
 	return utxos, nil
@@ -174,7 +203,21 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		vSizeInt := uint64(vSize + float64(0.5)) // Round Up
 		logging.Debugf("Transaction vSizeInt is %d\n", vSizeInt)
 
-		fee := uint64(vSizeInt * 100)
+		// Vertcoin fee calculation //
+		// fee := uint64(vSizeInt * 100)
+
+		// Dogecoin fee calculation //
+		// Base fee is 1 DOGE
+		fee := uint64(1)
+		// Each additional 1000 bytes incurs 1 DOGE added fee
+		fee += uint64(math.Floor(float64(vSizeInt) / float64(1000)))
+		// 1 DOGE added fee for each dust output
+		for _, utxo := range utxos {
+			if utxo.Amount < 100000000 {  // Utxo Amount is in Satoshis
+				fee += 1
+			}
+		}
+
 		logging.Debugf("Setting fee to %d\n", fee)
 
 		// empty out the dummy sigs
@@ -210,9 +253,28 @@ type BalanceResponse struct {
 // Update will reload balance from the backend
 func (w *Wallet) Update() {
 	bal := BalanceResponse{}
-	err := util.GetJson(fmt.Sprintf("%sbalance/%x", networks.Active.OCMBackend, w.Script), &bal)
-	if err != nil {
-		logging.Errorf("Error fetching balance from backend: %s", err.Error())
+	jsonPayload := map[string]interface{}{}
+	err := util.GetJson(fmt.Sprintf("%sget_address_balance/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	json_parse_success := false
+	if err == nil {
+		jsonData, ok := jsonPayload["data"].(map[string]interface{})
+		if ok {
+			balance_confirmed_in_dogecoin_str, ok := jsonData["confirmed_balance"].(string)
+			if ok {
+				tx_value_in_dogecoin_float_float, _ := strconv.ParseFloat(balance_confirmed_in_dogecoin_str, 64)
+				balance_confirmed := uint64(math.Round(tx_value_in_dogecoin_float_float * float64(100000000)))
+				balance_maturing := uint64(0)
+				bal = BalanceResponse{balance_confirmed, balance_maturing}
+				json_parse_success = true
+			}
+		}
+	}
+	if !json_parse_success {
+		if err != nil {
+			logging.Errorf("Error fetching balance from backend: %s", err.Error())
+		} else {
+			logging.Errorf("Error fetching balance from backend")
+		}
 		return
 	}
 	w.Spendable = bal.Spendable

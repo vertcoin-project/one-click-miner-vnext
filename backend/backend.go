@@ -10,7 +10,7 @@ import (
 	"github.com/vertiond/verthash-one-click-miner/payouts"
 	"github.com/vertiond/verthash-one-click-miner/pools"
 	"github.com/vertiond/verthash-one-click-miner/util"
-	"github.com/vertiond/verthash-one-click-miner/wallet"
+	"github.com/vertiond/verthash-one-click-miner/wallet_doge"
 	"github.com/wailsapp/wails"
 )
 
