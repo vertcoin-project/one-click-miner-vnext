@@ -24,7 +24,7 @@
           </select>
         </p>
         <!-- TODO: Improve address validation -->
-        <p v-if="poolID == 5 && payoutID != 1">
+        <p v-if="poolID == 5 && payoutID != 4">
           <input type="text" style="width:90%" class="critical-input"
             v-model="zergpoolAddress"
             v-bind:placeholder="$t('settings.zergpoolAddress')"

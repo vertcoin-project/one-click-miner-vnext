@@ -20,18 +20,20 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 
 	var username string
 	var password string
-	if m.UseZergpoolPayout() {
+	if m.UseCustomPayout() {
 		username = m.zergpoolAddress
 		password = m.payout.GetPassword()
 	} else {
-		username = m.vertcoinAddress
-		password = m.pool.GetPassword()
+		// Use wallet address (Dogecoin) for payout
+		walletPayout := payouts.NewDOGEPayout()
+		username = m.walletaddress
+		password = walletPayout.GetPassword()
 	}
 
 	return miners.BinaryArguments{
-		StratumUrl:      m.pool.GetStratumUrl(),
-		StratumUsername: username,
-		StratumPassword: password,
+		StratumUrl:       m.pool.GetStratumUrl(),
+		StratumUsername:  username,
+		StratumPassword:  password,
 		EnableIntegrated: m.getSetting("enableIntegrated"),
 	}
 }
@@ -45,10 +47,10 @@ func (m *Backend) GetPoolName() string {
 }
 
 func (m *Backend) GetPayoutTicker() string {
-	if m.UseZergpoolPayout() {
+	if m.UseCustomPayout() {
 		return m.payout.GetTicker()
 	}
-	return "VTC"
+	return "DOGE"
 }
 
 func (m *Backend) StartMining() bool {
@@ -90,11 +92,19 @@ func (m *Backend) StartMining() bool {
 	}()
 
 	go func() {
-		cycles := 0
-		nhr := uint64(0)
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
 		vtcPayout := payouts.NewVTCPayout()
+		var myPayout payouts.Payout
+		if m.UseCustomPayout() {
+			myPayout = m.payout
+		} else {
+			// Default Dogecoin payout
+			myPayout = payouts.NewDOGEPayout()
+		}
+
+		cycles := 0
+		nhr := uint64(0)
 		continueLoop := true
 		for continueLoop {
 			if cycles >= 600 {
@@ -104,14 +114,14 @@ func (m *Backend) StartMining() bool {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
-				if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+				if myPayout.GetName() != vtcPayout.GetName() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
 					if m.PayoutIsBitcoin() {
 						unitPayoutCoinPerBtc = 1
 					} else {
-						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(m.payout.GetName(), m.payout.GetTicker(), m.payout.GetCoingeckoExchange())
+						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(myPayout.GetName(), myPayout.GetTicker(), myPayout.GetCoingeckoExchange())
 					}
-					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, m.payout.GetTicker(), unitPayoutCoinPerBtc))
+					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, myPayout.GetTicker(), unitPayoutCoinPerBtc))
 				}
 			}
 			cycles++
@@ -144,9 +154,9 @@ func (m *Backend) StartMining() bool {
 
 			// Convert average earning from Vertcoin to selected payout coin
 			avgEarningTicker := "VTC"
-			if !m.PayoutIsVertcoin() && m.UseZergpoolPayout() {
+			if myPayout.GetName() != vtcPayout.GetName() {
 				if unitVtcPerBtc != 0 && unitPayoutCoinPerBtc != 0 {
-					avgEarningTicker = m.payout.GetTicker()
+					avgEarningTicker = myPayout.GetTicker()
 					avgEarning = avgEarning * unitVtcPerBtc / unitPayoutCoinPerBtc
 				}
 			}
@@ -187,10 +197,10 @@ func (m *Backend) StartMining() bool {
 			m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
 			logging.Infof("Updating pending pool payout...")
 			var payoutAddr string
-			if m.UseZergpoolPayout() {
+			if m.UseCustomPayout() {
 				payoutAddr = m.zergpoolAddress
 			} else {
-				payoutAddr = m.vertcoinAddress
+				payoutAddr = m.walletaddress
 			}
 			newPb := m.pool.GetPendingPayout(payoutAddr)
 			pb = newPb
