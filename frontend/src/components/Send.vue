@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div v-if="sendError === '' && sent === false" class="col-286">
-      <p v-if="receivedBalance === '0.00 VTC'">{{ $t('sending.send_all_to') }}:</p>
+      <p v-if="receivedBalance === '0.00 DOGE'">{{ $t('sending.send_all_to') }}:</p>
       <p
-        v-if="receivedBalance !== '0.00 VTC' && receivedTxCount === 1"
+        v-if="receivedBalance !== '0.00 DOGE' && receivedTxCount === 1"
       >{{ $t('sending.youre_sending_x_to', { receivedBalance }) }}:</p>
       <p
-        v-if="receivedBalance !== '0.00 VTC' && receivedTxCount > 1"
+        v-if="receivedBalance !== '0.00 DOGE' && receivedTxCount > 1"
       >{{ $t('sending.youre_sending_x_in_y_txs_to', { receivedBalance, receivedTxCount }) }}:</p>
       <p>
         <input
@@ -114,7 +114,7 @@ export default {
       invalidAddress: false,
       target: "",
       password: "",
-      receivedBalance: "0.00 VTC",
+      receivedBalance: "0.00 DOGE",
       receivedTxCount: 0,
       error: "",
       sent: false,
@@ -168,11 +168,11 @@ export default {
     },
     recalculate() {
       var self = this;
-      this.receivedBalance = "0.00 VTC";
+      this.receivedBalance = "0.00 DOGE";
       this.invalidAddress = false;
       window.backend.Backend.PrepareSweep(this.target).then(result => {
         if (result !== "") {
-          self.receivedBalance = "0.00 VTC";
+          self.receivedBalance = "0.00 DOGE";
           self.error = self.$t("sending." + result);
         } else {
           self.error = "";
@@ -184,7 +184,7 @@ export default {
     },
     retry() {
       this.password = "";
-      this.receivedBalance = "0.00 VTC";
+      this.receivedBalance = "0.00 DOGE";
       this.error = "";
       this.sent = false;
       this.txids = [];

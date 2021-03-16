@@ -96,7 +96,7 @@ func (m *Backend) PrepareSweep(addr string) string {
 		val += (float64(tx.TxOut[0].Value) / float64(100000000))
 	}
 
-	result := PrepareResult{fmt.Sprintf("%0.8f VTC", val), len(txs)}
+	result := PrepareResult{fmt.Sprintf("%0.8f DOGE", val), len(txs)}
 	logging.Debugf("Prepared sweep: %v", result)
 
 	m.runtime.Events.Emit("createTransactionResult", result)
