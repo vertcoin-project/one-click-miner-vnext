@@ -52,7 +52,7 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 }
 
 type txSend struct {
-	RawTx string `json:"rawtx"`
+	RawTx string `json:"tx_hex"`
 }
 
 type txSendReply struct {
@@ -68,8 +68,21 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 
 	r := txSendReply{}
 
-	err := util.PostJson(fmt.Sprintf("%stx", networks.Active.InsightURL), s, &r)
-	if err != nil {
+	jsonPayload := map[string]interface{}{}
+	err := util.PostJson(fmt.Sprintf("%ssend_tx/DOGETEST", networks.Active.InsightURL), s, &jsonPayload)
+	json_parse_success := false
+	if err == nil {
+		jsonData, ok := jsonPayload["data"].(map[string]interface{})
+		if ok {
+			txid, ok := jsonData["txid"].(string)
+			r = txSendReply{txid}
+			if ok {
+				json_parse_success = true
+			}
+		}
+	}
+
+	if !json_parse_success {
 		return "", err
 	}
 
