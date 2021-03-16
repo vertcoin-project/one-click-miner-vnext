@@ -59,10 +59,10 @@ func (w *Wallet) Utxos() ([]Utxo, error) {
 			jsonDataTxArr, ok := jsonData["txs"].([]interface{})
 			if ok {
 				json_parse_success = true
-				for tx_ind, jsonDataTxInfo := range jsonDataTxArr {
+				for _, jsonDataTxInfo := range jsonDataTxArr {
 					jsonDataTxInfoMap := jsonDataTxInfo.(map[string]interface{})
 					utxo_txid, ok1 := jsonDataTxInfoMap["txid"].(string)
-					utxo_vout, ok2 := jsonDataTxInfoMap["output_no"].(uint)
+					utxo_vout, ok2 := jsonDataTxInfoMap["output_no"].(float64)
 					tx_value_in_dogecoin_str, ok3 := jsonDataTxInfoMap["value"].(string)
 					if !ok1 || !ok2 || !ok3 {
 						json_parse_success = false
@@ -70,7 +70,8 @@ func (w *Wallet) Utxos() ([]Utxo, error) {
 					}
 					tx_value_in_dogecoin_float, _ := strconv.ParseFloat(tx_value_in_dogecoin_str, 64)
 					utxo_amount := uint64(math.Round(tx_value_in_dogecoin_float * float64(100000000)))
-					utxos[tx_ind] = Utxo{utxo_txid, utxo_vout, utxo_amount}
+					u := Utxo{utxo_txid, uint(utxo_vout), utxo_amount}
+					utxos = append(utxos, u)
 				}
 			}
 		}
