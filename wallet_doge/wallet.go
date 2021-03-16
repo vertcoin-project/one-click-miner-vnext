@@ -51,7 +51,7 @@ func NewWallet(addr string, script []byte) (*Wallet, error) {
 func (w *Wallet) Utxos() ([]Utxo, error) {
 	utxos := []Utxo{}
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("%sget_tx_unspent/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_tx_unspent/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
 	json_parse_success := false
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})
@@ -213,10 +213,10 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		// Each additional 1000 bytes incurs 1 DOGE added fee
 		fee += uint64(math.Floor(float64(vSizeInt) / float64(1000)))
 		// 1 DOGE added fee if total transaction amount is dust
-		if totalIn < 100000000 {  // UTXO Amount is in Satoshis
+		if totalIn < 100000000 { // UTXO Amount is in Satoshis
 			fee += 1
 		}
-		fee *= 100000000  // Convert fee from DOGE to Satoshis
+		fee *= 100000000 // Convert fee from DOGE to Satoshis
 
 		logging.Debugf("Setting fee to %d\n", fee)
 
@@ -254,7 +254,7 @@ type BalanceResponse struct {
 func (w *Wallet) Update() {
 	bal := BalanceResponse{}
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("%sget_address_balance/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_address_balance/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
 	json_parse_success := false
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})
