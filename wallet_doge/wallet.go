@@ -216,6 +216,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		if totalIn < 100000000 {  // UTXO Amount is in Satoshis
 			fee += 1
 		}
+		fee *= 100000000  // Convert fee from DOGE to Satoshis
 
 		logging.Debugf("Setting fee to %d\n", fee)
 
