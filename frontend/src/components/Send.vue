@@ -49,7 +49,7 @@
               <g
                 id="noun_tick_1167345"
                 transform="translate(13.152174, 17.336957)"
-                fill="#1EA068"
+                fill="#eee"
                 fill-rule="nonzero"
               >
                 <path
@@ -59,7 +59,7 @@
               </g>
               <circle
                 id="Oval"
-                stroke="#1EA068"
+                stroke="#eee"
                 stroke-width="1.19999993"
                 cx="27.5"
                 cy="27.5"
