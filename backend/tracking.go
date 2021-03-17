@@ -23,3 +23,7 @@ func (m *Backend) TrackingEnabled() string {
 func (m *Backend) ReportIssue() {
 	util.OpenBrowser("https://github.com/vertiond/verthash-one-click-miner/issues/new")
 }
+
+func (m *Backend) PayoutInformation() {
+	util.OpenBrowser("https://zergpool.com/?address=")
+}

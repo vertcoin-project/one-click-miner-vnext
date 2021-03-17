@@ -86,7 +86,8 @@
         "disable_tracking" : "Disable",
         "tracking_disabled" : "You are not sharing usage statistics",
         "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue"
+        "report_issue" : "Report an issue",
+        "payout_information" : "View payout information"
     },
     "update" : {
         "new_version_available" : "New version available",
