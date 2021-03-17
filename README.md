@@ -1,10 +1,12 @@
 # Verthash One-Click Miner
 
-Mine Vertcoin and receive payouts to your Dogecoin, Bitcoin, Litecoin, Bitcoin Cash or Dash address!
+You will be asked to create a password for your built-in Dogecoin wallet. It will create the Verthash datafile and then immediately begin mining to your Dogecoin wallet address.
 
-**Current Zergpool payout thresholds as of February 21, 2021:**
+**[View your Zergpool payout information here](https://zergpool.com/?address=) (Click 'Copy address' to the right of Spendable Balance)**
 
 `DOGE payment threshold is 400 DOGE and 80 DOGE on Sunday late evening(CET)`
+
+`VTC payment threshold is the equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)`
 
 `BTC payment threshold is 0.0025 BTC `
 
@@ -16,7 +18,7 @@ Mine Vertcoin and receive payouts to your Dogecoin, Bitcoin, Litecoin, Bitcoin C
 
 *Network and exchange fees may apply
 
-The Verthash One-Click Miner is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This is essentially a fancy wrapper for [VerthashMiner](https://github.com/CryptoGraphics/VerthashMiner) which is also open source. When you download the Verthash One-Click Miner, you will be asked to provide a password for the native (built in) Vertcoin wallet. It will then immediately commence mining.
+The Verthash One-Click Miner mines [Vertcoin](https://vertcoin.org) and is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This is essentially a fancy wrapper for [VerthashMiner](https://github.com/CryptoGraphics/VerthashMiner) which is also open source.
 
 This software is available for Windows and Linux.
 
