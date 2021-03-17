@@ -259,12 +259,14 @@ func (w *Wallet) Update() {
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})
 		if ok {
-			balance_confirmed_in_dogecoin_str, ok := jsonData["confirmed_balance"].(string)
-			if ok {
-				tx_value_in_dogecoin_float_float, _ := strconv.ParseFloat(balance_confirmed_in_dogecoin_str, 64)
-				balance_confirmed := uint64(math.Round(tx_value_in_dogecoin_float_float * float64(100000000)))
+			balance_confirmed_in_doge_str, ok1 := jsonData["confirmed_balance"].(string)
+			balance_unconfirmed_in_doge_str, ok2 := jsonData["unconfirmed_balance"].(string)
+			if ok1 && ok2 {
+				balance_confirmed_in_doge_float, _ := strconv.ParseFloat(balance_confirmed_in_doge_str, 64)
+				balance_unconfirmed_in_doge_float, _ := strconv.ParseFloat(balance_unconfirmed_in_doge_str, 64)
+				balance_spendable := uint64(math.Round((balance_confirmed_in_doge_float + balance_unconfirmed_in_doge_float) * float64(100000000)))
 				balance_maturing := uint64(0)
-				bal = BalanceResponse{balance_confirmed, balance_maturing}
+				bal = BalanceResponse{balance_spendable, balance_maturing}
 				json_parse_success = true
 			}
 		}
