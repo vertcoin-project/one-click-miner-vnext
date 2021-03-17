@@ -213,7 +213,7 @@ func (w *Wallet) PrepareSweep(addr string) ([]*wire.MsgTx, error) {
 		// Each additional 1000 bytes incurs 1 DOGE added fee
 		fee += uint64(math.Floor(float64(vSizeInt) / float64(1000)))
 		// 1 DOGE added fee if total transaction amount is dust
-		if totalIn < 100000000 { // UTXO Amount is in Satoshis
+		if (totalIn - fee*100000000) < 100000000 { // UTXO Amount is in Satoshis
 			fee += 1
 		}
 		fee *= 100000000 // Convert fee from DOGE to Satoshis
