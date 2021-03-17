@@ -26,8 +26,8 @@ func SetNetwork(testnet bool) {
 		}
 	} else {
 		Active = Network{
-			Base58P2PKHVersion: 113,
-			Base58P2SHVersion:  196,
+			Base58P2PKHVersion: 30,
+			Base58P2SHVersion:  22,
 			InsightURL:         "https://sochain.com/",
 			OCMBackend:         "https://ocm-backend.blkidx.org/",
 			Bech32Prefix:       "vtc",
