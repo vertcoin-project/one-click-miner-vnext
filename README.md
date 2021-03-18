@@ -1,22 +1,27 @@
 # Verthash One-Click Miner
 
-You will be asked to create a password for your built-in Dogecoin wallet. It will create the Verthash datafile and then immediately begin mining to your Dogecoin wallet address.
+This program will create a Dogecoin wallet that only you have access to.  Encrypt your wallet with a password that you will not forget. It will then create the Verthash datafile and immediately begin mining to your built-in Dogecoin wallet.  Click on the Settings tab to change payout currency.
 
-**[View your Zergpool payout information here](https://zergpool.com/?address=) (Click 'Copy address' to the right of Spendable Balance)**
+### Payment thresholds
 
-`DOGE payment threshold is 400 DOGE and 80 DOGE on Sunday late evening(CET)`
+Dogecoin
+  - 400 DOGE and 80 DOGE on Sunday late evening(CET)
 
-`VTC payment threshold is the equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)`
+Bitcoin
+  - 0.0025 BTC
 
-`BTC payment threshold is 0.0025 BTC `
+Litecoin
+  - 0.25 LTC and 0.05 LTC on Sunday late evening(CET)
 
-`LTC payment threshold is 0.25 LTC and 0.05 LTC on Sunday late evening(CET)`
+Vertcoin, Bitcoin Cash, Dash
+  - The equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)
 
-`BCH payment threshold is the equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)`
+**Click 'View payout information' near the bottom of the OCM to access details on your miner**
 
-`DASH payment threshold is the equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)`
+### Fees
 
-*Network and exchange fees may apply
+  - Standard Dogecoin network fee for withdrawal from built-in wallet (usually 1 DOGE)
+  - Zergpool.com charges a 0.5% fee while mining
 
 The Verthash One-Click Miner mines [Vertcoin](https://vertcoin.org) and is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This is essentially a fancy wrapper for [VerthashMiner](https://github.com/CryptoGraphics/VerthashMiner) which is also open source.
 
