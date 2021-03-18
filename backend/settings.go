@@ -56,7 +56,7 @@ func (m *Backend) getIntSetting(name string) int {
 }
 
 func (m *Backend) setStringSetting(name string, value string) {
-	setting := fmt.Sprintf("%s", value)
+	setting := value
 	m.settings.Update(func(tx *buntdb.Tx) error {
 		_, _, err := tx.Set(name, setting, nil)
 		return err
@@ -160,14 +160,14 @@ func (m *Backend) GetPayouts() []PayoutChoice {
 	return pc
 }
 
-func (m *Backend) GetZergpoolAddress() string {
+func (m *Backend) GetCustomAddress() string {
 	return m.getStringSetting("zergpoolAddress")
 }
 
-func (m *Backend) SetZergpoolAddress(newZergpoolAddress string) {
-	logging.Infof("Setting Zergpool address to [%s]\n", newZergpoolAddress)
-	m.zergpoolAddress = newZergpoolAddress
-	m.setStringSetting("zergpoolAddress", newZergpoolAddress)
+func (m *Backend) SetCustomAddress(newCustomAddress string) {
+	logging.Infof("Setting custom address to [%s]\n", newCustomAddress)
+	m.customAddress = newCustomAddress
+	m.setStringSetting("zergpoolAddress", newCustomAddress)
 }
 
 func (m *Backend) PoolIsZergpool() bool {
@@ -187,23 +187,30 @@ func (m *Backend) PayoutIsBitcoin() bool {
 }
 
 // TODO: Improve address validation
-func (m *Backend) ValidZergpoolAddress() bool {
-	zergpoolAddress := m.zergpoolAddress
-	if zergpoolAddress != "" {
+func (m *Backend) ValidCustomAddress() bool {
+	customAddress := m.customAddress
+	if customAddress != "" {
 		return true
 	}
 	return false
 }
 
 func (m *Backend) UseCustomPayout() bool {
-	// Use the "Zergpool payout" config settings only if
+	// Use the custom payout config settings only if
 	// - Zergpool is selected
 	// - non-Dogecoin payout option is selected
 	// - address for payout is valid
-	if m.PoolIsZergpool() && (!m.PayoutIsDogecoin()) && m.ValidZergpoolAddress() {
+	if m.PoolIsZergpool() && (!m.PayoutIsDogecoin()) && m.ValidCustomAddress() {
 		return true
 	}
 	return false
+}
+
+func (m *Backend) GetCurrentMiningAddress() string {
+	if m.UseCustomPayout() {
+		return m.customAddress
+	}
+	return m.walletAddress
 }
 
 func (m *Backend) GetTestnet() bool {
