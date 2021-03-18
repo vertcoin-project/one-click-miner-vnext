@@ -1,6 +1,8 @@
 package backend
 
 import (
+	"fmt"
+
 	"github.com/vertiond/verthash-one-click-miner/tracking"
 	"github.com/vertiond/verthash-one-click-miner/util"
 )
@@ -25,5 +27,11 @@ func (m *Backend) ReportIssue() {
 }
 
 func (m *Backend) PayoutInformation() {
-	util.OpenBrowser("https://zergpool.com/?address=")
+	var mining_address string
+	if m.UseCustomPayout() {
+		mining_address = m.zergpoolAddress
+	} else {
+		mining_address = m.walletaddress
+	}
+	util.OpenBrowser(fmt.Sprintf("https://zergpool.com/?address=%s", mining_address))
 }
