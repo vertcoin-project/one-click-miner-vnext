@@ -52,6 +52,9 @@ func loadState() {
 		return
 	}
 	trackingEnabled = (string(dat) == "1")
+	if trackingEnabled {
+		Disable()
+	}
 }
 
 func saveState() {
