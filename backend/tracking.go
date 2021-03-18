@@ -25,5 +25,5 @@ func (m *Backend) ReportIssue() {
 }
 
 func (m *Backend) PayoutInformation() {
-	util.OpenBrowser("https://zergpool.com/?address=")
+	m.pool.OpenBrowserPayoutInfo(m.GetCurrentMiningAddress())
 }

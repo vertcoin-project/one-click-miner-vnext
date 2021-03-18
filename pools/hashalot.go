@@ -72,3 +72,7 @@ func (p *Hashalot) GetFee() float64 {
 
 	return fee
 }
+
+func (p *Hashalot) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser(fmt.Sprintf("https://hashalot.net/vtc/miners/%s", addr))
+}

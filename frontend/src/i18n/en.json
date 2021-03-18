@@ -73,7 +73,7 @@
         "save_n_restart" : "Save & Restart",
         "pool": "Mining pool",
         "payout" : "Zergpool payout",
-        "zergpoolAddress" : "Address to receive payout"
+        "customAddress" : "Address to receive payout"
     },
     "tabbar" : {
         "wallet" : "Wallet",

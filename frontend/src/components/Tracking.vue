@@ -16,7 +16,8 @@
       <span v-if="updateAvailable">
         -
         <a @click="update">{{ $t('tracking.update_available') }}</a>
-      </span> -
+      </span>
+      <!-- </span> - -->
       <!-- <span>{{ $t('tracking.tracking_disabled') }}.&nbsp;</span>-->
       <!-- <a @click="enableTracking">{{ $t('tracking.enable_tracking') }}</a> -->
       <span>
@@ -68,10 +69,10 @@ export default {
     enableTracking: function() {
       this.tracking = true;
       window.backend.Backend.EnableTracking();
-    // },
-    // disableTracking: function() {
-    //   this.tracking = false;
-    //   window.backend.Backend.DisableTracking();
+    },
+    disableTracking: function() {
+      this.tracking = false;
+      window.backend.Backend.DisableTracking();
     }
   }
 };

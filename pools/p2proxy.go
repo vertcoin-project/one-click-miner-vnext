@@ -49,3 +49,5 @@ func (p *P2Proxy) GetName() string {
 func (p *P2Proxy) GetFee() float64 {
 	return 1.00
 }
+
+func (p *P2Proxy) OpenBrowserPayoutInfo(addr string) {}

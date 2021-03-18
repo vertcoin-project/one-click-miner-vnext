@@ -21,12 +21,12 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 	var username string
 	var password string
 	if m.UseCustomPayout() {
-		username = m.zergpoolAddress
+		username = m.customAddress
 		password = m.payout.GetPassword()
 	} else {
 		// Use wallet address (Dogecoin) for payout
 		walletPayout := payouts.NewDOGEPayout()
-		username = m.walletaddress
+		username = m.walletAddress
 		password = walletPayout.GetPassword()
 	}
 
@@ -198,9 +198,9 @@ func (m *Backend) StartMining() bool {
 			logging.Infof("Updating pending pool payout...")
 			var payoutAddr string
 			if m.UseCustomPayout() {
-				payoutAddr = m.zergpoolAddress
+				payoutAddr = m.customAddress
 			} else {
-				payoutAddr = m.walletaddress
+				payoutAddr = m.walletAddress
 			}
 			newPb := m.pool.GetPendingPayout(payoutAddr)
 			pb = newPb

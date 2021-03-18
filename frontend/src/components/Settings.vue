@@ -11,7 +11,7 @@
         <p v-if="poolID == 5" style="text-align: left">
           {{ $t("settings.payout") }}:
           <br />
-          <select style="width: 100%" name="payout" v-model="payoutID">
+          <select style="width: 100%" name="payout" v-model="payoutID" v-on:change="clearAddress">
             <option v-for="option in payouts" v-bind:value="option.id" v-bind:key="option.id">
                 {{ option.name }}
             </option>
@@ -20,8 +20,8 @@
         <!-- TODO: Improve address validation -->
         <p v-if="poolID == 5 && payoutID != 4">
           <input type="text" style="width:90%" class="critical-input"
-            v-model="zergpoolAddress"
-            v-bind:placeholder="$t('settings.zergpoolAddress')"
+            v-model="customAddress"
+            v-bind:placeholder="$t('settings.customAddress')"
             v-on:change="sanitizeAddress"
           />
         </p>
@@ -86,7 +86,7 @@ export default {
       payoutID: -1,
       pools: [],
       payouts: [],
-      zergpoolAddress: "",
+      customAddress: "",
     };
   },
   created() {
@@ -109,8 +109,8 @@ export default {
                     self.payouts = result;
                     window.backend.Backend.GetPayout().then(result => {
                       self.payoutID = result;
-                      window.backend.Backend.GetZergpoolAddress().then(result => {
-                        self.zergpoolAddress = result;
+                      window.backend.Backend.GetCustomAddress().then(result => {
+                        self.customAddress = result;
                       })
                     })
                   })
@@ -134,7 +134,11 @@ export default {
     },
     sanitizeAddress: function() {
       var self = this;
-      self.zergpoolAddress = self.zergpoolAddress.trim();
+      self.customAddress = self.customAddress.trim();
+    },
+    clearAddress: function() {
+      var self = this;
+      self.customAddress = "";
     },
     save: function() {
       var self = this;
@@ -145,7 +149,7 @@ export default {
                 window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
                   window.backend.Backend.SetPool(self.poolID).then(() => {
                     window.backend.Backend.SetPayout(self.payoutID).then(() => {
-                      window.backend.Backend.SetZergpoolAddress(self.zergpoolAddress).then(() => {
+                      window.backend.Backend.SetCustomAddress(self.customAddress).then(() => {
                         self.$emit("committed");
                       });
                     });

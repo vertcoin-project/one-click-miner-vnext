@@ -51,3 +51,7 @@ func (p *Zergpool) GetName() string {
 func (p *Zergpool) GetFee() float64 {
 	return 0.50
 }
+
+func (p *Zergpool) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser(fmt.Sprintf("https://zergpool.com/?address=%s", addr))
+}
