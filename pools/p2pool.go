@@ -61,3 +61,7 @@ func (p *P2Pool) GetName() string {
 func (p *P2Pool) GetFee() float64 {
 	return 1.0
 }
+
+func (p *P2Pool) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser("http://p2p-usa.xyz:9171/static/")
+}
