@@ -51,7 +51,7 @@ func NewWallet(addr string, script []byte) (*Wallet, error) {
 func (w *Wallet) Utxos() ([]Utxo, error) {
 	utxos := []Utxo{}
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_tx_unspent/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_tx_unspent/DOGE/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
 	json_parse_success := false
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})
@@ -254,7 +254,7 @@ type BalanceResponse struct {
 func (w *Wallet) Update() {
 	bal := BalanceResponse{}
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_address_balance/DOGETEST/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("%sapi/v2/get_address_balance/DOGE/%s", networks.Active.InsightURL, w.Address), &jsonPayload)
 	json_parse_success := false
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})

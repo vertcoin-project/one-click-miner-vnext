@@ -68,7 +68,7 @@ func (m *Backend) SendSweep(password string) []string {
 }
 
 func (m *Backend) ShowTx(txid string) {
-	util.OpenBrowser(fmt.Sprintf("%stx/DOGETEST/%s", networks.Active.InsightURL, txid))
+	util.OpenBrowser(fmt.Sprintf("%stx/DOGE/%s", networks.Active.InsightURL, txid))
 }
 
 type PrepareResult struct {
@@ -118,6 +118,7 @@ func (m *Backend) InitWallet(password string) bool {
 		m.WalletInitialized()
 		m.ResetPool()
 		m.ResetPayout()
+		m.ResetWalletaddress()
 		return true
 	}
 	logging.Errorf("Error: %s", err.Error())

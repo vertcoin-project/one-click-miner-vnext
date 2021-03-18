@@ -69,7 +69,7 @@ func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 	r := txSendReply{}
 
 	jsonPayload := map[string]interface{}{}
-	err := util.PostJson(fmt.Sprintf("%sapi/v2/send_tx/DOGETEST", networks.Active.InsightURL), s, &jsonPayload)
+	err := util.PostJson(fmt.Sprintf("%sapi/v2/send_tx/DOGE", networks.Active.InsightURL), s, &jsonPayload)
 	json_parse_success := false
 	if err == nil {
 		jsonData, ok := jsonPayload["data"].(map[string]interface{})
