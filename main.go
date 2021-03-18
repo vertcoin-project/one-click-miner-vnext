@@ -85,10 +85,10 @@ func main() {
 	}
 	networks.SetNetwork(backend.GetTestnet())
 
-	backend.ResetWalletaddress()
+	backend.ResetWalletAddress()
+	backend.ResetCustomAddress()
 	backend.ResetPool()
 	backend.ResetPayout()
-	backend.ResetZergpoolAddress()
 	app.Bind(backend)
 	app.Run()
 	backend.StopMining()
