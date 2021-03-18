@@ -2,7 +2,7 @@ package payouts
 
 var _ Payout = &DOGEPayout{}
 
-type DOGEPayout struct {}
+type DOGEPayout struct{}
 
 func NewDOGEPayout() *DOGEPayout {
 	return &DOGEPayout{}
@@ -13,7 +13,7 @@ func (p *DOGEPayout) GetID() int {
 }
 
 func (p *DOGEPayout) GetName() string {
-	return "Dogecoin"
+	return "Verthash OCM Dogecoin Wallet"
 }
 
 func (p *DOGEPayout) GetTicker() string {

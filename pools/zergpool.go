@@ -45,7 +45,7 @@ func (p *Zergpool) GetID() int {
 }
 
 func (p *Zergpool) GetName() string {
-	return "Zergpool"
+	return "Zergpool.com"
 }
 
 func (p *Zergpool) GetFee() float64 {
