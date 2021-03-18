@@ -4,17 +4,17 @@ This program will create a Dogecoin wallet that only you have access to.  Encryp
 
 ### Payment thresholds
 
-Dogecoin
-  - 400 DOGE and 80 DOGE on Sunday late evening(CET)
+  - **Dogecoin**
+    - 400 DOGE and 80 DOGE on Sunday late evening(CET)
 
-Bitcoin
-  - 0.0025 BTC
+  - **Bitcoin**
+    - 0.0025 BTC
 
-Litecoin
-  - 0.25 LTC and 0.05 LTC on Sunday late evening(CET)
+  - **Litecoin**
+    - 0.25 LTC and 0.05 LTC on Sunday late evening(CET)
 
-Vertcoin, Bitcoin Cash, Dash
-  - The equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)
+  - **Vertcoin, Bitcoin Cash, Dash**
+    - The equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)
 
 **Click 'View payout information' near the bottom of the OCM to access details on your miner**
 
