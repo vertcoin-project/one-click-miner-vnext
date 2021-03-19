@@ -74,5 +74,5 @@ func (p *Suprnova) GetFee() float64 {
 }
 
 func (p *Suprnova) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser(fmt.Sprintf("https://vtc.suprnova.cc/index.php?page=api&action=getdashboarddata&api_key=%s", addr))
+	util.OpenBrowser(fmt.Sprintf("https://vtc.suprnova.cc/index.php?page=anondashboard&user=%s", addr))
 }
