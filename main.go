@@ -87,8 +87,8 @@ func main() {
 
 	backend.ResetWalletAddress()
 	backend.ResetPool()
-	backend.ResetPayout()
 	backend.ResetCustomAddress()
+	backend.ResetPayout()
 	app.Bind(backend)
 	app.Run()
 	backend.StopMining()

@@ -148,8 +148,8 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
                   window.backend.Backend.SetPool(self.poolID).then(() => {
-                    window.backend.Backend.SetPayout(self.payoutID).then(() => {
-                      window.backend.Backend.SetCustomAddress(self.customAddress).then(() => {
+                    window.backend.Backend.SetCustomAddress(self.customAddress).then(() => {
+                      window.backend.Backend.SetPayout(self.payoutID).then(() => {
                         self.$emit("committed");
                       });
                     });
