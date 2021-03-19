@@ -77,3 +77,7 @@ func (p *Vertcoinpool) GetFee() float64 {
 
 	return fee
 }
+
+func (p *Vertcoinpool) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser(fmt.Sprintf("http://vertcoinpool.com/?#verthash1/dashboard?address=%s", addr))
+}
