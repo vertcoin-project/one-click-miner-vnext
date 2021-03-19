@@ -53,6 +53,10 @@ func (m *Backend) GetPayoutTicker() string {
 	return "DOGE"
 }
 
+func (m *Backend) PayoutInformation() {
+	m.pool.OpenBrowserPayoutInfo(m.GetCurrentMiningAddress())
+}
+
 func (m *Backend) StartMining() bool {
 	logging.Infof("Starting mining process...")
 
