@@ -120,6 +120,7 @@ func (m *Backend) StartMining() bool {
 					if myPayout.GetName() == btcPayout.GetName() {
 						unitPayoutCoinPerBtc = 1
 					} else {
+						time.Sleep(5 * time.Second) // Put time between API calls
 						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(myPayout.GetName(), myPayout.GetTicker(), myPayout.GetCoingeckoExchange())
 					}
 					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, myPayout.GetTicker(), unitPayoutCoinPerBtc))
