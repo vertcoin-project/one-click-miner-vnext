@@ -178,6 +178,7 @@ export default {
       this.stopping = true;
       window.backend.Backend.StopMining().then(() => {
         self.stopping = false;
+        self.hashrate = "0.00 MH/s"
         self.$emit("stop-mining");
       });
     },
