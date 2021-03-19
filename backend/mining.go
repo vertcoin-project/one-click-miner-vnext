@@ -33,6 +33,10 @@ func (m *Backend) GetPoolName() string {
 	return m.pool.GetName()
 }
 
+func (m *Backend) PayoutInformation() {
+	m.pool.OpenBrowserPayoutInfo(m.Address())
+}
+
 func (m *Backend) StartMining() bool {
 	logging.Infof("Starting mining process...")
 
