@@ -95,6 +95,7 @@ func (m *Backend) StartMining() bool {
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
 		vtcPayout := payouts.NewVTCPayout()
+		btcPayout := payouts.NewBTCPayout()
 		var myPayout payouts.Payout
 		if m.UseCustomPayout() {
 			myPayout = m.payout
@@ -116,7 +117,7 @@ func (m *Backend) StartMining() bool {
 				nhr = util.GetNetHash()
 				if myPayout.GetName() != vtcPayout.GetName() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
-					if m.PayoutIsBitcoin() {
+					if myPayout.GetName() == btcPayout.GetName() {
 						unitPayoutCoinPerBtc = 1
 					} else {
 						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(myPayout.GetName(), myPayout.GetTicker(), myPayout.GetCoingeckoExchange())

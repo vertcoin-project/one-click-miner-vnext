@@ -182,10 +182,6 @@ func (m *Backend) PayoutIsDogecoin() bool {
 	return (m.payout.GetID() == 4)
 }
 
-func (m *Backend) PayoutIsBitcoin() bool {
-	return (m.payout.GetID() == 2)
-}
-
 // TODO: Improve address validation
 func (m *Backend) ValidCustomAddress() bool {
 	customAddress := m.customAddress
