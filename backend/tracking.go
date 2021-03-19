@@ -23,7 +23,3 @@ func (m *Backend) TrackingEnabled() string {
 func (m *Backend) ReportIssue() {
 	util.OpenBrowser("https://github.com/vertiond/verthash-one-click-miner/issues/new")
 }
-
-func (m *Backend) PayoutInformation() {
-	m.pool.OpenBrowserPayoutInfo(m.GetCurrentMiningAddress())
-}

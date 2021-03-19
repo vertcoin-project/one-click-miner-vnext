@@ -68,6 +68,7 @@
       </p>
       <p class="pool">
         <span style="opacity: 1">{{$t('mining.active_pool')}}: {{activePool}} <span v-if="poolFee != '0.0%'">({{$t('mining.pool_fee')}}: {{poolFee}})</span></span>
+        <br><a class="link" @click="payoutInformation">{{ $t('mining.payout_information') }}</a>
       </p>
       
       <p class="spacer">&nbsp;</p>
@@ -206,6 +207,9 @@ export default {
     },
     sendMoney: function() {
       this.$emit("send");
+    },
+    payoutInformation: function() {
+      window.backend.Backend.PayoutInformation();
     }
   }
 };
@@ -261,6 +265,13 @@ p.fork>a, p.fork>a:active, p.fork>a:visited {
   color: #d0a000;
   font-weight: bold;
   padding: 5px;
+  cursor: pointer;
+}
+
+a.link {
+  font-size: 14px;
+  opacity: 0.6;
+  text-decoration: underline;
   cursor: pointer;
 }
 

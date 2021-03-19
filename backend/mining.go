@@ -53,6 +53,10 @@ func (m *Backend) GetPayoutTicker() string {
 	return "DOGE"
 }
 
+func (m *Backend) PayoutInformation() {
+	m.pool.OpenBrowserPayoutInfo(m.GetCurrentMiningAddress())
+}
+
 func (m *Backend) StartMining() bool {
 	logging.Infof("Starting mining process...")
 
@@ -95,6 +99,7 @@ func (m *Backend) StartMining() bool {
 		unitVtcPerBtc := 0.0
 		unitPayoutCoinPerBtc := 0.0
 		vtcPayout := payouts.NewVTCPayout()
+		btcPayout := payouts.NewBTCPayout()
 		var myPayout payouts.Payout
 		if m.UseCustomPayout() {
 			myPayout = m.payout
@@ -116,9 +121,10 @@ func (m *Backend) StartMining() bool {
 				nhr = util.GetNetHash()
 				if myPayout.GetName() != vtcPayout.GetName() {
 					unitVtcPerBtc = payouts.GetBitcoinPerUnitCoin(vtcPayout.GetName(), vtcPayout.GetTicker(), vtcPayout.GetCoingeckoExchange())
-					if m.PayoutIsBitcoin() {
+					if myPayout.GetName() == btcPayout.GetName() {
 						unitPayoutCoinPerBtc = 1
 					} else {
+						time.Sleep(5 * time.Second) // Put time between API calls
 						unitPayoutCoinPerBtc = payouts.GetBitcoinPerUnitCoin(myPayout.GetName(), myPayout.GetTicker(), myPayout.GetCoingeckoExchange())
 					}
 					logging.Infof(fmt.Sprintf("Payout exchange rate: VTC/BTC=%0.10f, %s/BTC=%0.10f", unitVtcPerBtc, myPayout.GetTicker(), unitPayoutCoinPerBtc))

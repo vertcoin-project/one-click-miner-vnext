@@ -35,7 +35,8 @@
         "stop_mining" : "Stop Mining",
         "active_pool" : "Active pool",
         "pool_fee" : "fee",
-        "copy_address" : "Copy your wallet address"
+        "copy_address" : "Copy your wallet address",
+        "payout_information" : "View payout information"
     },
     "sending" : {
         "send_all_to" : "Send all your mined coins to",
@@ -86,8 +87,7 @@
         "disable_tracking" : "Disable",
         "tracking_disabled" : "You are not sharing usage statistics",
         "enable_tracking" : "Enable these to help us improve your experience",
-        "report_issue" : "Report an issue",
-        "payout_information" : "View payout information"
+        "report_issue" : "Report an issue"
     },
     "update" : {
         "new_version_available" : "New version available",
