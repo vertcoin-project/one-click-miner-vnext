@@ -16,8 +16,6 @@ This program will create a Dogecoin wallet that only you have access to.  Encryp
   - **Vertcoin, Bitcoin Cash, Dash**
     - The equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)
 
-**Click 'View payout information' near the bottom of the OCM to access details on your miner**
-
 ### Fees
 
   - Standard Dogecoin network fee for withdrawal from built-in wallet (usually 1 DOGE)
