@@ -75,7 +75,7 @@
         "pool": "Mining pool",
         "payout" : "Zergpool payout",
         "customAddress" : "Address to receive payout",
-        "address_validation" : "Complete address validation to activate",
+        "address_validation" : "Click here to activate",
         "mine_verthash" : "I want to mine: Verthash",
         "paid_doge" : "I want to get paid in: DOGE Dogecoin"
     },

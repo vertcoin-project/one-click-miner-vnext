@@ -233,7 +233,7 @@ span.subtext {
 }
 a.link {
   font-size: 14px;
-  opacity: 0.6;
+  opacity: 1;
   text-decoration: underline;
   cursor: pointer;
   text-align: left;
