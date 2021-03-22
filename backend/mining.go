@@ -27,7 +27,11 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		// Use wallet address (Dogecoin) for payout
 		walletPayout := payouts.NewDOGEPayout()
 		username = m.walletAddress
-		password = walletPayout.GetPassword()
+		if m.PoolIsHashCryptos() {
+			password = m.pool.GetPassword()
+		} else {
+			password = walletPayout.GetPassword()
+		}
 	}
 
 	return miners.BinaryArguments{
