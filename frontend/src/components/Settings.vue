@@ -25,6 +25,14 @@
             v-on:change="sanitizeAddress"
           />
         </p>
+        <p v-if="poolID == 6" style="text-align: left">
+          <br><a class="link" @click="payoutInformation">{{ $t('settings.address_validation') }}</a>
+          {{ $t("settings.mine_verthash") }}
+          <br />
+          {{ $t("settings.paid_doge") }}
+          <br><a class="link" @click="copyAddress">{{ $t('mining.copy_address') }}</a>
+          <br />
+        </p>
       </div>
       <div class="col-settings-sub">
 <!--        <p style="text-align: left">-->
@@ -87,6 +95,8 @@ export default {
       pools: [],
       payouts: [],
       customAddress: "",
+      address:"",
+
     };
   },
   created() {
@@ -111,6 +121,9 @@ export default {
                       self.payoutID = result;
                       window.backend.Backend.GetCustomAddress().then(result => {
                         self.customAddress = result;
+                        window.backend.Backend.Address().then(result => {
+                          self.address = result;
+                        })
                       })
                     })
                   })
@@ -139,6 +152,30 @@ export default {
     clearAddress: function() {
       var self = this;
       self.customAddress = "";
+    },
+    payoutInformation: function() {
+      window.backend.Backend.PayoutInformation();
+    },
+    copyAddress: function() {
+      var textArea = document.createElement("textarea");
+      textArea.value = this.address;
+      // textArea.style.display = "none";
+      // Avoid scrolling to bottom
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+    
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+    
+      try {
+        document.execCommand('copy');
+      } catch(e) {
+        // ignore
+      }
+    
+      document.body.removeChild(textArea);
     },
     save: function() {
       var self = this;
@@ -193,5 +230,12 @@ span.subtext {
 }
 .critical-input::placeholder {
   color: red;
+}
+a.link {
+  font-size: 14px;
+  opacity: 0.6;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
 }
 </style>

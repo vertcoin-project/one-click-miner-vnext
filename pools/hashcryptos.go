@@ -49,7 +49,7 @@ func (p *HashCryptos) GetName() string {
 }
 
 func (p *HashCryptos) GetFee() float64 {
-	return 0.90
+	return 0.00
 }
 
 func (p *HashCryptos) OpenBrowserPayoutInfo(addr string) {

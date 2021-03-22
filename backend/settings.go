@@ -178,6 +178,10 @@ func (m *Backend) PoolIsZergpool() bool {
 	return (m.pool.GetID() == 5)
 }
 
+func (m *Backend) PoolIsHashCryptos() bool {
+	return (m.pool.GetID() == 6)
+}
+
 func (m *Backend) PayoutIsVertcoin() bool {
 	return (m.payout.GetID() == 1)
 }
