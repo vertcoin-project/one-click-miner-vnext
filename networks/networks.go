@@ -29,7 +29,7 @@ func SetNetwork(testnet bool) {
 			Base58P2PKHVersion: 30,
 			Base58P2SHVersion:  22,
 			InsightURL:         "https://sochain.com/",
-			OCMBackend:         "https://ocm-backend.blkidx.org/",
+			OCMBackend:         "http://ocm.consumableresources.com:8000/",
 			Bech32Prefix:       "vtc",
 			P2ProxyStratum:     "stratum+tcp://p2p-usa.xyz:9171",
 			P2ProxyURL:         "http://p2p-usa.xyz:9171/",
