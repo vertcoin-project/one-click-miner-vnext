@@ -1,24 +1,18 @@
 # Verthash One-Click Miner
 
-This program will create a Dogecoin wallet that only you have access to.  Encrypt your wallet with a password that you will not forget. It will then create the Verthash datafile and immediately begin mining Vertcoin. You will receive payouts in Dogecoin to your built-in Dogecoin wallet. Click on the Settings tab to change payout currency.
+This program will create a Dogecoin wallet that only you have access to.  Encrypt your wallet with a password that you will not forget. It will then create the Verthash datafile and immediately begin mining Vertcoin. You will receive payouts in Dogecoin to your built-in Dogecoin wallet from the pool selected in Settings.
 
-### Payment thresholds
+### When do I get paid?
 
-  - **Dogecoin**
-    - 400 DOGE and 80 DOGE on Sunday late evening(CET)
+  - **HashCryptos.com**
+    - Every 24 hours with the ability to change payout frequency to every 12 hours
+  - **Zergpool.com**
+    - Every four hours on balances above 400 DOGE and 80 DOGE on Sunday late evening(CET)
+    
+### What are the fees?
 
-  - **Bitcoin**
-    - 0.0025 BTC
-
-  - **Litecoin**
-    - 0.25 LTC and 0.05 LTC on Sunday late evening(CET)
-
-  - **Vertcoin, Bitcoin Cash, Dash**
-    - The equivalent of 0.0001 BTC and 0.00002 BTC on Sunday late evening(CET)
-
-### Fees
-
-  - Standard Dogecoin network fee for withdrawal from built-in wallet (usually 1 DOGE)
+  - Standard minimum Dogecoin network fee for withdrawal from built-in wallet (usually 1 DOGE)
+  - HashCryptos.com charges no fees
   - Zergpool.com charges a 0.5% fee while mining
 
 The Verthash One-Click Miner mines [Vertcoin](https://vertcoin.org) and is functionally the same as [upstream](https://github.com/vertcoin-project/one-click-miner-vnext) utilizing a new data directory, `verthash-ocm`.  This is essentially a fancy wrapper for [VerthashMiner](https://github.com/CryptoGraphics/VerthashMiner) which is also open source.
@@ -39,6 +33,9 @@ You may need to add an exclusion to your antivirus / Windows Defender.
 
 Update your GPU drivers to the latest version.
 
+### I selected HashCryptos.com but Expected Earnings says zero
+
+Please make sure you have [activated your address.](https://www.hashcryptos.com/) It may take a few minutes to activate before you see Expected Earnings and hashrate.
 
 ## Building
 
