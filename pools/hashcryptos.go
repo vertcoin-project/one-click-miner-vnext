@@ -55,5 +55,5 @@ func (p *HashCryptos) GetFee() float64 {
 }
 
 func (p *HashCryptos) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser("https://hashcryptos.com")
+	util.OpenBrowser(fmt.Sprintf("https://hashcryptos.com/?address=%s", addr))
 }

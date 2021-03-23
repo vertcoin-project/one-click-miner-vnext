@@ -75,7 +75,7 @@
         "pool": "Mining pool",
         "payout" : "Payout",
         "customAddress" : "Address to receive payout",
-        "address_activation" : "Complete address activation to activate",
+        "address_activation" : "Click to complete address activation",
         "mine_verthash_paid_doge" : "Mine: Verthash, Paid in: Dogecoin"
     },
     "tabbar" : {
