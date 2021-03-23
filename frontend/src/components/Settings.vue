@@ -8,7 +8,7 @@
           <br />
           <span class="subtext">{{ $t("settings.enable_integrated_sub") }}</span>
         </p>
-        <p v-if="poolID == 5" style="text-align: left">
+        <p style="text-align: left">
           {{ $t("settings.payout") }}:
           <br />
           <select style="width: 100%" name="payout" v-model="payoutID" v-on:change="clearAddress">
@@ -26,12 +26,9 @@
           />
         </p>
         <p v-if="poolID == 6" style="text-align: left">
-          <br><a class="link" @click="payoutInformation">{{ $t('settings.address_validation') }}</a>
-          {{ $t("settings.mine_verthash") }}
-          <br />
-          {{ $t("settings.paid_doge") }}
+          <br><a class="link" @click="activationInformation">{{ $t('settings.address_activation') }}</a>
+          {{ $t("settings.mine_verthash_paid_doge") }}
           <br><a class="link" @click="copyAddress">{{ $t('mining.copy_address') }}</a>
-          <br />
         </p>
       </div>
       <div class="col-settings-sub">
@@ -153,8 +150,8 @@ export default {
       var self = this;
       self.customAddress = "";
     },
-    payoutInformation: function() {
-      window.backend.Backend.PayoutInformation();
+    activationInformation: function() {
+      window.backend.Backend.ActivationInformation();
     },
     copyAddress: function() {
       var textArea = document.createElement("textarea");

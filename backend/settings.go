@@ -273,6 +273,10 @@ func (m *Backend) SetAutoStart(newAutoStart bool) {
 	util.SetAutoStart(newAutoStart)
 }
 
+func (m *Backend) ActivationInformation() {
+	util.OpenBrowser("https://hashcryptos.com")
+}
+
 func (m *Backend) GetVersion() string {
 	return tracking.GetVersion()
 }
