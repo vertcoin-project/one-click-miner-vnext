@@ -2,6 +2,7 @@ package pools
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/vertiond/verthash-one-click-miner/util"
@@ -24,10 +25,11 @@ func (p *HashCryptos) GetPendingPayout(addr string) uint64 {
 	if err != nil {
 		return 0
 	}
-	vtc, ok := jsonPayload["unpaid"].(float64)
+	unpaid, ok := jsonPayload["unpaid"].(string)
 	if !ok {
 		return 0
 	}
+	vtc, _ := strconv.ParseFloat(unpaid, 64)
 	vtc *= 100000000
 	return uint64(vtc)
 }
@@ -53,5 +55,5 @@ func (p *HashCryptos) GetFee() float64 {
 }
 
 func (p *HashCryptos) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser(fmt.Sprintf("https://hashcryptos.com"))
+	util.OpenBrowser("https://hashcryptos.com")
 }
