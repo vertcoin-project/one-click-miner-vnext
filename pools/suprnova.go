@@ -66,7 +66,7 @@ func (p *Suprnova) GetID() int {
 }
 
 func (p *Suprnova) GetName() string {
-	return "Suprnova"
+	return "Suprnova.cc"
 }
 
 func (p *Suprnova) GetFee() float64 {
