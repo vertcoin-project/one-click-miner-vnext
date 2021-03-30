@@ -12,7 +12,7 @@
         "password" : "Passwort",
         "confirmpassword" : "Passwort bestätigen",
         "password_cannot_be_empty" : "Passwort kann nicht leer sein",
-        "password_mismatch" : "Passwörter stimmt nicht überein",
+        "password_mismatch" : "Passwörter stimmen nicht überein",
         "error_initializing" : "Fehler beim Initialisieren des Wallets"
     },
     "checks" : {
