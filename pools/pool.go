@@ -8,6 +8,7 @@ type Pool interface {
 	GetName() string
 	GetID() int
 	GetFee() float64
+	OpenBrowserPayoutInfo(addr string)
 }
 
 func GetPools(addr string, testnet bool) []Pool {
@@ -17,6 +18,7 @@ func GetPools(addr string, testnet bool) []Pool {
 		}
 	}
 	return []Pool{
+		NewVertcoinpool(addr),
 		NewHashalot(addr),
 		NewZergpool(addr),
 		NewSuprnova(addr),

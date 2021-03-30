@@ -35,7 +35,8 @@
         "stop_mining" : "Stop Mining",
         "active_pool" : "Active pool",
         "pool_fee" : "fee",
-        "copy_address" : "Copy your wallet address"
+        "copy_address" : "Copy your wallet address",
+        "payout_information" : "View payout information"
     },
     "sending" : {
         "send_all_to" : "Send all your mined coins to",

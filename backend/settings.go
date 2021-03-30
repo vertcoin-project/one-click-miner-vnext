@@ -100,7 +100,7 @@ func (m *Backend) GetPools() []PoolChoice {
 	for _, p := range pools.GetPools(m.Address(), m.GetTestnet()) {
 		pc = append(pc, PoolChoice{
 			ID:   p.GetID(),
-			Name: fmt.Sprintf("%s (%0.1f%% fee)", p.GetName(), p.GetFee()),
+			Name: fmt.Sprintf("%s (%0.2f%% fee)", p.GetName(), p.GetFee()),
 		})
 	}
 	return pc

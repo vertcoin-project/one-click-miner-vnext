@@ -72,3 +72,7 @@ func (p *Suprnova) GetName() string {
 func (p *Suprnova) GetFee() float64 {
 	return 1.00
 }
+
+func (p *Suprnova) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser(fmt.Sprintf("https://vtc.suprnova.cc/index.php?page=anondashboard&user=%s", addr))
+}
