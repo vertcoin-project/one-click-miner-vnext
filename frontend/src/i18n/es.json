@@ -41,7 +41,7 @@
     "sending" : {
         "send_all_to" : "Envia todas tus monedas minadas a",
         "youre_sending_x_to" : "Estás enviando {receivedBalance} a",
-        "youre_sending_x_in_y_txs_to" : Estás enviando {receivedBalance}en {receivedTxCount} transacciones a",
+        "youre_sending_x_in_y_txs_to" : "Estás enviando {receivedBalance}en {receivedTxCount} transacciones a",
         "receiver_address" : "Dirección del receptor",
         "wallet_password" : "Contraseña de la cartera del minero de un clic",
         "send" : "Enviar",
