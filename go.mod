@@ -27,7 +27,7 @@ require (
 	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e // indirect
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
-	github.com/wailsapp/wails v1.11.0
+	github.com/wailsapp/wails v1.12.3
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb // indirect
 	golang.org/x/net v0.0.0-20210220033124-5f55cee0dc0d // indirect
