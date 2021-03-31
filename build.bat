@@ -33,3 +33,4 @@ CD tracking
 DEL version.go >nul 2>&1
 REN version.go.build version.go
 CD ..
+go clean
