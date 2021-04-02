@@ -35,6 +35,8 @@ github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1 h1:vSHBMfat507JbiOZdNICsiCUmoydc3oLzkOTIb/s+DY=
 github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1/go.mod h1:YNFDXNhMlbkK6pJhNpLWgXWgsU+ISV8AWGdLC7RFlho=
+github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6 h1:n9JlStpjoY3CbO31jfwsAiHqCMbOk/Sk4Unq2pGjc2A=
+github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6/go.mod h1:35JbSyV/BYqHwwRA6Zr1uVDm1637YlNOU61wI797NPI=
 github.com/go-playground/colors v1.2.0 h1:0EdjTXKrr2g1L/LQTYtIqabeHpZuGZz1U4osS1T8+5M=
 github.com/go-playground/colors v1.2.0/go.mod h1:miw1R2JIE19cclPxsXqNdzLZsk4DP4iF+m88bRc7kfM=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
@@ -121,14 +123,6 @@ github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e h1:+NL1GDIUOKxVfbp2K
 github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e/go.mod h1:/h+UnNGt0IhNNJLkGikcdcJqm66zGD/uJGMRxK/9+Ao=
 github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 h1:Otn9S136ELckZ3KKDyCkxapfufrqDqwmGjcHfAyXRrE=
 github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563/go.mod h1:mLqSmt7Dv/CNneF2wfcChfN1rvapyQr01LGKnKex0DQ=
-github.com/wailsapp/wails v0.17.0 h1:5Z8VN0vnz0VeKLe/rPzpWHczxYe6SXv5FcMSg256jyg=
-github.com/wailsapp/wails v0.17.0/go.mod h1:ZmxUrz4se4kaBwTso2UMB2UmNwi2Vrcr5IjlzD/b/S4=
-github.com/wailsapp/wails v1.0.1 h1:88tq70LSVpQoSTSzJ0Am9jea+pjB7Ec+WwnBaNXMHN8=
-github.com/wailsapp/wails v1.0.1/go.mod h1:41775NTsJkXrN7LsnDC/DS3gPO+crhRaUTI/6LuUrWA=
-github.com/wailsapp/wails v1.9.1 h1:ez/TK8YpU9lvOZ9nkgzUXsWu+xOPFVO57zTy0n5w3hc=
-github.com/wailsapp/wails v1.9.1/go.mod h1:XFZunea+USOCMMgBlz0A0JHLL3oWrRhnOl4baZlRpxo=
-github.com/wailsapp/wails v1.10.1 h1:WGM5gms/fVI+Pql484sv5A2eDj13fYUQFIejmoIEN7k=
-github.com/wailsapp/wails v1.10.1/go.mod h1:XFZunea+USOCMMgBlz0A0JHLL3oWrRhnOl4baZlRpxo=
 github.com/wailsapp/wails v1.11.0 h1:bFpZe4a3DGm8MmmjOzWfXm57w8Eed7OvXL/FZM9DABU=
 github.com/wailsapp/wails v1.11.0/go.mod h1:XFZunea+USOCMMgBlz0A0JHLL3oWrRhnOl4baZlRpxo=
 github.com/wailsapp/wails v1.16.3 h1:wuJJU9PnnrrDvhh+DTr1MfqUSR1PDR5H+RilM5Wwd7c=
@@ -146,7 +140,7 @@ golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb h1:fqpd0EBDzlHRCjiphRR5Zo/
 golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/net v0.0.0-20180906233101-161cd47e91fd/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
-golang.org/x/net v0.0.0-20200625001655-4c5254603344/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
+golang.org/x/net v0.0.0-20200904194848-62affa334b73/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/net v0.0.0-20210220033124-5f55cee0dc0d h1:1aflnvSoWWLI2k/dMUAl5lvU1YO4Mb4hz0gh+1rjcxU=
 golang.org/x/net v0.0.0-20210220033124-5f55cee0dc0d/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=

@@ -31,8 +31,8 @@ func SetNetwork(testnet bool) {
 			InsightURL:         "https://insight.vertcoin.org/",
 			OCMBackend:         "https://ocm-backend.blkidx.org/",
 			Bech32Prefix:       "vtc",
-			P2ProxyStratum:     "stratum+tcp://p2p-usa.xyz:9171",
-			P2ProxyURL:         "http://p2p-usa.xyz:9171/",
+			P2ProxyStratum:     getClosestNodeStratum(),
+			P2ProxyURL:         getClosestNodeURL(),
 			WalletDB:           "wallet-testnet.db",
 		}
 	}
