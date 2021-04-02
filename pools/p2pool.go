@@ -16,6 +16,7 @@ type P2Pool struct {
 	Address           string
 	LastFetchedPayout time.Time
 	LastPayout        uint64
+	LastFetchedFee    time.Time
 }
 
 func NewP2Pool(addr string) *P2Pool {
@@ -63,10 +64,30 @@ func (p *P2Pool) GetName() string {
 	return "P2Pool"
 }
 
-func (p *P2Pool) GetFee() float64 {
-	return 1.0
+func (p *P2Pool) GetFee() (fee float64) {
+	if time.Now().Sub(p.LastFetchedFee) > time.Minute*30 {
+		jsonPayload := map[string]interface{}{}
+		err := util.GetJson(fmt.Sprintf("%slocal_stats", networks.Active.P2ProxyURL), &jsonPayload)
+		if err != nil {
+			logging.Warnf("Unable to fetch p2pool fee: %s", err.Error())
+			fee = 2.0
+		}
+		fee, ok := jsonPayload["fee"].(float64)
+		if !ok {
+			fee = 2.0
+			return fee
+		}
+		donationFee, ok := jsonPayload["donation_proportion"].(float64)
+		if !ok {
+			fee = 2.0
+			return fee
+		}
+		fee += donationFee
+		p.LastFetchedFee = time.Now()
+	}
+	return fee
 }
 
 func (p *P2Pool) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser("http://p2p-usa.xyz:9171/static/")
+	util.OpenBrowser(networks.Active.P2ProxyURL)
 }
