@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"runtime/debug"
 
-	"github.com/leaanthony/mewn"
+	_ "embed"
 	"github.com/marcsauter/single"
 	"github.com/vertcoin-project/one-click-miner-vnext/backend"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -16,6 +16,12 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/wailsapp/wails"
 )
+
+//go:embed frontend/dist/app.js
+var js string
+
+//go:embed frontend/dist/app.css
+var css string
 
 func main() {
 	defer func() {
@@ -36,9 +42,6 @@ func main() {
 
 		}
 	}()
-
-	js := mewn.String("./frontend/dist/app.js")
-	css := mewn.String("./frontend/dist/app.css")
 
 	tracking.StartTracker()
 
