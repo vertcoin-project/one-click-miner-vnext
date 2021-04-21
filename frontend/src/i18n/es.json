@@ -1,81 +1,94 @@
 {
     "generic" : {
-        "retry" : "Inténtalo de nuevo",
+        "retry" : "Reintentar",
         "back_to_wallet" : "Volver a la cartera",
         "close" : "Cerrar"
     },
     "welcome" : {
-        "alreadyrunning" : "El One-Click Miner ya se está ejecutando. No puedes ejecutarlo más de una vez ",
-        "click_button_to_start" : "Haga clic en el botón de abajo para empezar a minar de nuevo.",
+        "alreadyrunning" : "El minero de un clic ya se está ejecutando. No lo puedes ejecutar más de una vez.",
+        "click_button_to_start" : "Clica el botón debajo para empezar a minar de nuevo.",
         "startmining" : "¡Empezar a minar!",
-        "makeapassword" : "Crea una contraseña. No la pierdas.",
+        "makeapassword" : "Crea una contraseña para la cartera del minero de un clic. No la pierdas.",
         "password" : "Contraseña",
         "confirmpassword" : "Confirmar contraseña",
         "password_cannot_be_empty" : "La contraseña no puede estar vacía",
-        "password_mismatch" : "La contraseña no coincide",
-        "error_initializing" : "Hubo un error al iniciar la cartera"
+        "password_mismatch" : "Las contraseñas no coinciden",
+        "error_initializing" : "Hubo un problema al iniciar la cartera"
     },
     "checks" : {
-        "prerequisite" : "Se está instalando un requisito previo. Es posible que vea una ventana emergente que solicite permisos (podría estar parpadeando en la barra de tareas)",
-        "checks_failed" : "La comprobación ha fallado",
-        "checking_mining_software" : "Comprobando software de minería...",
+        "prerequisite" : "Un prerequisito está siendo instalado. Puede ser que veas una ventana emergente pidiendo permisos (podría estar parpadeando en la barra de tareas)",
+        "checks_failed" : "Chequeos fallados",
+        "checking_mining_software" : "Chequeando el software de minería...",
         "rapidfail" : "Comprobación de fallos rápidos",
-        "compatibility" : "Comprobando la compatibilidad de la GPU...",
-        "installing_miners" : "Instalando software de minería..."
+        "compatibility" : "Chequeando compatibilidad de la tarjeta gráfica...",
+        "installing_miners" : "Instalando software de minería...",
+        "verthash" : "Verificando / creando archivo de datos de Verthash"
     },
     "mining" : {
         "spendable_balance" : "Saldo disponible",
-        "still_maturing" : "Todavía no puedes gastar tus monedas. Debes esperar un poco mas.",
-        "pending_pool_payout" : "Pago del Pool pendiente",
-        "waiting_for_miners" : "Esperando que los mineros comiencen",
-        "expected_earnings_24h" : "Rendimiento aproximado (24h)",
-        "estimating" : "Calculando Rendimiento",
-        "stop_mining" : "Dejar de minar"
+        "still_maturing" : "Todavía no puedes gastar tus monedas, debes esperar un poco más.",
+        "pending_pool_payout" : "Pago de la pool pendiente",
+        "pending_payout_info_unavailable" : "Por favor espera para ver la información pendiente de pago",
+        "waiting_for_miners" : "Esperando a que los mineros empiezen",
+        "expected_earnings_24h" : "Ganancias esperadas (24h)",
+        "estimating" : "estimando",
+        "stop_mining" : "Dejar de minar",
+        "active_pool" : "Pool activa",
+        "pool_fee" : "comisión",
+        "copy_address" : "Copia la dirección de tu cartera",
+        "payout_information" : "Mirar la información del pago"
     },
     "sending" : {
-        "send_all_to" : "Manda todas tus monedas minadas a",
-        "youre_sending_x_to" : "Estas mandando {receivedBalance} a",
-        "youre_sending_x_in_y_txs_to" : "Estas mandando {receivedBalance} en {receivedTxCount} transacciones a",
-        "receiver_address" : "Dirección del destinatario",
-        "wallet_password" : "Contraseña de la cartera",
-        "send" : "Send",
+        "send_all_to" : "Envia todas tus monedas minadas a",
+        "youre_sending_x_to" : "Estás enviando {receivedBalance} a",
+        "youre_sending_x_in_y_txs_to" : "Estás enviando {receivedBalance} en {receivedTxCount} transacciones a",
+        "receiver_address" : "Dirección del receptor",
+        "wallet_password" : "Contraseña de la cartera del minero de un clic",
+        "send" : "Enviar",
         "coins_sent" : "¡Tus monedas han sido enviadas!",
-        "view_trans_plural" : "Ver transacciones",
-        "view_trans_singular" : "Ver transaccion",
-        "failed_to_send" : "Error al enviar tus monedas",
-        "password_required" : "Se requiere la contraseña de la cartera",
-        "invalid_address" : "Dirección no válida",
-        "script_failure" : "Fallo del script",
-        "could_not_calculate_fee" : "No se puede calcular la comisión",
-        "insufficient_funds" : "Saldo insuficiente",
-        "sign_failed" : "No se puede firmar la transacción. Revisa tu contraseña",
-        "send_failed" : "No se puede enviar la transacción. Compruebe debug.log para más información"
+        "view_trans_plural" : "Mirar transacciones",
+        "view_trans_singular" : "Mirar transacción",
+        "failed_to_send" : "Hubo un fallo al enviar tus monedas",
+        "password_required" : "La contraseña de la cartera es requerida",
+        "invalid_address" : "Dirección invalida",
+        "script_failure" : "Fallo de código",
+        "could_not_calculate_fee" : "No se pudo calcular la comisión",
+        "insufficient_funds" : "Fondos insuficientes",
+        "sign_failed" : "No se pudo firmar la transacción. Chequea la contraseña",
+        "send_failed" : "No se pudo enviar la transacción. Mira debug.log para más información"
     },
     "settings" : {
-        "enable_debug" : "Habilitar la depuración",
-        "enable_debug_sub" : "Incluir la información del minero en el registro de depuración.",
-        "auto_start" : "Inicio automático",
-        "auto_start_sub" : "Iniciar el programa cuando se conecta el ordenador",
-        "closed_source" : "Utilice mineros de código cerrado",
-        "closed_source_sub" : "Mejor hashrate, pero mineros no auditados que tienen una comisión de desarrollador",
-        "closed_source_warning" : "Has seleccionado utilizar minero (s) de código cerrado. Vertcoin no respalda ni apoya a estos mineros. No pueden ser auditados en su contenido y pueden contener funciones que dañen tu ordenador",
-        "save_n_restart" : "Guardar y reiniciar."
+        "enable_debug" : "Activar información de depuración",
+        "enable_debug_sub" : "Incluye las salidas del minero en la consola en el registro de depuración. Puede hacer que tus registros sean bastante grandes",
+        "auto_start" : "Empezar automáticamente",
+        "auto_start_sub" : "Empezar el minero de un clic cuando inicias sesión en tu ordenador",
+        "closed_source" : "Usa mineros de código cerrado",
+        "closed_source_sub" : "Mejor ratio de hashes, pero mineros que no pueden ser inspeccionados y que sufren de una comisión de desarollo",
+        "closed_source_warning" : "Has seleccionado usar minero(s) de código cerrado. Vertcoin no respalda ni ayuda a estos mineros. Sus contenidos no pueden ser inspeccionados y podrían contener funciones que podrían hacer dañar tu ordenador.",
+        "enable_integrated" : "Minar en gráficos integrados",
+        "enable_integrated_sub" : "El minero utilizará gráficos integrados (si es posible)",
+        "testnet":"Modo Testnet",
+        "testnet_sub":"Activa el modo Tesnet. No estarás minando monedas reales.",
+        "skipverthashverify":"No verificar Verthash al encender",
+        "skipverthashverify_sub":"Se saltará la verificación de la integridad de la información de Verthash al encender (no recomendado)",
+        "save_n_restart" : "Guardar y reiniciar",
+        "pool": "Pool de minería"
     },
     "tabbar" : {
         "wallet" : "Cartera",
         "send_coins" : "Enviar monedas",
-        "settings" : "Ajustes"
+        "settings" : "Opciones"
     },
     "tracking": { 
         "update_available" : "Actualización disponible",
-        "tracking_enabled" : "Estás compartiendo anónimamente las estadísticas de uso",
-        "disable_tracking" : "Inhabilitar",
-        "tracking_disabled" : "No estás compartiendo estadísticas de uso.",
-        "enable_tracking" : "Habilítalos para ayudarnos a mejorar tu experiencia.",
-        "report_issue" : "Reportar que algo no funciona correctamente"
+        "tracking_enabled" : "Estás compartiendo datos de uso anónimamente",
+        "disable_tracking" : "Desactivar",
+        "tracking_disabled" : "No estás compartiendo datos de uso",
+        "enable_tracking" : "Activa estos para ayudarnos a mejorar tu experiencia",
+        "report_issue" : "Reportar un problema"
     },
     "update" : {
-        "new_version_available" : "Actualización disponible",
+        "new_version_available" : "Nueva versión disponible",
         "download" : "Descargar"
     }
 }
