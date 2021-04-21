@@ -2,3 +2,7 @@ vertcoin-ocm
 *.zip
 .vscode/
 vertcoin-ocm.exe
+*.code-workspace
+*.exe
+*.manifest
+*.syso
