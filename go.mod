@@ -12,11 +12,12 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1
 	github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6
-	github.com/leaanthony/mewn v0.10.7
+	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0
 	github.com/pkg/browser v0.0.0-20210115035449-ce105d075bb4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0 // indirect
 	github.com/tidwall/buntdb v1.1.0
 	github.com/tidwall/gjson v1.2.1 // indirect
@@ -28,9 +29,8 @@ require (
 	github.com/wailsapp/wails v1.16.3
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb // indirect
-	golang.org/x/net v0.0.0-20210220033124-5f55cee0dc0d // indirect
-	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
-	golang.org/x/sys v0.0.0-20210220050731-9a76102bfb43 // indirect
-	golang.org/x/text v0.3.3
+	golang.org/x/net v0.0.0-20210502030024-e5908800b52b // indirect
+	golang.org/x/sys v0.0.0-20210502180810-71e4cd670f79 // indirect
+	golang.org/x/text v0.3.6
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
