@@ -9,7 +9,7 @@ import (
 )
 
 func pingNode() (bestNode string) {
-	nodes := [5]string{"fr1.vtconline.org", "p2proxy.vertcoin.org", "p2p-usa.xyz", "p2p-ekb.xyz", "173.198.248.34"}
+	nodes := [5]string{"fr1.vtconline.org", "p2proxy.vertcoin.org", "p2p-usa.xyz", "p2p-ekb.xyz", "173.198.248.34", "vtc.p2pminers.nl"}
 	results := [len(nodes)]time.Duration{}
 
 	bestNode = nodes[0]
