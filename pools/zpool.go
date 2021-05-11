@@ -42,7 +42,7 @@ func (p *zpool) GetUsername() string {
 }
 
 func (p *zpool) GetPassword() string {
-	return "c=VTC"
+	return "c=VTC,zap=VTC"
 }
 
 func (p *zpool) GetID() int {
