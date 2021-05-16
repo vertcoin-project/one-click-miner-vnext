@@ -11,7 +11,7 @@ require (
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1
-	github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6
+	github.com/go-ping/ping v0.0.0-20210506233800-ff8be3320020
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/marcsauter/single v0.0.0-20181104081128-f8bf46f26ec0

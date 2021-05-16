@@ -37,8 +37,8 @@ github.com/fatih/color v1.12.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGE
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1 h1:vSHBMfat507JbiOZdNICsiCUmoydc3oLzkOTIb/s+DY=
 github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1/go.mod h1:YNFDXNhMlbkK6pJhNpLWgXWgsU+ISV8AWGdLC7RFlho=
-github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6 h1:n9JlStpjoY3CbO31jfwsAiHqCMbOk/Sk4Unq2pGjc2A=
-github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6/go.mod h1:35JbSyV/BYqHwwRA6Zr1uVDm1637YlNOU61wI797NPI=
+github.com/go-ping/ping v0.0.0-20210506233800-ff8be3320020 h1:mdi6AbCEoKCA1xKCmp7UtRB5fvGFlP92PvlhxgdvXEw=
+github.com/go-ping/ping v0.0.0-20210506233800-ff8be3320020/go.mod h1:KmHOjTUmJh/l04ukqPoBWPEZr9jwN05h5NXQl5C+DyY=
 github.com/go-playground/colors v1.2.0 h1:0EdjTXKrr2g1L/LQTYtIqabeHpZuGZz1U4osS1T8+5M=
 github.com/go-playground/colors v1.2.0/go.mod h1:miw1R2JIE19cclPxsXqNdzLZsk4DP4iF+m88bRc7kfM=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
@@ -155,6 +155,8 @@ golang.org/x/net v0.0.0-20210502030024-e5908800b52b/go.mod h1:OJAsFXCWl8Ukc7SiCT
 golang.org/x/net v0.0.0-20210525063256-abc453219eb5 h1:wjuX4b5yYQnEQHzd+CBcrcC6OVR2J1CN6mUy0oSxIPo=
 golang.org/x/net v0.0.0-20210525063256-abc453219eb5/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
+golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180606202747-9527bec2660b/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180905080454-ebe1bf3edb33/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180909124046-d0be0721c37e/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
