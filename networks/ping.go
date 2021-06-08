@@ -20,9 +20,9 @@ func pingNode() (bestNode string) {
 		"vtc.p2pminers.nl",
 		"asia.p2p-spb.xyz",
 		"p2p-spb.xyz",
-		"p2p-south.xyz"
+		"p2p-south.xyz",
+		"siberia.mine.nu"
 	}
-	
 	results := [len(nodes)]time.Duration{}
 
 	bestNode = nodes[0]
