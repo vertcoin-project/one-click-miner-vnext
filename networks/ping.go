@@ -21,10 +21,9 @@ func pingNode() (bestNode string) {
 		"asia.p2p-spb.xyz",
 		"p2p-spb.xyz",
 		"p2p-south.xyz",
-		"siberia.mine.nu"
+		"siberia.mine.nu",
 	}
-	results := [len(nodes)]time.Duration{}
-
+	results := make([]time.Duration, len(nodes))
 	bestNode = nodes[0]
 	lowest := results[0]
 
