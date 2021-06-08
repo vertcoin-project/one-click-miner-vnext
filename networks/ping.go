@@ -16,7 +16,8 @@ func pingNode() (bestNode string) {
 		"p2p-ekb.xyz", 
 		"173.198.248.34", 
 		"vtc-fl.javerity.com", 
-		"vtc-ca.javerity.com"
+		"vtc-ca.javerity.com", 
+		"vtc.p2pminers.nl"
 	}
 	
 	results := [len(nodes)]time.Duration{}
