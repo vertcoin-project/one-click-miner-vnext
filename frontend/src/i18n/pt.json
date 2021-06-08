@@ -1,81 +1,94 @@
 {
     "generic" : {
-        "retry" : "Tentar Novamente",
-        "back_to_wallet" : "De volta para a carteira",
+        "retry" : "Tentar novamente",
+        "back_to_wallet" : "Regressar à carteira",
         "close" : "Fechar"
     },
     "welcome" : {
-        "alreadyrunning" : "O One-Click Miner já foi executado. Não podem haver duas instâncias deste programa.",
-        "click_button_to_start" : "Carrege no botão abaixo para começar a minar.",
+        "alreadyrunning" : "O One-Click Miner já está em execução. Não pode excutá-lo mais do que uma vez.",
+        "click_button_to_start" : "Click the button below to start mining again.",
         "startmining" : "Começar a Minar!",
-        "makeapassword" : "Crie uma password. Não a perca!",
-        "password" : "Password",
-        "confirmpassword" : "Confirme a Password",
-        "password_cannot_be_empty" : "O parâmetro Password não pode estar vazio",
-        "password_mismatch" : "As Passwords não correspondem",
-        "error_initializing" : "Algo de errado ocorreu ao iniciar a carteira"
+        "makeapassword" : "Faça uma palavra-passe para a Carteira do OCM. Não a perca!",
+        "password" : "Palavra-passe",
+        "confirmpassword" : "Confirme a palavra-passe",
+        "password_cannot_be_empty" : "É necessário inserir uma palavra-passe",
+        "password_mismatch" : "As palavras-passe não coincidem",
+        "error_initializing" : "Houve um erro ao iniciar a carteira"
     },
     "checks" : {
         "prerequisite" : "Os pré-requisitos estão a ser instalados. Podem haver popups a pedir permissões (poderá ser um icon a piscar na barra de trefas)",
         "checks_failed" : "As verificações falharam",
-        "checking_mining_software" : "A verificar o sfotware para minar...",
+        "checking_mining_software" : "A verificar o sfotware de mineração...",
         "rapidfail" : "A verificar ocorrências de falhas rápidas",
-        "compatibility" : "A verificar a compatibilidade com a GPU...",
-        "installing_miners" : "A instalar o software para minar..."
+        "compatibility" : "A verificar a compatibilidade da GPU...",
+        "installing_miners" : "A instalar o software de mineração...",
+        "verthash" : "A verificar / criar o ficheiro de dados do Verthash..."
     },
     "mining" : {
         "spendable_balance" : "Quantia disponível",
         "still_maturing" : "aguarda confirmações",
         "pending_pool_payout" : "pagamento pela pool pendente",
-        "waiting_for_miners" : "Esperando a inicialização dos miners",
+        "pending_payout_info_unavailable" : "Espere pela informação sobre os pagamentos pendentes",
+        "waiting_for_miners" : "Esperando pela inicialização dos mineiros",
         "expected_earnings_24h" : "Ganhos Esperados (24h)",
         "estimating" : "a estimar",
-        "stop_mining" : "Parar de Minar"
+        "stop_mining" : "Parar de Minar",
+        "active_pool" : "Pool ativa",
+        "pool_fee" : "taxa",
+        "copy_address" : "Copiar o endereço da sua carteira",
+        "payout_information" : "Ver informação do pagamento"
     },
     "sending" : {
-        "send_all_to" : "Enviar todas as moedas para",
+        "send_all_to" : "Envie todas as suas moedas minadas para",
         "youre_sending_x_to" : "Está a enviar {receivedBalance} para",
-        "youre_sending_x_in_y_txs_to" : "Está a receber {receivedBalance} em {receivedTxCount} transações para",
-        "receiver_address" : "Endereço do destinatário",
-        "wallet_password" : "Password da Carteira",
+        "youre_sending_x_in_y_txs_to" : "Está a enviar {receivedBalance} em {receivedTxCount} transações para",
+        "receiver_address" : "Endereço do Destinatário",
+        "wallet_password" : "Palavra-passe da Carteira do OCM",
         "send" : "Enviar",
-        "coins_sent" : "As tuas moedas foram enviadas!",
+        "coins_sent" : "As suas moedas foram enviadas!",
         "view_trans_plural" : "Ver transações",
         "view_trans_singular" : "Ver transação",
         "failed_to_send" : "Ocorreu um erro ao tentar enviar as suas moedas",
-        "password_required" : "A Password da carteira é necessária",
+        "password_required" : "A palavra-passe da carteira é necessária",
         "invalid_address" : "Endereço inválido",
-        "script_failure" : "Erro no Script",
+        "script_failure" : "Erro no script",
         "could_not_calculate_fee" : "Não foi possível calcular a taxa",
-        "insufficient_funds" : "O montante disponível é insuficiente",
-        "sign_failed":"Não foi possível assinar a transação. Verifique sua senha",
-        "send_failed" : "Incapaz de realizar a transação. Ver debug.log para mais informações."
+        "insufficient_funds" : "Montante disponível insuficiente",
+        "sign_failed" : "Não foi possível assinar a transação. Verifique sua palavra-passe",
+        "send_failed" : "Não foi possível efetuar a transação. Veja o debug.log para mais informações."
     },
     "settings" : {
-        "enable_debug" : "Ativar debugging",
-        "enable_debug_sub" : "Incluir o output da consola dos miners no debug.log. Isto pode aumentar bastante o tamanho dos logs",
+        "enable_debug" : "Ativar o debugging",
+        "enable_debug_sub" : "Incluir o output da consola dos mineiros no debug.log. Isto pode aumentar bastante o tamanho dos logs",
         "auto_start" : "Iniciar automaticamente",
-        "auto_start_sub" : "Iniciar o One-Click Miner quando inicia o computador",
-        "closed_source" : "Utilizar miners que são closed-source",
-        "closed_source_sub" : "Têm melhor hashrate, mas são miners que não são examinados e têm taxas de utilização",
-        "closed_source_warning" : "Selecionaste a opção de utilizar miners closed-source. O Vertcoin não apoia o suporte a estes miners. O seu conteúdo não pode ser verificado e por isso podem conter funções que podem afetar o seu computador.",
-        "save_n_restart" : "Guardar & Reiniciar"
+        "auto_start_sub" : "Iniciar o One-Click Miner ao iniciar sessão no computador",
+        "closed_source" : "Utilizar mineiros que são closed-source",
+        "closed_source_sub" : "Têm melhor hashrate, mas são mineiros não examinados e têm taxas de utilização",
+        "closed_source_warning" : "Selecionou a utilização de mineiros closed-source. O Vertcoin não apoia ou suporta estes mineiros. O seu conteúdo não pode ser verificado e, por isso, podem conter funções que podem afetar o seu computador.",
+        "enable_integrated" : "Mine on integrated graphics",
+        "enable_integrated_sub" : "The miner will use onboard graphics (if possible)",
+        "testnet":"Testnet mode",
+        "testnet_sub":"Enables testnet mode. You will not be mining real coins.",
+        "skipverthashverify":"Don't verify Verthash on startup",
+        "skipverthashverify_sub":"Will skip verifying the file integrity of Verthash data on startup (not recommended)",
+        "save_n_restart" : "Gravar & Reiniciar",
+        "pool": "Pool de Mineração"
     },
     "tabbar" : {
         "wallet" : "Carteira",
         "send_coins" : "Enviar moedas",
-        "settings" : "Definições"
+        "settings" : "Configurações"
     },
     "tracking": { 
-        "update_available" : "Update disponível",
-        "tracking_enabled" : "Está a partilhar estatísticas de uso anonimamente",
+        "update_available" : "Atualização disponível",
+        "tracking_enabled" : "Está a partilhar estatísticas de utilização anonimamente",
         "disable_tracking" : "Desativar",
-        "tracking_disabled" : "Não está a partilhar estatísticas de uso",
-        "enable_tracking" : "Ative-as para melhorar a sua experiência",
-        "report_issue" : "Comunicar um problema"
+        "tracking_disabled" : "Não está a partilhar estatísticas de mineração",
+        "enable_tracking" : "Ative-as para que possamos melhorar a sua experiência",
+        "report_issue" : "Reportar um problema"
     },
     "update" : {
-        "new_version_available" : "Uma nova versão está dispinível",
-        "download" : "Download"
+        "new_version_available" : "Nova versão disponível",
+        "download" : "Descarregar"
     }
 }
