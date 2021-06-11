@@ -21,19 +21,22 @@
         "checking_mining_software" : "Mining-Software wird überprüft...",
         "rapidfail" : "Prüfen auf Auftreten schneller Ausfälle",
         "compatibility" : "GPU-Kompatibilität wird überprüft...",
-        "installing_miners" : "Mining-Software wird installiert..."
+        "installing_miners" : "Mining-Software wird installiert...",
+        "verthash" : "Verthash Datendatei wird angelegt/verifiziert..."
     },
     "mining" : {
         "spendable_balance" : "Verfügbares Guthaben",
         "still_maturing" : "reift noch",
         "pending_pool_payout" : "ausstehende Pool-Auszahlung",
+        "pending_payout_info_unavailable": "Ausstehende Pool-Auszahlung wird abgerufen",
         "waiting_for_miners" : "Warten auf Minerstart",
         "expected_earnings_24h" : "Erwartete Einnahmen (24h)",
         "estimating" : "am schätzen",
         "stop_mining" : "Mining stoppen",
         "active_pool" : "Aktiver Pool",
         "pool_fee" : "Pool-Gebühr",
-        "copy_address" : "Wallet-Adresse kopieren"
+        "copy_address" : "Wallet-Adresse kopieren",
+        "payout_information" : "Auszahlungsinformationen ansehen"
     },
     "sending" : {
         "send_all_to" : "Senden Sie alle Ihre abgebauten Coins an",
