@@ -27,7 +27,7 @@ func NewP2Pool(addr string) *P2Pool {
 func (p *P2Pool) GetPendingPayout() uint64 {
 	if time.Now().Sub(p.LastFetchedPayout) > time.Minute*2 {
 		jsonPayload := map[string]interface{}{}
-		err := util.GetJson(fmt.Sprintf("%scurrent_payouts", ping.Node.P2PoolURL), &jsonPayload)
+		err := util.GetJson(fmt.Sprintf("%scurrent_payouts", ping.Selected.P2PoolURL), &jsonPayload)
 		if err != nil {
 			logging.Warnf("Unable to fetch p2pool payouts: %s", err.Error())
 			p.LastPayout = 0
@@ -46,7 +46,7 @@ func (p *P2Pool) GetPendingPayout() uint64 {
 }
 
 func (p *P2Pool) GetStratumUrl() string {
-	return ping.Node.P2PoolStratum
+	return ping.Selected.P2PoolStratum
 }
 
 func (p *P2Pool) GetUsername() string {
@@ -68,7 +68,7 @@ func (p *P2Pool) GetName() string {
 func (p *P2Pool) GetFee() (fee float64) {
 	if time.Now().Sub(p.LastFetchedFee) > time.Minute*30 {
 		jsonPayload := map[string]interface{}{}
-		err := util.GetJson(fmt.Sprintf("%slocal_stats", ping.Node.P2PoolURL), &jsonPayload)
+		err := util.GetJson(fmt.Sprintf("%slocal_stats", ping.Selected.P2PoolURL), &jsonPayload)
 		if err != nil {
 			logging.Warnf("Unable to fetch p2pool fee: %s", err.Error())
 			fee = 2.0
@@ -91,5 +91,5 @@ func (p *P2Pool) GetFee() (fee float64) {
 }
 
 func (p *P2Pool) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser(ping.Node.P2PoolURL)
+	util.OpenBrowser(ping.Selected.P2PoolURL)
 }
