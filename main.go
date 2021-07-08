@@ -8,10 +8,12 @@ import (
 	"runtime/debug"
 
 	_ "embed"
+
 	"github.com/marcsauter/single"
 	"github.com/vertcoin-project/one-click-miner-vnext/backend"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
+	"github.com/vertcoin-project/one-click-miner-vnext/ping"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/wailsapp/wails"
@@ -87,6 +89,7 @@ func main() {
 		panic(err)
 	}
 	networks.SetNetwork(backend.GetTestnet())
+	ping.GetSelectedNode(backend.GetTestnet())
 
 	backend.ResetPool()
 	app.Bind(backend)
