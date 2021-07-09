@@ -50,7 +50,7 @@ func (p *zpool) GetID() int {
 }
 
 func (p *zpool) GetName() string {
-	return "zpool.ca"
+	return "Zpool.ca"
 }
 
 func (p *zpool) GetFee() float64 {
