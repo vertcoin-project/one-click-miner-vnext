@@ -34,7 +34,7 @@ func (p *BBQDroid) GetPendingPayout() uint64 {
 }
 
 func (p *BBQDroid) GetStratumUrl() string {
-	return "stratum+tcp://bbqdroid.org:10001"
+	return "stratum+tcp://mining.bbqdroid.org:10001"
 }
 
 func (p *BBQDroid) GetUsername() string {
