@@ -21,7 +21,7 @@ func NewMiningpoolSweden(addr string) *MiningpoolSweden {
 
 func (p *MiningpoolSweden) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://miningpoolsweden.eu:4000/api/pools/vtc1/miners/%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("http://miningpoolsweden.eu:4000/api/pools/vert1/miners/%s", p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -58,5 +58,5 @@ func (p *MiningpoolSweden) GetFee() float64 {
 }
 
 func (p *MiningpoolSweden) OpenBrowserPayoutInfo(addr string) {
-	util.OpenBrowser(fmt.Sprintf("http://miningpoolsweden.eu/?#vtc1/dashboard?address=%s", addr))
+	util.OpenBrowser(fmt.Sprintf("http://miningpoolsweden.eu/?#vert1/dashboard?address=%s", addr))
 }
