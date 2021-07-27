@@ -46,7 +46,7 @@ func (p *MiningpoolSweden) GetPassword() string {
 }
 
 func (p *MiningpoolSweden) GetID() int {
-	return 8
+	return 9
 }
 
 func (p *MiningpoolSweden) GetName() string {
