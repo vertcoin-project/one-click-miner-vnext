@@ -54,7 +54,7 @@ func (p *Hashalot) GetName() string {
 }
 
 func (p *Hashalot) GetFee() float64 {
-	return 2.0
+	return 1.0
 }
 
 func (p *Hashalot) OpenBrowserPayoutInfo(addr string) {
