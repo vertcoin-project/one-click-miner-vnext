@@ -1,0 +1,62 @@
+package pools
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/vertcoin-project/one-click-miner-vnext/util"
+)
+
+var _ Pool = &PWoolyPooly{}
+
+type PWoolyPooly struct {
+	Address           string
+	LastFetchedPayout time.Time
+	LastPayout        uint64
+}
+
+func NewPWoolyPooly(addr string) *PWoolyPooly {
+	return &PWoolyPooly{Address: addr}
+}
+
+func (p *PWoolyPooly) GetPendingPayout() uint64 {
+	jsonPayload := map[string]interface{}{}
+	err := util.GetJson(fmt.Sprintf("https://api.woolypooly.com/api/vtc-1/accounts/%s", p.Address), &jsonPayload)
+	if err != nil {
+		return 0
+	}
+	vtc, ok := jsonPayload["stats"]["immature_balance"].(float64)
+	if !ok {
+		return 0
+	}
+	vtc *= 100000000
+	return uint64(vtc)
+}
+
+func (p *PWoolyPooly) GetStratumUrl() string {
+	return "stratum+tcp://pool.woolypooly.com:3102"
+}
+
+func (p *PWoolyPooly) GetUsername() string {
+	return p.Address
+}
+
+func (p *PWoolyPooly) GetPassword() string {
+	return "x"
+}
+
+func (p *PWoolyPooly) GetID() int {
+	return 9
+}
+
+func (p *PWoolyPooly) GetName() string {
+	return "[PPLNS] WoolyPooly"
+}
+
+func (p *PWoolyPooly) GetFee() float64 {
+	return 0.9
+}
+
+func (p *PWoolyPooly) OpenBrowserPayoutInfo(addr string) {
+	util.OpenBrowser(fmt.Sprintf("https://woolypooly.com/ru/coin/vtc/wallet/%s", addr))
+}
