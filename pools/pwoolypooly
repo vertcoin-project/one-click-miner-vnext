@@ -46,7 +46,7 @@ func (p *PWoolyPooly) GetPassword() string {
 }
 
 func (p *PWoolyPooly) GetID() int {
-	return 9
+	return 11
 }
 
 func (p *PWoolyPooly) GetName() string {
