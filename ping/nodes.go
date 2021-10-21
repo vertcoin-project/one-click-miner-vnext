@@ -72,4 +72,9 @@ var NodeList = []Node{
 		Stratum:  "stratum+tcp://siberia.mine.nu:9171",
 		URL:      "http://siberia.mine.nu:9171/",
 	},
+	{
+		Hostname: "vtc-brn.webhop.me",
+		Stratum:  "stratum+tcp://vtc-brn.webhop.me:9171",
+		URL:      "http://vtc-brn.webhop.me:9171/",
+	},
 }
