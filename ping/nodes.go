@@ -72,4 +72,9 @@ var NodeList = []Node{
 		Stratum:  "stratum+tcp://siberia.mine.nu:9171",
 		URL:      "http://siberia.mine.nu:9171/",
 	},
+	{
+		Hostname: "boofpool.ddns.net",
+		Stratum:  "stratum+tcp://boofpool.ddns.net:9171",
+		URL:      "http://boofpool.ddns.net:9171/",
+	},
 }
