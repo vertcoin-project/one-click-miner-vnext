@@ -78,6 +78,7 @@ func (m *Backend) StartMining() bool {
 	go func() {
 		cycles := 0
 		nhr := util.GetNetHash()
+		th := util.GetTipHeight()
 		continueLoop := true
 		for continueLoop {
 			cycles++
@@ -111,7 +112,14 @@ func (m *Backend) StartMining() bool {
 
 			m.runtime.Events.Emit("networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
 
-			avgEarning := float64(hr) / float64(nhr) * float64(14400) // 14400 = Emission per day. Need to adjust for halving
+            var coinsPerDay float64
+            if th < 1680000 {
+                coinsPerDay = 14400 // Emission per day before halving at block 1680000
+            } else {
+                coinsPerDay = 7200 // Emission per day after halving at block 1680000
+            }
+
+            avgEarning := float64(hr) / float64(nhr) * float64(coinsPerDay)
 
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 

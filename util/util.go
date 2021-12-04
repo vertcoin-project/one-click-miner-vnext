@@ -108,6 +108,13 @@ func GetDifficulty() float64 {
 	return info.Difficulty
 }
 
+func GetTipHeight() int64 {
+	info := getInfoResponse{}
+	url := fmt.Sprintf("%sinfo", networks.Active.OCMBackend)
+	GetJson(url, &info)
+	return info.TipHeight
+}
+
 func GetNetHash() uint64 {
 	difficulty := big.NewFloat(GetDifficulty())
 	factor := big.NewInt(0).Exp(big.NewInt(2), big.NewInt(48), nil)
