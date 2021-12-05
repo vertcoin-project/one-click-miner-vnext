@@ -28,6 +28,7 @@ import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
 import locale_tr from "./i18n/tr.json";
 import locale_zh from "./i18n/zh.json";
+import locale_bg from "./i18n/bg.json";
 
 Wails.Init(() => {
     window.backend.Backend.GetLocale().then(result => {
@@ -56,6 +57,7 @@ Wails.Init(() => {
                 sv: locale_sv,
 				tr: locale_tr,
                 zh: locale_zh,
+				bg: locale_bg,
             },
         });
         
