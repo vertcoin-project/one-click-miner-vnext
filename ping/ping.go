@@ -34,6 +34,13 @@ type SelectedNode struct {
 	P2PoolURL     string
 }
 
+type Nodes struct {
+	Hostname string `json:"Hostname"`
+	Stratum  string `json:"Stratum"`
+	URL      string `json:"URL"`
+	PingTime time.Duration
+}
+
 var Selected SelectedNode
 
 func GetSelectedNode(testnet bool) {
@@ -58,7 +65,19 @@ func selector() {
 	} else {
 		logging.Infof("No local node detected, selecting other public nodes\n")
 
-		err = PingNodes()
+		NodeList := []Nodes{}
+		err = util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/p2pool_nodes.json", &NodeList)
+
+		//If there's an error fetching the node list the user will just be pointed to p2proxy
+		if err != nil {
+			logging.Warnf("P2pool nodes could not be fetched, using p2proxy as failover\n")
+			Selected = SelectedNode{
+				P2PoolStratum: "stratum+tcp://p2proxy.vertcoin.org:9172",
+				P2PoolURL:     "http://p2proxy.vertcoin.org:9172/",
+			}
+		}
+
+		err = PingNodes(NodeList)
 		if err != nil {
 			logging.Warnf("Nodes could not be pinged, selecting random node\n")
 			rand.Seed(time.Now().Unix())
@@ -107,7 +126,7 @@ func selector() {
 	}
 }
 
-func PingNodes() error {
+func PingNodes(NodeList []Nodes) error {
 	for i := 0; i < len(NodeList); i++ {
 		pinger, err := ping.NewPinger(NodeList[i].Hostname)
 		pinger.SetPrivileged(true)       //This line is needed for windows because of ICMP
