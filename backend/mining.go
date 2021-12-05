@@ -86,6 +86,7 @@ func (m *Backend) StartMining() bool {
 				// Don't refresh this every time since we refresh it every second
 				// and this pulls from Insight. Every 600s is fine (~every 4 blocks)
 				nhr = util.GetNetHash()
+				th = util.GetTipHeight()
 				cycles = 0
 			}
 			hr := uint64(0)
@@ -112,14 +113,14 @@ func (m *Backend) StartMining() bool {
 
 			m.runtime.Events.Emit("networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
 
-            var coinsPerDay float64
-            if th < 1680000 {
-                coinsPerDay = 14400 // Emission per day before halving at block 1680000
-            } else {
-                coinsPerDay = 7200 // Emission per day after halving at block 1680000
-            }
+			var coinsPerDay float64
+			if th < 1680000 {
+				coinsPerDay = 14400 // Emission per day before halving at block 1680000
+			} else {
+				coinsPerDay = 7200 // Emission per day after halving at block 1680000
+			}
 
-            avgEarning := float64(hr) / float64(nhr) * float64(coinsPerDay)
+			avgEarning := float64(hr) / float64(nhr) * float64(coinsPerDay)
 
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 
