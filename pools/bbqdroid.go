@@ -21,7 +21,7 @@ func NewBBQDroid(addr string) *BBQDroid {
 
 func (p *BBQDroid) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("https://miningapi.bbqdroid.org/api/pools/vertcoin/miners/%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("https://bbqdroid.org/api/balance/vertcoin/%s", p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
@@ -54,7 +54,7 @@ func (p *BBQDroid) GetName() string {
 }
 
 func (p *BBQDroid) GetFee() float64 {
-	return 0.5
+	return 1.0
 }
 
 func (p *BBQDroid) OpenBrowserPayoutInfo(addr string) {
