@@ -25,7 +25,7 @@ Update your GPU drivers to the latest version.
 
 The GUI of this MVP is based on [Wails](https://wails.app) and [Go](https://golang.org/).
 
-Install the Wails [prerequisites](https://wails.app/home.html#prerequisites) for your platform, and then run:
+Install the Wails [prerequisites](https://wails.app/gettingstarted/) for your platform, and then run:
 
 ```bash
 go get github.com/wailsapp/wails/cmd/wails
