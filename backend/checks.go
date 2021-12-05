@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	verthash "github.com/gertjaap/verthash-go"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -77,6 +78,10 @@ func (m *Backend) PerformChecks() string {
 		errorString := fmt.Sprintf("Failed to create or verify Verthash data file: %s", err.Error())
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		return errorString
+	}
+
+	for !m.p2poolNodeSelected {
+		time.Sleep(time.Second)
 	}
 
 	args := m.GetArgs()
