@@ -56,7 +56,11 @@ func main() {
 	logging.SetLogLevel(int(logging.LogLevelDebug))
 	if _, err := os.Stat(util.DataDirectory()); os.IsNotExist(err) {
 		logging.Infof("Creating data directory")
-		os.MkdirAll(util.DataDirectory(), 0700)
+		err = os.MkdirAll(util.DataDirectory(), 0700)
+		if err != nil && !os.IsExist(err) {
+			logging.Errorf("Error creating data directory, cannot continue")
+			os.Exit(1)
+		}
 	}
 
 	logFilePath := filepath.Join(util.DataDirectory(), "debug.log")
@@ -80,7 +84,12 @@ func main() {
 	if err := s.CheckLock(); err != nil && err == single.ErrAlreadyRunning {
 		alreadyRunning = true
 	} else if err == nil {
-		defer s.TryUnlock()
+		defer func() {
+			err := s.TryUnlock()
+			if err != nil {
+				logging.Errorf("Error unlocking OCM: %v", err)
+			}
+		}()
 	}
 
 	backend, err := backend.NewBackend(alreadyRunning)
@@ -93,7 +102,10 @@ func main() {
 
 	backend.ResetPool()
 	app.Bind(backend)
-	app.Run()
+	err = app.Run()
+	if err != nil {
+		logging.Errorf("Error running app: %v", err)
+	}
 	backend.StopMining()
 
 	tracking.Track(tracking.TrackingRequest{

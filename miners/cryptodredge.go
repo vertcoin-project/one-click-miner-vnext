@@ -89,9 +89,15 @@ func (l *CryptoDredgeMinerImpl) ConstructCommandlineArgs(args BinaryArguments) [
 }
 
 func (l *CryptoDredgeMinerImpl) AvailableGPUs() int8 {
-	l.binaryRunner.launch([]string{}, false)
+	err := l.binaryRunner.launch([]string{}, false)
+	if err != nil {
+		return 0
+	}
 	time.Sleep(time.Second)
-	l.binaryRunner.Stop()
+	err = l.binaryRunner.Stop()
+	if err != nil {
+		return 0
+	}
 	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
 	return l.gpuCount
 }

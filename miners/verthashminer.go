@@ -64,7 +64,16 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 
 	os.Remove(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
 	out, err := os.Create(filepath.Join(util.DataDirectory(), "verthash-miner.conf"))
-	defer out.Close()
+	if err != nil {
+		logging.Error(err)
+		return err
+	}
+	defer func() {
+		err := out.Close()
+		if err != nil {
+			logging.Error(err)
+		}
+	}()
 
 	var parsedDevices map[int]util.VerthashMinerDeviceConfig
 
@@ -79,11 +88,17 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			skip = false
 		}
 		if strings.HasPrefix(line, "<Connection") {
-			out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Verthash\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
+			_, err = out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Verthash\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
+			if err != nil {
+				return err
+			}
 			skip = true
 		}
 		if strings.HasPrefix(line, "<Global") {
-			out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"false\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
+			_, err = out.WriteString(fmt.Sprintf("<Global Debug=\"false\" VerthashDataFileVerification=\"false\" VerthashDataFile=\"%s\">\n\n", filepath.Join(util.DataDirectory(), "verthash.dat")))
+			if err != nil {
+				return err
+			}
 			skip = true
 		}
 
@@ -115,7 +130,10 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 		}
 
 		if !skip {
-			out.WriteString(fmt.Sprintf("%s\n", line))
+			_, err = out.WriteString(fmt.Sprintf("%s\n", line))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	if err := scanner.Err(); err != nil {

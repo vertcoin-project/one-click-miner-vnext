@@ -53,7 +53,10 @@ func installVCRT2013(install chan bool) error {
 func vcrt2013DownloadPath() string {
 	downloadDir := filepath.Join(util.DataDirectory(), "prerequisites")
 	downloadPath := filepath.Join(downloadDir, "vcredist_x64.exe")
-	os.MkdirAll(downloadDir, 0755)
+	err := os.MkdirAll(downloadDir, 0755)
+	if err != nil && !os.IsExist(err) {
+		logging.Errorf("Could not create download dir for msvcrt: %v", err)
+	}
 	return downloadPath
 }
 

@@ -86,8 +86,14 @@ func (l *TeamRedMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []stri
 }
 
 func (l *TeamRedMinerImpl) AvailableGPUs() int8 {
-	l.binaryRunner.launch([]string{"--list_devices"}, false)
-	l.binaryRunner.cmd.Wait()
+	err := l.binaryRunner.launch([]string{"--list_devices"}, false)
+	if err != nil {
+		return 0
+	}
+	err = l.binaryRunner.cmd.Wait()
+	if err != nil {
+		return 0
+	}
 	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
 	return l.gpuCount
 }

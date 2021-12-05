@@ -169,17 +169,11 @@ func CheckFee(jsonPayload map[string]interface{}) bool {
 		return false
 	}
 	fee += donationFee
-	if fee > Set.MaxFee {
-		return false
-	}
-	return true
+	return fee <= Set.MaxFee
 }
 
 //To ensure efficiency of the selected p2pool node a limit of miners has been put in place, returns true if the number is equal to Maxminers or below
 func CheckCurrentMiners(jsonPayload map[string]interface{}) bool {
 	currentMiners, _ := jsonPayload["miner_hash_rates"].(string)
-	if len(currentMiners) > Set.MaxMiners {
-		return false
-	}
-	return true
+	return len(currentMiners) <= Set.MaxMiners
 }

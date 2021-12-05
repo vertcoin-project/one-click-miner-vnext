@@ -35,7 +35,11 @@ type MinerBinary struct {
 
 func GetMinerBinaries() []MinerBinary {
 	binaries := []MinerBinary{}
-	util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/miners.json", &binaries)
+	err := util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/miners.json", &binaries)
+	if err != nil {
+		logging.Errorf("Error fetching miner binaries: %v", err)
+		return binaries
+	}
 	for i := range binaries {
 		if binaries[i].GpuPlatformString == "AMD" {
 			binaries[i].GPUType = util.GPUTypeAMD
@@ -177,7 +181,7 @@ const (
 func (b *BinaryRunner) CheckRunning() RunningState {
 	if !b.IsRunning() {
 		logging.Infof("Miner [%s] stopped running.", b.MinerBinary.MainExecutableName)
-		if time.Now().Sub(b.lastStarted).Seconds() < 10 {
+		if time.Since(b.lastStarted).Seconds() < 10 {
 			// Rapid fail
 			b.rapidFails++
 			if b.rapidFails > 3 {
@@ -187,7 +191,10 @@ func (b *BinaryRunner) CheckRunning() RunningState {
 		}
 
 		logging.Infof("Restarting miner [%s]", b.MinerBinary.MainExecutableName)
-		b.restart()
+		err := b.restart()
+		if err != nil {
+			logging.Errorf("Error restarting miner: %v", err)
+		}
 		return RunningStateRestarting
 	}
 	return RunningStateRunning
@@ -266,7 +273,10 @@ func (b *BinaryRunner) launch(params []string, wait bool) error {
 	if wait {
 		b.running = true
 		go func() {
-			b.cmd.Wait()
+			err := b.cmd.Wait()
+			if err != nil {
+				logging.Errorf("Error in miner: %v", err)
+			}
 			b.running = false
 		}()
 	}
@@ -304,7 +314,7 @@ func (b *BinaryRunner) unpack() error {
 
 func (b *BinaryRunner) findExecutable() string {
 	mainExecutablePath := ""
-	filepath.Walk(b.unpackDir(),
+	err := filepath.Walk(b.unpackDir(),
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
@@ -314,6 +324,9 @@ func (b *BinaryRunner) findExecutable() string {
 			}
 			return nil
 		})
+	if err != nil {
+		logging.Errorf("Error finding executable: %v", err)
+	}
 	return mainExecutablePath
 }
 
@@ -325,7 +338,10 @@ func (b *BinaryRunner) ensureAvailable() error {
 	if os.IsNotExist(err) {
 		logging.Debugf("%sBinary not found, downloading...", b.logPrefix())
 		freshDownload = true
-		b.download()
+		err := b.download()
+		if err != nil {
+			return err
+		}
 	} else if err != nil {
 		return err
 	} else {

@@ -87,8 +87,14 @@ func (l *CCMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
 }
 
 func (l *CCMinerImpl) AvailableGPUs() int8 {
-	l.binaryRunner.launch([]string{"-n"}, false)
-	l.binaryRunner.cmd.Wait()
+	err := l.binaryRunner.launch([]string{"-n"}, false)
+	if err != nil {
+		return 0
+	}
+	err = l.binaryRunner.cmd.Wait()
+	if err != nil {
+		return 0
+	}
 	// Output is caught by ParseOuput function above and this will set the gpuCount accordingly
 	return l.gpuCount
 }

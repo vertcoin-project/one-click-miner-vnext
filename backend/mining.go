@@ -220,7 +220,10 @@ func (m *Backend) StopMining() bool {
 	}
 	logging.Infof("Stopping mining process...")
 	for _, br := range m.minerBinaries {
-		br.Stop()
+		err := br.Stop()
+		if err != nil {
+			logging.Errorf("Error stopping miner: %s %v", br.MinerBinary.MainExecutableName, err)
+		}
 	}
 	select {
 	case m.stopBalance <- true:

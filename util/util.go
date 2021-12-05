@@ -19,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
 	"github.com/btcsuite/fastsha256"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
@@ -78,10 +77,6 @@ type getInfoResponse struct {
 	BackendTipHeight int64   `json:"backendTipHeight"`
 }
 
-type infoData struct {
-	Difficulty float64 `json:"difficulty"`
-}
-
 type VerthashMinerDeviceConfig struct {
 	DeviceIndex int
 	PCIeBus     string
@@ -90,28 +85,23 @@ type VerthashMinerDeviceConfig struct {
 	Platform    string
 }
 
-var genesisDiff *big.Int
-
-func init() {
-	genesisDiff = blockchain.CompactToBig(0x1e00ffff)
-}
-
-func targetToDiff(target *big.Int) float64 {
-	f, _ := big.NewFloat(0).Quo(big.NewFloat(0).SetInt(genesisDiff), big.NewFloat(0).SetInt(target)).Float64()
-	return f
-}
-
 func GetDifficulty() float64 {
 	info := getInfoResponse{}
 	url := fmt.Sprintf("%sinfo", networks.Active.OCMBackend)
-	GetJson(url, &info)
+	err := GetJson(url, &info)
+	if err != nil {
+		logging.Errorf("Error fetching difficulty: %v", err)
+	}
 	return info.Difficulty
 }
 
 func GetTipHeight() int64 {
 	info := getInfoResponse{}
 	url := fmt.Sprintf("%sinfo", networks.Active.OCMBackend)
-	GetJson(url, &info)
+	err := GetJson(url, &info)
+	if err != nil {
+		logging.Errorf("Error fetching tip height: %v", err)
+	}
 	return info.TipHeight
 }
 
@@ -147,7 +137,10 @@ func GetJson(url string, target interface{}) error {
 
 func PostJson(url string, payload interface{}, target interface{}) error {
 	var b bytes.Buffer
-	json.NewEncoder(&b).Encode(payload)
+	err := json.NewEncoder(&b).Encode(payload)
+	if err != nil {
+		return err
+	}
 	r, err := jsonClient.Post(url, "application/json", bytes.NewBuffer(b.Bytes()))
 	if err != nil {
 		return err
@@ -155,6 +148,9 @@ func PostJson(url string, payload interface{}, target interface{}) error {
 	defer r.Body.Close()
 
 	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
 	logging.Infof("POST JSON response: %s", string(bodyBytes))
 
 	buf := bytes.NewBuffer(bodyBytes)
@@ -197,11 +193,17 @@ func UnpackZip(archive, unpackPath string) error {
 
 		if f.FileInfo().IsDir() {
 			// Make Folder
-			os.MkdirAll(targetPath, os.ModePerm)
+			err = os.MkdirAll(targetPath, os.ModePerm)
+			if err != nil && !os.IsExist(err) {
+				return err
+			}
 			continue
 		}
 
-		os.MkdirAll(filepath.Dir(targetPath), 0755)
+		err := os.MkdirAll(filepath.Dir(targetPath), 0755)
+		if err != nil && !os.IsExist(err) {
+			return err
+		}
 		outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			return err
@@ -255,7 +257,10 @@ func UnpackTar(archive, unpackPath string) error {
 			continue
 		case tar.TypeReg:
 			targetPath := filepath.Join(unpackPath, name)
-			os.MkdirAll(filepath.Dir(targetPath), 0755)
+			err = os.MkdirAll(filepath.Dir(targetPath), 0755)
+			if err != nil && !os.IsExist(err) {
+				return err
+			}
 			outFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
 			if err != nil {
 				return err

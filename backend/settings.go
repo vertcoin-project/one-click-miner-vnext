@@ -16,11 +16,14 @@ import (
 
 func (m *Backend) getSetting(name string) bool {
 	setting := "0"
-	m.settings.View(func(tx *buntdb.Tx) error {
+	err := m.settings.View(func(tx *buntdb.Tx) error {
 		v, err := tx.Get(name)
 		setting = v
 		return err
 	})
+	if err != nil {
+		logging.Errorf("Error in getSetting(%s): %v", name, err)
+	}
 	return setting == "1"
 }
 
@@ -29,27 +32,36 @@ func (m *Backend) setSetting(name string, value bool) {
 	if value {
 		setting = "1"
 	}
-	m.settings.Update(func(tx *buntdb.Tx) error {
+	err := m.settings.Update(func(tx *buntdb.Tx) error {
 		_, _, err := tx.Set(name, setting, nil)
 		return err
 	})
+	if err != nil {
+		logging.Errorf("Error in setSetting(%s): %v", name, err)
+	}
 }
 
 func (m *Backend) setIntSetting(name string, value int) {
 	setting := fmt.Sprintf("%d", value)
-	m.settings.Update(func(tx *buntdb.Tx) error {
+	err := m.settings.Update(func(tx *buntdb.Tx) error {
 		_, _, err := tx.Set(name, setting, nil)
 		return err
 	})
+	if err != nil {
+		logging.Errorf("Error in setSetting(%s): %v", name, err)
+	}
 }
 
 func (m *Backend) getIntSetting(name string) int {
 	setting := "0"
-	m.settings.View(func(tx *buntdb.Tx) error {
+	err := m.settings.View(func(tx *buntdb.Tx) error {
 		v, err := tx.Get(name)
 		setting = v
 		return err
 	})
+	if err != nil {
+		logging.Errorf("Error in getSetting(%s): %v", name, err)
+	}
 	i, _ := strconv.Atoi(setting)
 	return i
 }

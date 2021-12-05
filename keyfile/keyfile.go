@@ -29,7 +29,10 @@ func CreateKeyFile(pass string) error {
 
 	// Create random key
 	priv32 := new([32]byte)
-	rand.Read(priv32[:])
+	_, err := rand.Read(priv32[:])
+	if err != nil {
+		return err
+	}
 
 	// Derive pubkey
 	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv32[:])
@@ -38,7 +41,7 @@ func CreateKeyFile(pass string) error {
 	dk32 := new([32]byte) // derived key from scrypt
 
 	//get 24 random bytes for scrypt salt (and secretbox nonce)
-	_, err := rand.Read(salt[:])
+	_, err = rand.Read(salt[:])
 	if err != nil {
 		return err
 	}
@@ -75,8 +78,8 @@ func loadPublicKey() []byte {
 }
 
 func GetPublicKey() []byte {
-        pub := loadPublicKey()
-        return pub
+	pub := loadPublicKey()
+	return pub
 }
 
 func GetAddress() string {
@@ -116,7 +119,7 @@ func LoadPrivateKey(password string) ([]byte, error) {
 
 	// nonce for secretbox is the same as scrypt salt.  Seems fine.  Really.
 	priv, worked := secretbox.Open(nil, enckey[24:], salt, dk32)
-	if worked != true {
+	if !worked {
 		return []byte{}, fmt.Errorf("Decryption failed for %s ", filename)
 	}
 
@@ -129,6 +132,5 @@ func TestPassword(password string) bool {
 		return false
 	}
 	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv)
-	priv = nil
 	return bytes.Equal(loadPublicKey(), pub.SerializeCompressed())
 }

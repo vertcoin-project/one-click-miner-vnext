@@ -56,7 +56,10 @@ func saveState() {
 	if !trackingEnabled {
 		value = "0"
 	}
-	ioutil.WriteFile(filepath.Join(util.DataDirectory(), "tracking"), []byte(value), 0644)
+	err := ioutil.WriteFile(filepath.Join(util.DataDirectory(), "tracking"), []byte(value), 0644)
+	if err != nil {
+		logging.Errorf("Error writing tracking state: %v", err)
+	}
 }
 
 func StartTracker() {
@@ -65,8 +68,8 @@ func StartTracker() {
 	waitGroup = sync.WaitGroup{}
 	loadState()
 	new := true
+	waitGroup.Add(1)
 	go func() {
-		waitGroup.Add(1)
 		for t := range trackChan {
 			if !trackingEnabled {
 				continue
@@ -121,8 +124,15 @@ func visitorId() string {
 		dat, err := ioutil.ReadFile(filepath.Join(util.DataDirectory(), "unique_id"))
 		if err != nil {
 			dat = make([]byte, 8)
-			rand.Read(dat)
-			ioutil.WriteFile(filepath.Join(util.DataDirectory(), "unique_id"), dat, 0644)
+			_, err := rand.Read(dat)
+			if err != nil {
+				logging.Errorf("Error reading random ID: %v", err)
+			}
+			err = ioutil.WriteFile(filepath.Join(util.DataDirectory(), "unique_id"), dat, 0644)
+			if err != nil {
+				logging.Errorf("Error writing random ID: %v", err)
+			}
+
 		}
 		vId = strings.ToUpper(hex.EncodeToString(dat))
 	}

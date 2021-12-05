@@ -50,7 +50,16 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 
 	os.Remove(filepath.Join(util.DataDirectory(), "lyclMiner.conf"))
 	out, err := os.Create(filepath.Join(util.DataDirectory(), "lyclMiner.conf"))
-	defer out.Close()
+	if err != nil {
+		logging.Error(err)
+		return err
+	}
+	defer func() {
+		err := out.Close()
+		if err != nil {
+			logging.Error(err)
+		}
+	}()
 
 	scanner := bufio.NewScanner(in)
 	skip := false
@@ -60,11 +69,17 @@ func (l *LyclMinerImpl) Configure(args BinaryArguments) error {
 			skip = false
 		}
 		if strings.HasPrefix(line, "<Connection") {
-			out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Lyra2REv3\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
+			_, err = out.WriteString(fmt.Sprintf("<Connection Url = \"%s\"\n\tUsername = \"%s\"\n\tPassword = \"%s\"\n\tAlgorithm = \"Lyra2REv3\">\n\n", args.StratumUrl, args.StratumUsername, args.StratumPassword))
+			if err != nil {
+				return err
+			}
 			skip = true
 		}
 		if !skip {
-			out.WriteString(fmt.Sprintf("%s\n", line))
+			_, err = out.WriteString(fmt.Sprintf("%s\n", line))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	if err := scanner.Err(); err != nil {

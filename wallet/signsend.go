@@ -61,14 +61,17 @@ type txSendReply struct {
 
 func (w *Wallet) Send(tx *wire.MsgTx) (string, error) {
 	var b bytes.Buffer
-	tx.Serialize(&b)
+	err := tx.Serialize(&b)
+	if err != nil {
+		return "", err
+	}
 	s := txSend{
 		RawTx: hex.EncodeToString(b.Bytes()),
 	}
 
 	r := txSendReply{}
 
-	err := util.PostJson(fmt.Sprintf("%stx", networks.Active.OCMBackend), s, &r)
+	err = util.PostJson(fmt.Sprintf("%stx", networks.Active.OCMBackend), s, &r)
 	if err != nil {
 		return "", err
 	}

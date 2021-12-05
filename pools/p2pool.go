@@ -25,7 +25,7 @@ func NewP2Pool(addr string) *P2Pool {
 }
 
 func (p *P2Pool) GetPendingPayout() uint64 {
-	if time.Now().Sub(p.LastFetchedPayout) > time.Minute*2 {
+	if time.Since(p.LastFetchedPayout) > time.Minute*2 {
 		jsonPayload := map[string]interface{}{}
 		err := util.GetJson(fmt.Sprintf("%scurrent_payouts", ping.Selected.P2PoolURL), &jsonPayload)
 		if err != nil {
@@ -66,7 +66,7 @@ func (p *P2Pool) GetName() string {
 }
 
 func (p *P2Pool) GetFee() (fee float64) {
-	if time.Now().Sub(p.LastFetchedFee) > time.Minute*30 {
+	if time.Since(p.LastFetchedFee) > time.Minute*30 {
 		jsonPayload := map[string]interface{}{}
 		err := util.GetJson(fmt.Sprintf("%slocal_stats", ping.Selected.P2PoolURL), &jsonPayload)
 		if err != nil {

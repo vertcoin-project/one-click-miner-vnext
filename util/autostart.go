@@ -43,7 +43,10 @@ func init() {
 			if err == nil {
 				err := app.Enable()
 				if err == nil {
-					ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
+					err = ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
+					if err != nil {
+						logging.Errorf("Writing outstart file failed: %v", err)
+					}
 				}
 			}
 		}
@@ -63,14 +66,19 @@ func SetAutoStart(autoStart bool) string {
 		// Store the full path we created the autostart for, so we can
 		// re-enable it on a new path when someone decides to download
 		// an update to a different location.
-		ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
-
+		err = ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
+		if err != nil {
+			return err.Error()
+		}
 	} else {
 		err := app.Disable()
 		if err != nil {
 			return err.Error()
 		}
-		os.Remove(oldFullPathFile)
+		err = os.Remove(oldFullPathFile)
+		if err != nil {
+			return err.Error()
+		}
 	}
 
 	return ""

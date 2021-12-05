@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 )
 
 type GithubRelease struct {
@@ -17,7 +19,10 @@ type GithubRelease struct {
 var releases []GithubRelease
 
 func init() {
-	GetJson("https://api.github.com/repos/vertcoin-project/one-click-miner-vnext/releases", &releases)
+	err := GetJson("https://api.github.com/repos/vertcoin-project/one-click-miner-vnext/releases", &releases)
+	if err != nil {
+		logging.Errorf("Error fetching releases: %v", err)
+	}
 }
 
 func GetLatestRelease() (GithubRelease, error) {
