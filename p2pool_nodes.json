@@ -20,6 +20,11 @@
 		"URL":      "http://vtc-ca.javerity.com:9171/"
 	},
 	{
+		"Hostname": "vtc-tx.javerity.com",
+		"Stratum":  "stratum+tcp://vtc-tx.javerity.com:9171",
+		"URL":      "http://vtc-tx.javerity.com:9171/"
+	},
+	{
 		"Hostname": "vtc.p2pminers.nl",
 		"Stratum":  "stratum+tcp://vtc.p2pminers.nl:9171",
 		"URL":      "http://vtc.p2pminers.nl:9171/"
