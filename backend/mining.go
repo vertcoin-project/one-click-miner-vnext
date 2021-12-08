@@ -114,10 +114,10 @@ func (m *Backend) StartMining() bool {
 			m.runtime.Events.Emit("networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
 
 			var coinsPerDay float64
-			if th < 1680000 {
-				coinsPerDay = 14400 // Emission per day before halving at block 1680000
+			if th < 2520000 {
+				coinsPerDay = 7200 // Emission per day before halving at block 2520000
 			} else {
-				coinsPerDay = 7200 // Emission per day after halving at block 1680000
+				coinsPerDay = 3600 // Emission per day after halving at block 2520000
 			}
 
 			avgEarning := float64(hr) / float64(nhr) * float64(coinsPerDay)
