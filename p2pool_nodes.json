@@ -63,10 +63,5 @@
 		"Hostname": "vtc-brn.webhop.me",
 		"Stratum":  "stratum+tcp://vtc-brn.webhop.me:9171",
 		"URL":      "http://vtc-brn.webhop.me:9171/"
-	},
-	{
-		"Hostname": "miningcore.pro",
-		"Stratum":  "stratum+tcp://pool.miningcore.pro:3096",
-		"URL":      "https://miningcore.pro/pool/vtc/"
 	}
 ]
