@@ -66,7 +66,7 @@
 	},
 	{
 		"Hostname": "159.223.184.20",
-		"Stratum":  "stratum+tcp://http://159.223.184.20:9171",
+		"Stratum":  "stratum+tcp://159.223.184.20:9171",
 		"URL":      "http://159.223.184.20:9171/static/"
 	}
 ]
