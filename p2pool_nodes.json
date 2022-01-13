@@ -63,5 +63,10 @@
 		"Hostname": "vtc-brn.webhop.me",
 		"Stratum":  "stratum+tcp://vtc-brn.webhop.me:9171",
 		"URL":      "http://vtc-brn.webhop.me:9171/"
+	},
+	{
+		"Hostname": "http://159.223.184.20:9171/static/",
+		"Stratum":  "stratum+tcp://http://159.223.184.20:9171",
+		"URL":      "http://159.223.184.20:9171/static/"
 	}
 ]
