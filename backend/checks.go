@@ -17,7 +17,7 @@ func (m *Backend) PerformChecks() string {
 	if len(m.rapidFailures) > 0 {
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		m.rapidFailures = make([]*miners.BinaryRunner, 0) // Clear the failures
-		return "One or more of your miner binaries are showing rapid failures (immediately stop after starting). Please enable debugging under the Settings tab and then Save & Restart. Use the debug.log to learn more about what might be going on."
+		return "Rapid failures: Your GPU is likely incompatible; check FAQ for supported hardware. If compatible, GPU overclocks or antivirus may be the cause."
 	}
 
 	m.runtime.Events.Emit("checkStatus", "compatibility")
@@ -84,7 +84,7 @@ func (m *Backend) PerformChecks() string {
 	for _, br := range m.minerBinaries {
 		err := br.MinerImpl.Configure(args)
 		if err != nil {
-			errorString := fmt.Sprintf("Failure to configure %s: %s", br.MinerBinary.MainExecutableName, err.Error())
+			errorString := fmt.Sprintf("Failure to configure %s: The data directory may have to be excluded from your antivirus. Check FAQ.", br.MinerBinary.MainExecutableName)
 			tracking.Track(tracking.TrackingRequest{
 				Category: "PerformChecks",
 				Action:   "ConfigureError",
@@ -96,7 +96,7 @@ func (m *Backend) PerformChecks() string {
 
 		if br.MinerImpl.AvailableGPUs() == 0 {
 			m.runtime.Events.Emit("checkStatus", "Failed")
-			return "Miner software reported no compatible GPUs"
+			return "Miner software reported no compatible GPUs. Check FAQ for supported hardware and ensure your GPU drivers are up to date."
 		}
 	}
 
@@ -129,7 +129,7 @@ func (m *Backend) CheckGPUCompatibility() error {
 	})
 
 	if compat == 0 {
-		return fmt.Errorf("No compatible GPUs detected\n\nGPUs Found:\n%s", gpustring)
+		return fmt.Errorf("No compatible GPUs detected\n\nGPUs Found:\n%s - Check FAQ for supported hardware and ensure your GPU drivers are up to date.", gpustring)
 	}
 	return nil
 }
@@ -181,7 +181,7 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	}
 
 	if len(brs) == 0 {
-		return nil, fmt.Errorf("Could not find compatible miner binaries")
+		return nil, fmt.Errorf("Could not find compatible miner binaries - Check FAQ for supported hardware and ensure your GPU drivers are up to date.")
 	}
 
 	return brs, nil
