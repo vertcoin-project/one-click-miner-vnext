@@ -12,14 +12,17 @@ This software is available for Windows and Linux.
 
 Please refer to this list of [supported hardware.](https://github.com/CryptoGraphics/VerthashMiner#supported-hardware)
 
-### I have an error message that reads 'Failure to configure'
+### I have an error message that reads 'Failure to configure' or 'Checks failed'
 
-You may need to add an exclusion to your antivirus / Windows Defender.
+You may need to add an exclusion to your antivirus / Windows Defender.  The data directory is located at `%AppData%\vertcoin-ocm` on Windows or `~/.vertcoin-ocm` on Linux.
 
 ### My GPU is supported but an error messages reads 'no compatible GPUs'
 
 Update your GPU drivers to the latest version.
 
+### My GPU is not being utilized
+
+The OCM is using all of your GPU resources.  To verify, check CUDA usage for Nvidia or Compute 0/1 usage for AMD.
 
 ## Building
 
