@@ -21,7 +21,7 @@ func NewZergpool(addr string) *Zergpool {
 
 func (p *Zergpool) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("http://api.zergpool.com:8080/api/wallet?address=%s", p.Address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("https://api.zergpool.com:8443/api/wallet?address=%s", p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
