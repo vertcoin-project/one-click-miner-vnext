@@ -5,7 +5,7 @@
     "close": "Stäng"
   },
   "welcome": {
-    "alreadyrunning" : "One-Click Miner har redan startats. Du kan bara köra en instans åt gången.",
+    "alreadyrunning": "One-Click Miner har redan startats. Du kan bara köra en instans åt gången.",
     "click_button_to_start": "Klicka på knappen nedan för att börja mina igen.",
     "startmining": "Börja Mina!",
     "makeapassword": "Skapa ett lösenord. Tappa inte bort det.",
@@ -21,16 +21,22 @@
     "checking_mining_software": "Kontrollerar mining mjukvaran...",
     "rapidfail": "Kontrollerar för förekomsten av fel",
     "compatibility": "Kontrollerar GPU-kompatibilitet...",
-    "installing_miners": "Installera mining mjukvara..."
+    "installing_miners": "Installera mining mjukvara...",
+    "verthash": "Verifierar / skapar Verthash data fil..."
   },
   "mining": {
     "spendable_balance": "Spenderbart saldo",
     "still_maturing": "mognar fortfarande",
     "pending_pool_payout": "väntande poolutbetalning",
+    "pending_payout_info_unavailable": "Var vänlig vänta på utbetalnings information",
     "waiting_for_miners": "Väntar på att miningen ska börja",
     "expected_earnings_24h": "Förväntade intäkter (24h)",
     "estimating": "beräknar",
-    "stop_mining": "Sluta Mina"
+    "stop_mining": "Sluta Mina",
+    "active_pool": "Aktiv pool",
+    "pool_fee": "avgift",
+    "copy_address": "Kopiera din plånboks address",
+    "payout_information": "Visa utbetalnings information"
   },
   "sending": {
     "send_all_to": "Skicka dina minade mynt till",
@@ -48,8 +54,8 @@
     "script_failure": "Script fel",
     "could_not_calculate_fee": "Kunde inte beräkna avgift",
     "insufficient_funds": "Otillräckliga saldo",
-    "sign_failed":"Det gick inte att skriva under transaktion. Kontrollera ditt lösenord",
-      "send_failed": "Det gick inte att skicka transaktion. Kontrollera debug.log filen för mer information"
+    "sign_failed": "Det gick inte att skriva under transaktion. Kontrollera ditt lösenord",
+    "send_failed": "Det gick inte att skicka transaktion. Kontrollera debug.log filen för mer information"
   },
   "settings": {
     "enable_debug": "Aktivera felsökning",
@@ -59,7 +65,14 @@
     "closed_source": "Använd mining mjukvara med stängd källkod (Proprietär programvara)",
     "closed_source_sub": "Ger bättre hashrate, men källkoden är ej granskad och mjukvaran har en avgift till utvecklaren",
     "closed_source_warning": "Du har valt att använda mining mjukvara med sluten källkod. Vertcoin stöder inte denna mjukvara. Källkoden kan inte granskas och kan inehålla delar som skadar din dator.",
-    "save_n_restart": "Spara & starta om"
+    "enable_integrated": "Använd integrerat grafikkort (iGPU) för att mina",
+    "enable_integrated_sub": "Kommer att använda integrerat grafikkort (om möjligt)",
+    "testnet": "Testnet läge",
+    "testnet_sub": "Aktivera testnet läge. Du kommer inte mina riktiga mynt.",
+    "skipverthashverify": "Verifiera inte verthash under start",
+    "skipverthashverify_sub": "Kommer inte att verifiera verthash data file under uppstart (rekomenderas inte)",
+    "save_n_restart": "Spara & starta om",
+    "pool": "Mining pool"
   },
   "tabbar": {
     "wallet": "Plånbok",
