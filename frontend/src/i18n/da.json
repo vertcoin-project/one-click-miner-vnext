@@ -16,50 +16,63 @@
         "error_initializing" : "Noget gik galdt under indlæsning af wallet"
     },
     "checks" : {
-        "prerequisite" : "Installation af en påkrævet pakke er igang. Du ser måske en popup der anmoder om tilladelser (måske som noget der blinker i din taskbar)",        
-        "checks_failed" : "Checks fejlede",
-        "checking_mining_software" : "Checker mine software...",
-        "rapidfail" : "Checker for hurtigt opstående fejl",
-        "compatibility" : "Checker GPU kompatibilitet...",
-        "installing_miners" : "Installerer mine software..."
+        "prerequisite" : "Installation af en påkrævet pakke er igang. Du ser måske en popup der anmoder om tilladelser (måske som noget der blinker i din taskbar)",
+        "checks_failed" : "Tjek fejlede",
+        "checking_mining_software" : "Kontrollerer mining software...",
+        "rapidfail" : "Kontrollerer for hurtigt opstående fejl",
+        "compatibility" : "Kontrollerer for GPU kompatibilitet...",
+        "installing_miners" : "Installerer mine software...",
+        "verthash" : "Verificerer / generere Verthash data fil..."
     },
     "mining" : {
         "spendable_balance" : "Brugbar Balance",
         "still_maturing" : "modner stadig",
         "pending_pool_payout" : "afventende pooludbetaling",
+        "pending_payout_info_unavailable" : "Vent venligst for pool udbetalingsoplysninger",
         "waiting_for_miners" : "Venter på at minerne starter",
         "expected_earnings_24h" : "Forventet indtjening (24 timer)",
         "estimating" : "estimerer",
-        "stop_mining" : "Stop med at mine"
+        "stop_mining" : "Stop med at mine",
+        "active_pool" : "Aktiv pool",
+        "pool_fee" : "gebyr",
+        "copy_address" : "Kopier din wallet adresse",
+        "payout_information" : "Se udbetalingsoplysninger"
     },
     "sending" : {
         "send_all_to" : "Send alle dine minede coins til",
         "youre_sending_x_to" : "Du sender {receivedBalance} til",
         "youre_sending_x_in_y_txs_to" : "Du sender {receivedBalance} igennem {receivedTxCount} transaktioner til",
         "receiver_address" : "Modtager Adresse",
-        "wallet_password" : "Wallet Password",
+        "wallet_password" : "OCM Wallet Password",
         "send" : "Send",
         "coins_sent" : "Dine coins er blevet sendt!",
         "view_trans_plural" : "Se transaktioner",
         "view_trans_singular" : "Se transaktion",
-        "failed_to_send" : "Kunne ikke sende dine coins",        
+        "failed_to_send" : "Kunne ikke sende dine coins",
         "password_required" : "Wallet password er påkrævet",
         "invalid_address" : "Ugyldig adresse",
         "script_failure" : "Script fejl",
         "could_not_calculate_fee" : "Kunne ikke beregne gebyr",
         "insufficient_funds" : "Utilstrækkelige midler",
-        "sign_failed" : "Kunne ikke underskrive transaktion. Tjek din adgangskode",
+        "sign_failed" : "Kunne ikke underskrive transaktion. Tjek dit password.",
         "send_failed" : "Kunne ikke sende transaktion. Check debug.log for mere information"
     },
     "settings" : {
         "enable_debug" : "Aktiver debugging",
-        "enable_debug_sub" : "Inkludér minerens consol output i debug log. Kan gøre logfilerne temmeligt store",        
+        "enable_debug_sub" : "Inkludér minerens consol output i debug log. Kan gøre logfilerne temmeligt store",
         "auto_start" : "Auto start",
         "auto_start_sub" : "Start One-Click Miner når du logger på din computer",
         "closed_source" : "Brug closed-source minere",
         "closed_source_sub" : "Bedre hashrate, men uanmeldte minere der pådrager sig udvikler gebyr",
-        "closed_source_warning" : "Du har valgt at benytte closed-source miner(e). Vertcoin støtter og supporterer IKKE disse minere.  De kan ikke undersøges for indhold og kunne derfor benytte sig af funktioner der kan være skadelige for din computer.",        
-        "save_n_restart" : "Gem & Genstart"
+        "closed_source_warning" : "Du har valgt at benytte closed-source miner(e). Vertcoin støtter og supporterer IKKE disse minere.  De kan ikke undersøges for indhold og kunne derfor benytte sig af funktioner der kan være skadelige for din computer.",
+        "enable_integrated" : "Brug indbygget grafik til at mine",
+        "enable_integrated_sub" : "Indbygget grafik vil blive brugt af mineren (hvis det er muligt)",
+        "testnet": "Testnet mode",
+        "testnet_sub": "Aktiver testnet. Du vil ikke mine rigtige coins.",
+        "skipverthashverify": "Stop med at verificere Verthash data fil under opstart",
+        "skipverthashverify_sub": "Spring verifikationen af verthash data filen over (ikke anbefalet)",
+        "save_n_restart" : "Gem & Genstart",
+        "pool": "Mining pool"
     },
     "tabbar" : {
         "wallet" : "Wallet",
@@ -67,10 +80,10 @@
         "settings" : "Indstillinger"
     },
     "tracking": { 
-        "update_available" : "Update tilgængelig",
-        "tracking_enabled" : "Du deler anonymt brugsstatistikker",        
+        "update_available" : "Opdatering tilgængelig",
+        "tracking_enabled" : "Du deler brugsstatistikker anonymt",
         "disable_tracking" : "Slå deling af statistik fra",
-        "tracking_disabled" : "Du deler ikke brugsstatistikker",        
+        "tracking_disabled" : "Du deler ikke brugsstatistikker",
         "enable_tracking" : "Slå deling af statistik til for at hjælpe os med at forbedre din oplevelse",
         "report_issue" : "Anmeld fejl eller problemer"
     },
