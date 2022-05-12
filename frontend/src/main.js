@@ -38,6 +38,7 @@ Wails.Init(() => {
             locale: result, // set locale
             fallbackLocale: 'en',
             messages: {
+		bg: locale_bg,
                 da: locale_da,
                 de: locale_de,
                 en: locale_en,
@@ -47,6 +48,7 @@ Wails.Init(() => {
                 hr: locale_hr,
                 it: locale_it,
                 ja: locale_ja,
+		lt: locale_lt,
                 nl: locale_nl,
                 no: locale_no,
                 pa: locale_pa,
@@ -58,8 +60,6 @@ Wails.Init(() => {
                 sv: locale_sv,
 		tr: locale_tr,
                 zh: locale_zh,
-		bg: locale_bg,
-		lt: locale_lt,
             },
         });
         
