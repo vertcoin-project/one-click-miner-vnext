@@ -115,6 +115,24 @@ func GetNetHash() uint64 {
 	return u
 }
 
+func GetCoinsPerDay(th int64) float64 {
+	halvings := th / 840000	// Vertcoin undergoes a halving event every 840000 blocks
+
+	if halvings >= 32 { // Vertcoin will undergo 32 halvings before zero emission
+		return 0
+	}
+	if halvings == 0 {
+		return 28800
+	}
+
+	cpd := float64(28800)
+	
+	for i := 0; i < halvings; i++ {
+		cpd = cpd / 2
+	}
+	return cpd
+}
+
 var jsonClient = &http.Client{Timeout: 60 * time.Second}
 
 func FileExists(filename string) bool {
