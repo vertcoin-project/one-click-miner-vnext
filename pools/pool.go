@@ -23,7 +23,7 @@ func GetPools(addr string, testnet bool) []Pool {
 		NewSuprnova(addr),
 		NewP2Pool(addr),
 		Newzpool(addr),
-		NewBBQDroid(addr),
+		NewBBQPool(addr),
 		NewAcidpool(addr),
 		NewMiningpoolSweden(addr),
 		NewMiningcorePool(addr),
