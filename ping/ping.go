@@ -156,7 +156,9 @@ func PingNodes(NodeList []Nodes) error {
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
 	err = util.GetJson(fmt.Sprintf("%slocal_stats", NodeURL), &jsonPayload)
 	if err != nil {
+		if NodeURL != "http://127.0.0.1:9171/" {
 		logging.Errorf("Unable to fetch node information\n", err.Error())
+		}
 		return jsonPayload, err
 	}
 	return jsonPayload, nil
