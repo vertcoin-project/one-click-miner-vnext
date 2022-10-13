@@ -27,7 +27,7 @@
     "eventsource-polyfill": "^0.9.6",
     "highlight.js": "^10.4.1",
     "vue-template-compiler": "^2.6.11",
-    "webpack-hot-middleware": "^2.24.3"
+    "webpack-hot-middleware": "^2.25.2"
   },
   "eslintConfig": {
     "root": true,
