@@ -1,7 +1,7 @@
 {
     "generic" : {
         "retry" : "Wiederholen",
-        "back_to_wallet" : "Zurück zum Wallet",
+        "back_to_wallet" : "Zurück zur Wallet",
         "close" : "Schließen"
     },
     "welcome" : {
@@ -11,26 +11,26 @@
         "makeapassword" : "Erstellen Sie ein Passwort. Verlieren Sie es nicht!",
         "password" : "Passwort",
         "confirmpassword" : "Passwort bestätigen",
-        "password_cannot_be_empty" : "Passwort kann nicht leer sein",
+        "password_cannot_be_empty" : "Passwort darf nicht leer sein",
         "password_mismatch" : "Passwörter stimmen nicht überein",
-        "error_initializing" : "Fehler beim Initialisieren des Wallets"
+        "error_initializing" : "Fehler beim Initialisieren der Wallet"
     },
     "checks" : {
         "prerequisite" : "Voraussetzungen werden installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
-        "checks_failed" : "Überprüfungen fehlgeschlagen",
+        "checks_failed" : "Überprüfung fehlgeschlagen",
         "checking_mining_software" : "Mining-Software wird überprüft...",
-        "rapidfail" : "Prüfen auf Auftreten schneller Ausfälle",
+        "rapidfail" : "Auftreten von schnellen Ausfällen wird geprüft",
         "compatibility" : "GPU-Kompatibilität wird überprüft...",
         "installing_miners" : "Mining-Software wird installiert...",
-        "verthash" : "Verthash Datendatei wird angelegt/verifiziert..."
+        "verthash" : "Verthash Daten werden angelegt/verifiziert..."
     },
     "mining" : {
         "spendable_balance" : "Verfügbares Guthaben",
         "still_maturing" : "reift noch",
         "pending_pool_payout" : "ausstehende Pool-Auszahlung",
         "pending_payout_info_unavailable": "Ausstehende Pool-Auszahlung wird abgerufen",
-        "waiting_for_miners" : "Warten auf Minerstart",
-        "expected_earnings_24h" : "Erwartete Einnahmen (24h)",
+        "waiting_for_miners" : "Warten auf Start des Miners",
+        "expected_earnings_24h" : "Voraussichtliche Einnahmen (24h)",
         "estimating" : "am schätzen",
         "stop_mining" : "Mining stoppen",
         "active_pool" : "Aktiver Pool",
@@ -39,17 +39,17 @@
         "payout_information" : "Auszahlungsinformationen ansehen"
     },
     "sending" : {
-        "send_all_to" : "Senden Sie alle Ihre abgebauten Coins an",
-        "youre_sending_x_to" : "Sie senden {receivedBalance} an",
-        "youre_sending_x_in_y_txs_to" : "Sie senden {receivedBalance} in {receivedTxCount} Transaktionen an",
+        "send_all_to" : "Senden Sie all Ihre Coins an",
+        "youre_sending_x_to" : "Sie senden {receivedBalance} Coins an",
+        "youre_sending_x_in_y_txs_to" : "Sie senden {receivedBalance} Coins in {receivedTxCount} Transaktionen an",
         "receiver_address" : "Empfängeradresse",
         "wallet_password" : "Wallet-Passwort",
         "send" : "Senden",
-        "coins_sent" : "Ihre Coins wurden gesendet!",
+        "coins_sent" : "Ihre Coins wurden versendet!",
         "view_trans_plural" : "Transaktionen anzeigen",
         "view_trans_singular" : "Transaktion anzeigen",
         "failed_to_send" : "Fehler beim Senden Ihrer Coins",
-        "password_required" : "Das Wallet-Passwort ist erforderlich",
+        "password_required" : "Das Wallet-Passwort wird benötigt",
         "invalid_address" : "Ungültige Adresse",
         "script_failure" : "Skriptfehler",
         "could_not_calculate_fee" : "Gebührenkalkulation fehlgeschlagen",
@@ -59,19 +59,19 @@
     },
     "settings" : {
         "enable_debug" : "Debuggen aktivieren",
-        "enable_debug_sub" : "Konsolenausgabe der Mining-Software in das Debugprotokoll aufnehmen. Kann die Größe Ihrer Protokolle erheblich erhöhen",
+        "enable_debug_sub" : "Konsolenausgabe der Mining-Software in das Debugprotokoll mit aufnehmen. Kann die Größe Ihrer Protokolle erheblich erhöhen",
         "auto_start" : "Auto-Start",
         "auto_start_sub" : "One-Click-Miner bei der Anmeldung starten",
         "closed_source" : "Proprietäre Mining-Software nutzen",
-        "closed_source_sub" : "Bessere Hash-Rate, aber ungeprüfte Miner, die eine Entwicklergebühr verlangen.",
-        "closed_source_warning" : "Sie haben sich für die Verwendung proprietärer Mining-Software entschieden. Vertcoin bietet keine Unterstützung. Die Miner können nicht überprüft werden und enthalten möglicherweise Funktionen, die Ihren Computer beschädigen.",
+        "closed_source_sub" : "Bessere Hash-Rate, aber ungeprüfte Miner mit Entwicklergebühr.",
+        "closed_source_warning" : "Sie haben sich für die Verwendung proprietärer Mining-Software entschieden. Vertcoin bietet keine Unterstützung an. Die Miner können nicht überprüft werden und enthalten möglicherweise Funktionen, die Ihren Computer beeinträchtigen.",
         "enable_integrated" : "Auf integrierter Grafikkarte minen",
-        "enable_integrated_sub" : "Miner wird Onboard-Grafikkarte verwenden (wenn möglich)",
+        "enable_integrated_sub" : "Miner wird die Onboard-Grafikkarte verwenden (wenn möglich)",
         "testnet" : "Testnet-Modus",
         "testnet_sub" : "Aktiviert Testnet-Modus. Sie werden keine echten Coins minen.",
         "skipverthashverify" : "Verthash-Überprüfung beim Start überspringen",
-        "skipverthashverify_sub" : "Wird die Prüfung der Dateiintegrität der Verthash-Daten beim Start überspringen (nicht empfohlen)",
-        "save_n_restart" : "Speichern & Neustart",
+        "skipverthashverify_sub" : "Die Prüfung der Datenintegrität der Verthash-Daten beim Start wird übersprungen (nicht empfohlen)",
+        "save_n_restart" : "Speichern & Neustarten",
         "pool" : "Mining-Pool"
     },
     "tabbar" : {
@@ -89,6 +89,6 @@
     },
     "update" : {
         "new_version_available" : "Neue Version verfügbar",
-        "download" : "Runterladen"
+        "download" : "Herunterladen"
     }
 }

@@ -1,7 +1,6 @@
 package util
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -18,7 +17,7 @@ func init() {
 	oldFullPath := ""
 	oldFullPathFile = filepath.Join(DataDirectory(), "auto_start")
 	if FileExists(oldFullPathFile) {
-		oldFullPathBytes, err := ioutil.ReadFile(oldFullPath)
+		oldFullPathBytes, err := os.ReadFile(oldFullPath)
 		if err != nil {
 			oldFullPath = string(oldFullPathBytes)
 		}
@@ -43,7 +42,7 @@ func init() {
 			if err == nil {
 				err := app.Enable()
 				if err == nil {
-					err = ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
+					err = os.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
 					if err != nil {
 						logging.Errorf("Writing outstart file failed: %v", err)
 					}
@@ -66,7 +65,7 @@ func SetAutoStart(autoStart bool) string {
 		// Store the full path we created the autostart for, so we can
 		// re-enable it on a new path when someone decides to download
 		// an update to a different location.
-		err = ioutil.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
+		err = os.WriteFile(oldFullPathFile, []byte(fullPath), 0644)
 		if err != nil {
 			return err.Error()
 		}
