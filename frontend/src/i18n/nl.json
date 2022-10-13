@@ -19,25 +19,30 @@
         "prerequisite" : "Er wordt software geinstalleerd die nodig is voor de OCM. Je zou een pop-up kunnen krijgen die om toestemming vraagt (zou slechts in de taakbalk kunnen knipperen)",
         "checks_failed" : "Controles mislukt",
         "checking_mining_software" : "Miner software controleren...",
-        "rapidfail" : "Controleren op herhaaldelijke fouten",
+        "rapidfail" : "Controleren op het voorkomen van herhaaldelijke fouten",
         "compatibility" : "Compatibiliteit van grafische kaart controleren...",
-        "installing_miners" : "Miner software installeren..."
+        "installing_miners" : "Miner software installeren...",
+        "verthash" : "Verifieren / creëren Verthash data file..."
     },
     "mining" : {
         "spendable_balance" : "Besteedbaar saldo",
-        "still_maturing" : "aan het rijpen",
-        "pending_pool_payout" : "saldo bij mining-pool",
+        "still_maturing" : "In ontwikkeling",
+        "pending_pool_payout" : "saldo in afwachting bij mining-pool",
         "waiting_for_miners" : "Wacht tot de miner software opstart",
         "expected_earnings_24h" : "Verwachte inkomsten (24u)",
         "estimating" : "berekenen",
-        "stop_mining" : "Stop minen"
+        "stop_mining" : "Stop minen",
+        "active_pool" : "Actieve pool",
+        "pool_fee" : "Vergoeding",
+        "copy_address" : "Kopieer je portemonnee adres",
+        "payout_information" : "Bekijk uitbetaling informatie"
     },
     "sending" : {
         "send_all_to" : "Verstuur al je coins naar",
         "youre_sending_x_to" : "Je gaat {receivedBalance} versturen naar",
         "youre_sending_x_in_y_txs_to" : "Je gaat in {receivedTxCount} transacties {receivedBalance} versturen naar",
         "receiver_address" : "Adres van ontvanger",
-        "wallet_password" : "Wachtwoord van je portomonnee",
+        "wallet_password" : "Wachtwoord van je OCM portomonnee",
         "send" : "Versturen",
         "coins_sent" : "Je coins zijn verstuurd!",
         "view_trans_plural" : "Bekijk transacties",
@@ -46,9 +51,9 @@
         "password_required" : "Wachtwoord van je portomonnee is verplicht",
         "invalid_address" : "Ongeldig adres",
         "script_failure" : "Scriptfout",
-        "could_not_calculate_fee" : "Kon transactiekosten niet vaststellen",
+        "could_not_calculate_fee" : "Kon transactiekosten niet berekenen",
         "insufficient_funds" : "Onvoldoende saldo",
-        "sign_failed" : "Kon de transactie niet tekenen. Controleer het wachtwoord.",
+        "sign_failed" : "Kon de transactie niet ondertekenen. Controleer het wachtwoord.",
         "send_failed" : "Kon de transactie niet versturen. Controleer debug.log voor meer informatie"
     },
     "settings" : {
@@ -57,9 +62,16 @@
         "auto_start" : "Automatisch starten",
         "auto_start_sub" : "Start de One-Click Miner als je inlogt op je computer",
         "closed_source" : "Gebruik miners zonder open broncode",
-        "closed_source_sub" : "Betere performance, maar de software is niet gecontroleerd, en je betaalt een percentage aan de ontwikkelaars",
-        "closed_source_warning" : "Je hebt ervoor gekozen om miners zonder open broncode te gebruiken. Vertcoin raadt dat niet aan en ondersteunt dit niet. De software kan niet gecontroleerd worden en kan functies bevatten die je computer beschadigen.",
-        "save_n_restart" : "Opslaan & Herstarten"
+        "closed_source_sub" : "Betere prestaties, maar de software is niet gecontroleerd en je betaalt een percentage aan de ontwikkelaars",
+        "closed_source_warning" : "Je hebt ervoor gekozen om miners zonder open broncode te gebruiken. Vertcoin ondersteund deze miners niet en raad ze niet aan. De software kan niet op inhoud gecontroleerd worden en kan functies bevatten die je computer beschadigen.",
+        "enable_integrated" : "Minen op geïntegreerde graphics",
+        "enable_integrated_sub" : "De miner gebruikt de geïntegreerde graphics (indien mogelijk)",
+        "testnet":"Testnet modus",
+        "testnet_sub":"Schakelt testnet modus in. Je gaat geen echte coins minen.",
+        "skipverthashverify":"Verifieer Verthash niet bij opstarten",
+        "skipverthashverify_sub":"Zal het verifiëren van de bestandsintegriteit van Verthash-gegevens bij het opstarten overslaan (niet aanbevolen)",
+        "save_n_restart" : "Opslaan & Herstarten",
+        "pool": "Mining pool"
     },
     "tabbar" : {
         "wallet" : "Portemonnee",
@@ -71,7 +83,7 @@
         "tracking_enabled" : "Je deelt anonieme gebruiksstatistieken",
         "disable_tracking" : "Schakel uit",
         "tracking_disabled" : "Je deelt geen gebruiksstatistieken",
-        "enable_tracking" : "Schakel in om ons te helpen zaken te verbeteren",
+        "enable_tracking" : "Schakel in om ons te helpen je gebruikservaring te verbeteren",
         "report_issue" : "Meld een probleem"
     },
     "update" : {

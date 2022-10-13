@@ -8,6 +8,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 // Import all locales
+import locale_bg from "./i18n/bg.json";
 import locale_da from "./i18n/da.json";
 import locale_de from "./i18n/de.json";
 import locale_en from "./i18n/en.json";
@@ -17,6 +18,7 @@ import locale_hi from "./i18n/hi.json";
 import locale_hr from "./i18n/hr.json";
 import locale_it from "./i18n/it.json";
 import locale_ja from "./i18n/ja.json";
+import locale_lt from "./i18n/lt.json";
 import locale_nl from "./i18n/nl.json";
 import locale_no from "./i18n/no.json";
 import locale_pa from "./i18n/pa.json";
@@ -28,7 +30,6 @@ import locale_sl from "./i18n/sl.json";
 import locale_sv from "./i18n/sv.json";
 import locale_tr from "./i18n/tr.json";
 import locale_zh from "./i18n/zh.json";
-import locale_bg from "./i18n/bg.json";
 
 Wails.Init(() => {
     window.backend.Backend.GetLocale().then(result => {
@@ -37,6 +38,7 @@ Wails.Init(() => {
             locale: result, // set locale
             fallbackLocale: 'en',
             messages: {
+		bg: locale_bg,
                 da: locale_da,
                 de: locale_de,
                 en: locale_en,
@@ -46,6 +48,7 @@ Wails.Init(() => {
                 hr: locale_hr,
                 it: locale_it,
                 ja: locale_ja,
+		lt: locale_lt,
                 nl: locale_nl,
                 no: locale_no,
                 pa: locale_pa,
@@ -55,9 +58,8 @@ Wails.Init(() => {
                 ru: locale_ru,
                 sl: locale_sl,
                 sv: locale_sv,
-				tr: locale_tr,
+		tr: locale_tr,
                 zh: locale_zh,
-				bg: locale_bg,
             },
         });
         

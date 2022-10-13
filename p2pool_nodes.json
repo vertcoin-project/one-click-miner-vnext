@@ -1,10 +1,5 @@
 [
 	{
-		"Hostname": "p2proxy.vertcoin.org",
-		"Stratum":  "stratum+tcp://p2proxy.vertcoin.org:9172",
-		"URL":      "http://p2proxy.vertcoin.org:9172/"
-	},
-	{
 		"Hostname": "mindcraftblocks.com",
 		"Stratum":  "stratum+tcp://mindcraftblocks.com:9171",
 		"URL":      "http://mindcraftblocks.com:9171/"
@@ -18,11 +13,6 @@
 		"Hostname": "vtc-ca.javerity.com",
 		"Stratum":  "stratum+tcp://vtc-ca.javerity.com:9171",
 		"URL":      "http://vtc-ca.javerity.com:9171/"
-	},
-	{
-		"Hostname": "vtc.p2pminers.nl",
-		"Stratum":  "stratum+tcp://vtc.p2pminers.nl:9171",
-		"URL":      "http://vtc.p2pminers.nl:9171/"
 	},
 	{
 		"Hostname": "p2p-usa.xyz",
@@ -63,5 +53,10 @@
 		"Hostname": "vtc-brn.webhop.me",
 		"Stratum":  "stratum+tcp://vtc-brn.webhop.me:9171",
 		"URL":      "http://vtc-brn.webhop.me:9171/"
+	},
+	{
+		"Hostname": "159.223.184.20",
+		"Stratum":  "stratum+tcp://159.223.184.20:9171",
+		"URL":      "http://159.223.184.20:9171/static/"
 	}
 ]
