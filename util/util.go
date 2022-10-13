@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/big"
 	"net/http"
 	"os"
@@ -38,14 +37,14 @@ func DataDirectory() string {
 }
 
 func ReplaceInFile(file string, find string, replace string) error {
-	input, err := ioutil.ReadFile(file)
+	input, err := os.ReadFile(file)
 	if err != nil {
 		return err
 	}
 
 	output := bytes.Replace(input, []byte(find), []byte(replace), -1)
 
-	if err = ioutil.WriteFile(file, output, 0666); err != nil {
+	if err = os.WriteFile(file, output, 0666); err != nil {
 		return err
 	}
 
@@ -165,7 +164,7 @@ func PostJson(url string, payload interface{}, target interface{}) error {
 	}
 	defer r.Body.Close()
 
-	bodyBytes, err := ioutil.ReadAll(r.Body)
+	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		return err
 	}

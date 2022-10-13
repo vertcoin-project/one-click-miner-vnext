@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/btcsuite/btcd/btcec"
@@ -53,7 +53,7 @@ func CreateKeyFile(pass string) error {
 	copy(dk32[:], dk[:])
 
 	enckey := append(salt[:], secretbox.Seal(nil, priv32[:], salt, dk32)...)
-	return ioutil.WriteFile(filename, append(pub.SerializeCompressed(), enckey...), 0600)
+	return os.WriteFile(filename, append(pub.SerializeCompressed(), enckey...), 0600)
 }
 
 func keyFile() string {
@@ -62,7 +62,7 @@ func keyFile() string {
 
 func loadPublicKey() []byte {
 	filename := keyFile()
-	b, err := ioutil.ReadFile(filename)
+	b, err := os.ReadFile(filename)
 	if err != nil {
 		logging.Infof("Error reading keyfile: %s", err.Error())
 		return []byte{}
@@ -96,7 +96,7 @@ func GetScript() ([]byte, error) {
 
 func LoadPrivateKey(password string) ([]byte, error) {
 	filename := keyFile()
-	keyfile, err := ioutil.ReadFile(filename)
+	keyfile, err := os.ReadFile(filename)
 	if err != nil {
 		return []byte{}, err
 	}
