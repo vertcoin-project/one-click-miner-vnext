@@ -15,7 +15,7 @@ type CoinMinerz struct {
 	LastPayout        uint64
 }
 
-func NewCoinMinerz(addr string) *ZCoinMinerz {
+func NewCoinMinerz(addr string) *CoinMinerz {
 	return &CoinMinerz{Address: addr}
 }
 
@@ -33,7 +33,7 @@ func (p *CoinMinerz) GetPendingPayout() uint64 {
 	return uint64(vtc)
 }
 
-func (p *ZCoinMinerz) GetStratumUrl() string {
+func (p *CoinMinerz) GetStratumUrl() string {
 	return "stratum+tcp://stratum.coinminerz.com:3317"
 }
 
@@ -46,7 +46,7 @@ func (p *CoinMinerz) GetPassword() string {
 }
 
 func (p *CoinMinerz) GetID() int {
-	return 5
+	return 10
 }
 
 func (p *CoinMinerz) GetName() string {
