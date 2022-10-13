@@ -21,7 +21,7 @@
         "checking_mining_software" : "Miner software controleren...",
         "rapidfail" : "Controleren op het voorkomen van herhaaldelijke fouten",
         "compatibility" : "Compatibiliteit van grafische kaart controleren...",
-        "installing_miners" : "Miner software installeren..."
+        "installing_miners" : "Miner software installeren...",
         "verthash" : "Verifieren / creëren Verthash data file..."
     },
     "mining" : {
@@ -31,7 +31,7 @@
         "waiting_for_miners" : "Wacht tot de miner software opstart",
         "expected_earnings_24h" : "Verwachte inkomsten (24u)",
         "estimating" : "berekenen",
-        "stop_mining" : "Stop minen"
+        "stop_mining" : "Stop minen",
         "active_pool" : "Actieve pool",
         "pool_fee" : "Vergoeding",
         "copy_address" : "Kopieer je portemonnee adres",
@@ -70,7 +70,7 @@
         "testnet_sub":"Schakelt testnet modus in. Je gaat geen echte coins minen.",
         "skipverthashverify":"Verifieer Verthash niet bij opstarten",
         "skipverthashverify_sub":"Zal het verifiëren van de bestandsintegriteit van Verthash-gegevens bij het opstarten overslaan (niet aanbevolen)",
-        "save_n_restart" : "Opslaan & Herstarten"
+        "save_n_restart" : "Opslaan & Herstarten",
         "pool": "Mining pool"
     },
     "tabbar" : {
