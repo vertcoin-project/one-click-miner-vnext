@@ -127,7 +127,7 @@ func GetCoinsPerDay(th int64) float64 {
 
 	cpd := float64(28800)
 	
-	for i := 0; i < halvings; i++ {
+	for i := int64(0); i < halvings; i++ {
 		cpd = cpd / 2
 	}
 	return cpd
