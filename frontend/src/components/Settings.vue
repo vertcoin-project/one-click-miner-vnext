@@ -14,6 +14,16 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.language") }}:
+          <br />
+          <select style="width: 100%" name="language" v-model="$i18n.locale">
+            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+              {{ locale }}
+            </option>
+          </select>
+          <span class="subtext">{{ $t("settings.choose_language") }}</span>
+        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -66,9 +76,10 @@ export default {
       showWarning: false,
       testnet: false,
       poolID: -1,
-      pools: [],
+      pools: []
     };
   },
+
   created() {
     var self = this;
     window.backend.Backend.GetClosedSource().then(result => {
@@ -92,11 +103,8 @@ export default {
         });
       });
     });
-    
-    
-   
-    
   },
+
   methods: {
     toggleWarning: function() {
       this.showWarning = !this.showWarning;
