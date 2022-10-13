@@ -21,7 +21,7 @@ func NewCoinMinerz(addr string) *CoinMinerz {
 
 func (p *CoinMinerz) GetPendingPayout() uint64 {
 	jsonPayload := map[string]interface{}{}
-	err := util.GetJson(fmt.Sprintf("https://coinminerz.com/api/v1/Vertcoin/statistics?address=%s", p.address), &jsonPayload)
+	err := util.GetJson(fmt.Sprintf("https://coinminerz.com/api/v1/Vertcoin/statistics?address=%s", p.Address), &jsonPayload)
 	if err != nil {
 		return 0
 	}
