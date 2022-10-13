@@ -72,7 +72,9 @@
         "skipverthashverify":"No verificar Verthash al encender",
         "skipverthashverify_sub":"Se saltará la verificación de la integridad de la información de Verthash al encender (no recomendado)",
         "save_n_restart" : "Guardar y reiniciar",
-        "pool": "Pool de minería"
+        "pool": "Pool de minería",
+        "language": "Idioma",
+        "choose_language": "Selecciona un idioma para el minero"
     },
     "tabbar" : {
         "wallet" : "billetera",

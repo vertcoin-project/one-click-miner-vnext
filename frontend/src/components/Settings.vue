@@ -14,6 +14,16 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.language") }}:
+          <br />
+          <select style="width: 100%" name="language" v-model="$i18n.locale">
+            <option v-for="lang in langs" v-bind:key="lang" :value="lang">
+                {{ lang }}
+            </option>
+          </select>
+          <span class="subtext">{{ $t("settings.choose_language") }}</span>
+        </p>
       </div>
       <div class="col-settings-sub">
         <p style="text-align: left">
@@ -67,8 +77,33 @@ export default {
       testnet: false,
       poolID: -1,
       pools: [],
+      languageID: -1,
+      langs: [
+        'bg',
+        'da',
+        'de',
+        'en',
+        'es',
+        'fr',
+        'hi',
+        'hr',
+        'it',
+        'ja',
+        'nl',
+        'no',
+        'pa',
+        'pl',
+        'pt',
+        'ro',
+        'ru',
+        'sl',
+        'sv',
+        'tr',
+        'zh'
+      ]
     };
   },
+
   created() {
     var self = this;
     window.backend.Backend.GetClosedSource().then(result => {
@@ -92,11 +127,8 @@ export default {
         });
       });
     });
-    
-    
-   
-    
   },
+
   methods: {
     toggleWarning: function() {
       this.showWarning = !this.showWarning;
