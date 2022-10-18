@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/tidwall/buntdb"
+	"github.com/vertcoin-project/one-click-miner-vnext/langs"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
@@ -184,5 +185,33 @@ func (m *Backend) PrerequisiteProxyLoop() {
 			send = "1"
 		}
 		m.runtime.Events.Emit("prerequisiteInstall", send)
+	}
+}
+
+type LangChoice struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+func (m *Backend) GetLangs() []LangChoice {
+	lc := make([]LangChoice, 0)
+	for _, p := range langs.Getlangs() {
+		lc = append(lc, LangChoice{
+			Code: fmt.Sprintf("%s", p.GetCode()),
+			Name: fmt.Sprintf("%s", p.GetName()),
+		})
+	}
+	return lc
+}
+
+func (m *Backend) GetLang() int {
+	lang := m.getIntSetting("lang")
+	return lang
+}
+
+func (m *Backend) SetLang(lang string) {
+	if m.GetLang() != lang {
+		m.setIntSetting("lang", lang)
+		logging.Infof("Done setting language!")
 	}
 }

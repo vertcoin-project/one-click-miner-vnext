@@ -17,9 +17,9 @@
         <p style="text-align: left">
           {{ $t("settings.language") }}:
           <br />
-          <select style="width: 100%" name="language" v-model="$i18n.locale">
-            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
-              {{ locale }}
+          <select style="width: 100%" name="language" v-model="lang">
+            <option v-for="lang in langs" :key="`locale-${lang}`" :value="lang.code">
+              {{ lang.name }}
             </option>
           </select>
           <span class="subtext">{{ $t("settings.choose_language") }}</span>
@@ -76,7 +76,9 @@ export default {
       showWarning: false,
       testnet: false,
       poolID: -1,
-      pools: []
+      pools: [],
+      lang: '',
+      langs: []
     };
   },
 
@@ -96,6 +98,12 @@ export default {
                 self.poolID = result;
                 window.backend.Backend.GetEnableIntegrated().then(result => {
                   self.enableIntegrated = result;
+                  window.backend.Backend.GetLangs().then(result => {
+                    self.langs = result;
+                    window.backend.Backend.GetLang().then(result => {
+                      self.lang = result;
+                    });
+                  });
                 });
               });
             });
@@ -119,7 +127,9 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetPool(self.poolID).then(() => {
                   window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
-                    self.$emit("committed");
+                    window.backend.Backend.SetLang(self.lang).then(() => {
+                      self.$emit("committed");
+                    })
                   });
                 });
               });
