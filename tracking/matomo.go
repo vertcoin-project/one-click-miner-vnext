@@ -73,7 +73,7 @@ func StartTracker() {
 			if !trackingEnabled {
 				continue
 			}
-			req, err := http.NewRequest("GET", "https://matomo.gertjaap.org/matomo.php", nil)
+			req, err := http.NewRequest("GET", "https://analytics.javerity.com/matomo.php", nil)
 			if err != nil {
 				log.Print(err)
 				os.Exit(1)
