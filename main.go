@@ -98,6 +98,7 @@ func main() {
 		panic(err)
 	}
 	networks.SetNetwork(backend.GetTestnet())
+	go backend.BackendServerSelector()
 	ping.GetSelectedNode(backend.GetTestnet())
 
 	backend.ResetPool()
