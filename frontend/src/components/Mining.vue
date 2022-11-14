@@ -126,13 +126,15 @@ export default {
       window.backend.Backend.GetPoolName().then(result => {
         self.activePool = result;
       });
-      window.backend.Backend.GetPoolFee().then(result => {
-        self.poolFee = result;
-      });
       window.backend.Backend.Address().then(result => {
         self.address = result;
       });
     }, 5000);
+    window.setInterval(() => {
+      window.backend.Backend.GetPoolFee().then(result => {
+        self.poolFee = result;
+      });
+    }, 10 * 60 * 1000);
     window.backend.Backend.GetPoolName().then(result => {
       self.activePool = result;
     });
