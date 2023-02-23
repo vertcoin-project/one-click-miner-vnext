@@ -28,10 +28,8 @@ require (
 	github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e // indirect
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
 	github.com/wailsapp/wails v1.16.3
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/image v0.0.0-20210607152325-775e3b0c77b9 // indirect
-	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
-	golang.org/x/sys v0.0.0-20210608053332-aa57babbf139 // indirect
-	golang.org/x/text v0.3.6
+	golang.org/x/text v0.3.8
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
