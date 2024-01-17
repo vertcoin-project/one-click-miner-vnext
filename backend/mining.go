@@ -79,6 +79,7 @@ func (m *Backend) StartMining() bool {
 		cycles := 0
 		nhr := util.GetNetHash()
 		th := util.GetTipHeight()
+		var avgEarning float64
 		continueLoop := true
 		for continueLoop {
 			cycles++
@@ -113,8 +114,11 @@ func (m *Backend) StartMining() bool {
 
 			m.runtime.Events.Emit("networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
 
-			coinsPerDay := util.GetCoinsPerDay(th)
-			avgEarning := float64(hr) / float64(nhr) * float64(coinsPerDay)
+			// Avoids wrong estimates when the backend is unavailable
+			if th != 0 && nhr != 0 {
+				coinsPerDay := util.GetCoinsPerDay(th)
+				avgEarning = float64(hr) / float64(nhr) * float64(coinsPerDay)
+			}
 
 			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 
