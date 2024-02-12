@@ -27,7 +27,7 @@ require (
 	github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563 // indirect
 	github.com/wailsapp/wails v1.16.3
 	golang.org/x/crypto v0.17.0
-	golang.org/x/image v0.0.0-20210607152325-775e3b0c77b9 // indirect
+	golang.org/x/image v0.10.0 // indirect
 	golang.org/x/text v0.14.0
 	gopkg.in/yaml.v3 v3.0.0 // indirect
 )
