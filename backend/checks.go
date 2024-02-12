@@ -84,11 +84,11 @@ func (m *Backend) PerformChecks() string {
 
 	for !m.p2poolNodeSelected {
 		time.Sleep(time.Second)
-  }
+	}
 	for networks.Active.OCMBackend == "" {
 		time.Sleep(500 * time.Millisecond)
-  }
-  
+	}
+
 	args := m.GetArgs()
 
 	for _, br := range m.minerBinaries {
