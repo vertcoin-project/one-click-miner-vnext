@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -43,7 +42,7 @@ func Disable() {
 }
 
 func loadState() {
-	dat, err := ioutil.ReadFile(filepath.Join(util.DataDirectory(), "tracking"))
+	dat, err := os.ReadFile(filepath.Join(util.DataDirectory(), "tracking"))
 	if err != nil {
 		Enable()
 		return
@@ -56,7 +55,7 @@ func saveState() {
 	if !trackingEnabled {
 		value = "0"
 	}
-	err := ioutil.WriteFile(filepath.Join(util.DataDirectory(), "tracking"), []byte(value), 0644)
+	err := os.WriteFile(filepath.Join(util.DataDirectory(), "tracking"), []byte(value), 0644)
 	if err != nil {
 		logging.Errorf("Error writing tracking state: %v", err)
 	}
@@ -74,7 +73,7 @@ func StartTracker() {
 			if !trackingEnabled {
 				continue
 			}
-			req, err := http.NewRequest("GET", "https://matomo.gertjaap.org/matomo.php", nil)
+			req, err := http.NewRequest("GET", "https://analytics.javerity.com/matomo.php", nil)
 			if err != nil {
 				log.Print(err)
 				os.Exit(1)
@@ -121,14 +120,14 @@ var vId string
 
 func visitorId() string {
 	if vId == "" {
-		dat, err := ioutil.ReadFile(filepath.Join(util.DataDirectory(), "unique_id"))
+		dat, err := os.ReadFile(filepath.Join(util.DataDirectory(), "unique_id"))
 		if err != nil {
 			dat = make([]byte, 8)
 			_, err := rand.Read(dat)
 			if err != nil {
 				logging.Errorf("Error reading random ID: %v", err)
 			}
-			err = ioutil.WriteFile(filepath.Join(util.DataDirectory(), "unique_id"), dat, 0644)
+			err = os.WriteFile(filepath.Join(util.DataDirectory(), "unique_id"), dat, 0644)
 			if err != nil {
 				logging.Errorf("Error writing random ID: %v", err)
 			}

@@ -97,6 +97,8 @@ func main() {
 		panic(err)
 	}
 	networks.SetNetwork(backend.GetTestnet())
+
+	go backend.BackendServerSelector()
 	go backend.SelectP2PoolNode()
 
 	backend.ResetPool()

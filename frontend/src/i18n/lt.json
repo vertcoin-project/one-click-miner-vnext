@@ -1,0 +1,94 @@
+{
+    "generic" : {
+        "retry" : "Bandyti iš naujo",
+        "back_to_wallet" : "Grįžti į piniginę",
+        "close" : "Uždaryti"
+    },
+    "welcome" : {
+        "alreadyrunning" : "One-Click Miner jau yra paleistas. Jūs negalite jo paleisti daugiau nei vieną kartą.",
+        "click_button_to_start" : "Spauskite žemiau esantį mygtuką norint ir vėl pradėti kasimą.",
+        "startmining" : "Pradėti kasimą!",
+        "makeapassword" : "Sugalvokite OCM piniginės slaptažodį. Nepamirškite jo.",
+        "password" : "Slaptažodis",
+        "confirmpassword" : "Patvirtinti slaptažodį",
+        "password_cannot_be_empty" : "Slaptažodžio laukelis negali būti tuščias",
+        "password_mismatch" : "Slaptažodžiai nesutampa",
+        "error_initializing" : "Įvyko klaida inicijuojant piniginę"
+    },
+    "checks" : {
+        "prerequisite" : "Diegiami būtiniausi leidimai. Galite išvysti iššokantį langą prašantį leidimo (gali mirgsėti užduočių juostoje)",
+        "checks_failed" : "Patikros nepavyko",
+        "checking_mining_software" : "Tikrinama kasimui skirta programinė įranga...",
+        "rapidfail" : "Tikrinama ar nėra gedimų",
+        "compatibility" : "Tikrinamas vaizdo plokštės suderinamumas...",
+        "installing_miners" : "Įdiegiama kasimui skirta programinė įranga...",
+        "verthash" : "Tikrinamas / kuriamas Verthash duomenų failas..."
+    },
+    "mining" : {
+        "spendable_balance" : "Išleidžiamas balansas",
+        "still_maturing" : "vis dar bręsta",
+        "pending_pool_payout" : "laukiamas pool išmokėjimas",
+        "pending_payout_info_unavailable" : "Prašome palaukti laukiamo pool išmokėjimo informacijos",
+        "waiting_for_miners" : "Waiting for miners to start",
+        "expected_earnings_24h" : "Numatomas uždarbis (24h)",
+        "estimating" : "vertinama",
+        "stop_mining" : "Stabdyti kasimą",
+        "active_pool" : "Aktyvus pool",
+        "pool_fee" : "mokestis",
+        "copy_address" : "Kopijuoti jūsų piniginės adresą",
+        "payout_information" : "Peržiūrėti išmokėjimo informaciją"
+    },
+    "sending" : {
+        "send_all_to" : "Siųsti visas jūsų iškastas monetas į",
+        "youre_sending_x_to" : "Jūs siunčiate {receivedBalance} į",
+        "youre_sending_x_in_y_txs_to" : "Jūs siunčiate {receivedBalance} per {receivedTxCount} pervedimus į",
+        "receiver_address" : "Gavėjo adresas",
+        "wallet_password" : "OCM piniginės slaptažodis",
+        "send" : "Siųsti",
+        "coins_sent" : "Jūsų monetos išsiųstos!",
+        "view_trans_plural" : "Peržiūrėti pavedimus",
+        "view_trans_singular" : "Peržiūrėti pavedimą",
+        "failed_to_send" : "Monetų išsiuntimas nesėkmingas",
+        "password_required" : "Būtina nurodyti piniginės slaptažodį",
+        "invalid_address" : "Neteisingas adresas",
+        "script_failure" : "Script gedimas",
+        "could_not_calculate_fee" : "Negalime apskaičiuoti mokeščio",
+        "insufficient_funds" : "Nepakanka lėšų",
+        "sign_failed" : "Negalite patvirtinti pavedimo. Patikrinkite slaptažodį.",
+        "send_failed" : "Negalite išsiųsti pavedimo. Patikrinkite debug.log norint sužinoti daugiau"
+    },
+    "settings" : {
+        "enable_debug" : "Įgalinti derinimą",
+        "enable_debug_sub" : "Įtraukti kasimo programinės įrangos konsolės išvestį į derinimo žurnalą. Žurnalas gali užaugti gana didelis",
+        "auto_start" : "Automatinis paleidimas",
+        "auto_start_sub" : "Paleisti One-Click Miner kai tik prisijungiate prie kompiuterio",
+        "closed_source" : "Naudoti uždaro kodo programine įranga",
+        "closed_source_sub" : "Greitesnis kasimas, bet galimi papildomi kasimo mokeščiai",
+        "closed_source_warning" : "Jūs pasirinkote uždaro kodo programine įranga kasimui. Vertcoin neskatina ir nepalaiko tokios programinės įrangos. Ji negali būti patikrinta ir gali turėti kompiuteriui žalingų funkcijų.",
+        "enable_integrated" : "Kasti su integruota vaizdo plokšte",
+        "enable_integrated_sub" : "Kasimo programinė įranga naudos integruota vaizdo plokšte (jei įmanoma)",
+        "testnet":"Testnet režimas",
+        "testnet_sub":"Aktyvuoja testnet režimą, kuriame kasite netikras monetas.",
+        "skipverthashverify":"Paleidžiant netikrinti Verthash",
+        "skipverthashverify_sub":"Praleisite Verthash duomenų failo patikrinimą paleidžiant programą (nerekomenduojama)",
+        "save_n_restart" : "Išsaugoti ir perkrauti",
+        "pool": "Kasėjų pool"
+    },
+    "tabbar" : {
+        "wallet" : "Piniginė",
+        "send_coins" : "Siųsti monetas",
+        "settings" : "Nustatymai"
+    },
+    "tracking": { 
+        "update_available" : "Galimas atnaujinimas",
+        "tracking_enabled" : "Jūs anonimiškai dalinaties naudojimosi statistika",
+        "disable_tracking" : "Išjungti",
+        "tracking_disabled" : "Jūs nesidalinate naudojimosi statistika",
+        "enable_tracking" : "Aktyvuokite naudojimosi statistika ir padėkite mums pagerinti jūsų patirtį",
+        "report_issue" : "Pranešti apie problemą"
+    },
+    "update" : {
+        "new_version_available" : "Prieinama nauja versija",
+        "download" : "Atsiųsti"
+    }
+}

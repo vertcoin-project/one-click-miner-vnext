@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/big"
 	"net/http"
 	"os"
@@ -38,14 +37,14 @@ func DataDirectory() string {
 }
 
 func ReplaceInFile(file string, find string, replace string) error {
-	input, err := ioutil.ReadFile(file)
+	input, err := os.ReadFile(file)
 	if err != nil {
 		return err
 	}
 
 	output := bytes.Replace(input, []byte(find), []byte(replace), -1)
 
-	if err = ioutil.WriteFile(file, output, 0666); err != nil {
+	if err = os.WriteFile(file, output, 0666); err != nil {
 		return err
 	}
 
@@ -85,6 +84,28 @@ type VerthashMinerDeviceConfig struct {
 	Platform    string
 }
 
+// Returns true if backend is good
+func CheckBackendStatus(backend string) bool {
+	info := getInfoResponse{}
+	url := fmt.Sprintf("%sinfo", backend)
+	err := GetJson(url, &info)
+	if err != nil {
+		logging.Errorf("Backend server failed to respond: %v", err)
+		return false
+	}
+	// If any of the following are 0, backend server has a problem
+	if info.BackendTipHeight == 0 {
+		return false
+	}
+	if info.TipHeight == 0 {
+		return false
+	}
+	if info.Difficulty == 0 {
+		return false
+	}
+	return true
+}
+
 func GetDifficulty() float64 {
 	info := getInfoResponse{}
 	url := fmt.Sprintf("%sinfo", networks.Active.OCMBackend)
@@ -113,6 +134,24 @@ func GetNetHash() uint64 {
 	logging.Debugf("Nethash: %d", u)
 
 	return u
+}
+
+func GetCoinsPerDay(th int64) float64 {
+	halvings := th / 840000 // Vertcoin undergoes a halving event every 840000 blocks
+
+	if halvings >= 32 { // Vertcoin will undergo 32 halvings before zero emission
+		return 0
+	}
+	if halvings == 0 {
+		return 28800
+	}
+
+	cpd := float64(28800)
+
+	for i := int64(0); i < halvings; i++ {
+		cpd = cpd / 2
+	}
+	return cpd
 }
 
 var jsonClient = &http.Client{Timeout: 60 * time.Second}
@@ -147,7 +186,7 @@ func PostJson(url string, payload interface{}, target interface{}) error {
 	}
 	defer r.Body.Close()
 
-	bodyBytes, err := ioutil.ReadAll(r.Body)
+	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		return err
 	}

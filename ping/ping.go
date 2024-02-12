@@ -94,6 +94,9 @@ func selector() {
 			})
 
 			for i := 0; i < len(NodeList); i++ {
+				if NodeList[i].PingTime == 0 { // We need to skip nodes with a pingTime of 0ms, they're either not active or they're not responding to pings and OCM will select it if it responds to the following requests.
+					continue
+				}
 				nodeInformation, _ := GetNodeInformation(NodeList[i].URL)
 				fee := CheckFee(nodeInformation)
 				if fee {
@@ -153,7 +156,9 @@ func PingNodes(NodeList []Nodes) error {
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
 	err = util.GetJson(fmt.Sprintf("%slocal_stats", NodeURL), &jsonPayload)
 	if err != nil {
+		if NodeURL != "http://127.0.0.1:9171/" {
 		logging.Errorf("Unable to fetch node information\n", err.Error())
+		}
 		return jsonPayload, err
 	}
 	return jsonPayload, nil

@@ -1,10 +1,5 @@
 [
 	{
-		"Hostname": "p2proxy.vertcoin.org",
-		"Stratum":  "stratum+tcp://p2proxy.vertcoin.org:9172",
-		"URL":      "http://p2proxy.vertcoin.org:9172/"
-	},
-	{
 		"Hostname": "mindcraftblocks.com",
 		"Stratum":  "stratum+tcp://mindcraftblocks.com:9171",
 		"URL":      "http://mindcraftblocks.com:9171/"
@@ -20,11 +15,6 @@
 		"URL":      "http://vtc-ca.javerity.com:9171/"
 	},
 	{
-		"Hostname": "vtc.p2pminers.nl",
-		"Stratum":  "stratum+tcp://vtc.p2pminers.nl:9171",
-		"URL":      "http://vtc.p2pminers.nl:9171/"
-	},
-	{
 		"Hostname": "p2p-usa.xyz",
 		"Stratum":  "stratum+tcp://p2p-usa.xyz:9171",
 		"URL":      "http://p2p-usa.xyz:9171/"
@@ -33,11 +23,6 @@
 		"Hostname": "p2p-ekb.xyz",
 		"Stratum":  "stratum+tcp://p2p-ekb.xyz:9171",
 		"URL":      "http://p2p-ekb.xyz:9171/"
-	},
-	{
-		"Hostname": "asia.p2p-spb.xyz",
-		"Stratum":  "stratum+tcp://asia.p2p-spb.xyz:9171",
-		"URL":      "http://asia.p2p-spb.xyz:9171/"
 	},
 	{
 		"Hostname": "p2p-spb.xyz",
@@ -50,14 +35,14 @@
 		"URL":      "http://p2p-south.xyz:9171/"
 	},
 	{
-		"Hostname": "siberia.mine.nu",
-		"Stratum":  "stratum+tcp://siberia.mine.nu:9171",
-		"URL":      "http://siberia.mine.nu:9171/"
-	},
-	{
 		"Hostname": "boofpool.ddns.net",
 		"Stratum":  "stratum+tcp://boofpool.ddns.net:9171",
 		"URL":      "http://boofpool.ddns.net:9171/"
+	},
+	{
+		"Hostname": "vtc-ut.myangelprints.com",
+		"Stratum":  "stratum+tcp://vtc-ut.myangelprints.com:9171",
+		"URL":      "http://vtc-ut.myangelprints.com:9171/"
 	},
 	{
 		"Hostname": "vtc-brn.webhop.me",
