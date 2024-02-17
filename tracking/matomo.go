@@ -80,7 +80,7 @@ func StartTracker() {
 			}
 
 			q := req.URL.Query()
-			q.Add("idsite", "2")
+			q.Add("idsite", "3")
 			q.Add("rec", "1")
 			if new {
 				new = false
