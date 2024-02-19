@@ -2,12 +2,15 @@ package backend
 
 import (
 	"fmt"
+	"math/rand"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	verthash "github.com/gertjaap/verthash-go"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
+	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -77,6 +80,13 @@ func (m *Backend) PerformChecks() string {
 		errorString := fmt.Sprintf("Failed to create or verify Verthash data file: %s", err.Error())
 		m.runtime.Events.Emit("checkStatus", "Failed")
 		return errorString
+	}
+
+	for !m.p2poolNodeSelected {
+		time.Sleep(time.Second)
+	}
+	for networks.Active.OCMBackend == "" {
+		time.Sleep(500 * time.Millisecond)
 	}
 
 	args := m.GetArgs()
@@ -201,4 +211,31 @@ func (m *Backend) InstallMinerBinaries() error {
 		}
 	}
 	return nil
+}
+
+// Will be run at startup
+// Additionally it can be run if the backend returns an error after startup
+func (m *Backend) BackendServerSelector() {
+	// Pick a random backend off the list
+	rand.Seed(time.Now().UnixNano())
+	n := rand.Intn(len(networks.Active.BackendServers))
+
+	// Run a simple check to see if the backend is up and returned data isn't nonsense
+	// If the backend is bad, go through the list until a suitable one is found
+	for range networks.Active.BackendServers {
+		b := util.CheckBackendStatus(networks.Active.BackendServers[n])
+		if b {
+			// If backend is up and return data other than 0, save it in networks.Active
+			networks.Active.OCMBackend = networks.Active.BackendServers[n]
+			logging.Infof("Using backend: %s\n", networks.Active.OCMBackend)
+			return
+		}
+		n += 1
+		if n == len(networks.Active.BackendServers) {
+			n = 0
+		}
+	}
+	// We'll only ever get here if all backends are unreachable..
+	networks.Active.OCMBackend = networks.Active.BackendServers[0]
+	logging.Errorf("No working backend could be found..\n")
 }

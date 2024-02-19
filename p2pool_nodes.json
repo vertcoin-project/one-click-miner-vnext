@@ -25,11 +25,6 @@
 		"URL":      "http://p2p-ekb.xyz:9171/"
 	},
 	{
-		"Hostname": "asia.p2p-spb.xyz",
-		"Stratum":  "stratum+tcp://asia.p2p-spb.xyz:9171",
-		"URL":      "http://asia.p2p-spb.xyz:9171/"
-	},
-	{
 		"Hostname": "p2p-spb.xyz",
 		"Stratum":  "stratum+tcp://p2p-spb.xyz:9171",
 		"URL":      "http://p2p-spb.xyz:9171/"
@@ -40,23 +35,18 @@
 		"URL":      "http://p2p-south.xyz:9171/"
 	},
 	{
-		"Hostname": "siberia.mine.nu",
-		"Stratum":  "stratum+tcp://siberia.mine.nu:9171",
-		"URL":      "http://siberia.mine.nu:9171/"
-	},
-	{
 		"Hostname": "boofpool.ddns.net",
 		"Stratum":  "stratum+tcp://boofpool.ddns.net:9171",
 		"URL":      "http://boofpool.ddns.net:9171/"
 	},
 	{
+		"Hostname": "vtc-ut.myangelprints.com",
+		"Stratum":  "stratum+tcp://vtc-ut.myangelprints.com:9171",
+		"URL":      "http://vtc-ut.myangelprints.com:9171/"
+	},
+	{
 		"Hostname": "vtc-brn.webhop.me",
 		"Stratum":  "stratum+tcp://vtc-brn.webhop.me:9171",
 		"URL":      "http://vtc-brn.webhop.me:9171/"
-	},
-	{
-		"Hostname": "159.223.184.20",
-		"Stratum":  "stratum+tcp://159.223.184.20:9171",
-		"URL":      "http://159.223.184.20:9171/static/"
 	}
 ]

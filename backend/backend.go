@@ -31,6 +31,7 @@ type Backend struct {
 	stopRunningState    chan bool
 	prerequisiteInstall chan bool
 	alreadyRunning      bool
+	p2poolNodeSelected  bool
 }
 
 func NewBackend(alreadyRunning bool) (*Backend, error) {
