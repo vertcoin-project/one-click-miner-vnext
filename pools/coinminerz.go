@@ -54,7 +54,7 @@ func (p *CoinMinerz) GetName() string {
 }
 
 func (p *CoinMinerz) GetFee() float64 {
-	return 0.50
+	return 1
 }
 
 func (p *CoinMinerz) OpenBrowserPayoutInfo(addr string) {
