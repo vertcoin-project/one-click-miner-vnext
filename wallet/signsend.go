@@ -33,7 +33,7 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 		return err
 	}
 
-	priv, _ := btcec.PrivKeyFromBytes(btcec.S256(), privBytes)
+	priv, _ := btcec.PrivKeyFromBytes(privBytes)
 
 	for i := range tx.TxIn {
 		sigStash[i], err = txscript.SignatureScript(tx, i, w.Script, txscript.SigHashAll, priv, true)

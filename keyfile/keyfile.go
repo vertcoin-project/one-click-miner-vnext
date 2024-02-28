@@ -35,7 +35,7 @@ func CreateKeyFile(pass string) error {
 	}
 
 	// Derive pubkey
-	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv32[:])
+	_, pub := btcec.PrivKeyFromBytes(priv32[:])
 
 	salt := new([24]byte) // salt for scrypt / nonce for secretbox
 	dk32 := new([32]byte) // derived key from scrypt
@@ -131,6 +131,6 @@ func TestPassword(password string) bool {
 	if err != nil {
 		return false
 	}
-	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv)
+	_, pub := btcec.PrivKeyFromBytes(priv)
 	return bytes.Equal(loadPublicKey(), pub.SerializeCompressed())
 }
