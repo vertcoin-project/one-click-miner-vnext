@@ -73,8 +73,8 @@ func selector() {
 		if err != nil {
 			logging.Warnf("P2pool nodes could not be fetched, using p2proxy as failover\n")
 			Selected = SelectedNode{
-				P2PoolStratum: "stratum+tcp://p2proxy.vertcoin.org:9172",
-				P2PoolURL:     "http://p2proxy.vertcoin.org:9172/",
+				P2PoolStratum: "stratum+tcp://vtc-ca.javerity.com:9171",
+				P2PoolURL:     "http://vtc-ca.javerity.com:9171/",
 			}
 		}
 
