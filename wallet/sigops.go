@@ -1,8 +1,8 @@
 package wallet
 
 import (
+	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcutil"
 )
 
 var WitnessScaleFactor = 4

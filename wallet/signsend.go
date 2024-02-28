@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
@@ -33,7 +33,7 @@ func (w *Wallet) SignMyInputs(tx *wire.MsgTx, password string) error {
 		return err
 	}
 
-	priv, _ := btcec.PrivKeyFromBytes(btcec.S256(), privBytes)
+	priv, _ := btcec.PrivKeyFromBytes(privBytes)
 
 	for i := range tx.TxIn {
 		sigStash[i], err = txscript.SignatureScript(tx, i, w.Script, txscript.SigHashAll, priv, true)

@@ -7,10 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcutil"
+	"github.com/btcsuite/btcd/btcutil/base58"
 	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/base58"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
@@ -35,7 +35,7 @@ func CreateKeyFile(pass string) error {
 	}
 
 	// Derive pubkey
-	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv32[:])
+	_, pub := btcec.PrivKeyFromBytes(priv32[:])
 
 	salt := new([24]byte) // salt for scrypt / nonce for secretbox
 	dk32 := new([32]byte) // derived key from scrypt
@@ -131,6 +131,6 @@ func TestPassword(password string) bool {
 	if err != nil {
 		return false
 	}
-	_, pub := btcec.PrivKeyFromBytes(btcec.S256(), priv)
+	_, pub := btcec.PrivKeyFromBytes(priv)
 	return bytes.Equal(loadPublicKey(), pub.SerializeCompressed())
 }
