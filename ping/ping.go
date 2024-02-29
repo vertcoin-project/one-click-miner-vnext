@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/go-ping/ping"
@@ -72,8 +73,8 @@ func selector() {
 		if err != nil {
 			logging.Warnf("P2pool nodes could not be fetched, using p2proxy as failover\n")
 			Selected = SelectedNode{
-				P2PoolStratum: "stratum+tcp://p2proxy.vertcoin.org:9172",
-				P2PoolURL:     "http://p2proxy.vertcoin.org:9172/",
+				P2PoolStratum: "stratum+tcp://vtc-ca.javerity.com:9171",
+				P2PoolURL:     "http://vtc-ca.javerity.com:9171/",
 			}
 		}
 
@@ -130,34 +131,48 @@ func selector() {
 }
 
 func PingNodes(NodeList []Nodes) error {
+	var wg sync.WaitGroup
+	var errPing error
 	for i := 0; i < len(NodeList); i++ {
-		pinger, err := ping.NewPinger(NodeList[i].Hostname)
-		pinger.SetPrivileged(true)       //This line is needed for windows because of ICMP
-		pinger.Timeout = Set.PingTimeout //Sets the time for which the pinger will timeout regardless of how many packets there has been recieved
-		if err != nil {
-			logging.Warn("Error: Check if you are connected to the internet")
-			logging.Warn(err)
-			return err
-		}
-		pinger.Count = Set.PingPackets //Number of packets to be sent to each node
-		err = pinger.Run()
-		if err != nil {
-			logging.Warn("Error: Check if you are connected to the internet")
-			logging.Warn(err)
-			return err
-		}
-		NodeList[i].PingTime = pinger.Statistics().AvgRtt
-		logging.Infof("%s: %v \n", NodeList[i].Hostname, NodeList[i].PingTime)
+		wg.Add(1)
+
+		go func(NodeList []Nodes) {
+			defer wg.Done()
+
+			pinger, err := ping.NewPinger(NodeList[i].Hostname)
+			pinger.SetPrivileged(true)       //This line is needed for windows because of ICMP
+			pinger.Timeout = Set.PingTimeout //Sets the time for which the pinger will timeout regardless of how many packets there has been recieved
+			if err != nil {
+				logging.Warn("Error: Check if you are connected to the internet")
+				logging.Warn(err)
+				errPing = err
+				return
+			}
+			pinger.Count = Set.PingPackets //Number of packets to be sent to each node
+			err = pinger.Run()
+			if err != nil {
+				logging.Warn("Error: Check if you are connected to the internet")
+				logging.Warn(err)
+				errPing = err
+				return
+			}
+			NodeList[i].PingTime = pinger.Statistics().AvgRtt
+			logging.Infof("%s: %v \n", NodeList[i].Hostname, NodeList[i].PingTime)
+		}(NodeList)
+	}
+	wg.Wait()
+	if errPing != nil {
+		return errPing
 	}
 	return nil
 }
 
-//Instead of making a http request to the node each time we need to get information, we do it once and then reuse the collected data.
+// Instead of making a http request to the node each time we need to get information, we do it once and then reuse the collected data.
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
 	err = util.GetJson(fmt.Sprintf("%slocal_stats", NodeURL), &jsonPayload)
 	if err != nil {
 		if NodeURL != "http://127.0.0.1:9171/" {
-		logging.Errorf("Unable to fetch node information\n", err.Error())
+			logging.Errorf("Unable to fetch node information\n", err.Error())
 		}
 		return jsonPayload, err
 	}
@@ -177,7 +192,7 @@ func CheckFee(jsonPayload map[string]interface{}) bool {
 	return fee <= Set.MaxFee
 }
 
-//To ensure efficiency of the selected p2pool node a limit of miners has been put in place, returns true if the number is equal to Maxminers or below
+// To ensure efficiency of the selected p2pool node a limit of miners has been put in place, returns true if the number is equal to Maxminers or below
 func CheckCurrentMiners(jsonPayload map[string]interface{}) bool {
 	currentMiners, _ := jsonPayload["miner_hash_rates"].(string)
 	return len(currentMiners) <= Set.MaxMiners
