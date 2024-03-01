@@ -71,17 +71,15 @@ func (p *P2Pool) GetFee() (fee float64) {
 		err := util.GetJson(fmt.Sprintf("%slocal_stats", ping.Selected.P2PoolURL), &jsonPayload)
 		if err != nil {
 			logging.Warnf("Unable to fetch p2pool fee: %s", err.Error())
-			fee = 2.0
+			return 2.0
 		}
 		fee, ok := jsonPayload["fee"].(float64)
 		if !ok {
-			fee = 2.0
-			return fee
+			return 2.0
 		}
 		donationFee, ok := jsonPayload["donation_proportion"].(float64)
 		if !ok {
-			fee = 2.0
-			return fee
+			return 2.0
 		}
 		fee += donationFee
 		p.LastFetchedFee = time.Now()
