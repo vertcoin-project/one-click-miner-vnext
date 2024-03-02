@@ -18,7 +18,7 @@ body:
       options:
       - label: I have searched the existing issues
         required: true
-    type: checkboxes
+  - type: checkboxes
     attributes:
       label: Did you read [Common issues and fixes](https://github.com/vertcoin-project/one-click-miner-vnext/issues/618)?.
       options:
