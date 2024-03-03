@@ -18,9 +18,11 @@ import (
 	"github.com/wailsapp/wails"
 )
 
+//nolint:all
 //go:embed frontend/dist/app.js
 var js string
 
+//nolint:all
 //go:embed frontend/dist/app.css
 var css string
 
