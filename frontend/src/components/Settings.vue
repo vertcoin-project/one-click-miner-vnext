@@ -16,12 +16,12 @@
         </p>
       </div>
       <div class="col-settings-sub">
-        <p style="text-align: left">
+        <!-- <p style="text-align: left">
           <input type="checkbox" v-model="testnet" />
           {{ $t("settings.testnet") }}
           <br />
           <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p>
+        </p> -->
         <p style="text-align: left">
           <input type="checkbox" v-model="enableIntegrated" />
           {{ $t("settings.enable_integrated") }}

@@ -119,7 +119,8 @@ func (m *Backend) GetPools() []PoolChoice {
 }
 
 func (m *Backend) GetTestnet() bool {
-	return m.getSetting("testnet")
+        return false // Testnet is not necessary - return false
+        //return m.getSetting("testnet")
 }
 
 func (m *Backend) SetTestnet(newTestnet bool) {
