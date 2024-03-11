@@ -69,7 +69,9 @@
         "skipverthashverify":"Başlangıçta Verthash'i doğrulama",
         "skipverthashverify_sub":"Başlangıçta Verthash dosyasının bütünlüğünü doğrulamayı atlayacak (önerilmez)",
         "save_n_restart" : "Kaydet ve Yeniden Başlat",
-        "pool": "Madenci havuzu"
+        "pool": "Madenci havuzu",
+        "language": "Dil",
+        "choose_language": "Madenci için bir dil seçin"
     },
     "tabbar" : {
         "wallet" : "Cüzdan",

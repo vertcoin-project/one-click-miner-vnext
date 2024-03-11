@@ -59,7 +59,9 @@
         "closed_source" : "Folosește mineri closed-source",
         "closed_source_sub" : "Au hashrate mai bun, dar sunt mineri neauditați care trimit o taxă către dezvoltator",
         "closed_source_warning" : "Ai ales să folosești mineri closed-source. Vertcoin nu este afiliat cu acești mineri și nu oferă suport pentru ei. Conținutul lor nu poate fi auditat și ar putea include funcționalități dăunătoare pentru calculatorul tău.",
-        "save_n_restart" : "Salvează și repornește"
+        "save_n_restart" : "Salvează și repornește",
+        "language": "Limba",
+        "choose_language": "Alegeți o limbă pentru miner"
     },
     "tabbar" : {
         "wallet" : "Portofel",

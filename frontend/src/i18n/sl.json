@@ -59,7 +59,9 @@
         "closed_source" : "Uporabi zaprto programsko opremo za rudarstvo",
         "closed_source_sub" : "Boljši hashrate, vendar neocenjena programska opema, ki lahko vključuje pristojbino za razvojne inženirje",
         "closed_source_warning" : "Izbrali ste zaprto programsko opremo za rudarstvo. Vertcoin ne odobrava ali podpira njihovo uporabo. Ne more se preveriti njihovo vsebino tako, da lahko potencijalno vsebuje funkcije, ki lahko poškoduje vaš računalnik.",
-        "save_n_restart" : "Shrani & Znova zaženi"
+        "save_n_restart" : "Shrani & Znova zaženi",
+        "language": "Jezik",
+        "choose_language": "Izberite jezik za rudar"
     },
     "tabbar" : {
         "wallet" : "Denarnica",

@@ -72,7 +72,9 @@
     "skipverthashverify": "Verifiera inte verthash under start",
     "skipverthashverify_sub": "Kommer inte att verifiera verthash data file under uppstart (rekomenderas inte)",
     "save_n_restart": "Spara & starta om",
-    "pool": "Mining pool"
+    "pool": "Mining pool",
+    "language": "Språk",
+    "choose_language": "Välj ett språk för gruvarbetaren"
   },
   "tabbar": {
     "wallet": "Plånbok",

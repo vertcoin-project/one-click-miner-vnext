@@ -72,7 +72,9 @@
         "skipverthashverify":"Paleidžiant netikrinti Verthash",
         "skipverthashverify_sub":"Praleisite Verthash duomenų failo patikrinimą paleidžiant programą (nerekomenduojama)",
         "save_n_restart" : "Išsaugoti ir perkrauti",
-        "pool": "Kasėjų pool"
+        "pool": "Kasėjų pool",
+        "language": "Kalba",
+        "choose_language": "Pasirinkite kalnakasio kalbą"
     },
     "tabbar" : {
         "wallet" : "Piniginė",

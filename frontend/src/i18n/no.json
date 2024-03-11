@@ -59,7 +59,9 @@
     "closed_source": "Bruk utvinningsprogramvare med stengt kildekode",
     "closed_source_sub": "Bedre hashrate, men ukjente utvinnerprogramvareutvikleren kan ha en avgift for å utvinne",
     "closed_source_warning": "Du har valgt å bruke utvinningsprogramvare(r) med lukket kildekode. Vertcoin støtter eller verifiserer ikke disse utvinnerne. Deres kildekode kan ikke verifiseres eller godkjennes, og de kan inneholde funksjoner som skader din datamaskin.",
-    "save_n_restart": "Lagre og start på nytt"
+    "save_n_restart": "Lagre og start på nytt",
+    "language": "Språk",
+    "choose_language": "Velg et språk for gruvearbeideren"
   },
   "tabbar": {
     "wallet": "Lommebok",

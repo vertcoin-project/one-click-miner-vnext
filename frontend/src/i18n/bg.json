@@ -72,7 +72,9 @@
         "skipverthashverify":"Не проверявайте Verthash при стартиране.",
         "skipverthashverify_sub":"Ще пропусне проверката на целостта на Verthash файла при стартиране (не се препоръчва)",
         "save_n_restart" : "Запазване и Рестартиране",
-        "pool": "Минен басейн"
+        "pool": "Минен басейн",
+        "language": "език",
+        "choose_language": "Изберете език за миньора"
     },
     "tabbar" : {
         "wallet" : "Портфейл",

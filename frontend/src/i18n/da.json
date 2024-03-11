@@ -72,7 +72,9 @@
         "skipverthashverify": "Stop med at verificere Verthash data fil under opstart",
         "skipverthashverify_sub": "Spring verifikationen af verthash data filen over (ikke anbefalet)",
         "save_n_restart" : "Gem & Genstart",
-        "pool": "Mining pool"
+        "pool": "Mining pool",
+        "language": "Sprog",
+        "choose_language": "Vælg et sprog til minearbejderen"
     },
     "tabbar" : {
         "wallet" : "Wallet",

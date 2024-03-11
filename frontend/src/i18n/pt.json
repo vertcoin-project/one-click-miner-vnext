@@ -72,7 +72,9 @@
         "skipverthashverify":"Não verificar o Verthash na inicialização",
         "skipverthashverify_sub":"Irá pular a verificação da integridade do arquivo dos dados do Verthash na inicialização (não recomendado)",
         "save_n_restart" : "Gravar & Reiniciar",
-        "pool": "Pool de Mineração"
+        "pool": "Pool de Mineração",
+        "language": "Linguagem",
+        "choose_language": "Escolha um idioma para o minerador"
     },
     "tabbar" : {
         "wallet" : "Carteira",

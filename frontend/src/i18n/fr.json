@@ -59,7 +59,9 @@
         "closed_source" : "Utiliser des logiciels de minage propriétaires",
         "closed_source_sub" : "Meilleur taux de hachage, mais logiciel de minage ne rétribuant pas les développeurs",
         "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage propriétaires. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
-        "save_n_restart" : "Enregistrer & Redémarrer"
+        "save_n_restart" : "Enregistrer & Redémarrer",
+        "language": "Langue",
+        "choose_language": "Sélectionnez une langue pour le mineur"
     },
     "tabbar" : {
         "wallet" : "Portefeuille",

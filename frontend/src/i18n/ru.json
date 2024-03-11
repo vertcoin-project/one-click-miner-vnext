@@ -72,7 +72,9 @@
         "skipverthashverify" : "Не проверять файл данных Verthash при запуске",
         "skipverthashverify_sub" : "Пропустить проверку целостности файла Verthash.dat при запуске (не рекомендуется)",
         "save_n_restart" : "Сохранить и перезапустить",
-        "pool": "Пул для майнинга"
+        "pool": "Пул для майнинга",
+        "language": "Язык",
+        "choose_language": "Выберите язык для майнера"
     },
     "tabbar" : {
         "wallet" : "Кошелёк",

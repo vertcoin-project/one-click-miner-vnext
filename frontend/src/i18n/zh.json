@@ -59,7 +59,9 @@
         "closed_source" : "使用闭源的矿工",
         "closed_source_sub" : "更好的哈希率，但是未经审核的矿工会产生开发人员的费用",
         "closed_source_warning" : "你选择使用闭源的矿工。绿币（VTC）不支持这些矿工。他们无法对其内容进行审核并且可能包含损害你的电脑的功能。",
-        "save_n_restart" : "保存及重启"
+        "save_n_restart" : "保存及重启",
+        "language": "语",
+        "choose_language": "为矿工选择一种语言"
     },
     "tabbar" : {
         "wallet" : "钱包",
