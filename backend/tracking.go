@@ -21,5 +21,5 @@ func (m *Backend) TrackingEnabled() string {
 }
 
 func (m *Backend) ReportIssue() {
-	util.OpenBrowser("https://github.com/vertcoin-project/one-click-miner-vnext/issues/new")
+	util.OpenBrowser("https://github.com/vertcoin-project/one-click-miner-vnext/issues/new?assignees=&labels=bug&projects=&template=1-bug.yml")
 }
