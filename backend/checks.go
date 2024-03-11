@@ -217,7 +217,6 @@ func (m *Backend) InstallMinerBinaries() error {
 // Additionally it can be run if the backend returns an error after startup
 func (m *Backend) BackendServerSelector() {
 	// Pick a random backend off the list
-	rand.Seed(time.Now().UnixNano())
 	n := rand.Intn(len(networks.Active.BackendServers))
 
 	// Run a simple check to see if the backend is up and returned data isn't nonsense

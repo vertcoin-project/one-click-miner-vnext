@@ -81,7 +81,6 @@ func selector() {
 		err = PingNodes(NodeList)
 		if err != nil {
 			logging.Warnf("Nodes could not be pinged, selecting random node\n")
-			rand.Seed(time.Now().Unix())
 			randInt := rand.Intn(len(NodeList))
 			Selected = SelectedNode{
 				P2PoolStratum: NodeList[randInt].Stratum,
