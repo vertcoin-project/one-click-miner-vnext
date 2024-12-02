@@ -71,7 +71,9 @@
         "skipverthashverify":"Verifieer Verthash niet bij opstarten",
         "skipverthashverify_sub":"Zal het verifiëren van de bestandsintegriteit van Verthash-gegevens bij het opstarten overslaan (niet aanbevolen)",
         "save_n_restart" : "Opslaan & Herstarten",
-        "pool": "Mining pool"
+        "pool": "Mining pool",
+        "language": "Taal",
+        "choose_language": "Kies een taal voor de mijnwerker"
     },
     "tabbar" : {
         "wallet" : "Portemonnee",

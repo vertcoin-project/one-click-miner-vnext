@@ -59,7 +59,9 @@
         "closed_source" : "Koristi softver za rudarenje zatvorenog koda",
         "closed_source_sub" : "Bolji hashrate, ali neocijenjeni softver za rudarenje može uključivati naknadu za razvojne inženjere",
         "closed_source_warning" : "Odlučili ste koristiti softver(e) za rudarenje zatvorenog koda. Vertcoin ne odobrava i ne podržava njihovu upotrebu. Ne može se provjeriti njihov sadržaj i potencijalno mogu sadržavati funkcije koje mogu oštetiti vaše računalo.",
-        "save_n_restart" : "Spremi i ponovno pokreni"
+        "save_n_restart" : "Spremi i ponovno pokreni",
+        "language": "Jezik",
+        "choose_language": "Odaberite jezik za rudar"
     },
     "tabbar" : {
         "wallet" : "Novčanik",

@@ -14,6 +14,16 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.language") }}:
+          <br />
+          <select style="width: 100%" name="language" v-model="lang">
+            <option v-for="lang in langs" :key="`locale-${lang}`" :value="lang.code">
+              {{ lang.name }}
+            </option>
+          </select>
+          <span class="subtext">{{ $t("settings.choose_language") }}</span>
+        </p>
       </div>
       <div class="col-settings-sub">
         <!-- <p style="text-align: left">
@@ -67,8 +77,11 @@ export default {
       testnet: false,
       poolID: -1,
       pools: [],
+      lang: '',
+      langs: []
     };
   },
+
   created() {
     var self = this;
     window.backend.Backend.GetClosedSource().then(result => {
@@ -85,6 +98,12 @@ export default {
                 self.poolID = result;
                 window.backend.Backend.GetEnableIntegrated().then(result => {
                   self.enableIntegrated = result;
+                  window.backend.Backend.GetLangs().then(result => {
+                    self.langs = result;
+                    window.backend.Backend.GetLang().then(result => {
+                      self.lang = result;
+                    });
+                  });
                 });
               });
             });
@@ -92,11 +111,8 @@ export default {
         });
       });
     });
-    
-    
-   
-    
   },
+
   methods: {
     toggleWarning: function() {
       this.showWarning = !this.showWarning;
@@ -111,7 +127,9 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetPool(self.poolID).then(() => {
                   window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
-                    self.$emit("committed");
+                    window.backend.Backend.SetLang(self.lang).then(() => {
+                      self.$emit("committed");
+                    })
                   });
                 });
               });
