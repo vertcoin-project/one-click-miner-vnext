@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/ProtonMail/go-autostart v0.0.0-20210130080809-00ed301c8e9a
-	github.com/btcsuite/btcd v0.23.5-0.20231215221805-96c9fd8078fd
+	github.com/btcsuite/btcd v0.24.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/btcsuite/btcd/btcutil v1.1.5
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0
