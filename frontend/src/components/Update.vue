@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { OpenDownloadUrl, VersionDetails } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -26,7 +28,7 @@ export default {
   },
   mounted() {
     var self = this;
-    window.backend.Backend.VersionDetails().then(result => {
+    VersionDetails().then(result => {
       self.version = result[0];
       self.notes = result[1];
       self.downloadUrl = result[2];
@@ -37,7 +39,7 @@ export default {
       this.$emit("back");
     },
     download: function() {
-      window.backend.Backend.OpenDownloadUrl(this.downloadUrl);
+      OpenDownloadUrl(this.downloadUrl);
     }
   }
 };

@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import { EventsOn } from '../wailsjs/runtime/runtime'
+import { PerformChecks, StartMining } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -38,13 +41,13 @@ export default {
   mounted() {
     this.check();
     var self = this;
-    window.wails.Events.On("checkStatus", result => {
+    EventsOn("checkStatus", result => {
       self.checkStatus = result;
     });
-    window.wails.Events.On("prerequisiteInstall", result => {
+    EventsOn("prerequisiteInstall", result => {
       self.prerequisiteInstall = result === "1";
     });
-    window.wails.Events.On("verthashProgress", result => {
+    EventsOn("verthashProgress", result => {
       self.verthashProgress = result;
     })
   },
@@ -52,7 +55,7 @@ export default {
     check: function() {
       var self = this;
 
-      window.backend.Backend.PerformChecks().then(result => {
+      PerformChecks().then(result => {
         if (result === "ok") {
           self.startMining();
         } else {
@@ -63,7 +66,7 @@ export default {
     },
     startMining: function() {
       var self = this;
-      window.backend.Backend.StartMining().then(() => {
+      StartMining().then(() => {
         self.$emit("mining");
       });
     }

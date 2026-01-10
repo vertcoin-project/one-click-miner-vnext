@@ -11,6 +11,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (m *Backend) getSetting(name string) bool {
@@ -182,6 +183,6 @@ func (m *Backend) PrerequisiteProxyLoop() {
 		if pi {
 			send = "1"
 		}
-		m.runtime.Events.Emit("prerequisiteInstall", send)
+		runtime.EventsEmit(m.ctx,"prerequisiteInstall", send)
 	}
 }

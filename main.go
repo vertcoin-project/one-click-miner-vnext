@@ -1,13 +1,13 @@
 package main
 
 import (
+	"context"
+	"embed"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"runtime/debug"
-
-	_ "embed"
 
 	"github.com/marcsauter/single"
 	"github.com/vertcoin-project/one-click-miner-vnext/backend"
@@ -15,16 +15,14 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
-	"github.com/wailsapp/wails"
+	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/linux"
 )
 
-//nolint:all
-//go:embed frontend/dist/app.js
-var js string
-
-//nolint:all
-//go:embed frontend/dist/app.css
-var css string
+//go:embed all:frontend/dist
+var assets embed.FS
 
 func main() {
 	defer func() {
@@ -71,15 +69,6 @@ func main() {
 
 	log.Printf("OCM v%s Started up\n", tracking.GetVersion())
 
-	app := wails.CreateApp(&wails.AppConfig{
-		Width:  800,
-		Height: 400,
-		Title:  "Vertcoin One Click Miner",
-		JS:     js,
-		CSS:    css,
-		Colour: "#131313",
-	})
-
 	alreadyRunning := false
 	s := single.New("vertcoin-ocm")
 	if err := s.CheckLock(); err != nil && err == single.ErrAlreadyRunning {
@@ -93,28 +82,45 @@ func main() {
 		}()
 	}
 
-	backend, err := backend.NewBackend(alreadyRunning)
+	backendInstance, err := backend.NewBackend(alreadyRunning)
 	if err != nil {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	networks.SetNetwork(backend.GetTestnet())
+	networks.SetNetwork(backendInstance.GetTestnet())
 
-	go backend.BackendServerSelector()
-	go backend.SelectP2PoolNode()
-
-	backend.ResetPool()
-	app.Bind(backend)
-	err = app.Run()
+	err = wails.Run(&options.App{
+		Title:  "Vertcoin One Click Miner",
+		Width:  800,
+		Height: 400,
+		AssetServer: &assetserver.Options{
+			Assets: assets,
+		},
+		BackgroundColour: &options.RGBA{R: 19, G: 19, B: 19, A: 1},
+		OnStartup: func(ctx context.Context) {
+			backendInstance.SetContext(ctx)
+			go backendInstance.BackendServerSelector()
+			go backendInstance.SelectP2PoolNode()
+			backendInstance.ResetPool()
+		},
+		OnShutdown: func(ctx context.Context) {
+			backendInstance.StopMining()
+			tracking.Track(tracking.TrackingRequest{
+				Category: "Lifecycle",
+				Action:   "Shutdown",
+			})
+			tracking.Stop()
+		},
+		Bind: []interface{}{
+			backendInstance,
+		},
+		Linux: &linux.Options{
+			Icon:             []byte{}, // Will load icon if needed
+			WebviewGpuPolicy: linux.WebviewGpuPolicyNever,
+			ProgramName:      "vertcoin-ocm",
+		},
+	})
 	if err != nil {
 		logging.Errorf("Error running app: %v", err)
 	}
-	backend.StopMining()
-
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Shutdown",
-	})
-
-	tracking.Stop()
 }

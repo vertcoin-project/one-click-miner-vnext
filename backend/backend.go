@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"context"
 	"path/filepath"
 
 	"github.com/tidwall/buntdb"
@@ -10,11 +11,11 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
-	"github.com/wailsapp/wails"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Backend struct {
-	runtime             *wails.Runtime
+	ctx                 context.Context
 	wal                 *wallet.Wallet
 	settings            *buntdb.DB
 	pendingSweep        []*wire.MsgTx
@@ -66,14 +67,10 @@ func (m *Backend) ResetPool() {
 	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
 }
 
-func (m *Backend) WailsInit(runtime *wails.Runtime) error {
-	// Save runtime
-	m.runtime = runtime
-
+func (m *Backend) SetContext(ctx context.Context) {
+	m.ctx = ctx
 	go m.PrerequisiteProxyLoop()
 	go m.UpdateLoop()
-
-	return nil
 }
 
 func (m *Backend) OpenDownloadUrl(url string) {
@@ -85,5 +82,5 @@ func (m *Backend) AlreadyRunning() bool {
 }
 
 func (m *Backend) Close() {
-	m.runtime.Window.Close()
+	runtime.Quit(m.ctx)
 }

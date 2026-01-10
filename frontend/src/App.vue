@@ -25,6 +25,8 @@ import Settings from "./components/Settings.vue";
 import TabBar from "./components/TabBar.vue";
 import Tracking from "./components/Tracking.vue";
 import Update from "./components/Update.vue";
+import { EventsOn } from './wailsjs/runtime/runtime'
+import { StopMining } from './wailsjs/go/backend/Backend'
 
 import "./assets/css/main.css";
 
@@ -38,8 +40,8 @@ export default {
   },
   mounted() {
     var self = this;
-    window.wails.Events.On("minerRapidFail", () => {
-      window.backend.Backend.StopMining().then(() => {
+    EventsOn("minerRapidFail", () => {
+      StopMining().then(() => {
         self.switchToChecks();
       });
     });
@@ -54,7 +56,7 @@ export default {
       var self = this;
       if (this.tabBarVisible === true) {
         this.tabBarVisible = false;
-        window.backend.Backend.StopMining().then(() => {
+        StopMining().then(() => {
           self.switchToChecks();
         });
       } else {
@@ -96,7 +98,7 @@ export default {
     },
     restartMining: function() {
       var self = this;
-      window.backend.Backend.StopMining().then(() => {
+      StopMining().then(() => {
         self.switchToChecks();
       });
     }

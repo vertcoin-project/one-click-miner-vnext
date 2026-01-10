@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import { GetAutoStart, GetClosedSource, GetDebugging, GetEnableIntegrated, GetPool, GetPools, GetTestnet, SetAutoStart, SetClosedSource, SetDebugging, SetEnableIntegrated, SetPool, SetTestnet } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -71,19 +73,19 @@ export default {
   },
   created() {
     var self = this;
-    window.backend.Backend.GetClosedSource().then(result => {
+    GetClosedSource().then(result => {
       self.closedSourceMiner = result;
-      window.backend.Backend.GetAutoStart().then(result => {
+      GetAutoStart().then(result => {
         self.autoStart = result;
-        window.backend.Backend.GetDebugging().then(result => {
+        GetDebugging().then(result => {
           self.debugging = result;
-          window.backend.Backend.GetTestnet().then(result => {
+          GetTestnet().then(result => {
           self.testnet = result;
-            window.backend.Backend.GetPools().then(result => {
+            GetPools().then(result => {
               self.pools = result;
-              window.backend.Backend.GetPool().then(result => {
+              GetPool().then(result => {
                 self.poolID = result;
-                window.backend.Backend.GetEnableIntegrated().then(result => {
+                GetEnableIntegrated().then(result => {
                   self.enableIntegrated = result;
                 });
               });
@@ -105,12 +107,12 @@ export default {
     },
     save: function() {
       var self = this;
-      window.backend.Backend.SetClosedSource(this.closedSourceMiner).then(() => {
-          window.backend.Backend.SetDebugging(self.debugging).then(() => {
-            window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
-              window.backend.Backend.SetTestnet(self.testnet).then(() => {
-                window.backend.Backend.SetPool(self.poolID).then(() => {
-                  window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+      SetClosedSource(this.closedSourceMiner).then(() => {
+          SetDebugging(self.debugging).then(() => {
+            SetAutoStart(self.autoStart).then(() => {
+              SetTestnet(self.testnet).then(() => {
+                SetPool(self.poolID).then(() => {
+                  SetEnableIntegrated(self.enableIntegrated).then( () => {
                     self.$emit("committed");
                   });
                 });

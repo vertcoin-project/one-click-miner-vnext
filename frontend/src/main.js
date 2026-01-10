@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import VueI18n from "vue-i18n";
-import * as Wails from "@wailsapp/runtime"
+import { GetLocale } from './wailsjs/go/backend/Backend'
 
 Vue.use(VueI18n);
 Vue.config.productionTip = false;
@@ -31,14 +31,14 @@ import locale_sv from "./i18n/sv.json";
 import locale_tr from "./i18n/tr.json";
 import locale_zh from "./i18n/zh.json";
 
-Wails.Init(() => {
-    window.backend.Backend.GetLocale().then(result => {
-
+// Function to initialize the app once Wails runtime is ready
+function initApp() {
+    GetLocale().then(result => {
         const i18n = new VueI18n({
-            locale: result, // set locale
+            locale: result,
             fallbackLocale: 'en',
             messages: {
-		bg: locale_bg,
+                bg: locale_bg,
                 da: locale_da,
                 de: locale_de,
                 en: locale_en,
@@ -48,7 +48,7 @@ Wails.Init(() => {
                 hr: locale_hr,
                 it: locale_it,
                 ja: locale_ja,
-		lt: locale_lt,
+                lt: locale_lt,
                 nl: locale_nl,
                 no: locale_no,
                 pa: locale_pa,
@@ -58,14 +58,66 @@ Wails.Init(() => {
                 ru: locale_ru,
                 sl: locale_sl,
                 sv: locale_sv,
-		tr: locale_tr,
+                tr: locale_tr,
                 zh: locale_zh,
             },
         });
-        
+
+        new Vue({
+            i18n,
+            render: h => h(App)
+        }).$mount("#app");
+    }).catch(() => {
+        // Fallback to English if locale fetch fails
+        const i18n = new VueI18n({
+            locale: 'en',
+            fallbackLocale: 'en',
+            messages: {
+                bg: locale_bg,
+                da: locale_da,
+                de: locale_de,
+                en: locale_en,
+                es: locale_es,
+                fr: locale_fr,
+                hi: locale_hi,
+                hr: locale_hr,
+                it: locale_it,
+                ja: locale_ja,
+                lt: locale_lt,
+                nl: locale_nl,
+                no: locale_no,
+                pa: locale_pa,
+                pl: locale_pl,
+                pt: locale_pt,
+                ro: locale_ro,
+                ru: locale_ru,
+                sl: locale_sl,
+                sv: locale_sv,
+                tr: locale_tr,
+                zh: locale_zh,
+            },
+        });
+
         new Vue({
             i18n,
             render: h => h(App)
         }).$mount("#app");
     });
-});
+}
+
+// Wait for Wails runtime to be available
+function waitForWails() {
+    if (window.go && window.go.backend && window.go.backend.Backend) {
+        initApp();
+    } else {
+        setTimeout(waitForWails, 50);
+    }
+}
+
+// Wait for DOM to be ready, then wait for Wails runtime
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForWails);
+} else {
+    // DOM is already ready
+    waitForWails();
+}

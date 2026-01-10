@@ -9,6 +9,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 	"github.com/vertcoin-project/one-click-miner-vnext/wallet"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (m *Backend) WalletInitialized() int {
@@ -99,7 +100,7 @@ func (m *Backend) PrepareSweep(addr string) string {
 	result := PrepareResult{fmt.Sprintf("%0.8f VTC", val), len(txs)}
 	logging.Debugf("Prepared sweep: %v", result)
 
-	m.runtime.Events.Emit("createTransactionResult", result)
+	runtime.EventsEmit(m.ctx,"createTransactionResult", result)
 	return ""
 }
 

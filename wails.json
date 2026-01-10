@@ -1,0 +1,23 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Vertcoin One Click Miner",
+  "outputfilename": "vertcoin-ocm",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run serve",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Gert-Jaap Glasbergen",
+    "email": "gertjaap@gertjaap.org"
+  },
+  "info": {
+    "companyName": "Vertcoin Project",
+    "productName": "Vertcoin One Click Miner",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright.........",
+    "comments": "Vertcoin mining made easy"
+  },
+  "wailsjsdir": "./frontend/src",
+  "assetdir": "./frontend/dist",
+  "reloaddirs": "./frontend/src,./backend"
+}
