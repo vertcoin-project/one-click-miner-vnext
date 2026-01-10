@@ -5,6 +5,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (m *Backend) UpdateAvailable() bool {
@@ -33,6 +34,6 @@ func (m *Backend) UpdateLoop() {
 			break
 		}
 
-		m.runtime.Events.Emit("updateAvailable", m.UpdateAvailable())
+		runtime.EventsEmit(m.ctx,"updateAvailable", m.UpdateAvailable())
 	}
 }

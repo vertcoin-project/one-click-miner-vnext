@@ -91,6 +91,9 @@
 </template>
 
 <script>
+import { EventsOn } from '../wailsjs/runtime/runtime'
+import { GetTestnet, GetPoolName, GetPoolFee, Address, RefreshBalance, RefreshHashrate, RefreshRunningState, StopMining, PayoutInformation } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -120,62 +123,62 @@ export default {
       }
       self.spinner = newSpinner;
     }, 1000);
-    window.backend.Backend.GetTestnet().then(result => {
+    GetTestnet().then(result => {
       self.testnet = result;
     });
     window.setInterval(() => {
-      window.backend.Backend.GetPoolName().then(result => {
+      GetPoolName().then(result => {
         self.activePool = result;
       });
-      window.backend.Backend.GetPoolFee().then(result => {
+      GetPoolFee().then(result => {
         self.poolFee = result;
       });
-      window.backend.Backend.Address().then(result => {
+      Address().then(result => {
         self.address = result;
       });
     }, 5000);
-    window.backend.Backend.GetPoolName().then(result => {
+    GetPoolName().then(result => {
       self.activePool = result;
     });
-    window.backend.Backend.GetPoolFee().then(result => {
+    GetPoolFee().then(result => {
       self.poolFee = result;
     });
-    window.wails.Events.On("hashRate", result => {
+    EventsOn("hashRate", result => {
       self.hashrate = result;
     });
-    window.wails.Events.On("runningMiners", result => {
+    EventsOn("runningMiners", result => {
       self.runningMiners = result;
     });
-    window.wails.Events.On("networkHashRate", result => {
+    EventsOn("networkHashRate", result => {
       self.netHash = result;
     });
-    window.wails.Events.On("avgEarnings", result => {
+    EventsOn("avgEarnings", result => {
       self.avgearn = result;
     });
-    window.wails.Events.On("balance", result => {
+    EventsOn("balance", result => {
       self.balance = result;
     });
-    window.wails.Events.On("balanceImmature", result => {
+    EventsOn("balanceImmature", result => {
       self.balanceImmature = result;
     });
-    window.wails.Events.On("balancePendingPool", result => {
+    EventsOn("balancePendingPool", result => {
       self.balancePendingPool = result;
     });
-    window.backend.Backend.RefreshBalance();
-    window.backend.Backend.RefreshHashrate();
-    window.backend.Backend.RefreshRunningState();
+    RefreshBalance();
+    RefreshHashrate();
+    RefreshRunningState();
   },
   methods: {
     stop: function() {
       var self = this;
       this.stopping = true;
-      window.backend.Backend.StopMining().then(() => {
+      StopMining().then(() => {
         self.stopping = false;
         self.$emit("stop-mining");
       });
     },
     refreshBalance: function() {
-      window.backend.Backend.RefreshBalance();
+      RefreshBalance();
     },
     copyAddress: function() {
       var textArea = document.createElement("textarea");
@@ -202,7 +205,7 @@ export default {
       this.$emit("send");
     },
     payoutInformation: function() {
-      window.backend.Backend.PayoutInformation();
+      PayoutInformation();
     }
   }
 };

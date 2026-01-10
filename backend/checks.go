@@ -13,17 +13,18 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (m *Backend) PerformChecks() string {
-	m.runtime.Events.Emit("checkStatus", "rapidfail")
+	wruntime.EventsEmit(m.ctx,"checkStatus", "rapidfail")
 	if len(m.rapidFailures) > 0 {
-		m.runtime.Events.Emit("checkStatus", "Failed")
+		wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 		m.rapidFailures = make([]*miners.BinaryRunner, 0) // Clear the failures
 		return "Rapid failures: Your GPU is likely incompatible; check FAQ for supported hardware. If compatible, GPU overclocks or antivirus may be the cause."
 	}
 
-	m.runtime.Events.Emit("checkStatus", "compatibility")
+	wruntime.EventsEmit(m.ctx,"checkStatus", "compatibility")
 	err := m.CheckGPUCompatibility()
 	if err != nil {
 		tracking.Track(tracking.TrackingRequest{
@@ -31,11 +32,11 @@ func (m *Backend) PerformChecks() string {
 			Action:   "CheckGPUCompatibilityError",
 			Name:     err.Error(),
 		})
-		m.runtime.Events.Emit("checkStatus", "Failed")
+		wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 		return err.Error()
 	}
 
-	m.runtime.Events.Emit("checkStatus", "installing_miners")
+	wruntime.EventsEmit(m.ctx,"checkStatus", "installing_miners")
 	err = m.InstallMinerBinaries()
 	if err != nil {
 		tracking.Track(tracking.TrackingRequest{
@@ -43,11 +44,11 @@ func (m *Backend) PerformChecks() string {
 			Action:   "InstallMinerBinariesError",
 			Name:     err.Error(),
 		})
-		m.runtime.Events.Emit("checkStatus", "Failed")
+		wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 		return err.Error()
 	}
 
-	m.runtime.Events.Emit("checkStatus", "verthash")
+	wruntime.EventsEmit(m.ctx,"checkStatus", "verthash")
 	verthashFile := filepath.Join(util.DataDirectory(), "verthash.dat")
 
 	doneChan := make(chan bool, 1)
@@ -68,7 +69,7 @@ func (m *Backend) PerformChecks() string {
 		case done = <-doneChan:
 			break
 		case prog := <-progress:
-			m.runtime.Events.Emit("verthashProgress", prog*100)
+			wruntime.EventsEmit(m.ctx,"verthashProgress", prog*100)
 			break
 		}
 		if done {
@@ -78,7 +79,7 @@ func (m *Backend) PerformChecks() string {
 
 	if err != nil {
 		errorString := fmt.Sprintf("Failed to create or verify Verthash data file: %s", err.Error())
-		m.runtime.Events.Emit("checkStatus", "Failed")
+		wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 		return errorString
 	}
 
@@ -100,12 +101,12 @@ func (m *Backend) PerformChecks() string {
 				Action:   "ConfigureError",
 				Name:     errorString,
 			})
-			m.runtime.Events.Emit("checkStatus", "Failed")
+			wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 			return errorString
 		}
 
 		if br.MinerImpl.AvailableGPUs() == 0 {
-			m.runtime.Events.Emit("checkStatus", "Failed")
+			wruntime.EventsEmit(m.ctx,"checkStatus", "Failed")
 			return "Miner software reported no compatible GPUs. Check FAQ for supported hardware and ensure your GPU drivers are up to date."
 		}
 	}

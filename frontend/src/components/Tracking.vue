@@ -27,6 +27,9 @@
 </template>
 
 <script>
+import { EventsOn } from '../wailsjs/runtime/runtime'
+import { DisableTracking, EnableTracking, GetVersion, ReportIssue, TrackingEnabled, UpdateAvailable } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -37,16 +40,16 @@ export default {
   },
   mounted() {
     var self = this;
-    window.backend.Backend.TrackingEnabled().then(result => {
+    TrackingEnabled().then(result => {
       self.tracking = result === "1";
     });
-    window.backend.Backend.GetVersion().then(result => {
+    GetVersion().then(result => {
       self.version = result;
     });
-    window.backend.Backend.UpdateAvailable().then(result => {
+    UpdateAvailable().then(result => {
       self.updateAvailable = result;
     });
-    window.wails.Events.On("updateAvailable", result => {
+    EventsOn("updateAvailable", result => {
       self.updateAvailable = result;
     });
   },
@@ -55,15 +58,15 @@ export default {
       this.$emit("update");
     },
     reportIssue: function() {
-      window.backend.Backend.ReportIssue();
+      ReportIssue();
     },
     enableTracking: function() {
       this.tracking = true;
-      window.backend.Backend.EnableTracking();
+      EnableTracking();
     },
     disableTracking: function() {
       this.tracking = false;
-      window.backend.Backend.DisableTracking();
+      DisableTracking();
     }
   }
 };

@@ -108,6 +108,9 @@
 </template>
 
 <script>
+import { EventsOn } from '../wailsjs/runtime/runtime'
+import { PrepareSweep, SendSweep, ShowTx } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -124,7 +127,7 @@ export default {
   },
   mounted() {
     var self = this;
-    window.wails.Events.On("createTransactionResult", result => {
+    EventsOn("createTransactionResult", result => {
       self.receivedBalance = result.FormattedAmount;
       self.receivedTxCount = result.NumberOfTransactions;
     });
@@ -153,7 +156,7 @@ export default {
         return;
       }
 
-      window.backend.Backend.SendSweep(this.password).then(result => {
+      SendSweep(this.password).then(result => {
         if (result.length === 1 && result[0].length !== 64) {
           // Error!
           self.sent = false;
@@ -170,7 +173,7 @@ export default {
       var self = this;
       this.receivedBalance = "0.00 VTC";
       this.invalidAddress = false;
-      window.backend.Backend.PrepareSweep(this.target).then(result => {
+      PrepareSweep(this.target).then(result => {
         if (result !== "") {
           self.receivedBalance = "0.00 VTC";
           self.error = self.$t("sending." + result);
@@ -192,7 +195,7 @@ export default {
       this.recalculate();
     },
     showTx(txid) {
-      window.backend.Backend.ShowTx(txid);
+      ShowTx(txid);
     }
   }
 };

@@ -8,6 +8,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (m *Backend) GetArgs() miners.BinaryArguments {
@@ -57,7 +58,7 @@ func (m *Backend) StartMining() bool {
 			for _, br := range m.minerBinaries {
 				if br.CheckRunning() == miners.RunningStateRapidFail {
 					m.rapidFailures = append(m.rapidFailures, br)
-					m.runtime.Events.Emit("minerRapidFail", br.MinerBinary.MainExecutableName)
+					runtime.EventsEmit(m.ctx,"minerRapidFail", br.MinerBinary.MainExecutableName)
 
 				} else {
 					newMinerBinaries = append(newMinerBinaries, br)
@@ -108,11 +109,11 @@ func (m *Backend) StartMining() bool {
 				hashrate /= 1000
 				hashrateUnit = "TH/s"
 			}
-			m.runtime.Events.Emit("hashRate", fmt.Sprintf("%0.2f %s", hashrate, hashrateUnit))
+			runtime.EventsEmit(m.ctx,"hashRate", fmt.Sprintf("%0.2f %s", hashrate, hashrateUnit))
 
 			netHash := float64(nhr) / float64(1000000000)
 
-			m.runtime.Events.Emit("networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
+			runtime.EventsEmit(m.ctx,"networkHashRate", fmt.Sprintf("%0.2f %s", netHash, hashrateUnit))
 
 			// Avoids wrong estimates when the backend is unavailable
 			if th != 0 && nhr != 0 {
@@ -120,7 +121,7 @@ func (m *Backend) StartMining() bool {
 				avgEarning = float64(hr) / float64(nhr) * float64(coinsPerDay)
 			}
 
-			m.runtime.Events.Emit("avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
+			runtime.EventsEmit(m.ctx,"avgEarnings", fmt.Sprintf("%0.2f VTC", avgEarning))
 
 			select {
 			case <-m.stopHash:
@@ -137,12 +138,12 @@ func (m *Backend) StartMining() bool {
 		for continueLoop {
 			m.wal.Update()
 			b, bi := m.wal.GetBalance()
-			m.runtime.Events.Emit("balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
-			m.runtime.Events.Emit("balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
+			runtime.EventsEmit(m.ctx,"balance", fmt.Sprintf("%0.8f", float64(b)/float64(100000000)))
+			runtime.EventsEmit(m.ctx,"balanceImmature", fmt.Sprintf("%0.8f", float64(bi)/float64(100000000)))
 			logging.Infof("Updating pending pool payout...")
 			newPb := m.pool.GetPendingPayout()
 			pb = newPb
-			m.runtime.Events.Emit("balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
+			runtime.EventsEmit(m.ctx,"balancePendingPool", fmt.Sprintf("%0.8f", float64(pb)/float64(100000000)))
 			select {
 			case <-m.stopBalance:
 				continueLoop = false
@@ -163,7 +164,7 @@ func (m *Backend) StartMining() bool {
 				}
 			}
 
-			m.runtime.Events.Emit("runningMiners", runningProcesses)
+			runtime.EventsEmit(m.ctx,"runningMiners", runningProcesses)
 
 			timeout := time.Second * 1
 			if runningProcesses > 0 {

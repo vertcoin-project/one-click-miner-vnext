@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { GetTestnet } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -28,7 +30,7 @@ export default {
   },
   mounted() {
     var self = this;
-    window.backend.Backend.GetTestnet().then(result => {
+    GetTestnet().then(result => {
       self.testnet = result;
     })
   },

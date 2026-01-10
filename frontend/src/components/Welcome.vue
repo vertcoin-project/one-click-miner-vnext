@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { AlreadyRunning, Close, InitWallet, WalletInitialized } from '../wailsjs/go/backend/Backend'
+
 export default {
   data() {
     return {
@@ -46,10 +48,10 @@ export default {
   },
   created() {
     var self = this;
-    window.backend.Backend.AlreadyRunning().then(result => {
+    AlreadyRunning().then(result => {
       self.alreadyRunning = result;
       if (!result) {
-        window.backend.Backend.WalletInitialized().then(result => {
+        WalletInitialized().then(result => {
           self.walletInitialized = result;
           if (
             self.walletInitialized === 1 &&
@@ -63,7 +65,7 @@ export default {
   },
   methods: {
     close: function() {
-      window.backend.Backend.Close();
+      Close();
     },
     initAndStart: function() {
       this.error = "";
@@ -78,7 +80,7 @@ export default {
 
       var self = this;
 
-      window.backend.Backend.InitWallet(this.password).then(result => {
+      InitWallet(this.password).then(result => {
         if (result !== true) {
           this.error = self.$t("welcome.error_initializing");
         } else {

@@ -15,19 +15,19 @@ REN version.go version.go.build
 ECHO package tracking >> version.go
 ECHO var version="%ver%-%gitver%" >> version.go
 CD ..
-DEL build\vertcoin-ocm.exe >nul 2>&1
-wails build
+DEL build\bin\vertcoin-ocm.exe >nul 2>&1
+wails build -clean
 ECHO "Sign the release assembly now on the windows machine if desired, then:"
 PAUSE
-CD build 
-7z -sdel -aou a vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe
-CD ..
-wails build -d
+CD build\bin
+7z -sdel -aou a ..\..\vertcoin-ocm-%ver%-windows-x64.zip vertcoin-ocm.exe
+CD ..\..
+wails build -clean -debug
 ECHO "Sign the debug assembly now on the windows machine if desired, then:"
 PAUSE
-CD build
-7z -sdel -aou a vertcoin-ocm-%ver%-windows-x64-debug.zip vertcoin-ocm.exe
-CD ..
+CD build\bin
+7z -sdel -aou a ..\..\vertcoin-ocm-%ver%-windows-x64-debug.zip vertcoin-ocm.exe
+CD ..\..
 DEL *.syso *.manifest *.ico *.rc *.exe >nul 2>&1
 CD tracking
 DEL version.go >nul 2>&1
