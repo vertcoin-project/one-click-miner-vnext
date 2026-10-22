@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -18,6 +20,100 @@ var _ MinerImpl = &VerthashMinerImpl{}
 
 var cfgPath = "verthash-miner-tmpl.conf"
 
+// cuda11MaxComputeCap is the highest compute capability the bundled CUDA 11
+// build of VerthashMiner can run. Newer cards (e.g. RTX 50xx at 12.0) start
+// without error but never hash, so they have to mine through OpenCL instead.
+const cuda11MaxComputeCap = 9.0
+
+var deviceIndexRe = regexp.MustCompile(`DeviceIndex\s*=\s*"(-?\d+)"`)
+
+// normalizePCIeID turns nvidia-smi's "00000000:2B:00.0" and VerthashMiner's
+// "2b:00:0" into the same "bus:device:function" form.
+func normalizePCIeID(id string) string {
+	parts := strings.Split(strings.ReplaceAll(strings.ToLower(strings.TrimSpace(id)), ".", ":"), ":")
+	if len(parts) > 3 {
+		parts = parts[len(parts)-3:]
+	}
+	return strings.Join(parts, ":")
+}
+
+// nvidiaComputeCaps returns the compute capability of each NVIDIA GPU keyed by
+// PCIe id, or nil when nvidia-smi isn't available.
+func nvidiaComputeCaps() map[string]float64 {
+	cmd := exec.Command("nvidia-smi", "--query-gpu=pci.bus_id,compute_cap", "--format=csv,noheader")
+	util.PrepareBackgroundCommand(cmd)
+	out, err := cmd.Output()
+	if err != nil {
+		logging.Debugf("nvidia-smi unavailable, keeping CUDA for NVIDIA GPUs: %v\n", err)
+		return nil
+	}
+	caps := map[string]float64{}
+	for _, line := range strings.Split(string(out), "\n") {
+		fields := strings.Split(line, ",")
+		if len(fields) != 2 {
+			continue
+		}
+		if c, err := strconv.ParseFloat(strings.TrimSpace(fields[1]), 64); err == nil {
+			caps[normalizePCIeID(fields[0])] = c
+		}
+	}
+	return caps
+}
+
+// selectVerthashDevices takes a config generated with --no-restrict-cuda, where
+// NVIDIA cards appear as both OpenCL and CUDA devices, and keeps exactly one
+// entry per card: CUDA when the CUDA 11 build supports it, OpenCL otherwise.
+// Cards without compute capability info keep CUDA, as before.
+func selectVerthashDevices(lines []string, caps map[string]float64) []string {
+	clPCIe, cuPCIe := map[int]string{}, map[int]string{}
+	section, cur := "", -1
+	for _, line := range lines {
+		switch {
+		case strings.Contains(line, "OpenCL device config"):
+			section, cur = "cl", -1
+		case strings.Contains(line, "CUDA Device config"):
+			section, cur = "cu", -1
+		case strings.HasPrefix(line, "# DeviceIndex:"):
+			cur, _ = strconv.Atoi(strings.TrimSpace(strings.TrimPrefix(line, "# DeviceIndex:")))
+		case cur >= 0 && strings.Contains(line, "PCIeId:"):
+			id := normalizePCIeID(line[strings.Index(line, "PCIeId:")+len("PCIeId:"):])
+			if section == "cl" {
+				clPCIe[cur] = id
+			} else if section == "cu" {
+				cuPCIe[cur] = id
+			}
+		}
+	}
+
+	useCUDA := map[string]bool{}
+	for _, id := range cuPCIe {
+		if id != "" {
+			cc, known := caps[id]
+			useCUDA[id] = !known || cc <= cuda11MaxComputeCap
+		}
+	}
+
+	out := make([]string, 0, len(lines))
+	for _, line := range lines {
+		isCL, isCU := strings.HasPrefix(line, "<CL_Device"), strings.HasPrefix(line, "<CU_Device")
+		if isCL || isCU {
+			idx := -1
+			if m := deviceIndexRe.FindStringSubmatch(line); m != nil {
+				idx, _ = strconv.Atoi(m[1])
+			}
+			if isCL {
+				if cuda, nvidia := useCUDA[clPCIe[idx]]; nvidia && cuda {
+					continue // this NVIDIA card mines through CUDA
+				}
+			} else if !useCUDA[cuPCIe[idx]] {
+				continue // the CUDA 11 build can't run this card, OpenCL entry is used
+			}
+		}
+		out = append(out, line)
+	}
+	return out
+}
+
 type VerthashMinerImpl struct {
 	binaryRunner  *BinaryRunner
 	clhashRates   map[int64]uint64
@@ -27,7 +123,9 @@ type VerthashMinerImpl struct {
 
 func (l *VerthashMinerImpl) generateTempConf() error {
 	os.Remove(filepath.Join(util.DataDirectory(), cfgPath))
-	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), cfgPath)}, false)
+	// --no-restrict-cuda lists NVIDIA cards under OpenCL too, so cards the CUDA 11
+	// build can't run still have a usable device entry (see selectVerthashDevices).
+	err := l.binaryRunner.launch([]string{"--gen-conf", filepath.Join(util.DataDirectory(), cfgPath), "--no-restrict-cuda"}, false)
 	var err2 error
 	if l.binaryRunner.cmd != nil {
 		err2 = l.binaryRunner.cmd.Wait()
@@ -77,13 +175,27 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 
 	var parsedDevices map[int]util.VerthashMinerDeviceConfig
 
+	var tmplLines []string
 	scanner := bufio.NewScanner(in)
+	for scanner.Scan() {
+		tmplLines = append(tmplLines, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+	caps := nvidiaComputeCaps()
+	for id, cc := range caps {
+		if cc > cuda11MaxComputeCap {
+			logging.Infof("GPU %s has compute capability %.1f, mining it through OpenCL", id, cc)
+		}
+	}
+	tmplLines = selectVerthashDevices(tmplLines, caps)
+
 	skip := false
 	insideDeviceBlock := false
 	deviceBlockStr := ""
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range tmplLines {
 		if strings.HasPrefix(line, "#") {
 			skip = false
 		}
@@ -135,9 +247,6 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 				return err
 			}
 		}
-	}
-	if err := scanner.Err(); err != nil {
-		return err
 	}
 	return nil
 }
@@ -197,7 +306,9 @@ func (l *VerthashMinerImpl) HashRate() uint64 {
 }
 
 func (l *VerthashMinerImpl) ConstructCommandlineArgs(args BinaryArguments) []string {
-	return []string{"--conf", filepath.Join(util.DataDirectory(), "verthash-miner.conf")}
+	// Must match the --no-restrict-cuda used to generate the config, or the
+	// OpenCL device indices in it won't line up.
+	return []string{"--conf", filepath.Join(util.DataDirectory(), "verthash-miner.conf"), "--no-restrict-cuda"}
 }
 
 func (l *VerthashMinerImpl) AvailableGPUs() int8 {
