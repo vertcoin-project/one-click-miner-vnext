@@ -42,6 +42,7 @@ type Nodes struct {
 	Stratum  string `json:"Stratum"`
 	URL      string `json:"URL"`
 	PingTime time.Duration
+	info     map[string]interface{} // local_stats, nil if the node didn't answer
 }
 
 var Selected SelectedNode
@@ -80,20 +81,41 @@ func selector() {
 		}
 
 		Selected = SelectedNode{}
+
+		// Fetch every node's stats while pinging, so a dead node costs at most
+		// one timeout in total instead of one per node.
+		var wg sync.WaitGroup
+		for i := range NodeList {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				if info, err := GetNodeInformation(NodeList[i].URL); err == nil {
+					NodeList[i].info = info
+				}
+			}(i)
+		}
 		err = PingNodes(NodeList)
+		wg.Wait()
+
 		if err != nil {
 			logging.Warnf("Nodes could not be pinged, selecting random node\n")
 		} else {
 
-			sort.Slice(NodeList, func(i, j int) bool {
-				return NodeList[i].PingTime < NodeList[j].PingTime
+			// Lowest ping first. Nodes that block ping (PingTime 0) go last but
+			// can still be picked if their stats answered.
+			sort.SliceStable(NodeList, func(i, j int) bool {
+				a, b := NodeList[i].PingTime, NodeList[j].PingTime
+				if a == 0 || b == 0 {
+					return b == 0 && a != 0
+				}
+				return a < b
 			})
 
 			for i := 0; i < len(NodeList); i++ {
-				if NodeList[i].PingTime == 0 { // We need to skip nodes with a pingTime of 0ms, they're either not active or they're not responding to pings and OCM will select it if it responds to the following requests.
+				if NodeList[i].info == nil {
 					continue
 				}
-				nodeInformation, _ := GetNodeInformation(NodeList[i].URL)
+				nodeInformation := NodeList[i].info
 				fee := CheckFee(nodeInformation)
 				if fee {
 					currentMiners := CheckCurrentMiners(nodeInformation)
@@ -124,7 +146,11 @@ func selector() {
 
 		// Nothing was picked by ping time, so take a random node that is up.
 		if Selected.P2PoolURL == "" {
-			if node, ok := pickResponsiveNode(NodeList, nodeResponds); ok {
+			up := map[string]bool{}
+			for _, n := range NodeList {
+				up[n.URL] = n.info != nil
+			}
+			if node, ok := pickResponsiveNode(NodeList, func(url string) bool { return up[url] }); ok {
 				Selected = SelectedNode{
 					P2PoolStratum: node.Stratum,
 					P2PoolURL:     node.URL,
@@ -207,14 +233,9 @@ func pickResponsiveNode(NodeList []Nodes, responds func(url string) bool) (Nodes
 	return Nodes{}, false
 }
 
-func nodeResponds(url string) bool {
-	_, err := GetNodeInformation(url)
-	return err == nil
-}
-
-// A healthy node answers in well under a second, so a short timeout keeps one
+// A healthy node answers in well under a second, so a short timeout keeps a
 // dead node from stalling node selection.
-var nodeClient = &http.Client{Timeout: 5 * time.Second}
+var nodeClient = &http.Client{Timeout: 3 * time.Second}
 
 // Instead of making a http request to the node each time we need to get information, we do it once and then reuse the collected data.
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
