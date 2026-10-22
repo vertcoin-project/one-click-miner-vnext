@@ -1,0 +1,163 @@
+name: build
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAILS_VERSION: v1.16.9
+  NODE_VERSION: '20'
+  # The Vue CLI 4 / webpack 4 frontend needs the legacy OpenSSL provider on Node 17+
+  NODE_OPTIONS: --openssl-legacy-provider
+  CGO_ENABLED: '1'
+
+jobs:
+  build:
+    name: build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows
+            runner: windows-latest
+            binary: vertcoin-ocm.exe
+          - os: linux
+            runner: ubuntu-latest
+            # Wails v1 links against webkit2gtk-4.0, which Ubuntu dropped after 22.04
+            container: ubuntu:22.04
+            binary: vertcoin-ocm
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Install Linux build dependencies
+        if: matrix.os == 'linux'
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates git curl zip build-essential pkg-config \
+            libgtk-3-dev libwebkit2gtk-4.0-dev
+
+      - uses: actions/checkout@v5
+
+      # The container runs as root but the workspace is owned by the runner user,
+      # so git (and Go's VCS stamping) refuses the repo without this
+      - name: Mark workspace as a safe git directory
+        if: matrix.container
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Ensure MinGW (gcc, windres) is available
+        if: matrix.os == 'windows'
+        run: |
+          if ! command -v windres >/dev/null || ! command -v gcc >/dev/null; then
+            choco install mingw -y --no-progress
+            echo "C:/ProgramData/mingw64/mingw64/bin" >> "$GITHUB_PATH"
+          fi
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/cmd/wails@${WAILS_VERSION}
+
+      - name: Determine version
+        id: version
+        run: |
+          short_sha="${GITHUB_SHA::7}"
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            name="${GITHUB_REF_NAME}"
+            version="${GITHUB_REF_NAME}-g${short_sha}"
+          else
+            name="dev-${short_sha}"
+            # Same as the source default, so dev builds always see updates
+            version="0.0-alpha1-g${short_sha}"
+          fi
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        id: build
+        env:
+          LDFLAGS: -X github.com/vertcoin-project/one-click-miner-vnext/tracking.version=${{ steps.version.outputs.version }}
+          NAME: ${{ steps.version.outputs.name }}
+          BINARY: ${{ matrix.binary }}
+          OS: ${{ matrix.os }}
+        run: |
+          wails build -ldflags "$LDFLAGS"
+          zipname="vertcoin-ocm-${NAME}-${OS}-x64.zip"
+          mkdir -p dist
+          if [ "$OS" = windows ]; then
+            (cd build && 7z a -tzip "../dist/${zipname}" "${BINARY}")
+          else
+            (cd build && zip "../dist/${zipname}" "${BINARY}")
+          fi
+          echo "zip=dist/${zipname}" >> "$GITHUB_OUTPUT"
+
+      - name: Attest build provenance
+        if: github.event_name != 'pull_request'
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{ steps.build.outputs.zip }}
+            build/${{ matrix.binary }}
+
+      # Upload the zip as-is so the download isn't a zip inside a zip
+      - uses: actions/upload-artifact@v7
+        with:
+          path: ${{ steps.build.outputs.zip }}
+          archive: false
+          if-no-files-found: error
+
+  release:
+    name: draft release
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: vertcoin-ocm-*.zip
+          path: dist
+          merge-multiple: true
+          # The artifacts are already zips; keep them as they are
+          skip-decompress: true
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          flags=(--draft --generate-notes --verify-tag --title "$TAG")
+          case "$TAG" in
+            *alpha*|*beta*|*rc*) flags+=(--prerelease) ;;
+          esac
+          ls -l dist
+          (cd dist && sha256sum *.zip > SHA256SUMS)
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" "${flags[@]}" dist/*.zip dist/SHA256SUMS
