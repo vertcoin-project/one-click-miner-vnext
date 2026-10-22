@@ -1,8 +1,10 @@
 package ping
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"sort"
 	"sync"
 	"time"
@@ -210,9 +212,17 @@ func nodeResponds(url string) bool {
 	return err == nil
 }
 
+// A healthy node answers in well under a second, so a short timeout keeps one
+// dead node from stalling node selection.
+var nodeClient = &http.Client{Timeout: 5 * time.Second}
+
 // Instead of making a http request to the node each time we need to get information, we do it once and then reuse the collected data.
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
-	err = util.GetJson(fmt.Sprintf("%slocal_stats", NodeURL), &jsonPayload)
+	r, err := nodeClient.Get(fmt.Sprintf("%slocal_stats", NodeURL))
+	if err == nil {
+		defer r.Body.Close()
+		err = json.NewDecoder(r.Body).Decode(&jsonPayload)
+	}
 	if err != nil {
 		if NodeURL != "http://127.0.0.1:9171/" {
 			logging.Errorf("Unable to fetch node information: %s\n", err.Error())
