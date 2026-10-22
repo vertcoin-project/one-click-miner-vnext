@@ -75,11 +75,11 @@
       <p v-if="runningMiners === 0">{{$t('mining.waiting_for_miners')}}</p>
       <p v-if="runningMiners > 0" class="header">{{$t('mining.expected_earnings_24h')}}:</p>
       <p
-        v-if="runningMiners > 0 && hashrate !== '0.00 MH/s'"
+        v-if="runningMiners > 0 && !estimating"
         class="earning"
       >~{{avgearn}} ({{hashrate}})</p>
       <p
-        v-if="runningMiners > 0 && hashrate === '0.00 MH/s'"
+        v-if="runningMiners > 0 && estimating"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
       <p>
@@ -164,6 +164,12 @@ export default {
     window.backend.Backend.RefreshBalance();
     window.backend.Backend.RefreshHashrate();
     window.backend.Backend.RefreshRunningState();
+  },
+  computed: {
+    // The backend reports no hashrate as "0.00 kH/s", so check the number, not the text.
+    estimating() {
+      return !(parseFloat(this.hashrate) > 0);
+    },
   },
   methods: {
     stop: function() {
