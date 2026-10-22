@@ -80,14 +80,28 @@ func GetGPUs() []GPU {
 	if !gpusCached {
 		gpus := []string{}
 		if runtime.GOOS == "windows" {
-			info := exec.Command("cmd", "/C", "wmic path win32_VideoController get name")
-			PrepareBackgroundCommand(info)
-			history, _ := info.Output()
-			possibleGpus := strings.Split(string(history), "\n")
-			for _, g := range possibleGpus {
-				g = strings.Trim(g, "\r ")
-				if g != "" && g != "Name" {
-					gpus = append(gpus, g)
+			// wmic is removed from recent Windows 11 builds, so query CIM through
+			// PowerShell first and only fall back to wmic for older systems.
+			queries := [][]string{
+				{"powershell", "-NoProfile", "-NonInteractive", "-Command", "(Get-CimInstance Win32_VideoController).Name"},
+				{"cmd", "/C", "wmic path win32_VideoController get name"},
+			}
+			for _, q := range queries {
+				info := exec.Command(q[0], q[1:]...)
+				PrepareBackgroundCommand(info)
+				history, err := info.Output()
+				if err != nil {
+					logging.Debugf("GPU query [%s] failed: %v\n", q[0], err)
+					continue
+				}
+				for _, g := range strings.Split(string(history), "\n") {
+					g = strings.Trim(g, "\r ")
+					if g != "" && g != "Name" {
+						gpus = append(gpus, g)
+					}
+				}
+				if len(gpus) > 0 {
+					break
 				}
 			}
 		} else if runtime.GOOS == "linux" {
