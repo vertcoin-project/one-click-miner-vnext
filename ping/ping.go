@@ -69,13 +69,15 @@ func selector() {
 		NodeList := []Nodes{}
 		err = util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/p2pool_nodes.json", &NodeList)
 
-		//If there's an error fetching the node list the user will just be pointed to p2proxy
-		if err != nil {
-			logging.Warnf("P2pool nodes could not be fetched, using p2proxy as failover\n")
+		// If the node list can't be fetched, fall back to a known node instead of
+		// picking from an empty list.
+		if err != nil || len(NodeList) == 0 {
+			logging.Warnf("P2pool nodes could not be fetched, using fallback node\n")
 			Selected = SelectedNode{
-				P2PoolStratum: "stratum+tcp://vtc-ca.javerity.com:9171",
-				P2PoolURL:     "http://vtc-ca.javerity.com:9171/",
+				P2PoolStratum: "stratum+tcp://vtc-fl.javerity.com:9171",
+				P2PoolURL:     "http://vtc-fl.javerity.com:9171/",
 			}
+			return
 		}
 
 		err = PingNodes(NodeList)
@@ -109,9 +111,8 @@ func selector() {
 						logging.Infof("%s selected, fulfilled all requirements\n", NodeList[i].Hostname)
 						break
 					} else { //If the node fulfills the max fee requirement but there is more than the set MaxNextping to the next node it will select the current
-						determineNextPingTime := NodeList[i+1].PingTime
-						determineNextPingTime -= NodeList[i].PingTime
-						if determineNextPingTime > Set.MaxNextPing {
+						// The last node has no next node to compare against, so take it.
+						if i+1 >= len(NodeList) || NodeList[i+1].PingTime-NodeList[i].PingTime > Set.MaxNextPing {
 							Selected = SelectedNode{
 								P2PoolStratum: NodeList[i].Stratum,
 								P2PoolURL:     NodeList[i].URL,

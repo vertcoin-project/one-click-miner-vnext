@@ -10,29 +10,9 @@
 		"URL":      "http://vtc-fl.javerity.com:9171/"
 	},
 	{
-		"Hostname": "vtc-ca.javerity.com",
-		"Stratum":  "stratum+tcp://vtc-ca.javerity.com:9171",
-		"URL":      "http://vtc-ca.javerity.com:9171/"
-	},
-	{
-		"Hostname": "p2p-usa.xyz",
-		"Stratum":  "stratum+tcp://p2p-usa.xyz:9171",
-		"URL":      "http://p2p-usa.xyz:9171/"
-	},
-	{
-		"Hostname": "p2p-ekb.xyz",
-		"Stratum":  "stratum+tcp://p2p-ekb.xyz:9171",
-		"URL":      "http://p2p-ekb.xyz:9171/"
-	},
-	{
 		"Hostname": "p2p-spb.xyz",
 		"Stratum":  "stratum+tcp://p2p-spb.xyz:9171",
 		"URL":      "http://p2p-spb.xyz:9171/"
-	},
-	{
-		"Hostname": "p2p-south.xyz",
-		"Stratum":  "stratum+tcp://p2p-south.xyz:9171",
-		"URL":      "http://p2p-south.xyz:9171/"
 	},
 	{
 		"Hostname": "boofpool.ddns.net",
