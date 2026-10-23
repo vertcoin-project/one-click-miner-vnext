@@ -90,6 +90,15 @@ jobs:
         working-directory: frontend
         run: npm ci --ignore-scripts
 
+      # go.sum is the integrity record of every Go module the build uses. Fail when it or
+      # go.mod is missing something the code needs, or doesn't match what is committed
+      - name: Check go.mod and go.sum
+        if: matrix.os == 'linux'
+        run: |
+          go mod verify
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
       - name: Determine version
         id: version
         run: |
