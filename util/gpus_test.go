@@ -26,9 +26,23 @@ func TestAMD(t *testing.T) {
 	}
 }
 
-func TestInvalid(t *testing.T) {
-	gpus := []string{"Intel Integrated Graphics"}
+func TestIntel(t *testing.T) {
+	gpus := []string{"Intel Integrated Graphics", "Intel(R) UHD Graphics 630"}
 	g := GetGPUsFromStrings(gpus)
+	for i, gpu := range g {
+		if gpu.Type != GPUTypeIntel {
+			log.Printf("Did not detect %s as Intel!", gpus[i])
+			t.Fail()
+		}
+	}
+}
+
+func TestInvalid(t *testing.T) {
+	gpus := []string{"Microsoft Basic Display Adapter"}
+	g := GetGPUsFromStrings(gpus)
+	if len(g) != len(gpus) {
+		t.Fatalf("got %d GPUs, want %d", len(g), len(gpus))
+	}
 	for _, gpu := range g {
 		if gpu.Type != GPUTypeOther {
 			t.Fail()
