@@ -16,7 +16,8 @@ permissions:
 
 env:
   WAILS_VERSION: v1.16.9
-  NODE_VERSION: '20'
+  # Node 20 reached end of life in April 2026, 24 is the current long-term-support release
+  NODE_VERSION: '24'
   # The Vue CLI 4 / webpack 4 frontend needs the legacy OpenSSL provider on Node 17+
   NODE_OPTIONS: --openssl-legacy-provider
   CGO_ENABLED: '1'
