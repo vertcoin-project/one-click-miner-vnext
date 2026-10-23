@@ -56,7 +56,7 @@ jobs:
             ca-certificates git curl zip build-essential pkg-config \
             libgtk-3-dev libwebkit2gtk-4.0-dev
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       # The container runs as root but the workspace is owned by the runner user,
       # so git (and Go's VCS stamping) refuses the repo without this
@@ -72,11 +72,11 @@ jobs:
             echo "C:/ProgramData/mingw64/mingw64/bin" >> "$GITHUB_PATH"
           fi
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: go.mod
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -84,6 +84,11 @@ jobs:
 
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/cmd/wails@${WAILS_VERSION}
+
+      # Install exactly what the lockfile says, without running package install scripts
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci --ignore-scripts
 
       - name: Determine version
         id: version
@@ -118,16 +123,26 @@ jobs:
           fi
           echo "zip=dist/${zipname}" >> "$GITHUB_OUTPUT"
 
+      # After the build, because the main package embeds the built frontend
+      - name: Run Go tests
+        run: go test ./...
+
+      # The frontend is bundled into the binary, so verify that every installed
+      # package matches the registry's signatures before anything is attested or uploaded
+      - name: Verify npm package signatures
+        working-directory: frontend
+        run: npm audit signatures
+
       - name: Attest build provenance
         if: github.event_name != 'pull_request'
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
         with:
           subject-path: |
             ${{ steps.build.outputs.zip }}
             build/${{ matrix.binary }}
 
       # Upload the zip as-is so the download isn't a zip inside a zip
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           path: ${{ steps.build.outputs.zip }}
           archive: false
@@ -141,7 +156,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           pattern: vertcoin-ocm-*.zip
           path: dist
