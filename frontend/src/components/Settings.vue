@@ -1,7 +1,7 @@
 <template>
   <div class="settings-container">
     <div class="col-settings" v-if="!showWarning">
-      <div class="col-settings-sub">
+      <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
         <p style="text-align: left" >
           <input type="checkbox" v-model="debugging" />
           {{ $t("settings.enable_debug") }}
@@ -15,7 +15,7 @@
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
       </div>
-      <div class="col-settings-sub">
+      <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
         <!-- <p style="text-align: left">
           <input type="checkbox" v-model="testnet" />
           {{ $t("settings.testnet") }}
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import { loadSettings, cachedSettings, forgetSettings } from "../settingsLoader.js";
+
 export default {
   data() {
     return {
@@ -67,35 +69,30 @@ export default {
       testnet: false,
       poolID: -1,
       pools: [],
+      // False until the first values arrive, so a half loaded screen (empty pool list)
+      // is never shown
+      loaded: false
     };
   },
   created() {
     var self = this;
-    window.backend.Backend.GetClosedSource().then(result => {
-      self.closedSourceMiner = result;
-      window.backend.Backend.GetAutoStart().then(result => {
-        self.autoStart = result;
-        window.backend.Backend.GetDebugging().then(result => {
-          self.debugging = result;
-          window.backend.Backend.GetTestnet().then(result => {
-          self.testnet = result;
-            window.backend.Backend.GetPools().then(result => {
-              self.pools = result;
-              window.backend.Backend.GetPool().then(result => {
-                self.poolID = result;
-                window.backend.Backend.GetEnableIntegrated().then(result => {
-                  self.enableIntegrated = result;
-                });
-              });
-            });
-          });
-        });
+    var apply = function(settings) {
+      for (var key in settings) {
+        self[key] = settings[key];
+      }
+      self.loaded = true;
+    };
+
+    // Show the previous values right away and refresh them in the background
+    var cached = cachedSettings();
+    if (cached) {
+      apply(cached);
+    }
+    loadSettings()
+      .then(apply)
+      .catch(function() {
+        self.loaded = true;
       });
-    });
-    
-    
-   
-    
   },
   methods: {
     toggleWarning: function() {
@@ -111,6 +108,7 @@ export default {
               window.backend.Backend.SetTestnet(self.testnet).then(() => {
                 window.backend.Backend.SetPool(self.poolID).then(() => {
                   window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+                    forgetSettings();
                     self.$emit("committed");
                   });
                 });
