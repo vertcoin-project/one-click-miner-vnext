@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-286">
+    <div class="col-286 above-bottom-button">
       <p class="header">{{$t('mining.spendable_balance')}}:</p>
       <p class="spendableBalance">
         <a class="tiny" @click="refreshBalance">
@@ -82,7 +82,7 @@
         v-if="runningMiners > 0 && estimating"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
-      <p>
+      <p class="bottom-button">
         <a class="button" v-if="stopping">{{spinner}}</a>
         <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
       </p>

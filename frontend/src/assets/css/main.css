@@ -95,6 +95,24 @@ div.col-286.height-100 {
   display: inline;
 }
 
+/* The main button of a screen sits at the same height on every screen, measured
+   from the bottom of the window so the content above it can't move it */
+p.bottom-button {
+  position: absolute;
+  bottom: 59px;
+  left: 0px;
+  width: 100%;
+  margin: 0px;
+}
+
+/* Centres the rest of the screen in the space above the bottom button */
+div.col-286.above-bottom-button {
+  padding-bottom: 62px;
+}
+div.tabBar ~ div.container div.col-286.above-bottom-button {
+  padding-bottom: 120px;
+}
+
 
 div.col-wide {
   margin: 0px;
@@ -164,6 +182,8 @@ input[type='text'], input[type='password'] {
   padding: 0px 10px;
   height: 45px;
   width: 400px;
+  /* Keeps the padding inside the 400px, so the inputs don't widen the centred column */
+  box-sizing: border-box;
   margin: 0 auto;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-size: 14px;

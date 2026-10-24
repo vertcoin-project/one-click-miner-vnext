@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-286" v-if="alreadyRunning === false && walletInitialized === 0">
+    <div class="col-286 above-bottom-button" v-if="alreadyRunning === false && walletInitialized === 0">
       <p>{{ $t("welcome.makeapassword") }}</p>
       <p class="error" v-if="error !== ''">{{error}}</p>
       <p>
@@ -14,19 +14,19 @@
           @keyup.enter="initAndStart"
         />
       </p>
-      <p>
+      <p class="bottom-button">
         <a class="button" @click="initAndStart">{{ $t("welcome.startmining") }}</a>
       </p>
     </div>
-    <div class="col-286" v-if="alreadyRunning === false && walletInitialized === 1">
+    <div class="col-286 above-bottom-button" v-if="alreadyRunning === false && walletInitialized === 1">
       <p>{{ $t("welcome.click_button_to_start") }}</p>
-      <p>
+      <p class="bottom-button">
         <a class="button" @click="start">{{ $t("welcome.startmining") }}</a>
       </p>
     </div>
-    <div class="col-286" v-if="alreadyRunning === true">
+    <div class="col-286 above-bottom-button" v-if="alreadyRunning === true">
       <p>{{ $t("welcome.alreadyrunning") }}</p>
-      <p>
+      <p class="bottom-button">
         <a class="button" @click="close">{{ $t("generic.close") }}</a>
       </p>
     </div>
