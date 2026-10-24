@@ -220,6 +220,12 @@ func (m *Backend) InstallMinerBinaries() error {
 // Will be run at startup
 // Additionally it can be run if the backend returns an error after startup
 func (m *Backend) BackendServerSelector() {
+	if len(networks.Active.BackendServers) == 0 {
+		networks.Active.OCMBackend = ""
+		logging.Errorf("No backend servers are configured..\n")
+		return
+	}
+
 	// Pick a random backend off the list
 	n := rand.Intn(len(networks.Active.BackendServers))
 
