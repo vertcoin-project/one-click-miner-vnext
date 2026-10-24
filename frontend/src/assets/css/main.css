@@ -84,10 +84,13 @@ div.col-settings {
   flex-basis: 1;
 }
 
+/* Both columns take half the width whatever their text, so the layout is the
+   same in every language */
 div.col-settings-sub {
-  padding: 20px;
+  padding: 10px 20px;
   width: 50%;
-  flex-grow: 1;
+  flex: 1 1 0px;
+  min-width: 0;
 }
 
 div.col-286.height-100 {

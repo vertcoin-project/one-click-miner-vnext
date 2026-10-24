@@ -14,17 +14,6 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
-        <p style="text-align: left">
-          {{ $t("settings.language") }}:
-          <br />
-          <select style="width: 100%" name="language" v-model="language" @change="changeLanguage">
-            <!-- In the system's language, so the way back is readable from any other -->
-            <option value="">{{ $t("settings.language_system", systemLocale) }}</option>
-            <option v-for="option in languages" v-bind:value="option.code" v-bind:key="option.code">
-                {{ option.name }}
-            </option>
-          </select>
-        </p>
       </div>
       <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
         <!-- <p style="text-align: left">
@@ -44,6 +33,17 @@
           <br />
           <select style="width: 100%" name="pool" v-model="poolID">
             <option v-for="option in pools" v-bind:value="option.id" v-bind:key="option.id">
+                {{ option.name }}
+            </option>
+          </select>
+        </p>
+        <p style="text-align: left">
+          {{ $t("settings.language") }}:
+          <br />
+          <select style="width: 100%" name="language" v-model="language" @change="changeLanguage">
+            <!-- In the system's language, so the way back is readable from any other -->
+            <option value="">{{ $t("settings.language_system", systemLocale) }}</option>
+            <option v-for="option in languages" v-bind:value="option.code" v-bind:key="option.code">
                 {{ option.name }}
             </option>
           </select>
