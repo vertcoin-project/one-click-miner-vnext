@@ -14,7 +14,26 @@ type Network struct {
 
 var Active Network
 
+// DefaultBackendServers is the mainnet backend list used when neither
+// backends.json nor its cached copy is available.
+var DefaultBackendServers = []string{
+	"https://ocmbackend.javerity.com/",
+	"https://ocmbackend.mindcraftblocks.com/"}
+
+var mainnetBackendServers = DefaultBackendServers
+var testnetActive bool
+
+// SetBackendServers replaces the mainnet backend list. It also applies to
+// Active when the mainnet is selected.
+func SetBackendServers(servers []string) {
+	mainnetBackendServers = servers
+	if !testnetActive {
+		Active.BackendServers = servers
+	}
+}
+
 func SetNetwork(testnet bool) {
+	testnetActive = testnet
 	if testnet {
 		Active = Network{
 			Base58P2PKHVersion: 74,
@@ -34,9 +53,7 @@ func SetNetwork(testnet bool) {
 			P2ProxyStratum:     "stratum+tcp://p2proxy.vertcoin.org:9171",
 			P2ProxyURL:         "https://p2proxy.vertcoin.org/",
 			WalletDB:           "wallet-testnet.db",
-			BackendServers: []string{
-				"https://ocmbackend.javerity.com/",
-				"https://ocmbackend.mindcraftblocks.com/"},
+			BackendServers:     mainnetBackendServers,
 		}
 	}
 }
