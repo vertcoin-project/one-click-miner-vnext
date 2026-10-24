@@ -29,12 +29,17 @@ func offlineURL() string {
 	return srv.URL + "/backends.json"
 }
 
-func TestLoadBackendServersUsesFetchedList(t *testing.T) {
-	cachePath := filepath.Join(t.TempDir(), "sub", "backends.json")
-	listURL := serveBackendList(t, `{"backendServers": ["https://a.example/", "https://b.example/"]}`)
+func defaultManifest() backendManifest {
+	return backendManifest{networks.DefaultBackendServers, networks.DefaultExplorerURL}
+}
 
-	got := loadBackendServers(listURL, cachePath, util.GetJson)
-	want := []string{"https://a.example/", "https://b.example/"}
+func TestLoadBackendManifestUsesFetchedList(t *testing.T) {
+	cachePath := filepath.Join(t.TempDir(), "sub", "backends.json")
+	listURL := serveBackendList(t, `{"backendServers": ["https://a.example/", "https://b.example/"],
+		"explorerURL": "https://blockbook.example/"}`)
+
+	got := loadBackendManifest(listURL, cachePath, util.GetJson)
+	want := backendManifest{[]string{"https://a.example/", "https://b.example/"}, "https://blockbook.example/"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
@@ -43,41 +48,57 @@ func TestLoadBackendServersUsesFetchedList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("the fetched list was not cached: %v", err)
 	}
-	cached := backendList{}
-	if err := json.Unmarshal(data, &cached); err != nil || !reflect.DeepEqual(cached.BackendServers, want) {
-		t.Fatalf("cached list = %v (%v), want %v", cached.BackendServers, err, want)
+	cached := backendManifest{}
+	if err := json.Unmarshal(data, &cached); err != nil || !reflect.DeepEqual(cached, want) {
+		t.Fatalf("cached manifest = %v (%v), want %v", cached, err, want)
 	}
 	if _, err := os.Stat(cachePath + ".tmp"); !os.IsNotExist(err) {
 		t.Fatalf("the temporary cache file was left behind")
 	}
 }
 
-func TestLoadBackendServersUsesCacheWhenOffline(t *testing.T) {
+func TestLoadBackendManifestDefaultsMissingExplorer(t *testing.T) {
 	cachePath := filepath.Join(t.TempDir(), "backends.json")
-	if err := writeBackendCache(cachePath, backendList{[]string{"https://cached.example/"}}); err != nil {
+	for name, explorer := range map[string]string{
+		"missing":  "",
+		"insecure": `, "explorerURL": "http://blockbook.example/"`,
+		"no slash": `, "explorerURL": "https://blockbook.example"`,
+	} {
+		listURL := serveBackendList(t, `{"backendServers": ["https://a.example/"]`+explorer+`}`)
+		got := loadBackendManifest(listURL, cachePath, util.GetJson)
+		want := backendManifest{[]string{"https://a.example/"}, networks.DefaultExplorerURL}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("%s: got %v, want %v", name, got, want)
+		}
+	}
+}
+
+func TestLoadBackendManifestUsesCacheWhenOffline(t *testing.T) {
+	cachePath := filepath.Join(t.TempDir(), "backends.json")
+	want := backendManifest{[]string{"https://cached.example/"}, "https://cached-explorer.example/"}
+	if err := writeBackendCache(cachePath, want); err != nil {
 		t.Fatal(err)
 	}
 
-	got := loadBackendServers(offlineURL(), cachePath, util.GetJson)
-	if want := []string{"https://cached.example/"}; !reflect.DeepEqual(got, want) {
+	if got := loadBackendManifest(offlineURL(), cachePath, util.GetJson); !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 }
 
-func TestLoadBackendServersUsesCacheWhenFetchedListIsEmpty(t *testing.T) {
+func TestLoadBackendManifestUsesCacheWhenFetchedListIsEmpty(t *testing.T) {
 	cachePath := filepath.Join(t.TempDir(), "backends.json")
-	if err := writeBackendCache(cachePath, backendList{[]string{"https://cached.example/"}}); err != nil {
+	want := backendManifest{[]string{"https://cached.example/"}, networks.DefaultExplorerURL}
+	if err := writeBackendCache(cachePath, want); err != nil {
 		t.Fatal(err)
 	}
-	listURL := serveBackendList(t, `{"backendServers": []}`)
+	listURL := serveBackendList(t, `{"backendServers": [], "explorerURL": "https://blockbook.example/"}`)
 
-	got := loadBackendServers(listURL, cachePath, util.GetJson)
-	if want := []string{"https://cached.example/"}; !reflect.DeepEqual(got, want) {
+	if got := loadBackendManifest(listURL, cachePath, util.GetJson); !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 }
 
-func TestLoadBackendServersFallsBackToDefaults(t *testing.T) {
+func TestLoadBackendManifestFallsBackToDefaults(t *testing.T) {
 	dir := t.TempDir()
 	for name, listURL := range map[string]string{
 		"offline":   offlineURL(),
@@ -85,9 +106,8 @@ func TestLoadBackendServersFallsBackToDefaults(t *testing.T) {
 		"all bogus": serveBackendList(t, `{"backendServers": ["http://insecure.example/"]}`),
 	} {
 		cachePath := filepath.Join(dir, "missing.json")
-		got := loadBackendServers(listURL, cachePath, util.GetJson)
-		if !reflect.DeepEqual(got, networks.DefaultBackendServers) {
-			t.Errorf("%s: got %v, want %v", name, got, networks.DefaultBackendServers)
+		if got := loadBackendManifest(listURL, cachePath, util.GetJson); !reflect.DeepEqual(got, defaultManifest()) {
+			t.Errorf("%s: got %v, want %v", name, got, defaultManifest())
 		}
 	}
 
@@ -96,12 +116,12 @@ func TestLoadBackendServersFallsBackToDefaults(t *testing.T) {
 	if err := os.WriteFile(cachePath, []byte("{not json"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	if got := loadBackendServers(offlineURL(), cachePath, util.GetJson); !reflect.DeepEqual(got, networks.DefaultBackendServers) {
-		t.Errorf("corrupt cache: got %v, want %v", got, networks.DefaultBackendServers)
+	if got := loadBackendManifest(offlineURL(), cachePath, util.GetJson); !reflect.DeepEqual(got, defaultManifest()) {
+		t.Errorf("corrupt cache: got %v, want %v", got, defaultManifest())
 	}
 }
 
-func TestLoadBackendServersDropsInvalidEntries(t *testing.T) {
+func TestLoadBackendManifestDropsInvalidEntries(t *testing.T) {
 	cachePath := filepath.Join(t.TempDir(), "backends.json")
 	listURL := serveBackendList(t, `{"backendServers": [
 		"https://good.example/",
@@ -116,24 +136,25 @@ func TestLoadBackendServersDropsInvalidEntries(t *testing.T) {
 		"https://good.example:8443/api/"
 	]}`)
 
-	got := loadBackendServers(listURL, cachePath, util.GetJson)
+	got := loadBackendManifest(listURL, cachePath, util.GetJson).BackendServers
 	want := []string{"https://good.example/", "https://good.example:8443/api/"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 }
 
-func TestExampleBackendListIsValid(t *testing.T) {
+func TestExampleBackendManifestIsValid(t *testing.T) {
 	data, err := os.ReadFile(filepath.Join("..", "backends.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	list := backendList{}
-	if err := json.Unmarshal(data, &list); err != nil {
+	m := backendManifest{}
+	if err := json.Unmarshal(data, &m); err != nil {
 		t.Fatal(err)
 	}
-	if len(list.BackendServers) == 0 || len(validBackendServers(list.BackendServers)) != len(list.BackendServers) {
-		t.Fatalf("backends.json has invalid or no servers: %v", list.BackendServers)
+	sanitized, ok := sanitizeBackendManifest(m)
+	if !ok || !reflect.DeepEqual(sanitized, m) {
+		t.Fatalf("backends.json has invalid entries: %v", m)
 	}
 }
 
@@ -149,26 +170,27 @@ func TestBackendServerSelectorWithEmptyList(t *testing.T) {
 	}
 }
 
-func TestSetNetworkKeepsResolvedBackendList(t *testing.T) {
+func TestSetNetworkKeepsResolvedEndpoints(t *testing.T) {
 	saved := networks.Active
 	t.Cleanup(func() {
-		networks.SetBackendServers(networks.DefaultBackendServers)
+		networks.SetMainnetEndpoints(networks.DefaultBackendServers, networks.DefaultExplorerURL)
 		networks.Active = saved
 	})
 
 	resolved := []string{"https://resolved.example/"}
+	explorer := "https://blockbook.example/"
 	networks.SetNetwork(false)
-	networks.SetBackendServers(resolved)
-	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) {
-		t.Fatalf("mainnet list = %v, want %v", networks.Active.BackendServers, resolved)
+	networks.SetMainnetEndpoints(resolved, explorer)
+	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) || networks.Active.ExplorerURL != explorer {
+		t.Fatalf("mainnet = %v %q, want %v %q", networks.Active.BackendServers, networks.Active.ExplorerURL, resolved, explorer)
 	}
 
 	networks.SetNetwork(true)
-	if len(networks.Active.BackendServers) != 0 {
-		t.Fatalf("testnet list = %v, want empty", networks.Active.BackendServers)
+	if len(networks.Active.BackendServers) != 0 || networks.Active.ExplorerURL == explorer {
+		t.Fatalf("testnet = %v %q, want no servers and the testnet explorer", networks.Active.BackendServers, networks.Active.ExplorerURL)
 	}
 	networks.SetNetwork(false)
-	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) {
-		t.Fatalf("mainnet list after switching back = %v, want %v", networks.Active.BackendServers, resolved)
+	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) || networks.Active.ExplorerURL != explorer {
+		t.Fatalf("mainnet after switching back = %v %q, want %v %q", networks.Active.BackendServers, networks.Active.ExplorerURL, resolved, explorer)
 	}
 }
