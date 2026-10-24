@@ -14,30 +14,36 @@ import (
 
 const backendListURL = "https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/backends.json"
 
-type backendList struct {
+// backendManifest is the format of backends.json. ExplorerURL is optional and
+// may point at an Insight or a Blockbook server.
+type backendManifest struct {
 	BackendServers []string `json:"backendServers"`
+	ExplorerURL    string   `json:"explorerURL,omitempty"`
 }
 
-// ResolveBackendServers loads the mainnet backend list from backends.json
-// (or its cached copy) and makes it the active list. Run it before
+// ResolveBackendServers loads the mainnet backend list and explorer URL from
+// backends.json (or its cached copy) and makes them active. Run it before
 // BackendServerSelector.
 func (m *Backend) ResolveBackendServers() {
 	cachePath := filepath.Join(util.DataDirectory(), "backends.json")
-	networks.SetBackendServers(loadBackendServers(backendListURL, cachePath, util.GetJson))
+	manifest := loadBackendManifest(backendListURL, cachePath, util.GetJson)
+	networks.SetMainnetEndpoints(manifest.BackendServers, manifest.ExplorerURL)
+	logging.Infof("Using explorer: %s\n", manifest.ExplorerURL)
 }
 
-// loadBackendServers fetches the backend list and caches it at cachePath.
-// If the fetch fails or yields no valid servers, the cached copy is used,
-// and failing that the built-in default list.
-func loadBackendServers(listURL, cachePath string, fetch func(string, interface{}) error) []string {
-	fetched := backendList{}
+// loadBackendManifest fetches backends.json and caches it at cachePath. If the
+// fetch fails or yields no valid servers, the cached copy is used, and failing
+// that the built-in defaults. A missing or invalid explorer URL is replaced by
+// the default one.
+func loadBackendManifest(listURL, cachePath string, fetch func(string, interface{}) error) backendManifest {
+	fetched := backendManifest{}
 	err := fetch(listURL, &fetched)
 	if err == nil {
-		if servers := validBackendServers(fetched.BackendServers); len(servers) > 0 {
-			if err := writeBackendCache(cachePath, backendList{servers}); err != nil {
+		if m, ok := sanitizeBackendManifest(fetched); ok {
+			if err := writeBackendCache(cachePath, m); err != nil {
 				logging.Warnf("Unable to cache the backend list: %v\n", err)
 			}
-			return servers
+			return m
 		}
 		logging.Warnf("The fetched backend list has no valid servers\n")
 	} else {
@@ -45,37 +51,53 @@ func loadBackendServers(listURL, cachePath string, fetch func(string, interface{
 	}
 
 	if data, err := os.ReadFile(cachePath); err == nil {
-		cached := backendList{}
+		cached := backendManifest{}
 		if err := json.Unmarshal(data, &cached); err == nil {
-			if servers := validBackendServers(cached.BackendServers); len(servers) > 0 {
+			if m, ok := sanitizeBackendManifest(cached); ok {
 				logging.Infof("Using the cached backend list\n")
-				return servers
+				return m
 			}
 		}
 	}
 
 	logging.Infof("Using the built-in backend list\n")
-	return append([]string(nil), networks.DefaultBackendServers...)
+	return backendManifest{
+		BackendServers: append([]string(nil), networks.DefaultBackendServers...),
+		ExplorerURL:    networks.DefaultExplorerURL,
+	}
 }
 
-// validBackendServers keeps only https:// URLs with a host that end in "/"
-// and carry no credentials, query or fragment.
-func validBackendServers(servers []string) []string {
-	valid := make([]string, 0, len(servers))
-	for _, s := range servers {
-		u, err := url.Parse(s)
-		if err != nil || !strings.HasPrefix(s, "https://") || !strings.HasSuffix(s, "/") ||
-			u.Host == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" {
+// sanitizeBackendManifest drops invalid servers and replaces an invalid
+// explorer URL with the default. It reports false when no server is left.
+func sanitizeBackendManifest(m backendManifest) (backendManifest, bool) {
+	servers := make([]string, 0, len(m.BackendServers))
+	for _, s := range m.BackendServers {
+		if !validEndpointURL(s) {
 			logging.Warnf("Ignoring invalid backend server [%s]\n", s)
 			continue
 		}
-		valid = append(valid, s)
+		servers = append(servers, s)
 	}
-	return valid
+	explorer := m.ExplorerURL
+	if !validEndpointURL(explorer) {
+		if explorer != "" {
+			logging.Warnf("Ignoring invalid explorer URL [%s]\n", explorer)
+		}
+		explorer = networks.DefaultExplorerURL
+	}
+	return backendManifest{servers, explorer}, len(servers) > 0
 }
 
-func writeBackendCache(cachePath string, list backendList) error {
-	data, err := json.MarshalIndent(list, "", "  ")
+// validEndpointURL accepts only https:// URLs with a host that end in "/" and
+// carry no credentials, query or fragment.
+func validEndpointURL(s string) bool {
+	u, err := url.Parse(s)
+	return err == nil && strings.HasPrefix(s, "https://") && strings.HasSuffix(s, "/") &&
+		u.Host != "" && u.User == nil && u.RawQuery == "" && u.Fragment == ""
+}
+
+func writeBackendCache(cachePath string, m backendManifest) error {
+	data, err := json.MarshalIndent(m, "", "  ")
 	if err != nil {
 		return err
 	}
