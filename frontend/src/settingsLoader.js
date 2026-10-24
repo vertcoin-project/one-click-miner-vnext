@@ -20,7 +20,10 @@ export function loadSettings() {
     b.GetTestnet(),
     b.GetEnableIntegrated(),
     b.GetPools(),
-    b.GetPool()
+    b.GetPool(),
+    b.GetLanguages(),
+    b.GetLanguage(),
+    b.GetSystemLocale()
   ]).then(function(r) {
     last = {
       closedSourceMiner: r[0],
@@ -29,7 +32,10 @@ export function loadSettings() {
       testnet: r[3],
       enableIntegrated: r[4],
       pools: r[5],
-      poolID: r[6]
+      poolID: r[6],
+      languages: r[7],
+      language: r[8],
+      systemLocale: r[9]
     };
     return last;
   });

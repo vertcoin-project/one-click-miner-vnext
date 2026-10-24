@@ -14,6 +14,17 @@
           <br />
           <span class="subtext">{{ $t("settings.auto_start_sub") }}</span>
         </p>
+        <p style="text-align: left">
+          {{ $t("settings.language") }}:
+          <br />
+          <select style="width: 100%" name="language" v-model="language" @change="changeLanguage">
+            <!-- In the system's language, so the way back is readable from any other -->
+            <option value="">{{ $t("settings.language_system", systemLocale) }}</option>
+            <option v-for="option in languages" v-bind:value="option.code" v-bind:key="option.code">
+                {{ option.name }}
+            </option>
+          </select>
+        </p>
       </div>
       <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
         <!-- <p style="text-align: left">
@@ -69,6 +80,9 @@ export default {
       testnet: false,
       poolID: -1,
       pools: [],
+      language: "",
+      languages: [],
+      systemLocale: "en",
       // False until the first values arrive, so a half loaded screen (empty pool list)
       // is never shown
       loaded: false
@@ -99,6 +113,16 @@ export default {
       this.showWarning = !this.showWarning;
       var self = this;
       setTimeout(() => { self.showWarning = false; }, 5000);
+    },
+    // The language applies and is saved as soon as it is picked, without Save & Restart
+    changeLanguage: function() {
+      var self = this;
+      window.backend.Backend.SetLanguage(this.language).then(() => {
+        window.backend.Backend.GetLocale().then(locale => {
+          self.$i18n.locale = locale;
+          forgetSettings();
+        });
+      });
     },
     save: function() {
       var self = this;

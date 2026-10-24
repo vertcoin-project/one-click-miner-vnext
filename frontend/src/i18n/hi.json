@@ -72,7 +72,9 @@
         "skipverthashverify" : "स्टार्टअप पर Verthash को सत्यापित न करें",
         "skipverthashverify_sub" : "स्टार्टअप पर Verthash डेटा की फ़ाइल अखंडता को सत्यापित करना छोड़ दे (अनुशंसित नहीं)",
         "save_n_restart" : "सहेजें और पुनरारंभ करें",
-        "pool" : "खनन पूल"
+        "pool" : "खनन पूल",
+        "language" : "भाषा",
+        "language_system" : "सिस्टम डिफ़ॉल्ट"
     },
     "tabbar" : {
         "wallet" : "वॉलेट",

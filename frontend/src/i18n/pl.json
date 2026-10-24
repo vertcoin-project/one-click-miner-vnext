@@ -71,7 +71,9 @@
         "skipverthashverify" : "Nie weryfikuj Verthash podczas uruchamiania",
         "skipverthashverify_sub" : "Weryfikacja integralności pliku verthash.dat podczas uruchamiania zostanie pominięta (niezalecane)",
         "save_n_restart" : "Zapisz i Wznów",
-        "pool" : "Kopalnia"
+        "pool" : "Kopalnia",
+        "language" : "Język",
+        "language_system" : "Domyślny systemu"
     },
     "tabbar" : {
         "wallet" : "Portfel",
