@@ -121,7 +121,10 @@ func main() {
 	}
 	networks.SetNetwork(backend.GetTestnet())
 
-	go backend.BackendServerSelector()
+	go func() {
+		backend.ResolveBackendServers()
+		backend.BackendServerSelector()
+	}()
 	go backend.SelectP2PoolNode()
 
 	backend.ResetPool()

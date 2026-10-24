@@ -1,0 +1,6 @@
+{
+  "backendServers": [
+    "https://ocmbackend.javerity.com/",
+    "https://ocmbackend.mindcraftblocks.com/"
+  ]
+}
