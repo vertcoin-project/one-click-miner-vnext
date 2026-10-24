@@ -91,6 +91,11 @@ func (m *Backend) setStringSetting(name string, value string) {
 
 func (m *Backend) GetPool() int {
 	pool := m.getIntSetting("pool")
+	if pool != 0 && !m.GetTestnet() && !pools.HasPool(pool, m.Address(), false) {
+		// The saved pool was removed from the pool list, so pick another one.
+		logging.Warnf("Pool %d is no longer available, choosing another\n", pool)
+		pool = 0
+	}
 	if pool == 0 {
 		if m.GetTestnet() {
 			return 2 // Default P2Pool on testnet
