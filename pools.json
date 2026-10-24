@@ -1,0 +1,37 @@
+{
+  "pools": [
+    {
+      "id": 4,
+      "name": "Suprnova.cc",
+      "stratumURL": "stratum+tcp://vtc.suprnova.cc:1776",
+      "password": "x",
+      "fee": 1.00,
+      "payoutURL": "https://vtc.suprnova.cc/index.php?page=api&action=getuserbalance&api_key={address}",
+      "payoutFields": ["getuserbalance.data.confirmed", "getuserbalance.data.unconfirmed"],
+      "dashboardURL": "https://vtc.suprnova.cc/index.php?page=anondashboard&user={address}"
+    },
+    {
+      "type": "p2pool"
+    },
+    {
+      "id": 6,
+      "name": "Zpool.ca",
+      "stratumURL": "stratum+tcp://verthash.mine.zpool.ca:6144",
+      "password": "c=VTC,zap=VTC",
+      "fee": 0.50,
+      "payoutURL": "https://zpool.ca/api/wallet?address={address}",
+      "payoutFields": ["unpaid"],
+      "dashboardURL": "https://zpool.ca/wallet/{address}"
+    },
+    {
+      "id": 9,
+      "name": "MiningpoolSweden.eu",
+      "stratumURL": "stratum+tcp://vtc.miningpoolsweden.eu:3052",
+      "password": "x",
+      "fee": 0.6,
+      "payoutURL": "https://api.miningpoolsweden.eu/api/pools/vert1/miners/{address}",
+      "payoutFields": ["pendingBalance"],
+      "dashboardURL": "https://miningpoolsweden.eu/?#vert1/dashboard?address={address}"
+    }
+  ]
+}

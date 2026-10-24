@@ -127,6 +127,7 @@ func main() {
 	}()
 	go backend.SelectP2PoolNode()
 
+	backend.ResolvePools()
 	backend.ResetPool()
 	app.Bind(backend)
 	err = app.Run()
