@@ -55,3 +55,8 @@ require (
 	golang.org/x/sys v0.17.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// Wails v1.16.9 with one fix: evalJSSync picks its callback ID with rand.Intn(9999),
+// and two of the ~50 IDs made at start-up can collide, which panics with
+// "sync: negative WaitGroup counter". See third_party/wails/PATCHED.md.
+replace github.com/wailsapp/wails => ./third_party/wails
