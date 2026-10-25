@@ -6,8 +6,9 @@
 # Environment:
 #   HOSTS      platforms to build (default: "x86_64-linux-gnu x86_64-w64-mingw32")
 #   VERSION    version to stamp into the binary and name the zips after, such as
-#              2.3.0. Unset, the binary keeps the source's dev version and the
-#              zips are named after the commit.
+#              2.3.0. Unset, it is the tag on HEAD; with no tag on HEAD, the
+#              binary keeps the source's dev version and the zips are named
+#              after the commit.
 #   JOBS       parallel jobs (default: nproc)
 #   CACHE_PATH where the Go modules and npm packages are kept between builds
 #              (default: ./guix-cache). Everything in it is checked against
@@ -25,7 +26,7 @@ GUIX_COMMIT=c5eee3336cc1d10a3cc1c97fde2809c3451624d3
 HOSTS="${HOSTS:-x86_64-linux-gnu x86_64-w64-mingw32}"
 JOBS="${JOBS:-$(nproc)}"
 CACHE_PATH="${CACHE_PATH:-$PWD/guix-cache}"
-VERSION="${VERSION:-}"
+VERSION="${VERSION-$(git describe --exact-match --tags HEAD 2>/dev/null || true)}"
 
 # The build is of the commit, not the working tree, so refuse to run when they differ
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
@@ -39,7 +40,8 @@ SHORT="${COMMIT:0:12}"
 SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}"
 NAME="${VERSION:-${SHORT}}"
 
-BUILD_BASE="$PWD/guix-build-${SHORT}"
+# Named like the zips, as Bitcoin Core does: the version, else the commit
+BUILD_BASE="$PWD/guix-build-${NAME}"
 DIST_BASE="${BUILD_BASE}/dist-archive"
 OUTDIR_BASE="${BUILD_BASE}/output"
 DISTSRC_BASE="${BUILD_BASE}/distsrc"

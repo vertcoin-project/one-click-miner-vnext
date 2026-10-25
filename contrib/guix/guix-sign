@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Signs the outputs of contrib/guix/guix-build for a release: checks them
+# against their SHA256SUMS.part files, joins those into manifest-<version>.txt
+# and writes its detached signature, manifest-<version>.txt.sig.
+#
+#   ./contrib/guix/guix-sign
+#
+# Environment:
+#   VERSION     the version the outputs were built as (default: the tag on HEAD,
+#               as guix-build uses). With no tag on HEAD, the commit.
+#   GPG         gpg to sign with (default: gpg if it holds a secret key, else
+#               Windows' GnuPG or Gpg4win from WSL, else gpg.exe on PATH)
+#   SIGNER      key to sign with (default: git's user.signingkey, the key the
+#               tags are signed with; unset, gpg's default key)
+#   RELEASE_DIR also copy the zips, the manifest and its signature here, such as
+#               /mnt/c/Users/<you>/Downloads, ready to attach to the release
+export LC_ALL=C
+set -o errexit -o pipefail -o nounset
+
+cd "$(git rev-parse --show-toplevel)"
+
+COMMIT="$(git rev-parse HEAD)"
+SHORT="${COMMIT:0:12}"
+VERSION="${VERSION-$(git describe --exact-match --tags HEAD 2>/dev/null || true)}"
+NAME="${VERSION:-${SHORT}}"
+BUILD_BASE="$PWD/guix-build-${NAME}"
+OUTDIR_BASE="${BUILD_BASE}/output"
+
+err() { echo "ERR: $*" >&2; exit 1; }
+
+[ -d "$OUTDIR_BASE" ] || err "no outputs for ${NAME} in ${OUTDIR_BASE}; run contrib/guix/guix-build first"
+# The folder is named after the version, so check it was built from HEAD and
+# not from an earlier commit with the same tag
+[ -e "${BUILD_BASE}/dist-archive/vertcoin-ocm-${SHORT}.tar" ] \
+    || err "${BUILD_BASE} was not built from HEAD (${SHORT}); remove it and rerun guix-build"
+shopt -s nullglob
+parts=( "$OUTDIR_BASE"/*/SHA256SUMS.part )
+shopt -u nullglob
+[ "${#parts[@]}" -gt 0 ] || err "no SHA256SUMS.part in ${OUTDIR_BASE}/*/"
+
+for part in "${parts[@]}"; do
+    dir="$(dirname "$part")"
+    # The zips have to be the ones built for this version, not for the commit
+    # or another tag: the version is stamped into the binary too
+    if ! grep -q "  vertcoin-ocm-${NAME}-" "$part"; then
+        echo "${dir##*/} was built as:" >&2
+        sed 's/^/  /' "$part" >&2
+        err "not as ${NAME}; remove ${dir} and rerun guix-build with VERSION=${NAME}"
+    fi
+    (cd "$dir" && sha256sum --check --quiet --strict SHA256SUMS.part) \
+        || err "${dir} no longer matches its SHA256SUMS.part"
+done
+
+MANIFEST="${OUTDIR_BASE}/manifest-${NAME}.txt"
+SIG="${MANIFEST}.sig"
+# Hosts in name order, as guix-build builds them: Linux, then Windows
+cat "${parts[@]}" > "$MANIFEST"
+echo "== ${MANIFEST}"
+cat "$MANIFEST"
+
+SIGNER="${SIGNER-$(git config --get user.signingkey || true)}"
+
+if [ -z "${GPG:-}" ]; then
+    if command -v gpg >/dev/null && gpg --list-secret-keys 2>/dev/null | grep -q '^sec'; then
+        GPG=gpg
+    else
+        # The gpg.exe on WSL's PATH is usually Git for Windows' own, which has
+        # its own, usually empty, keyring; look for GnuPG's first
+        for exe in "/mnt/c/Program Files/GnuPG/bin/gpg.exe" \
+                   "/mnt/c/Program Files (x86)/GnuPG/bin/gpg.exe" \
+                   "$(command -v gpg.exe || true)"; do
+            if [ -n "$exe" ] && [ -x "$exe" ]; then GPG="$exe"; break; fi
+        done
+        [ -n "${GPG:-}" ] || err "no gpg with a secret key found; set GPG"
+    fi
+fi
+
+# Windows' gpg.exe takes Windows paths; signing reads stdin and writes stdout,
+# so only the check afterwards needs one
+gpg_path() {
+    case "$GPG" in
+        *.exe) wslpath -w "$1" ;;
+        *) printf '%s\n' "$1" ;;
+    esac
+}
+
+echo "== signing with ${GPG}${SIGNER:+ as ${SIGNER}}"
+# A binary detached signature, as for 2.1.5 and earlier
+"$GPG" --detach-sign ${SIGNER:+--local-user "$SIGNER"} < "$MANIFEST" > "${SIG}.tmp"
+mv "${SIG}.tmp" "$SIG"
+"$GPG" --verify "$(gpg_path "$SIG")" "$(gpg_path "$MANIFEST")"
+
+assets=( "$OUTDIR_BASE"/*/vertcoin-ocm-"${NAME}"-*.zip "$MANIFEST" "$SIG" )
+if [ -n "${RELEASE_DIR:-}" ]; then
+    mkdir -p "$RELEASE_DIR"
+    cp "${assets[@]}" "$RELEASE_DIR"/
+    OUT="$RELEASE_DIR"
+fi
+
+echo
+echo "Release assets for ${NAME}:"
+for f in "${assets[@]}"; do
+    echo "  ${OUT:-$(dirname "$f")}/$(basename "$f")"
+done
