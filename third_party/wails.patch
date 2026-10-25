@@ -1,0 +1,32 @@
+--- a/lib/renderer/webview.go
++++ b/lib/renderer/webview.go
+@@ -3,9 +3,9 @@
+ import (
+ 	"encoding/json"
+ 	"fmt"
+-	"math/rand"
+ 	"strings"
+ 	"sync"
++	"sync/atomic"
+ 	"time"
+ 
+ 	"github.com/wailsapp/wails/runtime"
+@@ -23,6 +23,9 @@
+ // UseFirebug indicates whether to inject the firebug console
+ var UseFirebug = ""
+ 
++// syncJSCounter numbers the evalJSSync callbacks so no two share an ID
++var syncJSCounter uint64
++
+ type WebView struct {
+ 	window         wv.WebView // The webview object
+ 	ipc            interfaces.IPCManager
+@@ -180,7 +183,7 @@
+ 	}
+ 	w.log.DebugFields("EvalSync", logger.Fields{"js": outputJS})
+ 
+-	ID := fmt.Sprintf("syncjs:%d:%d", time.Now().Unix(), rand.Intn(9999))
++	ID := fmt.Sprintf("syncjs:%d:%d", time.Now().Unix(), atomic.AddUint64(&syncJSCounter, 1))
+ 	var wg sync.WaitGroup
+ 	wg.Add(1)
+ 
