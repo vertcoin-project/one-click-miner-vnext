@@ -179,6 +179,7 @@ struct webview_priv
   WEBVIEW_API int webview_inject_css(struct webview *w, const char *css);
   WEBVIEW_API void webview_set_title(struct webview *w, const char *title);
   WEBVIEW_API void webview_focus(struct webview *w);
+  WEBVIEW_API void webview_show(struct webview *w);
   WEBVIEW_API void webview_minsize(struct webview *w, int width, int height);
   WEBVIEW_API void webview_maxsize(struct webview *w, int width, int height);
   WEBVIEW_API void webview_set_fullscreen(struct webview *w, int fullscreen);
@@ -614,6 +615,7 @@ struct webview_priv
   }
 
   WEBVIEW_API void webview_exit(struct webview *w) { (void)w; }
+  WEBVIEW_API void webview_show(struct webview *w) { (void)w; }
   WEBVIEW_API void webview_print_log(const char *s)
   {
     fprintf(stderr, "%s\n", s);
@@ -1584,9 +1586,8 @@ struct webview_priv
     SetWindowText(w->priv.hwnd, w->title);
 #endif
 
-    ShowWindow(w->priv.hwnd, SW_SHOWDEFAULT);
-    UpdateWindow(w->priv.hwnd);
-    SetFocus(w->priv.hwnd);
+    // The window stays hidden until webview_show, so it never appears before
+    // the page has painted (the browser control starts out white)
 
     return 0;
   }
@@ -2040,6 +2041,12 @@ struct webview_priv
 
   WEBVIEW_API void webview_terminate(struct webview *w) { PostQuitMessage(0); }
   WEBVIEW_API void webview_exit(struct webview *w) { OleUninitialize(); }
+  WEBVIEW_API void webview_show(struct webview *w)
+  {
+    ShowWindow(w->priv.hwnd, SW_SHOWDEFAULT);
+    UpdateWindow(w->priv.hwnd);
+    SetFocus(w->priv.hwnd);
+  }
   WEBVIEW_API void webview_print_log(const char *s) { OutputDebugString(s); }
 
 #endif /* WEBVIEW_WINAPI */
@@ -2492,6 +2499,7 @@ struct webview_priv
     w->priv.should_exit = 1;
   }
   WEBVIEW_API void webview_exit(struct webview *w) { [NSApp terminate:NSApp]; }
+  WEBVIEW_API void webview_show(struct webview *w) { (void)w; }
   WEBVIEW_API void webview_print_log(const char *s) { NSLog(@"%s", s); }
 
 #endif /* WEBVIEW_COCOA */

@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Checks that third_party/wails is Wails v1.16.9 as published, changed only by
-# third_party/wails.patch, plus the PATCHED.md that describes the change.
+# third_party/wails.patch, plus the PATCHED.md that describes the changes.
 #
 # Go downloads v1.16.9 into an empty module cache and checks it against the
 # public checksum database (sum.golang.org), so the comparison doesn't depend
-# on anything already on this machine. Every other file in third_party/wails
-# must match the download byte for byte.
+# on anything already on this machine. The files the patch names must equal
+# the download's with the patch applied, and every other file in
+# third_party/wails must match the download byte for byte.
 #
 # Usage: third_party/verify-wails.sh   (needs go, cmp and patch)
 set -euo pipefail
@@ -13,7 +14,6 @@ set -euo pipefail
 version=v1.16.9
 # The hash upstream's go.sum recorded for v1.16.9, the same as sum.golang.org's
 expected_sum='h1:H0jWILvWU1I3y2MgqwIPjMfD95/nQP9qAuqAsadYaOs='
-patched=lib/renderer/webview.go
 
 here=$(cd "$(dirname "$0")" && pwd)
 vendored=$here/wails
@@ -38,13 +38,18 @@ if [ "$sum" != "$expected_sum" ]; then
 fi
 upstream=$work/modcache/github.com/wailsapp/wails@$version
 
+# The files the patch changes, from its "+++ b/<path>" lines
+patched=$(sed -n 's|^+++ b/||p' "$patch_file" | tr -d '')
+is_patched() { printf '%s
+' "$patched" | grep -qxF "$1"; }
+
 fail=0
 checked=0
 while IFS= read -r -d '' file; do
 	rel=${file#"$vendored"/}
-	case $rel in
-	PATCHED.md | "$patched") continue ;;
-	esac
+	if [ "$rel" = PATCHED.md ] || is_patched "$rel"; then
+		continue
+	fi
 	if [ ! -f "$upstream/$rel" ]; then
 		echo "FAIL: $rel is not in Wails $version" >&2
 		fail=1
@@ -55,16 +60,29 @@ while IFS= read -r -d '' file; do
 	checked=$((checked + 1))
 done < <(find "$vendored" -type f -print0)
 
-# The one changed file must be upstream's with exactly the stored patch applied
-if ! patch --quiet --batch -o "$work/expected" "$upstream/$patched" <"$patch_file" >/dev/null 2>&1; then
-	echo "FAIL: third_party/wails.patch doesn't apply to Wails $version $patched" >&2
+# The changed files must be upstream's with exactly the stored patch applied
+mkdir "$work/expected"
+for rel in $patched; do
+	mkdir -p "$work/expected/$(dirname "$rel")"
+	cp "$upstream/$rel" "$work/expected/$rel"
+done
+chmod -R u+w "$work/expected"
+if ! patch --quiet --batch --fuzz=0 -p1 -d "$work/expected" <"$patch_file" >/dev/null 2>&1; then
+	echo "FAIL: third_party/wails.patch doesn't apply to Wails $version" >&2
 	fail=1
-elif ! cmp -s "$work/expected" "$vendored/$patched"; then
-	echo "FAIL: $patched is not Wails $version with third_party/wails.patch applied" >&2
-	fail=1
+else
+	for rel in $patched; do
+		if ! cmp -s "$work/expected/$rel" "$vendored/$rel"; then
+			echo "FAIL: $rel is not Wails $version with third_party/wails.patch applied" >&2
+			fail=1
+		fi
+	done
 fi
 
 if [ "$fail" -ne 0 ]; then
 	exit 1
 fi
-echo "OK: $checked files match Wails $version exactly, and $patched is $version plus third_party/wails.patch"
+echo "OK: $checked files match Wails $version exactly, and $(printf '%s
+' "$patched" | wc -l | tr -d ' ') files are $version plus third_party/wails.patch:"
+printf '  %s
+' $patched
