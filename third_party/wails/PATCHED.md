@@ -1,6 +1,6 @@
 # Wails v1.16.9, patched
 
-This is github.com/wailsapp/wails v1.16.9 (MIT, see LICENSE) with two changes, used
+This is github.com/wailsapp/wails v1.16.9 (MIT, see LICENSE) with three changes, used
 through the `replace` directive in the top-level go.mod. Only the packages the app
 compiles are here: the root package, `cmd`, `lib/...` and `runtime` with the assets
 it embeds. Tests, the CLI (`cmd/wails`), the project templates and the website are
@@ -33,6 +33,19 @@ The window is now created hidden on Windows. `webview_show` (exposed to Go as
 calls it once Wails emits `wails:ready`, after the bindings, CSS and app JavaScript
 are in, or after 3 seconds if that never happens. On Linux and macOS the window is
 shown in `webview_init` as before and `webview_show` does nothing.
+
+## WebKitGTK 4.1 on Linux
+
+`lib/renderer/webview/webview.go` asked pkg-config for `webkit2gtk-4.0`, the
+WebKitGTK API built on libsoup 2. Distributions are dropping it along with
+libsoup 2: Ubuntu ships it up to 22.04 and not from 24.04. The binary then
+fails to start with `libwebkit2gtk-4.0.so.37` not found.
+
+It now asks for `webkit2gtk-4.1`, the same GTK 3 API built on libsoup 3, so the
+binary needs `libwebkit2gtk-4.1-0` (Ubuntu 22.04 and later, Debian 12 and later)
+and building it needs `libwebkit2gtk-4.1-dev`. `webview.h` includes
+`<webkit2/webkit2.h>`, which 4.1 also provides, and never uses libsoup itself, so
+nothing else changes.
 
 ## Checking the copy
 
