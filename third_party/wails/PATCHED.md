@@ -21,7 +21,16 @@ seeds the global rand source randomly, which is why it is intermittent.
 
 The random number is now a counter from `atomic.AddUint64`, so every ID is unique.
 
+## Checking the copy
+
+`third_party/verify-wails.sh` downloads v1.16.9 into an empty module cache, which
+Go checks against the public checksum database (sum.golang.org), then confirms
+that every file here matches it byte for byte, apart from this file and
+`lib/renderer/webview.go`, which must be v1.16.9's with `third_party/wails.patch`
+applied. CI runs it on every change to `third_party` or `go.mod`.
+
 ## Updating Wails
 
-Copy the same files from the new version's module and apply the change again, or
-drop this folder and the `replace` line if upstream has fixed it.
+Copy the same files from the new version's module and apply the change again,
+then update the version and hash in `third_party/verify-wails.sh`. Or drop this
+folder, the patch, the script and the `replace` line if upstream has fixed it.
