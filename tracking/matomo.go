@@ -89,7 +89,7 @@ func StartTracker() {
 			q.Add("action_name", fmt.Sprintf("%s/%s", t.Category, t.Action))
 			q.Add("e_c", t.Category)
 			q.Add("e_a", t.Action)
-			q.Add("e_n", t.Name)
+			q.Add("e_n", Redact(t.Name))
 			q.Add("ua", userAgent())
 			q.Add("_id", visitorId())
 			req.URL.RawQuery = q.Encode()
