@@ -6,3 +6,7 @@ vertcoin-ocm.exe
 *.exe
 *.manifest
 *.syso
+# contrib/guix/guix-build
+guix-build-*/
+guix-cache/
+!contrib/guix/windows/wails.exe.manifest
