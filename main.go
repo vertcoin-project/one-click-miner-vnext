@@ -85,12 +85,6 @@ func main() {
 	// After the data directory is created, so the tracking state can be saved
 	tracking.StartTracker()
 
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Startup",
-		Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
-	})
-
 	log.Printf("OCM v%s Started up\n", tracking.GetVersion())
 
 	app := wails.CreateApp(&wails.AppConfig{
@@ -114,6 +108,16 @@ func main() {
 				logging.Errorf("Error unlocking OCM: %v", err)
 			}
 		}()
+	}
+
+	// A second copy only shows the "already running" message, so it isn't
+	// counted as a startup.
+	if !alreadyRunning {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "Lifecycle",
+			Action:   "Startup",
+			Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
+		})
 	}
 
 	backend, err := backend.NewBackend(alreadyRunning)
@@ -144,10 +148,12 @@ func main() {
 		backend.StopMining()
 	}
 
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Shutdown",
-	})
+	if !alreadyRunning {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "Lifecycle",
+			Action:   "Shutdown",
+		})
+	}
 
 	tracking.Stop()
 }
