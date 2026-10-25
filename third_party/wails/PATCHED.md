@@ -1,6 +1,6 @@
 # Wails v1.16.9, patched
 
-This is github.com/wailsapp/wails v1.16.9 (MIT, see LICENSE) with three changes, used
+This is github.com/wailsapp/wails v1.16.9 (MIT, see LICENSE) with four changes, used
 through the `replace` directive in the top-level go.mod. Only the packages the app
 compiles are here: the root package, `cmd`, `lib/...` and `runtime` with the assets
 it embeds. Tests, the CLI (`cmd/wails`), the project templates and the website are
@@ -46,6 +46,19 @@ binary needs `libwebkit2gtk-4.1-0` (Ubuntu 22.04 and later, Debian 12 and later)
 and building it needs `libwebkit2gtk-4.1-dev`. `webview.h` includes
 `<webkit2/webkit2.h>`, which 4.1 also provides, and never uses libsoup itself, so
 nothing else changes.
+
+## Page size on Linux
+
+On Windows, `webview_init` in `lib/renderer/webview/webview.h` sizes the window
+with `AdjustWindowRect`, so the page gets the full width and height the app asks
+for (800×400). On Linux it put that size request on the GTK window itself. Where
+GTK draws the title bar inside the window, as it does under Wayland, the title bar
+took its height out of those 400 pixels, so the page was about 40 pixels shorter
+than on Windows and the welcome screen's fields overlapped its Start Mining button.
+
+The size request is now on the scrolled window that holds the page, so the page
+is 800×400 on Linux too and the window grows by the title bar. A resizable window
+keeps its default size on the window as before.
 
 ## Checking the copy
 
