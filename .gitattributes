@@ -1,0 +1,2 @@
+# The vendored Wails must stay byte for byte as published (third_party/verify-wails.sh)
+third_party/wails/** -text
