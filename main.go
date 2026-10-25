@@ -62,17 +62,10 @@ func main() {
 				Action:   "Crash",
 				Name:     fmt.Sprintf("%v", err),
 			})
-
+			// The process exits right after this, so send the crash now.
+			tracking.Stop()
 		}
 	}()
-
-	tracking.StartTracker()
-
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Startup",
-		Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
-	})
 
 	logging.SetLogLevel(int(logging.LogLevelDebug))
 	if _, err := os.Stat(util.DataDirectory()); os.IsNotExist(err) {
@@ -88,6 +81,15 @@ func main() {
 	logFile, _ := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	logging.SetLogFile(logFile)
 	defer logFile.Close()
+
+	// After the data directory is created, so the tracking state can be saved
+	tracking.StartTracker()
+
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Lifecycle",
+		Action:   "Startup",
+		Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
+	})
 
 	log.Printf("OCM v%s Started up\n", tracking.GetVersion())
 
