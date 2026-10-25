@@ -27,6 +27,13 @@ var trackChan chan TrackingRequest
 var trackingEnabled bool
 var waitGroup sync.WaitGroup
 
+// chanMu guards trackChan against a Track racing Stop's close.
+var chanMu sync.Mutex
+var stopped bool
+
+// endpoint is the Matomo tracker. Injectable for tests.
+var endpoint = "https://analytics.javerity.com/matomo.php"
+
 func Enable() {
 	trackingEnabled = true
 	saveState()
@@ -63,17 +70,20 @@ func saveState() {
 
 func StartTracker() {
 	matomoClient := &http.Client{Timeout: 2 * time.Second}
+	chanMu.Lock()
 	trackChan = make(chan TrackingRequest, 100)
+	stopped = false
+	chanMu.Unlock()
 	waitGroup = sync.WaitGroup{}
 	loadState()
 	new := true
 	waitGroup.Add(1)
-	go func() {
+	go func(trackChan chan TrackingRequest) {
 		for t := range trackChan {
 			if !trackingEnabled {
 				continue
 			}
-			req, err := http.NewRequest("GET", "https://analytics.javerity.com/matomo.php", nil)
+			req, err := http.NewRequest("GET", endpoint, nil)
 			if err != nil {
 				log.Print(err)
 				os.Exit(1)
@@ -104,16 +114,35 @@ func StartTracker() {
 			}
 		}
 		waitGroup.Done()
-	}()
+	}(trackChan)
 }
 
+// Stop sends what is queued and waits for it. It does nothing before
+// StartTracker or a second time.
 func Stop() {
+	chanMu.Lock()
+	if trackChan == nil || stopped {
+		chanMu.Unlock()
+		return
+	}
+	stopped = true
 	close(trackChan)
+	chanMu.Unlock()
 	waitGroup.Wait()
 }
 
+// Track queues an event. Before StartTracker, after Stop, or with the queue
+// full, the event is dropped rather than blocking or panicking the caller.
 func Track(req TrackingRequest) {
-	trackChan <- req
+	chanMu.Lock()
+	defer chanMu.Unlock()
+	if trackChan == nil || stopped {
+		return
+	}
+	select {
+	case trackChan <- req:
+	default:
+	}
 }
 
 var vId string
