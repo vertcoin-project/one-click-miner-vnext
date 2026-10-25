@@ -17,6 +17,13 @@ func TestEveryLanguageHasAName(t *testing.T) {
 	}
 }
 
+func TestLanguageWithoutSettings(t *testing.T) {
+	m := &Backend{alreadyRunning: true}
+	if got := m.GetLanguage(); got != "" {
+		t.Errorf("GetLanguage() without settings = %q, want \"\"", got)
+	}
+}
+
 func TestPickedLanguage(t *testing.T) {
 	db, err := buntdb.Open(":memory:")
 	if err != nil {

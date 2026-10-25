@@ -101,6 +101,10 @@ func isAvailableLanguage(l string) bool {
 // GetLanguage returns the language picked in the settings, or "" when the
 // system language is used
 func (m *Backend) GetLanguage() string {
+	// A second copy of the miner doesn't open the settings
+	if m.settings == nil {
+		return ""
+	}
 	l := m.getStringSetting("language")
 	if !isAvailableLanguage(l) {
 		return ""
