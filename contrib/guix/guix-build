@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# Reproducible build of the One Click Miner with Guix. See contrib/guix/README.md.
+#
+#   ./contrib/guix/guix-build
+#
+# Environment:
+#   HOSTS      platforms to build (default: "x86_64-linux-gnu x86_64-w64-mingw32")
+#   VERSION    version to stamp into the binary and name the zips after, such as
+#              2.3.0. Unset, the binary keeps the source's dev version and the
+#              zips are named after the commit.
+#   JOBS       parallel jobs (default: nproc)
+#   CACHE_PATH where the Go modules and npm packages are kept between builds
+#              (default: ./guix-cache). Everything in it is checked against
+#              go.sum and frontend/package-lock.json.
+export LC_ALL=C
+set -o errexit -o pipefail -o nounset
+
+cd "$(git rev-parse --show-toplevel)"
+
+# The Guix commit every package comes from. Changing it changes the output.
+# It is the one Bitcoin Core v32.0 pins (Bitcoin Core commit 31eb46f054), so
+# the toolchains copied into manifest.scm build exactly as they do there.
+GUIX_COMMIT=c5eee3336cc1d10a3cc1c97fde2809c3451624d3
+
+HOSTS="${HOSTS:-x86_64-linux-gnu x86_64-w64-mingw32}"
+JOBS="${JOBS:-$(nproc)}"
+CACHE_PATH="${CACHE_PATH:-$PWD/guix-cache}"
+VERSION="${VERSION:-}"
+
+# The build is of the commit, not the working tree, so refuse to run when they differ
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    echo "ERR: the working tree has uncommitted changes; commit or stash them first" >&2
+    git status --short --untracked-files=no >&2
+    exit 1
+fi
+
+COMMIT="$(git rev-parse HEAD)"
+SHORT="${COMMIT:0:12}"
+SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}"
+NAME="${VERSION:-${SHORT}}"
+
+BUILD_BASE="$PWD/guix-build-${SHORT}"
+DIST_BASE="${BUILD_BASE}/dist-archive"
+OUTDIR_BASE="${BUILD_BASE}/output"
+DISTSRC_BASE="${BUILD_BASE}/distsrc"
+
+for host in $HOSTS; do
+    case "$host" in
+        x86_64-linux-gnu|x86_64-w64-mingw32) ;;
+        *) echo "ERR: unsupported host '$host'" >&2; exit 1 ;;
+    esac
+    if [ -e "${OUTDIR_BASE}/${host}" ]; then
+        echo "ERR: ${OUTDIR_BASE}/${host} already exists; remove it to rebuild" >&2
+        exit 1
+    fi
+done
+
+mkdir -p "$DIST_BASE" "$OUTDIR_BASE" "$DISTSRC_BASE" "$CACHE_PATH"
+
+# git archive output depends only on the commit
+SRC_TAR="${DIST_BASE}/vertcoin-ocm-${SHORT}.tar"
+[ -e "$SRC_TAR" ] || git archive --format=tar --prefix=src/ --output="$SRC_TAR" HEAD
+
+time-machine() {
+    guix time-machine --url=https://codeberg.org/guix/guix.git \
+                      --commit="$GUIX_COMMIT" \
+                      --cores="$JOBS" \
+                      --keep-failed \
+                      --fallback \
+                      -- "$@"
+}
+
+# Container flags shared by both steps:
+#   --container --pure --no-cwd  nothing from this machine's environment or
+#                                 working directory reaches the build
+#   --rebuild-cache               guix shell caches the profile per manifest file
+#                                 and ignores HOST, which the manifest reads, so
+#                                 without it every step gets the first step's profile
+#   --expose                      the scripts and the source archive, read-only
+container=(
+    --manifest="$PWD/contrib/guix/manifest.scm"
+    --rebuild-cache
+    --container
+    --pure
+    --no-cwd
+    --expose="$PWD/contrib/guix/libexec=/libexec"
+    --expose="$DIST_BASE=/dist"
+    --share="$CACHE_PATH=/cache"
+)
+
+echo "Fetching Go modules and npm packages for ${SHORT} into ${CACHE_PATH}"
+HOST=fetch time-machine shell "${container[@]}" --network -- \
+    env SRC_TAR="/dist/$(basename "$SRC_TAR")" \
+    bash /libexec/fetch.sh
+
+for host in $HOSTS; do
+    echo "Building ${host} for ${SHORT}"
+    rm -rf "${DISTSRC_BASE:?}/${host}"
+    mkdir -p "${DISTSRC_BASE}/${host}" "${OUTDIR_BASE}/${host}"
+    # No --network: the build sees only the archive and the fetched packages
+    HOST="$host" time-machine shell "${container[@]}" \
+        --share="${DISTSRC_BASE}/${host}=/distsrc" \
+        --share="${OUTDIR_BASE}/${host}=/outdir" -- \
+        env HOST="$host" \
+            JOBS="$JOBS" \
+            NAME="$NAME" \
+            VERSION="$VERSION" \
+            SOURCE_DATE_EPOCH="$SOURCE_DATE_EPOCH" \
+            SRC_TAR="/dist/$(basename "$SRC_TAR")" \
+        bash /libexec/build.sh
+done
+
+echo
+echo "Outputs in ${OUTDIR_BASE}:"
+cat "${OUTDIR_BASE}"/*/SHA256SUMS.part
