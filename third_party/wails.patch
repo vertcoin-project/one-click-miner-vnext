@@ -125,7 +125,30 @@
    WEBVIEW_API void webview_minsize(struct webview *w, int width, int height);
    WEBVIEW_API void webview_maxsize(struct webview *w, int width, int height);
    WEBVIEW_API void webview_set_fullscreen(struct webview *w, int fullscreen);
-@@ -614,6 +615,7 @@
+@@ -355,15 +356,18 @@
+       gtk_window_set_default_size(GTK_WINDOW(w->priv.window), w->width,
+                                   w->height);
+     }
+-    else
+-    {
+-      gtk_widget_set_size_request(w->priv.window, w->width, w->height);
+-    }
+     gtk_window_set_resizable(GTK_WINDOW(w->priv.window), !!w->resizable);
+     gtk_window_set_position(GTK_WINDOW(w->priv.window), GTK_WIN_POS_CENTER);
+ 
+     w->priv.scroller = gtk_scrolled_window_new(NULL, NULL);
+     gtk_container_add(GTK_CONTAINER(w->priv.window), w->priv.scroller);
++    if (!w->resizable)
++    {
++      // Size the page, not the window, as AdjustWindowRect does on Windows:
++      // a client-side title bar is part of the window and would otherwise
++      // take its height out of the page
++      gtk_widget_set_size_request(w->priv.scroller, w->width, w->height);
++    }
+ 
+     WebKitUserContentManager *m = webkit_user_content_manager_new();
+     webkit_user_content_manager_register_script_message_handler(m, "external");
+@@ -614,6 +618,7 @@
    }
  
    WEBVIEW_API void webview_exit(struct webview *w) { (void)w; }
@@ -133,7 +156,7 @@
    WEBVIEW_API void webview_print_log(const char *s)
    {
      fprintf(stderr, "%s\n", s);
-@@ -1584,9 +1586,8 @@
+@@ -1584,9 +1589,8 @@
      SetWindowText(w->priv.hwnd, w->title);
  #endif
  
@@ -145,7 +168,7 @@
  
      return 0;
    }
-@@ -2040,6 +2041,12 @@
+@@ -2040,6 +2044,12 @@
  
    WEBVIEW_API void webview_terminate(struct webview *w) { PostQuitMessage(0); }
    WEBVIEW_API void webview_exit(struct webview *w) { OleUninitialize(); }
@@ -158,7 +181,7 @@
    WEBVIEW_API void webview_print_log(const char *s) { OutputDebugString(s); }
  
  #endif /* WEBVIEW_WINAPI */
-@@ -2492,6 +2499,7 @@
+@@ -2492,6 +2502,7 @@
      w->priv.should_exit = 1;
    }
    WEBVIEW_API void webview_exit(struct webview *w) { [NSApp terminate:NSApp]; }

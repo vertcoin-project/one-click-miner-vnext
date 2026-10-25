@@ -356,15 +356,18 @@ struct webview_priv
       gtk_window_set_default_size(GTK_WINDOW(w->priv.window), w->width,
                                   w->height);
     }
-    else
-    {
-      gtk_widget_set_size_request(w->priv.window, w->width, w->height);
-    }
     gtk_window_set_resizable(GTK_WINDOW(w->priv.window), !!w->resizable);
     gtk_window_set_position(GTK_WINDOW(w->priv.window), GTK_WIN_POS_CENTER);
 
     w->priv.scroller = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(w->priv.window), w->priv.scroller);
+    if (!w->resizable)
+    {
+      // Size the page, not the window, as AdjustWindowRect does on Windows:
+      // a client-side title bar is part of the window and would otherwise
+      // take its height out of the page
+      gtk_widget_set_size_request(w->priv.scroller, w->width, w->height);
+    }
 
     WebKitUserContentManager *m = webkit_user_content_manager_new();
     webkit_user_content_manager_register_script_message_handler(m, "external");
