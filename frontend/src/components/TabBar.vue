@@ -57,13 +57,14 @@ div.tabBar {
   padding: 0px;
 }
 
+/* Wide enough for the longest tab name (French) on one line */
 div.tabs {
-  width: 500px;
+  width: 600px;
   position: absolute;
   left: 50%;
   top: 50%;
   height: 20px;
-  margin-left: -250px;
+  margin-left: -300px;
   margin-top: -10px;
   padding: 0px;
 }
@@ -76,6 +77,7 @@ div.tab {
   color: white;
   opacity: 0.6;
   text-align: center;
+  white-space: nowrap;
 }
 
 div.tab.active {

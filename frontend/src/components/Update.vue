@@ -54,4 +54,9 @@ div.releaseNotes {
   width: 600px;
   margin: 0 auto;
 }
+/* Long lines wrap so the notes only ever scroll down */
+div.releaseNotes pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 </style>
