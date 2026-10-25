@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="col-286 above-bottom-button" v-if="alreadyRunning === false && walletInitialized === 0">
+    <!-- The button follows the fields at their spacing rather than sitting at
+         the shared bottom-button height, which leaves a gap under two fields -->
+    <div class="col-286" v-if="alreadyRunning === false && walletInitialized === 0">
       <p>{{ $t("welcome.makeapassword") }}</p>
       <p class="error" v-if="error !== ''">{{error}}</p>
       <p>
@@ -14,7 +16,7 @@
           @keyup.enter="initAndStart"
         />
       </p>
-      <p class="bottom-button">
+      <p>
         <a class="button" @click="initAndStart">{{ $t("welcome.startmining") }}</a>
       </p>
     </div>
