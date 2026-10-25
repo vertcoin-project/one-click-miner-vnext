@@ -100,16 +100,22 @@ func main() {
 	}
 	networks.SetNetwork(backend.GetTestnet())
 
-	go backend.BackendServerSelector()
-	go backend.SelectP2PoolNode()
+	// A second copy only shows the "already running" message. It has no
+	// settings database open, so it must not do any of the start-up work.
+	if !alreadyRunning {
+		go backend.BackendServerSelector()
+		go backend.SelectP2PoolNode()
 
-	backend.ResetPool()
+		backend.ResetPool()
+	}
 	app.Bind(backend)
 	err = app.Run()
 	if err != nil {
 		logging.Errorf("Error running app: %v", err)
 	}
-	backend.StopMining()
+	if !alreadyRunning {
+		backend.StopMining()
+	}
 
 	tracking.Track(tracking.TrackingRequest{
 		Category: "Lifecycle",
