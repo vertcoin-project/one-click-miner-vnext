@@ -85,6 +85,10 @@ static inline void CgoWebViewSetColor(void *w, uint8_t r, uint8_t g, uint8_t b, 
 	webview_set_color((struct webview *)w, r, g, b, a);
 }
 
+static inline void CgoWebViewShow(void *w) {
+	webview_show((struct webview *)w);
+}
+
 static inline void CgoDialog(void *w, int dlgtype, int flags,
 char *title, char *arg, char *res, size_t ressz, char *filter) {
 	webview_dialog(w, dlgtype, flags,
@@ -198,6 +202,9 @@ type WebView interface {
 	// SetColor() changes window background color. This method must be called from
 	// the main thread only. See Dispatch() for more details.
 	SetColor(r, g, b, a uint8)
+	// Show() shows the window, which starts hidden on Windows. This method must
+	// be called from the main thread only. See Dispatch() for more details.
+	Show()
 	// Eval() evaluates an arbitrary JS code inside the webview. This method must
 	// be called from the main thread only. See Dispatch() for more details.
 	Eval(js string) error
@@ -327,6 +334,10 @@ func (w *webview) SetTitle(title string) {
 
 func (w *webview) SetColor(r, g, b, a uint8) {
 	C.CgoWebViewSetColor(w.w, C.uint8_t(r), C.uint8_t(g), C.uint8_t(b), C.uint8_t(a))
+}
+
+func (w *webview) Show() {
+	C.CgoWebViewShow(w.w)
 }
 
 func (w *webview) Focus() {
