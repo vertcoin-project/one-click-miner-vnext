@@ -26,6 +26,9 @@ var UseFirebug = ""
 // syncJSCounter numbers the evalJSSync callbacks so no two share an ID
 var syncJSCounter uint64
 
+// showTimeout is how long the window waits for the page before it's shown anyway
+const showTimeout = 3 * time.Second
+
 type WebView struct {
 	window         wv.WebView // The webview object
 	ipc            interfaces.IPCManager
@@ -34,6 +37,7 @@ type WebView struct {
 	eventManager   interfaces.EventManager
 	bindingCache   []string
 	maximumSizeSet bool
+	showOnce       sync.Once
 }
 
 // NewWebView returns a new WebView struct
@@ -210,6 +214,16 @@ func (w *WebView) evalJSSync(js string) error {
 	return nil
 }
 
+// show shows the window the first time it is called. The window starts hidden
+// so it doesn't appear before the page has painted.
+func (w *WebView) show() {
+	w.showOnce.Do(func() {
+		w.window.Dispatch(func() {
+			w.window.Show()
+		})
+	})
+}
+
 // injectCSS adds the given CSS to the WebView
 func (w *WebView) injectCSS(css string) {
 	w.window.Dispatch(func() {
@@ -275,8 +289,12 @@ func (w *WebView) Run() error {
 
 			// Emit that everything is loaded and ready
 			w.eventManager.Emit("wails:ready")
+			w.show()
 		}()
 	})
+
+	// Show the window anyway if the page never gets ready
+	time.AfterFunc(showTimeout, w.show)
 
 	// Kick off main window loop
 	w.window.Run()
