@@ -25,11 +25,19 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 	}
 }
 
+// The mining screen asks for these even in a second copy that only shows the
+// "already running" message, and that copy never picks a pool.
 func (m *Backend) GetPoolFee() string {
+	if m.pool == nil {
+		return ""
+	}
 	return fmt.Sprintf("%0.2f%%", m.pool.GetFee())
 }
 
 func (m *Backend) GetPoolName() string {
+	if m.pool == nil {
+		return ""
+	}
 	return m.pool.GetName()
 }
 
