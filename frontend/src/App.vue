@@ -11,7 +11,7 @@
     <Send v-if="screen === 'send'" v-on:back="switchToMining" v-on:cancel="switchToMining" />
     <Mining v-show="screen === 'mining'" v-on:stop-mining="stopMining" />
     <Settings v-if="screen === 'settings'" v-on:committed="restartMining" />
-    <Update v-if="screen === 'update'" v-on:back="restartMiningIfNotStopped" />
+    <Update v-if="screen === 'update'" v-on:back="backFromUpdate" />
     <Tracking v-on:update="switchToUpdate" />
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       screen: "welcome",
+      screenBeforeUpdate: null,
       manualStop: false,
       tabBarVisible: false
     };
@@ -82,7 +83,22 @@ export default {
       this.screen = "mining";
     },
     switchToUpdate: function() {
+      if (this.screen !== "update") {
+        this.screenBeforeUpdate = this.screen;
+      }
       this.screen = "update";
+    },
+    // The update screen only shows the release, so going back returns to where
+    // the user was; mining keeps running. Only the checks screen is run again,
+    // since showing it starts the checks.
+    backFromUpdate: function() {
+      var previous = this.screenBeforeUpdate;
+      this.screenBeforeUpdate = null;
+      if (previous === null || previous === "checks") {
+        this.restartMiningIfNotStopped();
+        return;
+      }
+      this.screen = previous;
     },
     switchToWelcome: function() {
       this.screen = "welcome";
