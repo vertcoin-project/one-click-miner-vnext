@@ -47,7 +47,7 @@ func TestStopSendsQueuedEvents(t *testing.T) {
 	var got []string
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		mu.Lock()
-		got = append(got, r.URL.Query().Get("e_a")+"|"+r.URL.Query().Get("e_n"))
+		got = append(got, r.URL.Query().Get("idsite")+"|"+r.URL.Query().Get("e_a")+"|"+r.URL.Query().Get("e_n"))
 		mu.Unlock()
 	}))
 	defer srv.Close()
@@ -61,7 +61,7 @@ func TestStopSendsQueuedEvents(t *testing.T) {
 	Track(TrackingRequest{Category: "Lifecycle", Action: "Crash", Name: "open " + filepath.Join(home, "x")})
 	Stop()
 
-	want := "Crash|open " + filepath.Join("~", "x")
+	want := siteID + "|Crash|open " + filepath.Join("~", "x")
 	if len(got) != 1 || got[0] != want {
 		t.Errorf("server got %q, want [%q]", got, want)
 	}
