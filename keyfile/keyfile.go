@@ -3,6 +3,7 @@ package keyfile
 import (
 	"bytes"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -94,6 +95,10 @@ func GetScript() ([]byte, error) {
 		AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
 }
 
+// ErrWrongPassword is wrapped in LoadPrivateKey's error when the keyfile
+// can't be decrypted with the password, as opposed to it being unreadable.
+var ErrWrongPassword = errors.New("wrong password")
+
 func LoadPrivateKey(password string) ([]byte, error) {
 	filename := keyFile()
 	keyfile, err := os.ReadFile(filename)
@@ -120,7 +125,7 @@ func LoadPrivateKey(password string) ([]byte, error) {
 	// nonce for secretbox is the same as scrypt salt.  Seems fine.  Really.
 	priv, worked := secretbox.Open(nil, enckey[24:], salt, dk32)
 	if !worked {
-		return []byte{}, fmt.Errorf("Decryption failed for %s ", filename)
+		return []byte{}, fmt.Errorf("Decryption failed for %s: %w", filename, ErrWrongPassword)
 	}
 
 	return priv, nil
