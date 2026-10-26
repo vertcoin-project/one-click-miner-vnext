@@ -2,6 +2,7 @@ package backend
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/keyfile"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
@@ -77,14 +78,14 @@ type PrepareResult struct {
 }
 
 func (m *Backend) PrepareSweep(addr string) string {
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Sweep",
-		Action:   "Prepare",
-	})
-
 	logging.Debugf("Preparing sweep")
 
 	txs, err := m.wal.PrepareSweep(addr)
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Sweep",
+		Action:   "Prepare",
+		Name:     sweepResult(err),
+	})
 	if err != nil {
 		logging.Errorf("Error preparing sweep: %v", err)
 		return err.Error()
@@ -121,4 +122,19 @@ func (m *Backend) InitWallet(password string) bool {
 	}
 	logging.Errorf("Error: %s", err.Error())
 	return false
+}
+
+// sweepKey matches the error keys the wallet returns, like insufficient_funds.
+var sweepKey = regexp.MustCompile(`^[a-z_]+$`)
+
+// sweepResult is the analytics label for a sweep step: "ok", the wallet's
+// error key, or "other" for any other error, whose text isn't sent.
+func sweepResult(err error) string {
+	switch {
+	case err == nil:
+		return "ok"
+	case sweepKey.MatchString(err.Error()):
+		return err.Error()
+	}
+	return "other"
 }
