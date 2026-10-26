@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="prerequisiteInstall" class="col-286">
-      <p>{{ $t("checks.prerequisite") }}</p>
-    </div>
-    <div v-if="!prerequisiteInstall && checkStatus !== 'Failed'" class="col-286">
+    <div v-if="checkStatus !== 'Failed'" class="col-286">
       <p>{{checkStatus === null ? $t("checks.checking_mining_software") : (checkStatus === 'Failed' ? 'Failed' : $t("checks." + checkStatus)) }}</p>
       <div class="verthashProgress" v-if="verthashProgress !== 0">
         <div class="progressBar">
@@ -12,13 +9,13 @@
         <div class="progressText">{{Math.floor(verthashProgress)}}%</div>
       </div>
     </div>
-    <div v-if="!prerequisiteInstall && checkStatus === 'Failed'" class="col-wide">
+    <div v-if="checkStatus === 'Failed'" class="col-wide">
       <div class="failureReason" v-if="checkStatus === 'Failed'">
         {{ $t("checks.checks_failed") }}:
         <br />&nbsp;<br />
         {{failureReason}}
       </div>
-      <p v-if="!prerequisiteInstall && checkStatus === 'Failed'">
+      <p v-if="checkStatus === 'Failed'">
         <a class="button" @click="check">{{ $t('generic.retry') }}</a>
       </p>
     </div>
@@ -29,7 +26,6 @@
 export default {
   data() {
     return {
-      prerequisiteInstall: false,
       checkStatus: null,
       failureReason: "",
       verthashProgress: 0,
@@ -40,9 +36,6 @@ export default {
     var self = this;
     window.wails.Events.On("checkStatus", result => {
       self.checkStatus = result;
-    });
-    window.wails.Events.On("prerequisiteInstall", result => {
-      self.prerequisiteInstall = result === "1";
     });
     window.wails.Events.On("verthashProgress", result => {
       self.verthashProgress = result;

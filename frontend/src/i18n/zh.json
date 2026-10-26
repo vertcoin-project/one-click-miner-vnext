@@ -16,7 +16,6 @@
         "error_initializing" : "初始化中发生了故障"
     },
     "checks" : {
-        "prerequisite" : "先行程序已运行，你可能看到弹窗弹出询问权限（可能只在任务栏中闪动）",
         "checks_failed" : "检查失败",
         "checking_mining_software" : "检查挖矿软件。。。",
         "rapidfail" : "检查是否发生快速失败",
@@ -56,9 +55,6 @@
         "enable_debug_sub" : "在调试日志中包含矿工的控制台输出。可以使你的日志变得很大。",
         "auto_start" : "自动开始",
         "auto_start_sub" : "登陆电脑时启动一键式矿工《One-Click Miner》",
-        "closed_source" : "使用闭源的矿工",
-        "closed_source_sub" : "更好的哈希率，但是未经审核的矿工会产生开发人员的费用",
-        "closed_source_warning" : "你选择使用闭源的矿工。绿币（VTC）不支持这些矿工。他们无法对其内容进行审核并且可能包含损害你的电脑的功能。",
         "save_n_restart" : "保存及重启",
         "language" : "语言",
         "language_system" : "系统默认"

@@ -55,11 +55,7 @@ func (m *Backend) PerformChecks() string {
 	progress := make(chan float64, 1)
 
 	go func() {
-		if m.GetSkipVerthashExtendedVerify() {
-			err = verthash.MakeVerthashDatafileIfNotExistsWithProgress(verthashFile, progress)
-		} else {
-			err = verthash.EnsureVerthashDatafileWithProgress(verthashFile, progress)
-		}
+		err = verthash.EnsureVerthashDatafileWithProgress(verthashFile, progress)
 		doneChan <- true
 	}()
 
@@ -151,19 +147,13 @@ func (m *Backend) CheckGPUCompatibility() error {
 func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	binaries := miners.GetMinerBinaries()
 	gpus := util.GetGPUs()
-	closedSource := m.GetClosedSource()
-	testnet := m.GetTestnet()
 	brs := []*miners.BinaryRunner{}
 	for _, b := range binaries {
 		match := false
 		if b.Platform == runtime.GOOS {
 			for _, g := range gpus {
 				if g.Type == b.GPUType {
-					if b.ClosedSource == closedSource {
-						if b.Testnet == testnet {
-							match = true
-						}
-					}
+					match = true
 				}
 			}
 		}
@@ -182,15 +172,15 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 					continue
 				}
 			}
-			logging.Debugf("Found compatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
-			br, err := miners.NewBinaryRunner(b, m.prerequisiteInstall)
+			logging.Debugf("Found compatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
+			br, err := miners.NewBinaryRunner(b)
 			if err != nil {
 				return nil, err
 			}
 			br.Debug = m.GetDebugging()
 			brs = append(brs, br)
 		} else {
-			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
+			logging.Debugf("Found incompatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
 		}
 	}
 

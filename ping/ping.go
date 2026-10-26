@@ -12,7 +12,6 @@ import (
 	"github.com/go-ping/ping"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -47,15 +46,8 @@ type Nodes struct {
 
 var Selected SelectedNode
 
-func GetSelectedNode(testnet bool) {
-	if testnet {
-		Selected = SelectedNode{
-			P2PoolStratum: networks.Active.P2ProxyStratum,
-			P2PoolURL:     networks.Active.P2ProxyURL,
-		}
-	} else {
-		selector()
-	}
+func GetSelectedNode() {
+	selector()
 }
 
 func selector() {

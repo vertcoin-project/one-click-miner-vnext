@@ -119,7 +119,7 @@ func main() {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	networks.SetNetwork(backend.GetTestnet())
+	networks.SetNetwork()
 
 	// A second copy only shows the "already running" message. It has no
 	// settings database open, so it must not do any of the start-up work.

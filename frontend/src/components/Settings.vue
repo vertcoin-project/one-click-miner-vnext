@@ -1,6 +1,6 @@
 <template>
   <div class="settings-container">
-    <div class="col-settings" v-if="!showWarning">
+    <div class="col-settings">
       <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
         <p style="text-align: left" >
           <input type="checkbox" v-model="debugging" />
@@ -16,12 +16,6 @@
         </p>
       </div>
       <div class="col-settings-sub" v-bind:style="{ visibility: loaded ? 'visible' : 'hidden' }">
-        <!-- <p style="text-align: left">
-          <input type="checkbox" v-model="testnet" />
-          {{ $t("settings.testnet") }}
-          <br />
-          <span class="subtext">{{ $t("settings.testnet_sub") }}</span>
-        </p> -->
         <p style="text-align: left">
           <input type="checkbox" v-model="enableIntegrated" />
           {{ $t("settings.enable_integrated") }}
@@ -50,17 +44,9 @@
         </p>
       </div>
     </div>
-    <div class="col-286 height-100" v-if="!showWarning">
+    <div class="col-286 height-100">
       <p class="bottom-button">
         <a class="button" @click="save">{{ $t("settings.save_n_restart") }}</a>
-      </p>
-    </div>
-    <div class="col-286" v-if="showWarning">
-      <div class="warning" v-if="closedSourceMiner && showWarning">
-        <p>{{ $t("settings.closed_source_warning") }}</p>
-      </div>
-       <p>
-        <a class="button" @click="toggleWarning">{{ $t("generic.close") }}</a>
       </p>
     </div>
   </div>
@@ -72,12 +58,9 @@ import { loadSettings, cachedSettings, forgetSettings } from "../settingsLoader.
 export default {
   data() {
     return {
-      closedSourceMiner: false,
       debugging: false,
       autoStart: false,
       enableIntegrated: true,
-      showWarning: false,
-      testnet: false,
       poolID: -1,
       pools: [],
       language: "",
@@ -109,11 +92,6 @@ export default {
       });
   },
   methods: {
-    toggleWarning: function() {
-      this.showWarning = !this.showWarning;
-      var self = this;
-      setTimeout(() => { self.showWarning = false; }, 5000);
-    },
     // The language applies and is saved as soon as it is picked, without Save & Restart
     changeLanguage: function() {
       var self = this;
@@ -126,21 +104,16 @@ export default {
     },
     save: function() {
       var self = this;
-      window.backend.Backend.SetClosedSource(this.closedSourceMiner).then(() => {
-          window.backend.Backend.SetDebugging(self.debugging).then(() => {
-            window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
-              window.backend.Backend.SetTestnet(self.testnet).then(() => {
-                window.backend.Backend.SetPool(self.poolID).then(() => {
-                  window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
-                    forgetSettings();
-                    self.$emit("committed");
-                  });
-                });
-              });
+      window.backend.Backend.SetDebugging(self.debugging).then(() => {
+        window.backend.Backend.SetAutoStart(self.autoStart).then(() => {
+          window.backend.Backend.SetPool(self.poolID).then(() => {
+            window.backend.Backend.SetEnableIntegrated(self.enableIntegrated).then( () => {
+              forgetSettings();
+              self.$emit("committed");
             });
           });
-        }
-      );
+        });
+      });
     }
   }
 };
@@ -148,26 +121,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div.warning {
-  border: 2px solid #d0a000;
-  color: #d0a000;
-  width: 100%;
-  padding: 5px 10px;
-  text-align: justify;
-  line-height: 10pt;
-  font-size: 10pt;
-}
-a.warning {
-  display: block; 
-  float:right;
-  color: #d0a000;
-  cursor: pointer;
-  text-decoration: underline;
-}
-div.warning p {
-  margin: 0px;
-  padding: 0px;
-}
 span.subtext {
   opacity: 0.6;
   font-size: 8pt;

@@ -50,7 +50,7 @@ func TestGetPoolsFollowsConfigs(t *testing.T) {
 		{ID: 7, Name: "Example", StratumURL: "stratum+tcp://pool.example:3333", Password: "x", Fee: fee(1.5)},
 		{Type: P2PoolType},
 	})
-	ps := GetPools("vtc1qaddr", false)
+	ps := GetPools("vtc1qaddr")
 	if len(ps) != 2 || ps[0].GetID() != 7 || ps[1].GetID() != 2 {
 		t.Fatalf("got %d pools", len(ps))
 	}
@@ -60,14 +60,10 @@ func TestGetPoolsFollowsConfigs(t *testing.T) {
 	if ps[0].GetFee() != 1.5 || ps[0].GetUsername() != "vtc1qaddr" || ps[0].GetStratumUrl() != "stratum+tcp://pool.example:3333" {
 		t.Fatalf("pool 7 = %+v", ps[0])
 	}
-	if !HasPool(7, "", false) || HasPool(4, "", false) {
+	if !HasPool(7, "") || HasPool(4, "") {
 		t.Fatalf("HasPool does not follow the configs")
 	}
-	if GetPool(4, "", false).GetID() != 7 {
+	if GetPool(4, "").GetID() != 7 {
 		t.Fatalf("an unknown pool does not fall back to the first one")
-	}
-
-	if ps := GetPools("addr", true); len(ps) != 1 || ps[0].GetID() != 1 {
-		t.Fatalf("testnet pools changed")
 	}
 }

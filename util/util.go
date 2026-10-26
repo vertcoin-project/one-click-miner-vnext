@@ -36,21 +36,6 @@ func DataDirectory() string {
 	return "."
 }
 
-func ReplaceInFile(file string, find string, replace string) error {
-	input, err := os.ReadFile(file)
-	if err != nil {
-		return err
-	}
-
-	output := bytes.Replace(input, []byte(find), []byte(replace), -1)
-
-	if err = os.WriteFile(file, output, 0666); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 type BlocksResponse struct {
 	Blocks     []Block           `json:"blocks"`
 	Pagination InsightPagination `json:"pagination"`
