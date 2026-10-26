@@ -2,7 +2,6 @@ package tracking
 
 import (
 	"os"
-	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
@@ -21,7 +20,12 @@ func Redact(text string) string {
 // redactHome replaces home in text, matching either path separator between
 // its parts, and ignoring case on Windows.
 func redactHome(text, home string, windows bool) string {
-	home = strings.TrimRight(filepath.ToSlash(home), "/")
+	// Split on the windows flag, not the OS the code runs on: filepath.ToSlash
+	// leaves backslashes alone outside Windows, where they can be in a name.
+	if windows {
+		home = strings.ReplaceAll(home, `\`, "/")
+	}
+	home = strings.TrimRight(home, "/")
 	parts := strings.Split(home, "/")
 	if len(parts) < 2 {
 		return text

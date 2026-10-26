@@ -24,7 +24,7 @@ func TestRedactHome(t *testing.T) {
 		{`no paths here`, `/`, false, `no paths here`},
 	}
 	for _, c := range cases {
-		if got := redactHome(c.text, filepath.FromSlash(c.home), c.windows); got != c.want {
+		if got := redactHome(c.text, c.home, c.windows); got != c.want {
 			t.Errorf("redactHome(%q, %q) = %q, want %q", c.text, c.home, got, c.want)
 		}
 	}
