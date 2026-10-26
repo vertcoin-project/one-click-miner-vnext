@@ -16,7 +16,6 @@
         "error_initializing" : "Noget gik galdt under indlæsning af wallet"
     },
     "checks" : {
-        "prerequisite" : "Installation af en påkrævet pakke er igang. Du ser måske en popup der anmoder om tilladelser (måske som noget der blinker i din taskbar)",
         "checks_failed" : "Tjek fejlede",
         "checking_mining_software" : "Kontrollerer mining software...",
         "rapidfail" : "Kontrollerer for hurtigt opstående fejl",
@@ -62,15 +61,8 @@
         "enable_debug_sub" : "Inkludér minerens consol output i debug log. Kan gøre logfilerne temmeligt store",
         "auto_start" : "Auto start",
         "auto_start_sub" : "Start One-Click Miner når du logger på din computer",
-        "closed_source" : "Brug closed-source minere",
-        "closed_source_sub" : "Bedre hashrate, men uanmeldte minere der pådrager sig udvikler gebyr",
-        "closed_source_warning" : "Du har valgt at benytte closed-source miner(e). Vertcoin støtter og supporterer IKKE disse minere.  De kan ikke undersøges for indhold og kunne derfor benytte sig af funktioner der kan være skadelige for din computer.",
         "enable_integrated" : "Brug indbygget grafik til at mine",
         "enable_integrated_sub" : "Indbygget grafik vil blive brugt af mineren (hvis det er muligt)",
-        "testnet": "Testnet mode",
-        "testnet_sub": "Aktiver testnet. Du vil ikke mine rigtige coins.",
-        "skipverthashverify": "Stop med at verificere Verthash data fil under opstart",
-        "skipverthashverify_sub": "Spring verifikationen af verthash data filen over (ikke anbefalet)",
         "save_n_restart" : "Gem & Genstart",
         "pool": "Mining pool",
         "language": "Sprog",

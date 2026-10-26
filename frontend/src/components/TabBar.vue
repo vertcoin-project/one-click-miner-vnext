@@ -13,25 +13,11 @@
         <a @click="settings">{{ $t('tabbar.settings') }}</a>
       </div>
     </div>
-    <div style="float: right" v-if="testnet">
-      <div class="testnet">TESTNET</div>
-    </div>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      testnet: false
-    };
-  },
-  mounted() {
-    var self = this;
-    window.backend.Backend.GetTestnet().then(result => {
-      self.testnet = result;
-    })
-  },
   methods: {
     send: function() {
       this.$emit("send");
@@ -86,21 +72,5 @@ div.tab.active {
 
 a {
   cursor: pointer;
-}
-
-
-div.testnet {
-  height: 38px;
-  color: #ff0000;
-  border: 1px solid #ff0000;
-  font-weight: bold;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 20px;
-  margin-top: 10px;
-  margin-right: 20px;
-  line-height: 38px;
-  text-align: center;
-  width: 100px;
 }
 </style>

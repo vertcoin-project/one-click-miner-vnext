@@ -179,18 +179,14 @@ func TestSetNetworkKeepsResolvedEndpoints(t *testing.T) {
 
 	resolved := []string{"https://resolved.example/"}
 	explorer := "https://blockbook.example/"
-	networks.SetNetwork(false)
+	networks.SetNetwork()
 	networks.SetMainnetEndpoints(resolved, explorer)
 	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) || networks.Active.ExplorerURL != explorer {
 		t.Fatalf("mainnet = %v %q, want %v %q", networks.Active.BackendServers, networks.Active.ExplorerURL, resolved, explorer)
 	}
 
-	networks.SetNetwork(true)
-	if len(networks.Active.BackendServers) != 0 || networks.Active.ExplorerURL == explorer {
-		t.Fatalf("testnet = %v %q, want no servers and the testnet explorer", networks.Active.BackendServers, networks.Active.ExplorerURL)
-	}
-	networks.SetNetwork(false)
+	networks.SetNetwork()
 	if !reflect.DeepEqual(networks.Active.BackendServers, resolved) || networks.Active.ExplorerURL != explorer {
-		t.Fatalf("mainnet after switching back = %v %q, want %v %q", networks.Active.BackendServers, networks.Active.ExplorerURL, resolved, explorer)
+		t.Fatalf("after SetNetwork = %v %q, want %v %q", networks.Active.BackendServers, networks.Active.ExplorerURL, resolved, explorer)
 	}
 }

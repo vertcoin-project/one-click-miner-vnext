@@ -16,7 +16,6 @@
         "error_initializing" : "Coś poszło nie tak podczas inicjalizacji portfela"
     },
     "checks" : {
-        "prerequisite" : "Instalowanie dodatków. Może pojawić się prośba o nadanie uprawnień (podświetlona na pasku zadań)",
         "checks_failed" : "Sprawdzenie zakończyło się niepowodzeniem",
         "checking_mining_software" : "Sprawdzanie oprogramowania do kopania...",
         "rapidfail" : "Sprawdzanie komunikatów o błędach",
@@ -61,15 +60,8 @@
         "enable_debug_sub" : "Dołącz komunikaty z kopania do pliku debug.log. Plik może zrobić się duży",
         "auto_start" : "Automatyczne uruchamianie",
         "auto_start_sub" : "Uruchom One-Click Miner kiedy uruchamiasz komputer",
-        "closed_source" : "Używaj górników typu closed-source",
-        "closed_source_sub" : "Większa wydajność, ale oprogramowanie może pobierać dodatkową opłatę dla jego autora",
-        "closed_source_warning" : "Zaznaczyłeś używanie górników typu closed-source. Vertcoin nie popiera i nie wspiera tych górników. Ich kod źródłowy nie jest publicznie dostępny i nie można sprawdzić, czy nie zawierają szkodliwego oprogramowania.",
         "enable_integrated" : "Kop na zintegrowanych kartach graficznych",
         "enable_integrated_sub" : "Zintegrowane karty graficzne będą wykorzystywane do kopania (jeśli możliwe)",
-        "testnet" : "Tryb Testnet",
-        "testnet_sub" : "Włącza tryb Testnet. Nie będziesz kopał prawdziwych monet.",
-        "skipverthashverify" : "Nie weryfikuj Verthash podczas uruchamiania",
-        "skipverthashverify_sub" : "Weryfikacja integralności pliku verthash.dat podczas uruchamiania zostanie pominięta (niezalecane)",
         "save_n_restart" : "Zapisz i Wznów",
         "pool" : "Kopalnia",
         "language" : "Język",

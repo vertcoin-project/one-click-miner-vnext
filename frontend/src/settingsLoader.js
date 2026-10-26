@@ -14,10 +14,8 @@ export function forgetSettings() {
 export function loadSettings() {
   var b = window.backend.Backend;
   return Promise.all([
-    b.GetClosedSource(),
     b.GetAutoStart(),
     b.GetDebugging(),
-    b.GetTestnet(),
     b.GetEnableIntegrated(),
     b.GetPools(),
     b.GetPool(),
@@ -26,16 +24,14 @@ export function loadSettings() {
     b.GetSystemLocale()
   ]).then(function(r) {
     last = {
-      closedSourceMiner: r[0],
-      autoStart: r[1],
-      debugging: r[2],
-      testnet: r[3],
-      enableIntegrated: r[4],
-      pools: r[5],
-      poolID: r[6],
-      languages: r[7],
-      language: r[8],
-      systemLocale: r[9]
+      autoStart: r[0],
+      debugging: r[1],
+      enableIntegrated: r[2],
+      pools: r[3],
+      poolID: r[4],
+      languages: r[5],
+      language: r[6],
+      systemLocale: r[7]
     };
     return last;
   });

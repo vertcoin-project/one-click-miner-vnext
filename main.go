@@ -119,7 +119,7 @@ func main() {
 		logging.Errorf("Error creating Backend: %s", err.Error())
 		panic(err)
 	}
-	networks.SetNetwork(backend.GetTestnet())
+	networks.SetNetwork()
 
 	go func() {
 		backend.ResolveBackendServers()

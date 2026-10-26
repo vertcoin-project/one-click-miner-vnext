@@ -29,7 +29,6 @@ type Backend struct {
 	stopBalance         chan bool
 	stopUpdate          chan bool
 	stopRunningState    chan bool
-	prerequisiteInstall chan bool
 	alreadyRunning      bool
 	p2poolNodeSelected  bool
 }
@@ -44,7 +43,6 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 		stopRunningState:    make(chan bool),
 		stopMonitoring:      make(chan bool),
 		stopUpdate:          make(chan bool),
-		prerequisiteInstall: make(chan bool),
 		minerBinaries:       []*miners.BinaryRunner{},
 		rapidFailures:       []*miners.BinaryRunner{},
 	}
@@ -63,14 +61,13 @@ func NewBackend(alreadyRunning bool) (*Backend, error) {
 }
 
 func (m *Backend) ResetPool() {
-	m.pool = pools.GetPool(m.GetPool(), m.Address(), m.GetTestnet())
+	m.pool = pools.GetPool(m.GetPool(), m.Address())
 }
 
 func (m *Backend) WailsInit(runtime *wails.Runtime) error {
 	// Save runtime
 	m.runtime = runtime
 
-	go m.PrerequisiteProxyLoop()
 	go m.UpdateLoop()
 
 	return nil

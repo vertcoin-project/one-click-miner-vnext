@@ -74,7 +74,7 @@ func loadPoolConfigs(listURL, cachePath string, fetch func(string, interface{}) 
 	return append([]pools.Config(nil), pools.DefaultConfigs...)
 }
 
-// IDs 1 and 2 belong to P2Proxy and P2Pool.
+// ID 1 was the testnet P2Proxy pool and ID 2 is P2Pool.
 const firstConfiguredPoolID = 3
 
 // validPoolConfigs drops invalid entries and repeated IDs. A P2Pool entry

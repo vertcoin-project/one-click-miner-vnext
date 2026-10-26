@@ -26,8 +26,6 @@ type MinerBinary struct {
 	Prerequisites      []string `json:"minerPreRequisites"`
 	Hash               string   `json:"sha256"`
 	MainExecutableName string   `json:"mainExecutableName"`
-	ClosedSource       bool     `json:"closedSource"`
-	Testnet            bool     `json:"testnet"`
 	MultiGPUMiner      bool     `json:"multiGPUMiner"`
 	EnableIntegrated   bool     `json:"enableIntegrated"`
 	GPUType            util.GPUType
@@ -62,21 +60,12 @@ type MinerImpl interface {
 	AvailableGPUs() int8
 }
 
-func NewBinaryRunner(m MinerBinary, prerequisiteInstall chan bool) (*BinaryRunner, error) {
-	br := &BinaryRunner{MinerBinary: m, lastStarted: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC), prerequisiteInstall: prerequisiteInstall}
-	if strings.HasPrefix(m.MainExecutableName, "lycl") {
-		br.MinerImpl = NewLyclMinerImpl(br)
-	} else if strings.HasPrefix(m.MainExecutableName, "ccminer") {
-		br.MinerImpl = NewCCMinerImpl(br)
-	} else if strings.HasPrefix(m.MainExecutableName, "teamred") {
-		br.MinerImpl = NewTeamRedMinerImpl(br)
-	} else if strings.HasPrefix(m.MainExecutableName, "CryptoDredge") {
-		br.MinerImpl = NewCryptoDredgeMinerImpl(br)
-	} else if strings.HasPrefix(m.MainExecutableName, "VerthashMiner") {
-		br.MinerImpl = NewVerthashMinerImpl(br)
-	} else {
+func NewBinaryRunner(m MinerBinary) (*BinaryRunner, error) {
+	br := &BinaryRunner{MinerBinary: m, lastStarted: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	if !strings.HasPrefix(m.MainExecutableName, "VerthashMiner") {
 		return nil, fmt.Errorf("Could not determine implementation for miner binary")
 	}
+	br.MinerImpl = NewVerthashMinerImpl(br)
 	return br, nil
 }
 
@@ -88,15 +77,14 @@ type BinaryArguments struct {
 }
 
 type BinaryRunner struct {
-	MinerBinary         MinerBinary
-	MinerImpl           MinerImpl
-	cmd                 *exec.Cmd
-	Debug               bool
-	running             bool
-	lastStarted         time.Time
-	rapidFails          int
-	usedArgs            BinaryArguments
-	prerequisiteInstall chan bool
+	MinerBinary MinerBinary
+	MinerImpl   MinerImpl
+	cmd         *exec.Cmd
+	Debug       bool
+	running     bool
+	lastStarted time.Time
+	rapidFails  int
+	usedArgs    BinaryArguments
 }
 
 func (b *BinaryRunner) logPrefix() string {
@@ -149,7 +137,7 @@ func (b *BinaryRunner) IsRunning() bool {
 func (b *BinaryRunner) Install() error {
 	// Check prerequisites
 	for _, p := range b.MinerBinary.Prerequisites {
-		err := prerequisites.Install(p, b.prerequisiteInstall)
+		err := prerequisites.Install(p)
 		if err != nil {
 			return err
 		}

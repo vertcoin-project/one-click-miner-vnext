@@ -16,7 +16,6 @@
         "error_initializing" : "Houve um erro ao iniciar a carteira"
     },
     "checks" : {
-        "prerequisite" : "Os pré-requisitos estão a ser instalados. Podem haver popups a pedir permissões (poderá ser um icon a piscar na barra de trefas)",
         "checks_failed" : "As verificações falharam",
         "checking_mining_software" : "A verificar o sfotware de mineração...",
         "rapidfail" : "A verificar ocorrências de falhas rápidas",
@@ -62,15 +61,8 @@
         "enable_debug_sub" : "Incluir o output da consola dos mineiros no debug.log. Isto pode aumentar bastante o tamanho dos logs",
         "auto_start" : "Iniciar automaticamente",
         "auto_start_sub" : "Iniciar o One-Click Miner ao iniciar sessão no computador",
-        "closed_source" : "Utilizar mineiros que são closed-source",
-        "closed_source_sub" : "Têm melhor hashrate, mas são mineiros não examinados e têm taxas de utilização",
-        "closed_source_warning" : "Selecionou a utilização de mineiros closed-source. O Vertcoin não apoia ou suporta estes mineiros. O seu conteúdo não pode ser verificado e, por isso, podem conter funções que podem afetar o seu computador.",
         "enable_integrated" : "Minerar na placa gráfica integrada",
         "enable_integrated_sub" : "O minerador usará a placa gráfica integrada (se possível)",
-        "testnet":"Modo de teste de rede",
-        "testnet_sub":"Ativar modo de teste de rede. Você não estará minerando moedas reais.",
-        "skipverthashverify":"Não verificar o Verthash na inicialização",
-        "skipverthashverify_sub":"Irá pular a verificação da integridade do arquivo dos dados do Verthash na inicialização (não recomendado)",
         "save_n_restart" : "Gravar & Reiniciar",
         "pool": "Pool de Mineração",
         "language": "Idioma",

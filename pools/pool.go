@@ -84,12 +84,7 @@ func SetConfigs(configs []Config) {
 	mainnetConfigs = configs
 }
 
-func GetPools(addr string, testnet bool) []Pool {
-	if testnet {
-		return []Pool{
-			NewP2Proxy(addr),
-		}
-	}
+func GetPools(addr string) []Pool {
 	configsMu.RLock()
 	defer configsMu.RUnlock()
 	pools := make([]Pool, 0, len(mainnetConfigs))
@@ -103,8 +98,8 @@ func GetPools(addr string, testnet bool) []Pool {
 	return pools
 }
 
-func GetPool(pool int, addr string, testnet bool) Pool {
-	pools := GetPools(addr, testnet)
+func GetPool(pool int, addr string) Pool {
+	pools := GetPools(addr)
 	for _, p := range pools {
 		if p.GetID() == pool {
 			return p
@@ -114,8 +109,8 @@ func GetPool(pool int, addr string, testnet bool) Pool {
 }
 
 // HasPool reports whether the pool with this ID is on the current list.
-func HasPool(pool int, addr string, testnet bool) bool {
-	for _, p := range GetPools(addr, testnet) {
+func HasPool(pool int, addr string) bool {
+	for _, p := range GetPools(addr) {
 		if p.GetID() == pool {
 			return true
 		}

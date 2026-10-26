@@ -16,7 +16,6 @@
         "error_initializing" : "A apărut o eroare la inițializarea portofelului."
     },
     "checks" : {
-        "prerequisite" : "Se instalează un pachet software necesar. Este posibil să apară o fereastră care cere permisiuni (verifică dacă îți clipește în bara de activități)",
         "checks_failed" : "Verificări eșuate",
         "checking_mining_software" : "Se verifică software-ul de minare...",
         "rapidfail" : "Se verifică dacă există erori rapide (i.e. programul se oprește imediat după ce a pornit)",
@@ -56,9 +55,6 @@
         "enable_debug_sub" : "Include textul din consola minerului în logul de depanare. Aceast lucru poate duce la o creștere semnificativă a dimensiunii logurilor",
         "auto_start" : "Pornire automată",
         "auto_start_sub" : "Pornește Minerul One-Click când te loghezi pe calculator",
-        "closed_source" : "Folosește mineri closed-source",
-        "closed_source_sub" : "Au hashrate mai bun, dar sunt mineri neauditați care trimit o taxă către dezvoltator",
-        "closed_source_warning" : "Ai ales să folosești mineri closed-source. Vertcoin nu este afiliat cu acești mineri și nu oferă suport pentru ei. Conținutul lor nu poate fi auditat și ar putea include funcționalități dăunătoare pentru calculatorul tău.",
         "save_n_restart" : "Salvează și repornește",
         "language" : "Limbă",
         "language_system" : "Implicită a sistemului"
