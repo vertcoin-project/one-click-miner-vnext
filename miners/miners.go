@@ -149,7 +149,8 @@ func (b *BinaryRunner) Install() error {
 		return err
 	}
 
-	// Always re-unpack the archive to ensure no one tampered with the file on disk.
+	// Always bring the unpacked files back in line with the archive, so no one
+	// tampered with them on disk.
 	err = b.unpack()
 	if err != nil {
 		return err
@@ -273,28 +274,20 @@ func (b *BinaryRunner) launch(params []string, wait bool) error {
 
 func (b *BinaryRunner) unpack() error {
 	unpackDir := b.unpackDir()
-
-	if _, err := os.Stat(unpackDir); !os.IsNotExist(err) {
-		logging.Debugf("%sRemoving unpack directory", b.logPrefix())
-		time.Sleep(1 * time.Second) // Necessary on Windows to avoid permission error
-		err = os.RemoveAll(unpackDir)
-		if err != nil {
-			return err
-		}
-	}
-	if _, err := os.Stat(unpackDir); os.IsNotExist(err) {
-		logging.Debugf("%s(Re)creating unpack directory", b.logPrefix())
-		err = os.MkdirAll(unpackDir, 0755)
-		if err != nil {
-			return err
-		}
+	err := os.MkdirAll(unpackDir, 0755)
+	if err != nil {
+		return err
 	}
 
+	// Syncing instead of deleting and unpacking again leaves files that are
+	// still right untouched, so a miner from the last run, or an antivirus
+	// scan, still holding the executable open doesn't make this fail.
+	logging.Debugf("%sSyncing unpack directory with the archive", b.logPrefix())
 	archive := b.downloadPath()
 	if strings.HasSuffix(b.MinerBinary.Url, ".zip") {
-		return util.UnpackZip(archive, unpackDir)
+		return util.SyncZip(archive, unpackDir)
 	} else if strings.HasSuffix(b.MinerBinary.Url, ".tar.gz") || strings.HasSuffix(b.MinerBinary.Url, ".tgz") {
-		return util.UnpackTar(archive, unpackDir)
+		return util.SyncTar(archive, unpackDir)
 	}
 
 	return fmt.Errorf("Unknown archive format, cannot unpack: %s", b.MinerBinary.Url)
