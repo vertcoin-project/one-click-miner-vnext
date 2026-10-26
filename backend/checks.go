@@ -120,12 +120,8 @@ func (m *Backend) PerformChecks() string {
 
 func (m *Backend) CheckGPUCompatibility() error {
 	gpus := util.GetGPUs()
-	compat := 0
 	gpustring := ""
 	for _, g := range gpus {
-		if g.Type != util.GPUTypeOther {
-			compat++
-		}
 		if gpustring != "" {
 			gpustring += " / "
 		}
@@ -138,6 +134,29 @@ func (m *Backend) CheckGPUCompatibility() error {
 		Name:     gpustring,
 	})
 
+	return gpuCompatibility(gpus, gpustring, m.GetEnableIntegrated())
+}
+
+// gpuCompatibility fails when no GPU can mine. Intel graphics only count
+// when mining on integrated graphics is turned on: otherwise the miner
+// leaves them out of its config and, with nothing else, exits right away.
+func gpuCompatibility(gpus []util.GPU, gpustring string, integrated bool) error {
+	compat, intel := 0, 0
+	for _, g := range gpus {
+		switch {
+		case g.Type == util.GPUTypeIntel:
+			intel++
+			if integrated {
+				compat++
+			}
+		case g.Type != util.GPUTypeOther:
+			compat++
+		}
+	}
+
+	if compat == 0 && intel > 0 {
+		return fmt.Errorf("Only integrated graphics found\n\nGPUs Found:\n%s - Mining on integrated graphics is turned off. Turn on \"Mine on integrated graphics\" in Settings to try it, but expect a very low hashrate. Check FAQ for supported hardware.", gpustring)
+	}
 	if compat == 0 {
 		return fmt.Errorf("No compatible GPUs detected\n\nGPUs Found:\n%s - Check FAQ for supported hardware and ensure your GPU drivers are up to date.", gpustring)
 	}
