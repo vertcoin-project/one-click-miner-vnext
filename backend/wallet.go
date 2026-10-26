@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 
@@ -32,16 +33,12 @@ func (m *Backend) WalletInitialized() int {
 }
 
 func (m *Backend) SendSweep(password string) []string {
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Sweep",
-		Action:   "Send",
-	})
-
 	txids := make([]string, 0)
 
 	if len(m.pendingSweep) == 0 {
 		// Somehow user managed to press send without properly
 		// preparing the sweep first
+		trackSend("not_prepared")
 		return []string{"send_failed"}
 	}
 
@@ -49,18 +46,25 @@ func (m *Backend) SendSweep(password string) []string {
 		err := m.wal.SignMyInputs(s, password)
 		if err != nil {
 			logging.Errorf("Error signing transaction: %s", err.Error())
+			if errors.Is(err, keyfile.ErrWrongPassword) {
+				trackSend("wrong_password")
+			} else {
+				trackSend("sign_failed")
+			}
 			return []string{"sign_failed"}
 		}
 
 		txHash, err := m.wal.Send(s)
 		if err != nil {
 			logging.Errorf("Error sending transaction: %s", err.Error())
+			trackSend("send_failed")
 			return []string{"send_failed"}
 		}
 		txids = append(txids, txHash)
 	}
 
 	m.pendingSweep = nil
+	trackSend("ok")
 
 	logging.Debugf("Transaction(s) sent! TXIDs: %v\n", txids)
 	m.refreshBalanceChan <- true
@@ -122,6 +126,17 @@ func (m *Backend) InitWallet(password string) bool {
 	}
 	logging.Errorf("Error: %s", err.Error())
 	return false
+}
+
+// trackSend records how a sweep send ended: "ok", "not_prepared",
+// "wrong_password", "sign_failed" (the keyfile couldn't be read or the
+// transaction couldn't be signed) or "send_failed".
+func trackSend(result string) {
+	tracking.Track(tracking.TrackingRequest{
+		Category: "Sweep",
+		Action:   "Send",
+		Name:     result,
+	})
 }
 
 // sweepKey matches the error keys the wallet returns, like insufficient_funds.
