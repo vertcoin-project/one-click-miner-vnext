@@ -210,7 +210,8 @@ func UnpackZip(archive, unpackPath string) error {
 
 		targetPath := filepath.Join(unpackPath, f.Name)
 
-		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
+		// Refuse entries whose names, like ../../x.exe, would land outside
+		// unpackPath (Zip Slip).
 		if !strings.HasPrefix(targetPath, filepath.Clean(unpackPath)+string(os.PathSeparator)) {
 			return fmt.Errorf("%s: illegal file path", targetPath)
 		}
