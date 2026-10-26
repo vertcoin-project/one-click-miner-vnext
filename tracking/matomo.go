@@ -34,6 +34,10 @@ var stopped bool
 // endpoint is the Matomo tracker. Injectable for tests.
 var endpoint = "https://analytics.javerity.com/matomo.php"
 
+// siteID is OCM's site on that Matomo server. A different server numbers
+// its sites differently, so change it together with endpoint.
+var siteID = "3"
+
 func Enable() {
 	trackingEnabled = true
 	saveState()
@@ -90,7 +94,7 @@ func StartTracker() {
 			}
 
 			q := req.URL.Query()
-			q.Add("idsite", "3")
+			q.Add("idsite", siteID)
 			q.Add("rec", "1")
 			if new {
 				new = false
