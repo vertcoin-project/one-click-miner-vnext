@@ -40,10 +40,6 @@ jobs:
             binary: vertcoin-ocm
     runs-on: ${{ matrix.runner }}
     container: ${{ matrix.container }}
-    permissions:
-      contents: read
-      id-token: write
-      attestations: write
     defaults:
       run:
         shell: bash
@@ -139,18 +135,10 @@ jobs:
         run: go test ./...
 
       # The frontend is bundled into the binary, so verify that every installed
-      # package matches the registry's signatures before anything is attested or uploaded
+      # package matches the registry's signatures before anything is uploaded
       - name: Verify npm package signatures
         working-directory: frontend
         run: npm audit signatures
-
-      - name: Attest build provenance
-        if: github.event_name != 'pull_request'
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
-        with:
-          subject-path: |
-            ${{ steps.build.outputs.zip }}
-            build/${{ matrix.binary }}
 
       # Upload the zip as-is so the download isn't a zip inside a zip
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -158,32 +146,3 @@ jobs:
           path: ${{ steps.build.outputs.zip }}
           archive: false
           if-no-files-found: error
-
-  release:
-    name: draft release
-    if: github.ref_type == 'tag'
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          pattern: vertcoin-ocm-*.zip
-          path: dist
-          merge-multiple: true
-          # The artifacts are already zips; keep them as they are
-          skip-decompress: true
-
-      - name: Create draft release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
-        run: |
-          flags=(--draft --generate-notes --verify-tag --title "$TAG")
-          case "$TAG" in
-            *alpha*|*beta*|*rc*) flags+=(--prerelease) ;;
-          esac
-          ls -l dist
-          (cd dist && sha256sum *.zip > SHA256SUMS)
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" "${flags[@]}" dist/*.zip dist/SHA256SUMS
