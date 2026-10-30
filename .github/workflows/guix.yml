@@ -1,0 +1,133 @@
+name: guix
+
+# Reproducible One Click Miner builds with Guix (contrib/guix), one job per
+# host, as Feather Wallet does. The zips should match a local Guix build of
+# the same commit byte for byte; the hashes are in the run's summary to compare.
+# Releases are built and signed locally as contrib/guix/README.md describes,
+# not published from here.
+
+# Only tags, the builds that are released: each job builds the cross
+# toolchains from source, which can take hours of the 6-hour job limit. The
+# build workflow is the CI for other pushes and pull requests.
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: guix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-guix:
+    runs-on: ubuntu-24.04
+    # The cross toolchains in manifest.scm are built from source on a cold run
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - x86_64-linux-gnu
+          - x86_64-w64-mingw32
+    name: ${{ matrix.host }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # https://github.com/actions/checkout/issues/1467
+      # guix-build names the build after the tag on HEAD
+      - name: git fetch tags
+        run: git fetch --tags --force
+      - name: remove bundled packages
+        # Frees disk space for /gnu/store, and keeps the installer's
+        # /usr/local/bin/guix from clashing with anything preinstalled
+        run: sudo rm -rf /usr/local
+      # The Go modules and npm packages guix-build fetches, kept between runs.
+      # guix-build checks everything in it against go.sum and
+      # frontend/package-lock.json, so the cache can't change the output.
+      - name: sources cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: guix-cache
+          key: guix-sources-${{ hashFiles('go.sum', 'frontend/package-lock.json') }}
+      - name: install dependencies
+        run: sudo apt-get update; sudo apt-get -y install git ca-certificates apparmor-utils
+      - name: apparmor workaround
+        # https://bugs.launchpad.net/ubuntu/+source/guix/+bug/2064115
+        # Ubuntu 24.04 blocks unprivileged user namespaces, which
+        # guix shell --container needs
+        run: |
+          sudo tee /etc/apparmor.d/guix << EOF
+          abi <abi/3.0>,
+          include <tunables/global>
+          profile guix /gnu/store/{*-guix-command,*/bin/guix-daemon,*/bin/guix,*/bin/guile} flags=(unconfined) {
+            userns,
+            include if exists <local/guix>
+          }
+          EOF
+          sudo /etc/init.d/apparmor reload
+          sudo aa-enforce guix || true
+          sudo apt-get -y purge apparmor
+      - name: install guix
+        run: |
+          set -exo pipefail
+
+          export ARCHIVE="guix-binary-1.5.0.x86_64-linux.tar.xz"
+          export ARCHIVE_HASH=aa41025489c5061543e9c48873eaa829b900b2da75d40f9648913622f5f47817
+
+          wget --tries=5 --waitretry=10 --no-verbose https://mirrors.ocf.berkeley.edu/gnu/guix/${ARCHIVE} -O /tmp/${ARCHIVE}
+          echo "${ARCHIVE_HASH}  /tmp/${ARCHIVE}" | sha256sum -c -
+
+          # The installer Feather uses, pinned: it installs non-interactively
+          # from a local binary tarball
+          curl -fsSL https://raw.githubusercontent.com/monero-project/guix/7fd75725c5daf9d3bdfd9122dcdb37f650493d18/etc/guix-install.sh -o /tmp/guix-install.sh
+          chmod +x /tmp/guix-install.sh
+
+          { yes "" 2>/dev/null || true; } | sudo env GUIX_BINARY_FILE_NAME="/tmp/${ARCHIVE}" /tmp/guix-install.sh
+          source /etc/profile.d/zzz-guix.sh
+          /usr/local/bin/guix --version
+      - name: build
+        id: build
+        env:
+          HOSTS: ${{ matrix.host }}
+        run: |
+          ./contrib/guix/guix-build
+          sums="$(ls guix-build-*/output/"$HOSTS"/SHA256SUMS.part)"
+          echo "sums=$sums" >> "$GITHUB_OUTPUT"
+          echo "dir=$(dirname "$sums")" >> "$GITHUB_OUTPUT"
+      # A release's files are built locally, but they match these byte for
+      # byte, so gh attestation verify works on them
+      - name: attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-checksums: ${{ steps.build.outputs.sums }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ matrix.host }}
+          # no wildcard before the file names: upload-artifact keeps every
+          # directory after the first wildcard, so the artifact would hold
+          # guix-build-<name>/output/<host>/ instead of just the files
+          path: ${{ steps.build.outputs.dir }}/*
+          if-no-files-found: error
+
+  hashes:
+    runs-on: ubuntu-24.04
+    needs: [build-guix]
+    timeout-minutes: 15
+    steps:
+      # One folder per artifact, named after the host: every host's file is
+      # called SHA256SUMS.part, so they must not be merged into one folder
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - name: print hashes
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          find . -name 'SHA256SUMS.part' -print0 | env LC_ALL=C sort -z | xargs -r0 cat | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
