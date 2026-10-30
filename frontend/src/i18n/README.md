@@ -37,7 +37,7 @@ Would become
 ```
 **NOTE: Special characters**
 
-There are a couple of special characters that are not allowed in javascript string literals, including backslashes and double quotes. You need to escape them. But since they're not used at all in the English base text, it seems unlikely you'll need them. In case of doubt, you can escape them [here](https://www.freeformatter.com/json-escape.html)
+There are a couple of special characters that are not allowed in javascript string literals, including backslashes and double quotes. You need to escape them. But since they're not used at all in the English base text, it seems unlikely you'll need them. In case of doubt, you can escape them [here](https://jsonviewertool.com/json-escape)
 
 **NOTE: Character set**
 
