@@ -7,7 +7,6 @@ import (
 
 	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
@@ -65,14 +64,40 @@ func (m *Backend) getIntSetting(name string) int {
 	return i
 }
 
+// getStringSetting returns "" for a setting that was never saved
+func (m *Backend) getStringSetting(name string) string {
+	setting := ""
+	err := m.settings.View(func(tx *buntdb.Tx) error {
+		v, err := tx.Get(name)
+		setting = v
+		return err
+	})
+	if err != nil && err != buntdb.ErrNotFound {
+		logging.Errorf("Error in getSetting(%s): %v", name, err)
+	}
+	return setting
+}
+
+func (m *Backend) setStringSetting(name string, value string) {
+	err := m.settings.Update(func(tx *buntdb.Tx) error {
+		_, _, err := tx.Set(name, value, nil)
+		return err
+	})
+	if err != nil {
+		logging.Errorf("Error in setSetting(%s): %v", name, err)
+	}
+}
+
 func (m *Backend) GetPool() int {
 	pool := m.getIntSetting("pool")
+	if pool != 0 && !pools.HasPool(pool, m.Address()) {
+		// The saved pool was removed from the pool list, so pick another one.
+		logging.Warnf("Pool %d is no longer available, choosing another\n", pool)
+		pool = 0
+	}
 	if pool == 0 {
-		if m.GetTestnet() {
-			return 2 // Default P2Pool on testnet
-		}
 		// Default to a random pool
-		pools := pools.GetPools(m.Address(), m.GetTestnet())
+		pools := pools.GetPools(m.Address())
 		pool := pools[rand.Intn(len(pools))].GetID()
 		// Save this setting immediately so that we don't get
 		// a different random pool in future calls to GetPool().
@@ -107,52 +132,13 @@ type PoolChoice struct {
 
 func (m *Backend) GetPools() []PoolChoice {
 	pc := make([]PoolChoice, 0)
-	for _, p := range pools.GetPools(m.Address(), m.GetTestnet()) {
+	for _, p := range pools.GetPools(m.Address()) {
 		pc = append(pc, PoolChoice{
 			ID:   p.GetID(),
 			Name: fmt.Sprintf("%s (%0.2f%% fee)", p.GetName(), p.GetFee()),
 		})
 	}
 	return pc
-}
-
-func (m *Backend) GetTestnet() bool {
-        return false // Testnet is not necessary - return false
-        //return m.getSetting("testnet")
-}
-
-func (m *Backend) SetTestnet(newTestnet bool) {
-	if m.GetTestnet() != newTestnet {
-		logging.Infof("Setting testnet to [%b]\n", newTestnet)
-		m.setSetting("testnet", newTestnet)
-
-		logging.Infof("Setting network to testnet=%b\n", newTestnet)
-		networks.SetNetwork(newTestnet)
-
-		logging.Infof("Calling WalletInitialized\n")
-		m.WalletInitialized()
-		logging.Infof("Done!")
-	}
-}
-
-func (m *Backend) GetSkipVerthashExtendedVerify() bool {
-	return false // Verification is default - return false
-	//return m.getSetting("skipverthashverify")
-}
-
-func (m *Backend) SetSkipVerthashExtendedVerify(newVerthashVerify bool) {
-	logging.Infof("Setting skip verthash verify to [%b]\n", newVerthashVerify)
-	m.setSetting("skipverthashverify", newVerthashVerify)
-}
-
-func (m *Backend) GetClosedSource() bool {
-	return false // No closed source Verthash miners - return false
-	//return m.getSetting("closedsource")
-}
-
-func (m *Backend) SetClosedSource(newClosedSource bool) {
-	logging.Infof("Setting closed source to [%b]\n", newClosedSource)
-	m.setSetting("closedsource", newClosedSource)
 }
 
 func (m *Backend) GetDebugging() bool {
@@ -174,14 +160,4 @@ func (m *Backend) SetAutoStart(newAutoStart bool) {
 
 func (m *Backend) GetVersion() string {
 	return tracking.GetVersion()
-}
-
-func (m *Backend) PrerequisiteProxyLoop() {
-	for pi := range m.prerequisiteInstall {
-		send := "0"
-		if pi {
-			send = "1"
-		}
-		m.runtime.Events.Emit("prerequisiteInstall", send)
-	}
 }

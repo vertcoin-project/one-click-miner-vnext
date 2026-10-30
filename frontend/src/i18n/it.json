@@ -16,7 +16,6 @@
         "error_initializing" : "Qualcosa è andato storto nell'inizializzazione del portafoglio"
     },
     "checks" : {
-        "prerequisite" : "Un prerequisito sta venendo installato. Potresti vedere un popup che richiede dei permessi (potrebbe anche solo lampeggiare nella barra delle applicazioni)",
         "checks_failed" : "Controlli falliti",
         "checking_mining_software" : "Controllo del software di mining...",
         "rapidfail" : "Controllo di occorrenze di fallimento rapido",
@@ -62,17 +61,12 @@
         "enable_debug_sub" : "Includi l'output della console del miner nel log di debug. Può far aumentare di molto la dimensione dei tuoi log",
         "auto_start" : "Avvio automatico",
         "auto_start_sub" : "Avvia One-Click Miner quando esegui l'accesso al tuo computer",
-        "closed_source" : "Usa miner closed-source",
-        "closed_source_sub" : "Miglior hashrate, ma miner non certificati che incorrono in una tassa per gli sviluppatori",
-        "closed_source_warning" : "Hai scelto di usare uno o più miner closed-source. Vertcoin non approva né supporta questi miner. Non possono essere controllati sui loro contenuti e potrebbero contenere funzioni dannose per il tuo computer.",
         "enable_integrated" : "Mina con la grafica integrata",
         "enable_integrated_sub" : "Il miner userà la grafica a bordo (se possibile)",
-        "testnet" : "Modalità testnet",
-        "testnet_sub" : "Abilita la modalità testnet. Non minerai monete reali.",
-        "skipverthashverify" : "Non verificare Verthash all'avvio",
-        "skipverthashverify_sub" : "Salta la verifica di integrità del file dei dati di Verthash all'avvio (non raccomandato)",
         "save_n_restart" : "Salva e Riavvia",
-        "pool" : "Pool di mining"
+        "pool" : "Pool di mining",
+        "language" : "Lingua",
+        "language_system" : "Predefinita di sistema"
     },
     "tabbar" : {
         "wallet" : "Portafoglio",

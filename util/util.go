@@ -36,21 +36,6 @@ func DataDirectory() string {
 	return "."
 }
 
-func ReplaceInFile(file string, find string, replace string) error {
-	input, err := os.ReadFile(file)
-	if err != nil {
-		return err
-	}
-
-	output := bytes.Replace(input, []byte(find), []byte(replace), -1)
-
-	if err = os.WriteFile(file, output, 0666); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 type BlocksResponse struct {
 	Blocks     []Block           `json:"blocks"`
 	Pagination InsightPagination `json:"pagination"`
@@ -225,7 +210,8 @@ func UnpackZip(archive, unpackPath string) error {
 
 		targetPath := filepath.Join(unpackPath, f.Name)
 
-		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
+		// Refuse entries whose names, like ../../x.exe, would land outside
+		// unpackPath (Zip Slip).
 		if !strings.HasPrefix(targetPath, filepath.Clean(unpackPath)+string(os.PathSeparator)) {
 			return fmt.Errorf("%s: illegal file path", targetPath)
 		}

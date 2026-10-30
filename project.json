@@ -9,7 +9,7 @@
  "binaryname": "vertcoin-ocm",
  "frontend": {
   "dir": "frontend",
-  "install": "npm install",
+  "install": "npm ci --ignore-scripts",
   "build": "npm run build",
   "bridge": "src",
   "serve": "npm run serve"

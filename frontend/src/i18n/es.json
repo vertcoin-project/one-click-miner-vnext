@@ -16,7 +16,6 @@
         "error_initializing" : "Hubo un problema al iniciar la billetera."
     },
     "checks" : {
-        "prerequisite" : "Un prerequisito está siendo instalado. Puede ser que veas una ventana emergente pidiendo permisos (podría estar parpadeando en la barra de tareas.)",
         "checks_failed" : "Chequeos fallados",
         "checking_mining_software" : "Chequeando el software de minería...",
         "rapidfail" : "Comprobación de fallos rápidos",
@@ -62,17 +61,12 @@
         "enable_debug_sub" : "Incluye las salidas del minero en la consola en el registro de depuración. Puede hacer que tus registros sean bastante grandes",
         "auto_start" : "Empezar automáticamente",
         "auto_start_sub" : "Empezar el minero de un click cuando inicias sesión en tu ordenador",
-        "closed_source" : "Usa mineros de código cerrado",
-        "closed_source_sub" : "Mejor rendimiento, pero mineros que no pueden ser inspeccionados y que sufren de una comisión de desarollo",
-        "closed_source_warning" : "Has seleccionado usar minero(s) de código cerrado. Vertcoin no respalda ni ayuda a estos mineros. Sus contenidos no pueden ser inspeccionados y podrían contener funciones que podrían dañar tu ordenador.",
         "enable_integrated" : "Minar en gráficos integrados",
         "enable_integrated_sub" : "El minero utilizará gráficos integrados (si es posible)",
-        "testnet":"Modo Testnet",
-        "testnet_sub":"Activa el modo Tesnet. No estarás minando monedas reales.",
-        "skipverthashverify":"No verificar Verthash al encender",
-        "skipverthashverify_sub":"Se saltará la verificación de la integridad de la información de Verthash al encender (no recomendado)",
         "save_n_restart" : "Guardar y reiniciar",
-        "pool": "Pool de minería"
+        "pool": "Pool de minería",
+        "language": "Idioma",
+        "language_system": "Predeterminado del sistema"
     },
     "tabbar" : {
         "wallet" : "billetera",

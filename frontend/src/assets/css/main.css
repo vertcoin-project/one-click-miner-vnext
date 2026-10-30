@@ -84,15 +84,36 @@ div.col-settings {
   flex-basis: 1;
 }
 
+/* Both columns take half the width whatever their text, so the layout is the
+   same in every language */
 div.col-settings-sub {
-  padding: 20px;
+  padding: 10px 20px;
   width: 50%;
-  flex-grow: 1;
+  flex: 1 1 0px;
+  min-width: 0;
 }
 
 div.col-286.height-100 {
   height: 100px;
   display: inline;
+}
+
+/* The main button of a screen sits at the same height on every screen, measured
+   from the bottom of the window so the content above it can't move it */
+p.bottom-button {
+  position: absolute;
+  bottom: 59px;
+  left: 0px;
+  width: 100%;
+  margin: 0px;
+}
+
+/* Centres the rest of the screen in the space above the bottom button */
+div.col-286.above-bottom-button {
+  padding-bottom: 62px;
+}
+div.tabBar ~ div.container div.col-286.above-bottom-button {
+  padding-bottom: 120px;
 }
 
 
@@ -164,6 +185,8 @@ input[type='text'], input[type='password'] {
   padding: 0px 10px;
   height: 45px;
   width: 400px;
+  /* Keeps the padding inside the 400px, so the inputs don't widen the centred column */
+  box-sizing: border-box;
   margin: 0 auto;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-size: 14px;

@@ -1,8 +1,10 @@
 package ping
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"sort"
 	"sync"
 	"time"
@@ -10,7 +12,6 @@ import (
 	"github.com/go-ping/ping"
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
-	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
 
@@ -40,19 +41,13 @@ type Nodes struct {
 	Stratum  string `json:"Stratum"`
 	URL      string `json:"URL"`
 	PingTime time.Duration
+	info     map[string]interface{} // local_stats, nil if the node didn't answer
 }
 
 var Selected SelectedNode
 
-func GetSelectedNode(testnet bool) {
-	if testnet {
-		Selected = SelectedNode{
-			P2PoolStratum: networks.Active.P2ProxyStratum,
-			P2PoolURL:     networks.Active.P2ProxyURL,
-		}
-	} else {
-		selector()
-	}
+func GetSelectedNode() {
+	selector()
 }
 
 func selector() {
@@ -69,35 +64,50 @@ func selector() {
 		NodeList := []Nodes{}
 		err = util.GetJson("https://raw.githubusercontent.com/vertcoin-project/one-click-miner-vnext/master/p2pool_nodes.json", &NodeList)
 
-		//If there's an error fetching the node list the user will just be pointed to p2proxy
-		if err != nil {
-			logging.Warnf("P2pool nodes could not be fetched, using p2proxy as failover\n")
-			Selected = SelectedNode{
-				P2PoolStratum: "stratum+tcp://vtc-ca.javerity.com:9171",
-				P2PoolURL:     "http://vtc-ca.javerity.com:9171/",
-			}
+		// If the node list can't be fetched, fall back to a known node instead of
+		// picking from an empty list.
+		if err != nil || len(NodeList) == 0 {
+			logging.Warnf("P2pool nodes could not be fetched, using fallback node\n")
+			useFallbackNode()
+			return
 		}
 
+		Selected = SelectedNode{}
+
+		// Fetch every node's stats while pinging, so a dead node costs at most
+		// one timeout in total instead of one per node.
+		var wg sync.WaitGroup
+		for i := range NodeList {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				if info, err := GetNodeInformation(NodeList[i].URL); err == nil {
+					NodeList[i].info = info
+				}
+			}(i)
+		}
 		err = PingNodes(NodeList)
+		wg.Wait()
+
 		if err != nil {
 			logging.Warnf("Nodes could not be pinged, selecting random node\n")
-			randInt := rand.Intn(len(NodeList))
-			Selected = SelectedNode{
-				P2PoolStratum: NodeList[randInt].Stratum,
-				P2PoolURL:     NodeList[randInt].URL,
-			}
-			logging.Infof("%s has been randomly selected\n", NodeList[randInt].Hostname)
 		} else {
 
-			sort.Slice(NodeList, func(i, j int) bool {
-				return NodeList[i].PingTime < NodeList[j].PingTime
+			// Lowest ping first. Nodes that block ping (PingTime 0) go last but
+			// can still be picked if their stats answered.
+			sort.SliceStable(NodeList, func(i, j int) bool {
+				a, b := NodeList[i].PingTime, NodeList[j].PingTime
+				if a == 0 || b == 0 {
+					return b == 0 && a != 0
+				}
+				return a < b
 			})
 
 			for i := 0; i < len(NodeList); i++ {
-				if NodeList[i].PingTime == 0 { // We need to skip nodes with a pingTime of 0ms, they're either not active or they're not responding to pings and OCM will select it if it responds to the following requests.
+				if NodeList[i].info == nil {
 					continue
 				}
-				nodeInformation, _ := GetNodeInformation(NodeList[i].URL)
+				nodeInformation := NodeList[i].info
 				fee := CheckFee(nodeInformation)
 				if fee {
 					currentMiners := CheckCurrentMiners(nodeInformation)
@@ -109,9 +119,8 @@ func selector() {
 						logging.Infof("%s selected, fulfilled all requirements\n", NodeList[i].Hostname)
 						break
 					} else { //If the node fulfills the max fee requirement but there is more than the set MaxNextping to the next node it will select the current
-						determineNextPingTime := NodeList[i+1].PingTime
-						determineNextPingTime -= NodeList[i].PingTime
-						if determineNextPingTime > Set.MaxNextPing {
+						// The last node has no next node to compare against, so take it.
+						if i+1 >= len(NodeList) || NodeList[i+1].PingTime-NodeList[i].PingTime > Set.MaxNextPing {
 							Selected = SelectedNode{
 								P2PoolStratum: NodeList[i].Stratum,
 								P2PoolURL:     NodeList[i].URL,
@@ -126,52 +135,110 @@ func selector() {
 				}
 			}
 		}
+
+		// Nothing was picked by ping time, so take a random node that is up.
+		if Selected.P2PoolURL == "" {
+			up := map[string]bool{}
+			for _, n := range NodeList {
+				up[n.URL] = n.info != nil
+			}
+			if node, ok := pickResponsiveNode(NodeList, func(url string) bool { return up[url] }); ok {
+				Selected = SelectedNode{
+					P2PoolStratum: node.Stratum,
+					P2PoolURL:     node.URL,
+				}
+				logging.Infof("%s has been randomly selected\n", node.Hostname)
+			} else {
+				logging.Warnf("No p2pool node responded, using fallback node\n")
+				useFallbackNode()
+			}
+		}
 	}
 }
 
+func useFallbackNode() {
+	Selected = SelectedNode{
+		P2PoolStratum: "stratum+tcp://vtc-fl.javerity.com:9171",
+		P2PoolURL:     "http://vtc-fl.javerity.com:9171/",
+	}
+}
+
+// PingNodes sets PingTime on every node that answers. A node that can't be
+// resolved or pinged keeps a PingTime of 0 and is skipped by the selector;
+// an error is only returned when no node could be pinged at all.
 func PingNodes(NodeList []Nodes) error {
 	var wg sync.WaitGroup
-	var errPing error
+	var mu sync.Mutex
+	var lastErr error
+	pinged := 0
 	for i := 0; i < len(NodeList); i++ {
 		wg.Add(1)
 
-		go func(NodeList []Nodes) {
+		go func(i int) {
 			defer wg.Done()
 
 			pinger, err := ping.NewPinger(NodeList[i].Hostname)
-			pinger.SetPrivileged(true)       //This line is needed for windows because of ICMP
-			pinger.Timeout = Set.PingTimeout //Sets the time for which the pinger will timeout regardless of how many packets there has been recieved
 			if err != nil {
-				logging.Warn("Error: Check if you are connected to the internet")
-				logging.Warn(err)
-				errPing = err
+				logging.Warnf("%s could not be pinged: %v\n", NodeList[i].Hostname, err)
+				mu.Lock()
+				lastErr = err
+				mu.Unlock()
 				return
 			}
-			pinger.Count = Set.PingPackets //Number of packets to be sent to each node
+			pinger.SetPrivileged(true)       //This line is needed for windows because of ICMP
+			pinger.Timeout = Set.PingTimeout //Sets the time for which the pinger will timeout regardless of how many packets there has been recieved
+			pinger.Count = Set.PingPackets   //Number of packets to be sent to each node
 			err = pinger.Run()
 			if err != nil {
-				logging.Warn("Error: Check if you are connected to the internet")
-				logging.Warn(err)
-				errPing = err
+				logging.Warnf("%s could not be pinged: %v\n", NodeList[i].Hostname, err)
+				mu.Lock()
+				lastErr = err
+				mu.Unlock()
 				return
 			}
 			NodeList[i].PingTime = pinger.Statistics().AvgRtt
 			logging.Infof("%s: %v \n", NodeList[i].Hostname, NodeList[i].PingTime)
-		}(NodeList)
+			mu.Lock()
+			pinged++
+			mu.Unlock()
+		}(i)
 	}
 	wg.Wait()
-	if errPing != nil {
-		return errPing
+	if pinged == 0 {
+		if lastErr == nil {
+			lastErr = fmt.Errorf("no node answered")
+		}
+		return lastErr
 	}
 	return nil
 }
 
+// pickResponsiveNode returns a random node whose stats page responds, or false
+// if none do. Used when ping times can't help pick a node.
+func pickResponsiveNode(NodeList []Nodes, responds func(url string) bool) (Nodes, bool) {
+	for _, i := range rand.Perm(len(NodeList)) {
+		if responds(NodeList[i].URL) {
+			return NodeList[i], true
+		}
+		logging.Warnf("%s is unreachable, trying another node\n", NodeList[i].Hostname)
+	}
+	return Nodes{}, false
+}
+
+// A healthy node answers in well under a second, so a short timeout keeps a
+// dead node from stalling node selection.
+var nodeClient = &http.Client{Timeout: 3 * time.Second}
+
 // Instead of making a http request to the node each time we need to get information, we do it once and then reuse the collected data.
 func GetNodeInformation(NodeURL string) (jsonPayload map[string]interface{}, err error) {
-	err = util.GetJson(fmt.Sprintf("%slocal_stats", NodeURL), &jsonPayload)
+	r, err := nodeClient.Get(fmt.Sprintf("%slocal_stats", NodeURL))
+	if err == nil {
+		defer r.Body.Close()
+		err = json.NewDecoder(r.Body).Decode(&jsonPayload)
+	}
 	if err != nil {
 		if NodeURL != "http://127.0.0.1:9171/" {
-			logging.Errorf("Unable to fetch node information\n", err.Error())
+			logging.Errorf("Unable to fetch node information: %s\n", err.Error())
 		}
 		return jsonPayload, err
 	}

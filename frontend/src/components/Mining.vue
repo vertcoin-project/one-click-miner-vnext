@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-286">
+    <div class="col-286 above-bottom-button">
       <p class="header">{{$t('mining.spendable_balance')}}:</p>
       <p class="spendableBalance">
         <a class="tiny" @click="refreshBalance">
@@ -75,14 +75,14 @@
       <p v-if="runningMiners === 0">{{$t('mining.waiting_for_miners')}}</p>
       <p v-if="runningMiners > 0" class="header">{{$t('mining.expected_earnings_24h')}}:</p>
       <p
-        v-if="runningMiners > 0 && hashrate !== '0.00 MH/s'"
+        v-if="runningMiners > 0 && !estimating"
         class="earning"
       >~{{avgearn}} ({{hashrate}})</p>
       <p
-        v-if="runningMiners > 0 && hashrate === '0.00 MH/s'"
+        v-if="runningMiners > 0 && estimating"
         class="earning"
       >{{$t('mining.estimating')}}{{spinner}}</p>
-      <p>
+      <p class="bottom-button">
         <a class="button" v-if="stopping">{{spinner}}</a>
         <a class="button" @click="stop" v-if="!stopping">{{$t('mining.stop_mining')}}</a>
       </p>
@@ -98,7 +98,6 @@ export default {
       avgearn: "0.00 VTC",
       netHash: "",
       gpu: "",
-      testnet: false,
       wallet: "",
       balance: "0.00000000",
       balanceImmature: "0.00000000",
@@ -120,9 +119,6 @@ export default {
       }
       self.spinner = newSpinner;
     }, 1000);
-    window.backend.Backend.GetTestnet().then(result => {
-      self.testnet = result;
-    });
     window.setInterval(() => {
       window.backend.Backend.GetPoolName().then(result => {
         self.activePool = result;
@@ -164,6 +160,12 @@ export default {
     window.backend.Backend.RefreshBalance();
     window.backend.Backend.RefreshHashrate();
     window.backend.Backend.RefreshRunningState();
+  },
+  computed: {
+    // The backend reports no hashrate as "0.00 kH/s", so check the number, not the text.
+    estimating() {
+      return !(parseFloat(this.hashrate) > 0);
+    },
   },
   methods: {
     stop: function() {

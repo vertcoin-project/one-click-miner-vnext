@@ -16,7 +16,6 @@
         "error_initializing" : "Cüzdanı başlatırken bir şeyler ters gitti."
     },
     "checks" : {
-        "prerequisite" : "Gerekli bir program yükleniyor. İzin isteyen bir pencere açılabilir (ya da görev çubuğunuz renk değiştirebilir)",
         "checks_failed" : "Kontroller başarısız oldu.",
         "checking_mining_software" : "Madencilik yazılımı kontrol ediliyor...",
         "rapidfail" : "Ani oluşan hatalar kontrol ediliyor...",
@@ -61,15 +60,10 @@
         "enable_debug_sub" : "Madenci konsolunun çıktılarını debug.log'a dahil et. Log boyutu çok büyüyebilir",
         "auto_start" : "Otomatik başlat",
         "auto_start_sub" : "Madenciyi bilgisayar açıldığında otomatik başlat",
-        "closed_source" : "Kapalı kaynak kodlu madenci yazılımlarını kullan",
-        "closed_source_sub" : "Daha iyi hashrate alırsınız, fakat yazılımın geliştiricisi sizden komisyon alır",
-        "closed_source_warning" : "Kapalı kaynak kodlu madenci yazılımı kullanmayı seçtiniz. Vertcoin bu yazılımları desteklemez. İçerikleri bilinemez ve bilgisayarınıza zarar verebilecek yazılımlar içerebilir.",
-        "testnet":"Testnet modu",
-        "testnet_sub":"Testnet modunu aktifleştirir. Kazılan coinler gerçek değildir.",
-        "skipverthashverify":"Başlangıçta Verthash'i doğrulama",
-        "skipverthashverify_sub":"Başlangıçta Verthash dosyasının bütünlüğünü doğrulamayı atlayacak (önerilmez)",
         "save_n_restart" : "Kaydet ve Yeniden Başlat",
-        "pool": "Madenci havuzu"
+        "pool": "Madenci havuzu",
+        "language": "Dil",
+        "language_system": "Sistem varsayılanı"
     },
     "tabbar" : {
         "wallet" : "Cüzdan",

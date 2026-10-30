@@ -16,7 +16,6 @@
         "error_initializing" : "Erreur pendant l'initialisation du portefeuille"
     },
     "checks" : {
-        "prerequisite" : "Un prérequis est en cours d'installation. Vous pourriez voir une fenêtre demandant des autorisations (elle pourrait simplement clignoter dans la barre des tâches)",
         "checks_failed" : "Les vérifications ont echoué",
         "checking_mining_software" : "Vérification du logiciel de minage...",
         "rapidfail" : "Vérification des occurrences d'échec rapide",
@@ -56,10 +55,9 @@
         "enable_debug_sub" : "Inclure la sortie console du logiciel de minage dans le log de débogage. Peut augmenter considérablement la taille de vos logs",
         "auto_start" : "Démarrage auto",
         "auto_start_sub" : "Démarrer One-Click Miner quand vous vous connectez à votre ordinateur",
-        "closed_source" : "Utiliser des logiciels de minage propriétaires",
-        "closed_source_sub" : "Meilleur taux de hachage, mais logiciel de minage ne rétribuant pas les développeurs",
-        "closed_source_warning" : "Vous avez choisi d'utiliser des logiciels de minage propriétaires. Vertcoin n'en assure pas le support. Leur contenu ne peut pas être audité et pourrait comporter des fonctions qui endommagent votre ordinateur.",
-        "save_n_restart" : "Enregistrer & Redémarrer"
+        "save_n_restart" : "Enregistrer & Redémarrer",
+        "language" : "Langue",
+        "language_system" : "Langue du système"
     },
     "tabbar" : {
         "wallet" : "Portefeuille",

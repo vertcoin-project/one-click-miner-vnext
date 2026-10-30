@@ -3,14 +3,13 @@
   "author": "Gert-Jaap Glasbergen<gertjaap@gertjaap.nl>",
   "private": true,
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@wailsapp/runtime": "^1.0.10",
-    "core-js": "^2.6.11",
+    "core-js": "^3.36.0",
     "lodash": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
     "lodash.defaultsdeep": "^4.6.1",
@@ -48,8 +47,8 @@
       "autoprefixer": {}
     }
   },
-  "resolutions": {
-    "minimist": "1.2.3",
+  "overrides": {
+    "minimist": "1.2.8",
     "mkdir": "0.5.3"
   },
   "browserslist": [

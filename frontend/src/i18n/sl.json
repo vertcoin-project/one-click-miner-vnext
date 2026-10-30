@@ -16,7 +16,6 @@
         "error_initializing" : "Napaka pri nalaganju denarnice"
     },
     "checks" : {
-        "prerequisite" : "Nameščanje predpogojnih datotek. Morda boste videli pojavno okno, ki zahteva dovoljenja (lahko samo utripa v opravilni vrstici)",
         "checks_failed" : "Preverjanje neuspešno",
         "checking_mining_software" : "Preverjanje programske opreme za rudarstvo ...",
         "rapidfail" : "Preverjanje hitrih okvar",
@@ -56,10 +55,9 @@
         "enable_debug_sub" : "Omogoči izvoz dnevnikov konzol rudarske programske opreme v dnevnik za odstranjevanje hroščev. Velikost dnevnika se lahko znatno poveča",
         "auto_start" : "Samodejni zagon",
         "auto_start_sub" : "Zaženi One-Click Miner, ko se prijaviš v računalnik.",
-        "closed_source" : "Uporabi zaprto programsko opremo za rudarstvo",
-        "closed_source_sub" : "Boljši hashrate, vendar neocenjena programska opema, ki lahko vključuje pristojbino za razvojne inženirje",
-        "closed_source_warning" : "Izbrali ste zaprto programsko opremo za rudarstvo. Vertcoin ne odobrava ali podpira njihovo uporabo. Ne more se preveriti njihovo vsebino tako, da lahko potencijalno vsebuje funkcije, ki lahko poškoduje vaš računalnik.",
-        "save_n_restart" : "Shrani & Znova zaženi"
+        "save_n_restart" : "Shrani & Znova zaženi",
+        "language" : "Jezik",
+        "language_system" : "Privzeto v sistemu"
     },
     "tabbar" : {
         "wallet" : "Denarnica",

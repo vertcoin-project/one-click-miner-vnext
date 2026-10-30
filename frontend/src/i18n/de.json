@@ -16,7 +16,6 @@
         "error_initializing" : "Fehler beim Initialisieren der Wallet"
     },
     "checks" : {
-        "prerequisite" : "Voraussetzungen werden installiert. Möglicherweise wird ein Fenster angezeigt, in dem Sie nach Berechtigungen gefragt werden (möglicherweise blinkt es in der Taskleiste)",
         "checks_failed" : "Überprüfung fehlgeschlagen",
         "checking_mining_software" : "Mining-Software wird überprüft...",
         "rapidfail" : "Auftreten von schnellen Ausfällen wird geprüft",
@@ -62,17 +61,12 @@
         "enable_debug_sub" : "Konsolenausgabe der Mining-Software in das Debugprotokoll mit aufnehmen. Kann die Größe Ihrer Protokolle erheblich erhöhen",
         "auto_start" : "Auto-Start",
         "auto_start_sub" : "One-Click-Miner bei der Anmeldung starten",
-        "closed_source" : "Proprietäre Mining-Software nutzen",
-        "closed_source_sub" : "Bessere Hash-Rate, aber ungeprüfte Miner mit Entwicklergebühr.",
-        "closed_source_warning" : "Sie haben sich für die Verwendung proprietärer Mining-Software entschieden. Vertcoin bietet keine Unterstützung an. Die Miner können nicht überprüft werden und enthalten möglicherweise Funktionen, die Ihren Computer beeinträchtigen.",
         "enable_integrated" : "Auf integrierter Grafikkarte minen",
         "enable_integrated_sub" : "Miner wird die Onboard-Grafikkarte verwenden (wenn möglich)",
-        "testnet" : "Testnet-Modus",
-        "testnet_sub" : "Aktiviert Testnet-Modus. Sie werden keine echten Coins minen.",
-        "skipverthashverify" : "Verthash-Überprüfung beim Start überspringen",
-        "skipverthashverify_sub" : "Die Prüfung der Datenintegrität der Verthash-Daten beim Start wird übersprungen (nicht empfohlen)",
         "save_n_restart" : "Speichern & Neustarten",
-        "pool" : "Mining-Pool"
+        "pool" : "Mining-Pool",
+        "language" : "Sprache",
+        "language_system" : "Systemstandard"
     },
     "tabbar" : {
         "wallet" : "Wallet",

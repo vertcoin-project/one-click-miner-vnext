@@ -11,6 +11,7 @@ import (
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -54,11 +55,7 @@ func (m *Backend) PerformChecks() string {
 	progress := make(chan float64, 1)
 
 	go func() {
-		if m.GetSkipVerthashExtendedVerify() {
-			err = verthash.MakeVerthashDatafileIfNotExistsWithProgress(verthashFile, progress)
-		} else {
-			err = verthash.EnsureVerthashDatafileWithProgress(verthashFile, progress)
-		}
+		err = verthash.EnsureVerthashDatafileWithProgress(verthashFile, progress)
 		doneChan <- true
 	}()
 
@@ -82,8 +79,11 @@ func (m *Backend) PerformChecks() string {
 		return errorString
 	}
 
-	for !m.p2poolNodeSelected {
-		time.Sleep(time.Second)
+	// Only P2Pool mines through the selected node, so other pools don't wait for it.
+	if _, ok := m.pool.(*pools.P2Pool); ok {
+		for !m.p2poolNodeSelected {
+			time.Sleep(100 * time.Millisecond)
+		}
 	}
 	for networks.Active.OCMBackend == "" {
 		time.Sleep(500 * time.Millisecond)
@@ -120,12 +120,8 @@ func (m *Backend) PerformChecks() string {
 
 func (m *Backend) CheckGPUCompatibility() error {
 	gpus := util.GetGPUs()
-	compat := 0
 	gpustring := ""
 	for _, g := range gpus {
-		if g.Type != util.GPUTypeOther {
-			compat++
-		}
 		if gpustring != "" {
 			gpustring += " / "
 		}
@@ -138,6 +134,29 @@ func (m *Backend) CheckGPUCompatibility() error {
 		Name:     gpustring,
 	})
 
+	return gpuCompatibility(gpus, gpustring, m.GetEnableIntegrated())
+}
+
+// gpuCompatibility fails when no GPU can mine. Intel graphics only count
+// when mining on integrated graphics is turned on: otherwise the miner
+// leaves them out of its config and, with nothing else, exits right away.
+func gpuCompatibility(gpus []util.GPU, gpustring string, integrated bool) error {
+	compat, intel := 0, 0
+	for _, g := range gpus {
+		switch {
+		case g.Type == util.GPUTypeIntel:
+			intel++
+			if integrated {
+				compat++
+			}
+		case g.Type != util.GPUTypeOther:
+			compat++
+		}
+	}
+
+	if compat == 0 && intel > 0 {
+		return fmt.Errorf("Only integrated graphics found\n\nGPUs Found:\n%s - Mining on integrated graphics is turned off. Turn on \"Mine on integrated graphics\" in Settings to try it, but expect a very low hashrate. Check FAQ for supported hardware.", gpustring)
+	}
 	if compat == 0 {
 		return fmt.Errorf("No compatible GPUs detected\n\nGPUs Found:\n%s - Check FAQ for supported hardware and ensure your GPU drivers are up to date.", gpustring)
 	}
@@ -147,19 +166,13 @@ func (m *Backend) CheckGPUCompatibility() error {
 func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 	binaries := miners.GetMinerBinaries()
 	gpus := util.GetGPUs()
-	closedSource := m.GetClosedSource()
-	testnet := m.GetTestnet()
 	brs := []*miners.BinaryRunner{}
 	for _, b := range binaries {
 		match := false
 		if b.Platform == runtime.GOOS {
 			for _, g := range gpus {
 				if g.Type == b.GPUType {
-					if b.ClosedSource == closedSource {
-						if b.Testnet == testnet {
-							match = true
-						}
-					}
+					match = true
 				}
 			}
 		}
@@ -178,15 +191,15 @@ func (m *Backend) CreateMinerBinaries() ([]*miners.BinaryRunner, error) {
 					continue
 				}
 			}
-			logging.Debugf("Found compatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
-			br, err := miners.NewBinaryRunner(b, m.prerequisiteInstall)
+			logging.Debugf("Found compatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
+			br, err := miners.NewBinaryRunner(b)
 			if err != nil {
 				return nil, err
 			}
 			br.Debug = m.GetDebugging()
 			brs = append(brs, br)
 		} else {
-			logging.Debugf("Found incompatible binary [%s] for [%s/%d] (Closed source: %t)\n", b.MainExecutableName, b.Platform, b.GPUType, b.ClosedSource)
+			logging.Debugf("Found incompatible binary [%s] for [%s/%d]\n", b.MainExecutableName, b.Platform, b.GPUType)
 		}
 	}
 
@@ -216,6 +229,12 @@ func (m *Backend) InstallMinerBinaries() error {
 // Will be run at startup
 // Additionally it can be run if the backend returns an error after startup
 func (m *Backend) BackendServerSelector() {
+	if len(networks.Active.BackendServers) == 0 {
+		networks.Active.OCMBackend = ""
+		logging.Errorf("No backend servers are configured..\n")
+		return
+	}
+
 	// Pick a random backend off the list
 	n := rand.Intn(len(networks.Active.BackendServers))
 

@@ -16,7 +16,6 @@
         "error_initializing" : "Įvyko klaida inicijuojant piniginę"
     },
     "checks" : {
-        "prerequisite" : "Diegiami būtiniausi leidimai. Galite išvysti iššokantį langą prašantį leidimo (gali mirgsėti užduočių juostoje)",
         "checks_failed" : "Patikros nepavyko",
         "checking_mining_software" : "Tikrinama kasimui skirta programinė įranga...",
         "rapidfail" : "Tikrinama ar nėra gedimų",
@@ -62,17 +61,12 @@
         "enable_debug_sub" : "Įtraukti kasimo programinės įrangos konsolės išvestį į derinimo žurnalą. Žurnalas gali užaugti gana didelis",
         "auto_start" : "Automatinis paleidimas",
         "auto_start_sub" : "Paleisti One-Click Miner kai tik prisijungiate prie kompiuterio",
-        "closed_source" : "Naudoti uždaro kodo programine įranga",
-        "closed_source_sub" : "Greitesnis kasimas, bet galimi papildomi kasimo mokeščiai",
-        "closed_source_warning" : "Jūs pasirinkote uždaro kodo programine įranga kasimui. Vertcoin neskatina ir nepalaiko tokios programinės įrangos. Ji negali būti patikrinta ir gali turėti kompiuteriui žalingų funkcijų.",
         "enable_integrated" : "Kasti su integruota vaizdo plokšte",
         "enable_integrated_sub" : "Kasimo programinė įranga naudos integruota vaizdo plokšte (jei įmanoma)",
-        "testnet":"Testnet režimas",
-        "testnet_sub":"Aktyvuoja testnet režimą, kuriame kasite netikras monetas.",
-        "skipverthashverify":"Paleidžiant netikrinti Verthash",
-        "skipverthashverify_sub":"Praleisite Verthash duomenų failo patikrinimą paleidžiant programą (nerekomenduojama)",
         "save_n_restart" : "Išsaugoti ir perkrauti",
-        "pool": "Kasėjų pool"
+        "pool": "Kasėjų pool",
+        "language": "Kalba",
+        "language_system": "Sistemos numatytoji"
     },
     "tabbar" : {
         "wallet" : "Piniginė",

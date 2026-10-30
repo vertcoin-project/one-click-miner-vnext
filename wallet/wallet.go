@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"path/filepath"
 	"strings"
 
 	"github.com/btcsuite/btcd/btcutil"
@@ -12,7 +11,6 @@ import (
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
-	"github.com/tidwall/buntdb"
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/networks"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
@@ -24,7 +22,6 @@ type Wallet struct {
 	Script    []byte
 	Spendable uint64
 	Maturing  uint64
-	db        *buntdb.DB
 }
 
 type Utxo struct {
@@ -38,13 +35,9 @@ type Utxo struct {
 // full node or just using Vertcoin Core) we can scale this up.
 var maxTxSize = 45000
 
-func NewWallet(addr string, script []byte) (*Wallet, error) {
+func NewWallet(addr string, script []byte) *Wallet {
 	logging.Infof("Initializing wallet %s", addr)
-	db, err := buntdb.Open(filepath.Join(util.DataDirectory(), networks.Active.WalletDB))
-	if err != nil {
-		return nil, err
-	}
-	return &Wallet{Address: addr, Script: script, db: db}, nil
+	return &Wallet{Address: addr, Script: script}
 }
 
 func (w *Wallet) Utxos() ([]Utxo, error) {

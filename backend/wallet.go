@@ -21,11 +21,7 @@ func (m *Backend) WalletInitialized() int {
 	if err != nil {
 		logging.Errorf("Error initializing wallet: %s", err.Error())
 	}
-	wal, err := wallet.NewWallet(keyfile.GetAddress(), script)
-	if err != nil {
-		logging.Errorf("Error initializing wallet: %s", err.Error())
-	}
-	m.wal = wal
+	m.wal = wallet.NewWallet(keyfile.GetAddress(), script)
 	logging.Infof("Wallet initialized: %d", checkWallet)
 	return checkWallet
 }
@@ -68,7 +64,7 @@ func (m *Backend) SendSweep(password string) []string {
 }
 
 func (m *Backend) ShowTx(txid string) {
-	util.OpenBrowser(fmt.Sprintf("%stx/%s", networks.Active.InsightURL, txid))
+	util.OpenBrowser(fmt.Sprintf("%stx/%s", networks.Active.ExplorerURL, txid))
 }
 
 type PrepareResult struct {

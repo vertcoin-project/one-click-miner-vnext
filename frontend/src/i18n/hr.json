@@ -16,7 +16,6 @@
         "error_initializing" : "Pogreška kod učitavanja novčanika"
     },
     "checks" : {
-        "prerequisite" : "Skidanje preduvjetnih datoteka. Mogućnost iskakanja skočnog prozora za dopuštenja (može treperiti u alatnoj traci)",
         "checks_failed" : "Provjera neuspješna",
         "checking_mining_software" : "Provjera softvera za rudarenje...",
         "rapidfail" : "Provjera učestalosti neuspješnih radnji",
@@ -56,10 +55,9 @@
         "enable_debug_sub" : "Omogući izvoz logova konzole softvera za rudarenje u log za otklanjanje bugova. Veličina loga može se znatno povećati",
         "auto_start" : "Automatski početak",
         "auto_start_sub" : "Pokreni One-Click Miner kada se logiraš na računalo",
-        "closed_source" : "Koristi softver za rudarenje zatvorenog koda",
-        "closed_source_sub" : "Bolji hashrate, ali neocijenjeni softver za rudarenje može uključivati naknadu za razvojne inženjere",
-        "closed_source_warning" : "Odlučili ste koristiti softver(e) za rudarenje zatvorenog koda. Vertcoin ne odobrava i ne podržava njihovu upotrebu. Ne može se provjeriti njihov sadržaj i potencijalno mogu sadržavati funkcije koje mogu oštetiti vaše računalo.",
-        "save_n_restart" : "Spremi i ponovno pokreni"
+        "save_n_restart" : "Spremi i ponovno pokreni",
+        "language" : "Jezik",
+        "language_system" : "Zadano u sustavu"
     },
     "tabbar" : {
         "wallet" : "Novčanik",
