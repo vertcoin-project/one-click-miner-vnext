@@ -1,6 +1,9 @@
 package ping
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestPickResponsiveNode(t *testing.T) {
 	nodes := []Nodes{
@@ -20,5 +23,26 @@ func TestPickResponsiveNode(t *testing.T) {
 
 	if _, ok := pickResponsiveNode(nodes, func(string) bool { return false }); ok {
 		t.Fatal("expected no node when none respond")
+	}
+}
+
+// Legacy nodes report miner_hash_rates as an object of address to hashrate.
+// The miner count is the number of entries.
+func TestCheckCurrentMiners(t *testing.T) {
+	rates := func(n int) map[string]interface{} {
+		m := map[string]interface{}{}
+		for i := 0; i < n; i++ {
+			m[fmt.Sprintf("V%d", i)] = 1000.0
+		}
+		return map[string]interface{}{"miner_hash_rates": m}
+	}
+	if !CheckCurrentMiners(rates(Set.MaxMiners)) {
+		t.Errorf("%d miners should pass", Set.MaxMiners)
+	}
+	if CheckCurrentMiners(rates(Set.MaxMiners + 1)) {
+		t.Errorf("%d miners should fail", Set.MaxMiners+1)
+	}
+	if !CheckCurrentMiners(map[string]interface{}{}) {
+		t.Error("a node that doesn't report miners should pass")
 	}
 }

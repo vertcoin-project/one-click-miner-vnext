@@ -260,6 +260,7 @@ func CheckFee(jsonPayload map[string]interface{}) bool {
 
 // To ensure efficiency of the selected p2pool node a limit of miners has been put in place, returns true if the number is equal to Maxminers or below
 func CheckCurrentMiners(jsonPayload map[string]interface{}) bool {
-	currentMiners, _ := jsonPayload["miner_hash_rates"].(string)
+	// miner_hash_rates is an object of payout address to hashrate, one entry per miner.
+	currentMiners, _ := jsonPayload["miner_hash_rates"].(map[string]interface{})
 	return len(currentMiners) <= Set.MaxMiners
 }
