@@ -62,17 +62,10 @@ func main() {
 				Action:   "Crash",
 				Name:     fmt.Sprintf("%v", err),
 			})
-
+			// The process exits right after this, so send the crash now.
+			tracking.Stop()
 		}
 	}()
-
-	tracking.StartTracker()
-
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Startup",
-		Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
-	})
 
 	logging.SetLogLevel(int(logging.LogLevelDebug))
 	if _, err := os.Stat(util.DataDirectory()); os.IsNotExist(err) {
@@ -88,6 +81,9 @@ func main() {
 	logFile, _ := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	logging.SetLogFile(logFile)
 	defer logFile.Close()
+
+	// After the data directory is created, so the tracking state can be saved
+	tracking.StartTracker()
 
 	log.Printf("OCM v%s Started up\n", tracking.GetVersion())
 
@@ -114,6 +110,16 @@ func main() {
 		}()
 	}
 
+	// A second copy only shows the "already running" message, so it isn't
+	// counted as a startup.
+	if !alreadyRunning {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "Lifecycle",
+			Action:   "Startup",
+			Name:     fmt.Sprintf("OCM/%s", tracking.GetVersion()),
+		})
+	}
+
 	backend, err := backend.NewBackend(alreadyRunning)
 	if err != nil {
 		logging.Errorf("Error creating Backend: %s", err.Error())
@@ -136,10 +142,12 @@ func main() {
 	}
 	backend.StopMining()
 
-	tracking.Track(tracking.TrackingRequest{
-		Category: "Lifecycle",
-		Action:   "Shutdown",
-	})
+	if !alreadyRunning {
+		tracking.Track(tracking.TrackingRequest{
+			Category: "Lifecycle",
+			Action:   "Shutdown",
+		})
+	}
 
 	tracking.Stop()
 }

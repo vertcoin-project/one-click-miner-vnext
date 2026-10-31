@@ -98,7 +98,7 @@ func (m *Backend) PerformChecks() string {
 			tracking.Track(tracking.TrackingRequest{
 				Category: "PerformChecks",
 				Action:   "ConfigureError",
-				Name:     errorString,
+				Name:     fmt.Sprintf("%s: %v", br.MinerBinary.MainExecutableName, err),
 			})
 			m.runtime.Events.Emit("checkStatus", "Failed")
 			return errorString
