@@ -10,10 +10,10 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0
 	github.com/btcsuite/fastsha256 v0.0.0-20160815193821-637e65642941
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
-	github.com/gertjaap/verthash-go v0.0.0-20210205201258-234a3a9698d1
 	github.com/go-ping/ping v1.1.0
 	github.com/marcsauter/single v0.0.0-20201009143647-9f8d81240be2
 	github.com/tidwall/buntdb v1.3.0
+	github.com/vertcoin-project/verthash-go v1.0.0
 	github.com/wailsapp/wails v1.16.9
 	golang.org/x/crypto v0.20.0
 	golang.org/x/text v0.14.0
