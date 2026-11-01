@@ -6,13 +6,14 @@ name: guix
 # Releases are built and signed locally as contrib/guix/README.md describes,
 # not published from here.
 
-# Only tags, the builds that are released: each job builds the cross
-# toolchains from source, which can take hours of the 6-hour job limit. The
-# build workflow is the CI for other pushes and pull requests.
+# Only tags, the builds that are released, and manual runs: each job builds
+# the cross toolchains from source, which can take hours of the 6-hour job
+# limit. The build workflow is the CI for other pushes and pull requests.
 on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
 
 permissions:
   contents: read
