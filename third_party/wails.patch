@@ -1,0 +1,191 @@
+--- a/lib/renderer/webview.go
++++ b/lib/renderer/webview.go
+@@ -3,9 +3,9 @@
+ import (
+ 	"encoding/json"
+ 	"fmt"
+-	"math/rand"
+ 	"strings"
+ 	"sync"
++	"sync/atomic"
+ 	"time"
+ 
+ 	"github.com/wailsapp/wails/runtime"
+@@ -23,6 +23,12 @@
+ // UseFirebug indicates whether to inject the firebug console
+ var UseFirebug = ""
+ 
++// syncJSCounter numbers the evalJSSync callbacks so no two share an ID
++var syncJSCounter uint64
++
++// showTimeout is how long the window waits for the page before it's shown anyway
++const showTimeout = 3 * time.Second
++
+ type WebView struct {
+ 	window         wv.WebView // The webview object
+ 	ipc            interfaces.IPCManager
+@@ -31,6 +37,7 @@
+ 	eventManager   interfaces.EventManager
+ 	bindingCache   []string
+ 	maximumSizeSet bool
++	showOnce       sync.Once
+ }
+ 
+ // NewWebView returns a new WebView struct
+@@ -180,7 +187,7 @@
+ 	}
+ 	w.log.DebugFields("EvalSync", logger.Fields{"js": outputJS})
+ 
+-	ID := fmt.Sprintf("syncjs:%d:%d", time.Now().Unix(), rand.Intn(9999))
++	ID := fmt.Sprintf("syncjs:%d:%d", time.Now().Unix(), atomic.AddUint64(&syncJSCounter, 1))
+ 	var wg sync.WaitGroup
+ 	wg.Add(1)
+ 
+@@ -207,6 +214,16 @@
+ 	return nil
+ }
+ 
++// show shows the window the first time it is called. The window starts hidden
++// so it doesn't appear before the page has painted.
++func (w *WebView) show() {
++	w.showOnce.Do(func() {
++		w.window.Dispatch(func() {
++			w.window.Show()
++		})
++	})
++}
++
+ // injectCSS adds the given CSS to the WebView
+ func (w *WebView) injectCSS(css string) {
+ 	w.window.Dispatch(func() {
+@@ -272,9 +289,13 @@
+ 
+ 			// Emit that everything is loaded and ready
+ 			w.eventManager.Emit("wails:ready")
++			w.show()
+ 		}()
+ 	})
+ 
++	// Show the window anyway if the page never gets ready
++	time.AfterFunc(showTimeout, w.show)
++
+ 	// Kick off main window loop
+ 	w.window.Run()
+ 
+--- a/lib/renderer/webview/webview.go
++++ b/lib/renderer/webview/webview.go
+@@ -11,7 +11,7 @@
+ 
+ /*
+ #cgo linux openbsd freebsd CFLAGS: -DWEBVIEW_GTK=1 -Wno-deprecated-declarations
+-#cgo linux openbsd freebsd pkg-config: gtk+-3.0 webkit2gtk-4.0
++#cgo linux openbsd freebsd pkg-config: gtk+-3.0 webkit2gtk-4.1
+ 
+ #cgo windows CFLAGS: -DWEBVIEW_WINAPI=1 -std=c99
+ #cgo windows LDFLAGS: -lole32 -lcomctl32 -loleaut32 -luuid -lgdi32
+@@ -85,6 +85,10 @@
+ 	webview_set_color((struct webview *)w, r, g, b, a);
+ }
+ 
++static inline void CgoWebViewShow(void *w) {
++	webview_show((struct webview *)w);
++}
++
+ static inline void CgoDialog(void *w, int dlgtype, int flags,
+ char *title, char *arg, char *res, size_t ressz, char *filter) {
+ 	webview_dialog(w, dlgtype, flags,
+@@ -198,6 +202,9 @@
+ 	// SetColor() changes window background color. This method must be called from
+ 	// the main thread only. See Dispatch() for more details.
+ 	SetColor(r, g, b, a uint8)
++	// Show() shows the window, which starts hidden on Windows. This method must
++	// be called from the main thread only. See Dispatch() for more details.
++	Show()
+ 	// Eval() evaluates an arbitrary JS code inside the webview. This method must
+ 	// be called from the main thread only. See Dispatch() for more details.
+ 	Eval(js string) error
+@@ -329,6 +336,10 @@
+ 	C.CgoWebViewSetColor(w.w, C.uint8_t(r), C.uint8_t(g), C.uint8_t(b), C.uint8_t(a))
+ }
+ 
++func (w *webview) Show() {
++	C.CgoWebViewShow(w.w)
++}
++
+ func (w *webview) Focus() {
+ 	C.CgoWebViewFocus(w.w)
+ }
+--- a/lib/renderer/webview/webview.h
++++ b/lib/renderer/webview/webview.h
+@@ -179,6 +179,7 @@
+   WEBVIEW_API int webview_inject_css(struct webview *w, const char *css);
+   WEBVIEW_API void webview_set_title(struct webview *w, const char *title);
+   WEBVIEW_API void webview_focus(struct webview *w);
++  WEBVIEW_API void webview_show(struct webview *w);
+   WEBVIEW_API void webview_minsize(struct webview *w, int width, int height);
+   WEBVIEW_API void webview_maxsize(struct webview *w, int width, int height);
+   WEBVIEW_API void webview_set_fullscreen(struct webview *w, int fullscreen);
+@@ -355,15 +356,18 @@
+       gtk_window_set_default_size(GTK_WINDOW(w->priv.window), w->width,
+                                   w->height);
+     }
+-    else
+-    {
+-      gtk_widget_set_size_request(w->priv.window, w->width, w->height);
+-    }
+     gtk_window_set_resizable(GTK_WINDOW(w->priv.window), !!w->resizable);
+     gtk_window_set_position(GTK_WINDOW(w->priv.window), GTK_WIN_POS_CENTER);
+ 
+     w->priv.scroller = gtk_scrolled_window_new(NULL, NULL);
+     gtk_container_add(GTK_CONTAINER(w->priv.window), w->priv.scroller);
++    if (!w->resizable)
++    {
++      // Size the page, not the window, as AdjustWindowRect does on Windows:
++      // a client-side title bar is part of the window and would otherwise
++      // take its height out of the page
++      gtk_widget_set_size_request(w->priv.scroller, w->width, w->height);
++    }
+ 
+     WebKitUserContentManager *m = webkit_user_content_manager_new();
+     webkit_user_content_manager_register_script_message_handler(m, "external");
+@@ -614,6 +618,7 @@
+   }
+ 
+   WEBVIEW_API void webview_exit(struct webview *w) { (void)w; }
++  WEBVIEW_API void webview_show(struct webview *w) { (void)w; }
+   WEBVIEW_API void webview_print_log(const char *s)
+   {
+     fprintf(stderr, "%s\n", s);
+@@ -1584,9 +1589,8 @@
+     SetWindowText(w->priv.hwnd, w->title);
+ #endif
+ 
+-    ShowWindow(w->priv.hwnd, SW_SHOWDEFAULT);
+-    UpdateWindow(w->priv.hwnd);
+-    SetFocus(w->priv.hwnd);
++    // The window stays hidden until webview_show, so it never appears before
++    // the page has painted (the browser control starts out white)
+ 
+     return 0;
+   }
+@@ -2040,6 +2044,12 @@
+ 
+   WEBVIEW_API void webview_terminate(struct webview *w) { PostQuitMessage(0); }
+   WEBVIEW_API void webview_exit(struct webview *w) { OleUninitialize(); }
++  WEBVIEW_API void webview_show(struct webview *w)
++  {
++    ShowWindow(w->priv.hwnd, SW_SHOWDEFAULT);
++    UpdateWindow(w->priv.hwnd);
++    SetFocus(w->priv.hwnd);
++  }
+   WEBVIEW_API void webview_print_log(const char *s) { OutputDebugString(s); }
+ 
+ #endif /* WEBVIEW_WINAPI */
+@@ -2492,6 +2502,7 @@
+     w->priv.should_exit = 1;
+   }
+   WEBVIEW_API void webview_exit(struct webview *w) { [NSApp terminate:NSApp]; }
++  WEBVIEW_API void webview_show(struct webview *w) { (void)w; }
+   WEBVIEW_API void webview_print_log(const char *s) { NSLog(@"%s", s); }
+ 
+ #endif /* WEBVIEW_COCOA */

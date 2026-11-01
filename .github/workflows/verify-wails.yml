@@ -1,0 +1,30 @@
+name: verify-wails
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'third_party/**'
+      - 'go.mod'
+      - '.github/workflows/verify-wails.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'third_party/**'
+      - 'go.mod'
+      - '.github/workflows/verify-wails.yml'
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: third_party/wails is Wails v1.16.9 plus the patch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+      - name: Compare with Wails v1.16.9 from the Go checksum database
+        run: third_party/verify-wails.sh
