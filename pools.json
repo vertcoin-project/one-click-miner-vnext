@@ -32,6 +32,16 @@
       "payoutURL": "https://api.miningpoolsweden.eu/api/pools/vert1/miners/{address}",
       "payoutFields": ["pendingBalance"],
       "dashboardURL": "https://miningpoolsweden.eu/?#vert1/dashboard?address={address}"
+    },
+    {
+      "id": 10,
+      "name": "VeinPool.fr",
+      "stratumURL": "stratum+tcp://veinpool.fr:3710",
+      "password": "x",
+      "fee": 1.00,
+      "payoutURL": "https://veinpool.fr/api/pools/vtc1/miners/{address}",
+      "payoutFields": ["pendingBalance"],
+      "dashboardURL": "https://veinpool.fr/miner/vtc/{address}"
     }
   ]
 }
