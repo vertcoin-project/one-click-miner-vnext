@@ -13,7 +13,7 @@ require (
 	github.com/go-ping/ping v1.1.0
 	github.com/marcsauter/single v0.0.0-20201009143647-9f8d81240be2
 	github.com/tidwall/buntdb v1.3.0
-	github.com/vertcoin-project/verthash-go v1.0.0
+	github.com/vertcoin-project/verthash-go v1.0.1
 	github.com/wailsapp/wails v1.16.9
 	golang.org/x/crypto v0.20.0
 	golang.org/x/text v0.14.0

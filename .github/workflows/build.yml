@@ -123,16 +123,26 @@ jobs:
           wails build -ldflags "$LDFLAGS"
           zipname="vertcoin-ocm-${NAME}-${OS}-x64.zip"
           mkdir -p dist
+          cp LICENSE NOTICE build/
           if [ "$OS" = windows ]; then
-            (cd build && 7z a -tzip "../dist/${zipname}" "${BINARY}")
+            (cd build && 7z a -tzip "../dist/${zipname}" "${BINARY}" LICENSE NOTICE)
           else
-            (cd build && zip "../dist/${zipname}" "${BINARY}")
+            (cd build && zip "../dist/${zipname}" "${BINARY}" LICENSE NOTICE)
           fi
           echo "zip=dist/${zipname}" >> "$GITHUB_OUTPUT"
 
       # After the build, because the main package embeds the built frontend
       - name: Run Go tests
         run: go test ./...
+
+      # NOTICE holds the licenses of every Go module and frontend package in the build.
+      # Fail when a dependency change left it out of date. After the build, because
+      # go list loads the main package, which embeds the built frontend
+      - name: Check NOTICE
+        if: matrix.os == 'linux'
+        run: |
+          contrib/notice/generate.sh
+          git diff --exit-code -- NOTICE
 
       # The frontend is bundled into the binary, so verify that every installed
       # package matches the registry's signatures before anything is uploaded
