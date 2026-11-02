@@ -97,6 +97,14 @@ jobs:
           go mod tidy
           git diff --exit-code -- go.mod go.sum
 
+      # NOTICE holds the licenses of every Go module and frontend package in the build.
+      # Fail when a dependency change left it out of date
+      - name: Check NOTICE
+        if: matrix.os == 'linux'
+        run: |
+          contrib/notice/generate.sh
+          git diff --exit-code -- NOTICE
+
       - name: Determine version
         id: version
         run: |
