@@ -89,71 +89,78 @@ func selector() {
 		err = PingNodes(NodeList)
 		wg.Wait()
 
-		if err != nil {
-			logging.Warnf("Nodes could not be pinged, selecting random node\n")
+		if sel, ok := pick(NodeList, err); ok {
+			Selected = sel
 		} else {
-
-			// Lowest ping first. Nodes that block ping (PingTime 0) go last but
-			// can still be picked if their stats answered.
-			sort.SliceStable(NodeList, func(i, j int) bool {
-				a, b := NodeList[i].PingTime, NodeList[j].PingTime
-				if a == 0 || b == 0 {
-					return b == 0 && a != 0
-				}
-				return a < b
-			})
-
-			for i := 0; i < len(NodeList); i++ {
-				if NodeList[i].info == nil {
-					continue
-				}
-				nodeInformation := NodeList[i].info
-				fee := CheckFee(nodeInformation)
-				if fee {
-					currentMiners := CheckCurrentMiners(nodeInformation)
-					if currentMiners {
-						Selected = SelectedNode{
-							P2PoolStratum: NodeList[i].Stratum,
-							P2PoolURL:     NodeList[i].URL,
-						}
-						logging.Infof("%s selected, fulfilled all requirements\n", NodeList[i].Hostname)
-						break
-					} else { //If the node fulfills the max fee requirement but there is more than the set MaxNextping to the next node it will select the current
-						// The last node has no next node to compare against, so take it.
-						if i+1 >= len(NodeList) || NodeList[i+1].PingTime-NodeList[i].PingTime > Set.MaxNextPing {
-							Selected = SelectedNode{
-								P2PoolStratum: NodeList[i].Stratum,
-								P2PoolURL:     NodeList[i].URL,
-							}
-							logging.Infof("%s selected, next node has too high ping time\n", NodeList[i].Hostname)
-							break
-						}
-						logging.Warnf("%s had more than %v miners, trying new inorder to retain efficiency\n", NodeList[i].Hostname, Set.MaxMiners)
-					}
-				} else {
-					logging.Warnf("%s is either unreachable or had more than a %f fee, trying new\n", NodeList[i].Hostname, Set.MaxFee)
-				}
-			}
-		}
-
-		// Nothing was picked by ping time, so take a random node that is up.
-		if Selected.P2PoolURL == "" {
-			up := map[string]bool{}
-			for _, n := range NodeList {
-				up[n.URL] = n.info != nil
-			}
-			if node, ok := pickResponsiveNode(NodeList, func(url string) bool { return up[url] }); ok {
-				Selected = SelectedNode{
-					P2PoolStratum: node.Stratum,
-					P2PoolURL:     node.URL,
-				}
-				logging.Infof("%s has been randomly selected\n", node.Hostname)
-			} else {
-				logging.Warnf("No p2pool node responded, using fallback node\n")
-				useFallbackNode()
-			}
+			useFallbackNode()
 		}
 	}
+}
+
+// pick chooses a node from fetched and pinged nodes: the lowest ping that
+// passes the fee and miner checks, then a random responsive node. pingErr
+// means no node could be pinged. It returns false when no node is usable.
+func pick(NodeList []Nodes, pingErr error) (SelectedNode, bool) {
+	selected := func(n Nodes) SelectedNode {
+		return SelectedNode{P2PoolStratum: n.Stratum, P2PoolURL: n.URL}
+	}
+	usable := func(n Nodes) bool {
+		return n.info != nil && CheckFee(n.info) && CheckCurrentMiners(n.info)
+	}
+
+	if pingErr != nil {
+		logging.Warnf("Nodes could not be pinged, selecting random node\n")
+	} else {
+		// Lowest ping first. Nodes that block ping (PingTime 0) go last but
+		// can still be picked if their stats answered.
+		sort.SliceStable(NodeList, func(i, j int) bool {
+			a, b := NodeList[i].PingTime, NodeList[j].PingTime
+			if a == 0 || b == 0 {
+				return b == 0 && a != 0
+			}
+			return a < b
+		})
+
+		for i := 0; i < len(NodeList); i++ {
+			if NodeList[i].info == nil {
+				continue
+			}
+			if !CheckFee(NodeList[i].info) {
+				logging.Warnf("%s is either unreachable or had more than a %f fee, trying new\n", NodeList[i].Hostname, Set.MaxFee)
+				continue
+			}
+			if CheckCurrentMiners(NodeList[i].info) {
+				logging.Infof("%s selected, fulfilled all requirements\n", NodeList[i].Hostname)
+				return selected(NodeList[i]), true
+			}
+			// Too many miners: move on only if a usable node is close by in
+			// ping. Otherwise this node is still the best choice.
+			alternative := -1
+			for j := i + 1; j < len(NodeList); j++ {
+				if NodeList[j].PingTime > 0 && usable(NodeList[j]) {
+					alternative = j
+					break
+				}
+			}
+			if alternative < 0 || NodeList[i].PingTime == 0 || NodeList[alternative].PingTime-NodeList[i].PingTime > Set.MaxNextPing {
+				logging.Infof("%s selected, no usable node close by in ping\n", NodeList[i].Hostname)
+				return selected(NodeList[i]), true
+			}
+			logging.Warnf("%s had more than %v miners, trying new inorder to retain efficiency\n", NodeList[i].Hostname, Set.MaxMiners)
+		}
+	}
+
+	// Nothing was picked by ping time, so take a random node that is up.
+	up := map[string]bool{}
+	for _, n := range NodeList {
+		up[n.URL] = n.info != nil
+	}
+	if node, ok := pickResponsiveNode(NodeList, func(url string) bool { return up[url] }); ok {
+		logging.Infof("%s has been randomly selected\n", node.Hostname)
+		return selected(node), true
+	}
+	logging.Warnf("No p2pool node responded, using fallback node\n")
+	return SelectedNode{}, false
 }
 
 func useFallbackNode() {
