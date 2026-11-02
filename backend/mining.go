@@ -34,6 +34,10 @@ func (m *Backend) GetPoolFee() string {
 	if m.pool == nil {
 		return ""
 	}
+	// P2Pool's fee is the node's, and the node is picked in the background at start.
+	if _, ok := m.pool.(*pools.P2Pool); ok && !m.p2poolNodeSelected {
+		return ""
+	}
 	return fmt.Sprintf("%0.2f%%", m.pool.GetFee())
 }
 
