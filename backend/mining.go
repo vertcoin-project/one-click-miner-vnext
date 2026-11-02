@@ -6,6 +6,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -17,11 +18,13 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		Name:     fmt.Sprintf("%v", m.pool.GetName()),
 	})
 
+	_, isP2Pool := m.pool.(*pools.P2Pool)
 	return miners.BinaryArguments{
 		StratumUrl:       m.pool.GetStratumUrl(),
 		StratumUsername:  m.pool.GetUsername(),
 		StratumPassword:  m.pool.GetPassword(),
 		EnableIntegrated: m.getSetting("enableIntegrated"),
+		P2Pool:           isP2Pool,
 	}
 }
 
