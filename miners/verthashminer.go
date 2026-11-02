@@ -27,6 +27,20 @@ const cuda11MaxComputeCap = 9.0
 
 var deviceIndexRe = regexp.MustCompile(`DeviceIndex\s*=\s*"(-?\d+)"`)
 
+// verthashBatchTimeMs replaces VerthashMiner's default of 500 on P2Pool. A new
+// job is only picked up, and found shares only sent, once a batch is done, so on
+// P2Pool's short share times a 500 ms batch costs stale shares. On an RTX 5080
+// 100 ms hashed as fast as 500; 20 ms was about 3.5% slower. Other pools change
+// work far less often, so they keep the default.
+const verthashBatchTimeMs = 100
+
+var batchTimeRe = regexp.MustCompile(`BatchTimeMs\s*=\s*"\d+"`)
+
+// setBatchTime sets BatchTimeMs on a generated device line to verthashBatchTimeMs.
+func setBatchTime(line string) string {
+	return batchTimeRe.ReplaceAllString(line, fmt.Sprintf(`BatchTimeMs = "%d"`, verthashBatchTimeMs))
+}
+
 // normalizePCIeID turns nvidia-smi's "00000000:2B:00.0" and VerthashMiner's
 // "2b:00:0" into the same "bus:device:function" form.
 func normalizePCIeID(id string) string {
@@ -227,6 +241,10 @@ func (l *VerthashMinerImpl) Configure(args BinaryArguments) error {
 			logging.Debug("Exiting device block")
 			logging.Debug(parsedDevices[0])
 			deviceBlockStr = ""
+		}
+
+		if args.P2Pool && (strings.HasPrefix(line, "<CL_Device") || strings.HasPrefix(line, "<CU_Device")) {
+			line = setBatchTime(line)
 		}
 
 		if strings.HasPrefix(line, "<CL_Device") {

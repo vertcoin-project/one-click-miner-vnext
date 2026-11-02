@@ -6,6 +6,7 @@ import (
 
 	"github.com/vertcoin-project/one-click-miner-vnext/logging"
 	"github.com/vertcoin-project/one-click-miner-vnext/miners"
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
 	"github.com/vertcoin-project/one-click-miner-vnext/tracking"
 	"github.com/vertcoin-project/one-click-miner-vnext/util"
 )
@@ -17,11 +18,13 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 		Name:     fmt.Sprintf("%v", m.pool.GetName()),
 	})
 
+	_, isP2Pool := m.pool.(*pools.P2Pool)
 	return miners.BinaryArguments{
 		StratumUrl:       m.pool.GetStratumUrl(),
 		StratumUsername:  m.pool.GetUsername(),
 		StratumPassword:  m.pool.GetPassword(),
 		EnableIntegrated: m.getSetting("enableIntegrated"),
+		P2Pool:           isP2Pool,
 	}
 }
 
@@ -29,6 +32,10 @@ func (m *Backend) GetArgs() miners.BinaryArguments {
 // "already running" message, and that copy never picks a pool.
 func (m *Backend) GetPoolFee() string {
 	if m.pool == nil {
+		return ""
+	}
+	// P2Pool's fee is the node's, and the node is picked in the background at start.
+	if _, ok := m.pool.(*pools.P2Pool); ok && !m.p2poolNodeSelected {
 		return ""
 	}
 	return fmt.Sprintf("%0.2f%%", m.pool.GetFee())

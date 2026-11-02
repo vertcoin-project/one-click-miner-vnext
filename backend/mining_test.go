@@ -1,6 +1,18 @@
 package backend
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/vertcoin-project/one-click-miner-vnext/pools"
+)
+
+// Until a P2Pool node is picked its fee is unknown, so none is shown.
+func TestGetPoolFeeBeforeP2PoolNode(t *testing.T) {
+	m := &Backend{pool: pools.NewP2Pool("Vaddr")}
+	if got := m.GetPoolFee(); got != "" {
+		t.Errorf("GetPoolFee() before a node is picked = %q, want \"\"", got)
+	}
+}
 
 func TestFormatHashrate(t *testing.T) {
 	cases := map[float64]string{

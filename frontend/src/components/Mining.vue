@@ -67,7 +67,7 @@
 <!--        {{$t('mining.pending_payout_info_unavailable')}}-->
 <!--      </p>-->
       <p class="pool">
-        <span style="opacity: 1">{{$t('mining.active_pool')}}: {{activePool}} <span v-if="poolFee != '0.0%'">({{$t('mining.pool_fee')}}: {{poolFee}})</span></span>
+        <span style="opacity: 1">{{$t('mining.active_pool')}}: {{activePool}} <span v-if="poolFee && poolFee != '0.0%'">({{$t('mining.pool_fee')}}: {{poolFee}})</span></span>
         <br><a class="link" @click="payoutInformation">{{ $t('mining.payout_information') }}</a>
       </p>
       

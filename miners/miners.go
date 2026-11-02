@@ -74,6 +74,7 @@ type BinaryArguments struct {
 	StratumUsername  string
 	StratumPassword  string
 	EnableIntegrated bool
+	P2Pool           bool // mining on P2Pool, whose shares come far more often than a pool's blocks
 }
 
 type BinaryRunner struct {

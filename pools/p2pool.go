@@ -66,6 +66,10 @@ func (p *P2Pool) GetName() string {
 }
 
 func (p *P2Pool) GetFee() (fee float64) {
+	// Until a node is picked there is no node to ask, so report the most a picked node may charge.
+	if ping.Selected.P2PoolURL == "" {
+		return ping.Set.MaxFee
+	}
 	if time.Since(p.LastFetchedFee) > time.Minute*30 {
 		jsonPayload := map[string]interface{}{}
 		err := util.GetJson(fmt.Sprintf("%slocal_stats", ping.Selected.P2PoolURL), &jsonPayload)
