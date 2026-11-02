@@ -1,0 +1,285 @@
+# Scans the P2Pool network with KforG/p2pool-scanner-go and opens one pull
+# request proposing changes to p2pool_nodes.json, the node list OCM picks from.
+#
+# The scanner is outside code, so it runs in its own job without write
+# access. Only its node list reaches the job that can open pull requests, and
+# only well-formed ip:port values from it go into the list.
+name: P2Pool node list
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      scan_minutes:
+        description: Minutes to let the scanner find nodes
+        default: '5'
+
+permissions: {}
+
+concurrency:
+  group: p2pool-nodes
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  BRANCH: p2pool-nodes/update
+  # KforG's master, reviewed. Bump it to pick up scanner changes.
+  SCANNER_REPO: KforG/p2pool-scanner-go
+  SCANNER_REF: 317a3a0d7e46bbe219e84db177a5627ac87fa47c
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      SCAN_MINUTES: ${{ inputs.scan_minutes || '5' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: stable
+          cache: false
+
+      - name: Check out the scanner
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          repository: ${{ env.SCANNER_REPO }}
+          ref: ${{ env.SCANNER_REF }}
+          path: scanner
+          persist-credentials: false
+
+      - name: Build the scanner
+        working-directory: scanner
+        run: go build -o "$RUNNER_TEMP/p2pool-scanner" .
+
+      # The listed nodes are the bootstrap nodes, and also the known domains, so
+      # the scanner names a listed node it reaches as a peer by its domain.
+      # The geolocation API points at a closed local port: without one, the
+      # scanner would send the lookup to each node's port 80.
+      - name: Write the scanner config
+        run: |
+          mkdir "$RUNNER_TEMP/scan"
+          jq '[.[].URL | capture("^https?://(?<hp>[^/]+)").hp] as $nodes | {
+            Currency: "Vertcoin",
+            CurrencyCode: "VTC",
+            BootstrapNodes: $nodes,
+            Port: "9171",
+            RescanTime: 1,
+            GeoLocation: {API: "127.0.0.1:9/", AcessKey: "", Parameters: ""},
+            KnownDomains: {NodeDomain: [$nodes[] | {DomainName: .}]},
+            WebPort: "8080"
+          }' p2pool_nodes.json > "$RUNNER_TEMP/scan/config.json"
+          cat "$RUNNER_TEMP/scan/config.json"
+
+      # The scanner is a server that keeps rescanning, so let it run for a few
+      # rounds of peer discovery and then take its node list.
+      - name: Scan
+        working-directory: ${{ runner.temp }}/scan
+        run: |
+          "$RUNNER_TEMP/p2pool-scanner" > scanner.log 2>&1 &
+          pid=$!
+          sleep "$((SCAN_MINUTES * 60))"
+          for try in 1 2 3; do
+            if curl -fsS --max-time 30 http://127.0.0.1:8080/nodes -o nodes.json \
+                && jq -e 'type == "array" and length > 0' nodes.json > /dev/null; then
+              break
+            fi
+            rm -f nodes.json
+            sleep 10
+          done
+          kill "$pid" || true
+          if [ ! -f nodes.json ]; then
+            echo "::error::The scanner's /nodes endpoint gave no nodes"
+            tail -n 50 scanner.log debug.log || true
+            exit 1
+          fi
+          jq -r '.[] | "\(.ip) \(.domain_name) \(.node_stats.version)"' nodes.json
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: scan
+          path: |
+            ${{ runner.temp }}/scan/nodes.json
+            ${{ runner.temp }}/scan/debug.log
+          retention-days: 7
+
+  propose:
+    needs: scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      # create-pull-request targets the branch the workflow runs on.
+      BASE: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: scan
+          path: ${{ runner.temp }}/scan
+
+      # A listed node stays if the scan found it, or if it still answers
+      # directly, so a scan cut short can't drop nodes that are up. A scanned
+      # node that isn't listed is added under its IP.
+      - name: Work out the list changes
+        id: report
+        run: |
+          scan="$RUNNER_TEMP/scan/nodes.json"
+          work="$RUNNER_TEMP/list"
+          mkdir "$work"
+          jq -e 'type == "array" and length > 0' "$scan" > /dev/null
+
+          addr='^[0-9]{1,3}([.][0-9]{1,3}){3}:[0-9]{1,5}$'
+          jq -r --arg re "$addr" '.[].ip | select(test($re))' "$scan" | sort -u > "$work/ips"
+          : > "$work/keep"; : > "$work/removed"; : > "$work/matched"
+
+          while IFS=$'\t' read -r hostname stratum url; do
+            hostport=$(sed -E 's#^https?://([^/]+).*#\1#' <<< "$url")
+            port=${hostport##*:}
+            found=false
+            # Found as a bootstrap node, or as a peer under its known domain
+            jq -r --arg hp "$hostport" '.[] | select(.domain_name == $hp) | .ip' "$scan" > "$work/named"
+            if [ -s "$work/named" ]; then
+              found=true
+              cat "$work/named" >> "$work/matched"
+            fi
+            # Found as a peer under one of its IPs
+            for ip in $(getent ahostsv4 "${hostport%:*}" | awk '{print $1}' | sort -u); do
+              if grep -qxF "$ip:$port" "$work/ips"; then
+                found=true
+                echo "$ip:$port" >> "$work/matched"
+              fi
+            done
+            if ! $found; then
+              if curl -fsS --max-time 10 "${url%/}/local_stats" -o "$work/probe" 2> "$work/probe-err" \
+                  && jq -e 'type == "object"' "$work/probe" > /dev/null 2>&1; then
+                found=true
+              fi
+            fi
+            if $found; then
+              printf '%s\t%s\t%s\n' "$hostname" "$stratum" "$url" >> "$work/keep"
+            else
+              why=$(tr -d '\r\n|`' < "$work/probe-err" | cut -c1-150)
+              printf '%s\t%s\n' "$hostname" "${why:-not a P2Pool stats response}" >> "$work/removed"
+            fi
+          done < <(jq -r '.[] | [.Hostname, .Stratum, .URL] | @tsv' p2pool_nodes.json)
+
+          jq -c --arg re "$addr" --rawfile matched "$work/matched" '
+            ($matched | split("\n")) as $m
+            | [.[] | select((.ip | test($re)) and (.ip | IN($m[]) | not))]
+            | unique_by(.ip) | .[]' "$scan" > "$work/added"
+
+          if [ ! -s "$work/keep" ] && [ ! -s "$work/added" ]; then
+            echo "::error::Every listed node would be removed and none added; not proposing an empty list"
+            exit 1
+          fi
+
+          # The same hand-aligned layout as the file has today
+          {
+            cat "$work/keep"
+            jq -r '[(.ip | split(":")[0]), "stratum+tcp://\(.ip)", "http://\(.ip)/"] | @tsv' "$work/added"
+          } | jq -Rrn '[inputs | split("\t") | {Hostname: .[0], Stratum: .[1], URL: .[2]}] as $l
+              | "[",
+                (range($l | length) as $i | $l[$i]
+                  | "\t{\n\t\t\"Hostname\": \(.Hostname | tojson),\n\t\t\"Stratum\":  \(.Stratum | tojson),\n\t\t\"URL\":      \(.URL | tojson)\n\t}"
+                    + (if $i < ($l | length) - 1 then "," else "" end)),
+                "]"' > "$work/p2pool_nodes.json"
+
+          if cmp -s "$work/p2pool_nodes.json" p2pool_nodes.json; then
+            changed=false
+          else
+            changed=true
+            cp "$work/p2pool_nodes.json" p2pool_nodes.json
+          fi
+
+          {
+            echo "The weekly scan with [$SCANNER_REPO](https://github.com/$SCANNER_REPO/tree/$SCANNER_REF) found $(jq length "$scan") public P2Pool nodes."
+            echo
+            echo "### Added ($(wc -l < "$work/added"))"
+            echo
+            if [ -s "$work/added" ]; then
+              echo "| Node | Version | Fee | Uptime | Peers in / out |"
+              echo "| --- | --- | --- | --- | --- |"
+              jq -r '"| \(.ip) | \(.node_stats.version | tostring | gsub("[^A-Za-z0-9._+-]"; "")) | \(.node_stats.fee | tonumber? // 0)% | \((.node_stats.uptime | tonumber? // 0) / 86400 | floor) days | \(.node_stats.peers.incoming | tonumber? // 0) / \(.node_stats.peers.outgoing | tonumber? // 0) |"' "$work/added"
+              echo
+              echo "Before merging, check each added node: who runs it, its fee, and that it has been up for a while."
+            else
+              echo "None."
+            fi
+            echo
+            echo "### Removed ($(wc -l < "$work/removed"))"
+            echo
+            if [ -s "$work/removed" ]; then
+              echo "Not found by the scan, and \`/local_stats\` didn't answer."
+              echo
+              echo "| Node | Why |"
+              echo "| --- | --- |"
+              awk -F '\t' '{printf "| %s | %s |\n", $1, $2}' "$work/removed"
+            else
+              echo "None."
+            fi
+            echo
+            echo "$(wc -l < "$work/keep") listed nodes stay."
+          } > "$RUNNER_TEMP/pr-body.md"
+          cat "$RUNNER_TEMP/pr-body.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+
+      # A reviewer may have edited the open pull request, for example to swap
+      # an IP for a domain. Don't overwrite that; comment with the new scan.
+      # Only an open pull request counts: a merged or closed one's branch is
+      # reset by the next proposal.
+      - name: Check the open pull request
+        id: pr
+        run: |
+          open=$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json number --jq length)
+          echo "open=$([ "$open" != 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          if [ "$open" != 0 ] && git fetch origin "$BRANCH"; then
+            git log --format='%an <%ae>' "origin/$BASE..FETCH_HEAD" | sort -u
+            others=$(git log --format='%ae' "origin/$BASE..FETCH_HEAD" \
+              | grep -v -F '41898282+github-actions[bot]@users.noreply.github.com' || true)
+            if [ -n "$others" ]; then
+              echo "edited=true" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Comment with the new scan
+        if: steps.report.outputs.changed == 'true' && steps.pr.outputs.edited == 'true'
+        run: gh pr comment "$BRANCH" --body-file "$RUNNER_TEMP/pr-body.md"
+
+      - name: Close the pull request if the list is already right
+        if: steps.report.outputs.changed == 'false' && steps.pr.outputs.open == 'true' && steps.pr.outputs.edited != 'true'
+        run: gh pr close "$BRANCH" --delete-branch --comment "The latest scan matches $BASE, so these changes are no longer needed."
+
+      - name: Open or update the pull request
+        id: cpr
+        if: steps.report.outputs.changed == 'true' && steps.pr.outputs.edited != 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: ${{ env.BRANCH }}
+          base: ${{ env.BASE }}
+          title: Update the P2Pool node list
+          body-path: ${{ runner.temp }}/pr-body.md
+          commit-message: Update the P2Pool node list from the weekly scan
+          add-paths: p2pool_nodes.json
+          sign-commits: true
+          delete-branch: true
+
+      - name: Explain a refused pull request
+        if: failure() && steps.cpr.outcome == 'failure'
+        run: |
+          echo "::error::Opening the pull request was refused. Enable 'Allow GitHub Actions to create and approve pull requests' in Settings > Actions > General, or check the step log above."
