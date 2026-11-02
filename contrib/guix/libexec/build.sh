@@ -121,11 +121,15 @@ case "$HOST" in
         ;;
 esac
 
+# The licenses go in the zip with the program, which carries the code they cover
+cp LICENSE NOTICE out/
+
 # A zip records each file's time, permissions and owner; fix all three
 cd out
 chmod 0755 "$binary"
-touch --no-dereference --date="@${SOURCE_DATE_EPOCH}" "$binary"
-zip -X -D -9 "/outdir/${zipname}" "$binary"
+chmod 0644 LICENSE NOTICE
+touch --no-dereference --date="@${SOURCE_DATE_EPOCH}" "$binary" LICENSE NOTICE
+zip -X -D -9 "/outdir/${zipname}" "$binary" LICENSE NOTICE
 cp "$binary" "/outdir/${binary}"
 cd /outdir
 sha256sum "$zipname" "$binary" > SHA256SUMS.part

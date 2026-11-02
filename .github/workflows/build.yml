@@ -131,10 +131,11 @@ jobs:
           wails build -ldflags "$LDFLAGS"
           zipname="vertcoin-ocm-${NAME}-${OS}-x64.zip"
           mkdir -p dist
+          cp LICENSE NOTICE build/
           if [ "$OS" = windows ]; then
-            (cd build && 7z a -tzip "../dist/${zipname}" "${BINARY}")
+            (cd build && 7z a -tzip "../dist/${zipname}" "${BINARY}" LICENSE NOTICE)
           else
-            (cd build && zip "../dist/${zipname}" "${BINARY}")
+            (cd build && zip "../dist/${zipname}" "${BINARY}" LICENSE NOTICE)
           fi
           echo "zip=dist/${zipname}" >> "$GITHUB_OUTPUT"
 
