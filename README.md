@@ -4,7 +4,7 @@ The One-Click Miner allows cryptocurrency enthusiasts to get into mining with mi
 
 This is a redevelopment of Vertcoin's [One Click Miner](https://github.com/vertcoin-project/one-click-miner).
 
-This software is available for Windows and Linux.
+This software is available for Windows and Linux. Linux needs WebKitGTK 4.1 (`libwebkit2gtk-4.1-0`, available on Ubuntu 22.04+ and Debian 12+).
 
 ## FAQ
 
@@ -26,12 +26,17 @@ The OCM is using all of your GPU resources.  To verify, check CUDA usage for Nvi
 
 ## Building
 
-The GUI of this MVP is based on [Wails](https://wails.app) and [Go](https://golang.org/).
+The GUI is based on [Wails](https://wails.app) v1 and [Go](https://golang.org/). This repository builds against a patched copy of Wails v1.16.9 in [third_party/wails](third_party/wails) (see [PATCHED.md](third_party/wails/PATCHED.md)), which `go.mod` uses in place of the published module.
 
-Install the Wails [prerequisites](https://wails.app/gettingstarted/) for your platform, and then run:
+You need:
+
+  - Go 1.22+
+  - Node.js. On Node 17+, set `NODE_OPTIONS=--openssl-legacy-provider` for the Vue CLI 4 frontend build
+  - C compiler for cgo: MinGW-w64 on Windows, or on Linux `libgtk-3-dev` and `libwebkit2gtk-4.1-dev` (Ubuntu 22.04+, Debian 12+)
+  - Wails v1.16.9 CLI:
 
 ```bash
-go get github.com/wailsapp/wails/cmd/wails
+go install github.com/wailsapp/wails/cmd/wails@v1.16.9
 ```
 
 Then clone this repository, and inside its main folder, execute:
@@ -39,6 +44,10 @@ Then clone this repository, and inside its main folder, execute:
 ```bash
 wails build
 ```
+
+Use `wails build -d` for a debug build, which also prints what the app is doing to the console and enables the web inspector. Every build logs to `debug.log` in the data directory.
+
+For reproducible Linux and Windows builds, which give byte-identical zips for the same commit, see [contrib/guix](contrib/guix/README.md).
 
 ## Donations
 
